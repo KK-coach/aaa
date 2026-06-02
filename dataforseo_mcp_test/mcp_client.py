@@ -20,6 +20,7 @@ Key facts discovered from the official repo
 
 from __future__ import annotations
 
+import base64
 import contextlib
 import os
 import shutil
@@ -41,6 +42,28 @@ ENV_PATH = PROJECT_ROOT / ".env"
 
 # Only the three modules we actually need — cost & blast-radius control.
 ENABLED_MODULES = "SERP,AI_OPTIMIZATION,KEYWORDS_DATA"
+
+# AAA-31 S3b-fix: connection mode. 'remote' (default) talks to the DataForSEO
+# HOSTED MCP endpoint over streamable-HTTP, so no Node/npx is needed in the
+# worker image (prod path). 'stdio' keeps the local `npx dataforseo-mcp-server`
+# subprocess (local-dev convenience). Both are env-configurable.
+DEFAULT_MCP_URL = "https://mcp.dataforseo.com/mcp"
+
+
+def _mcp_mode() -> str:
+    return (os.environ.get("DATAFORSEO_MCP_MODE") or "remote").strip().lower()
+
+
+def _mcp_url() -> str:
+    return os.environ.get("DATAFORSEO_MCP_URL") or DEFAULT_MCP_URL
+
+
+def _basic_auth_header() -> str:
+    """HTTP Basic header from the DataForSEO creds. Computed from the existing
+    env secrets; the token/value is NEVER logged."""
+    login, password = load_credentials()
+    token = base64.b64encode(("%s:%s" % (login, password)).encode("utf-8")).decode("ascii")
+    return "Basic %s" % token
 
 
 def load_credentials() -> tuple[str, str]:
@@ -110,6 +133,36 @@ def build_server_params() -> StdioServerParameters:
 
 @contextlib.asynccontextmanager
 async def open_session():
+    """Yield an initialized MCP ClientSession.
+
+    Dispatches on DATAFORSEO_MCP_MODE: 'remote' (default) uses the hosted
+    DataForSEO MCP endpoint over streamable-HTTP (no Node needed); 'stdio' uses
+    the local npx subprocess. The SERP tool + downstream parsing are identical
+    either way (same ClientSession.call_tool interface).
+    """
+    if _mcp_mode() == "stdio":
+        async with _open_stdio_session() as session:
+            yield session
+    else:
+        async with _open_remote_session() as session:
+            yield session
+
+
+@contextlib.asynccontextmanager
+async def _open_remote_session():
+    """Initialized ClientSession against the hosted DataForSEO MCP endpoint
+    (streamable-HTTP + HTTP Basic auth)."""
+    from mcp.client.streamable_http import streamablehttp_client
+
+    headers = {"Authorization": _basic_auth_header()}
+    async with streamablehttp_client(_mcp_url(), headers=headers) as (read, write, _):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            yield session
+
+
+@contextlib.asynccontextmanager
+async def _open_stdio_session():
     """Yield an initialized MCP ClientSession over stdio.
 
     The MCP server's stderr is captured to a temp file; if startup fails we
