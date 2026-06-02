@@ -1,0 +1,36 @@
+# AAA-31 S3b — controls what `gcloud run deploy --source .` uploads as the build
+# context. Keep secrets, local artifacts, and heavy junk out of the image.
+# (Without this file gcloud derives ignores from .gitignore; we make it explicit
+# so .env can NEVER be baked into the worker image.)
+
+# Secrets — NEVER upload
+.env
+.env.*
+
+# VCS / tooling
+.git/
+.gitignore
+.claude/
+
+# Python caches / envs
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.pytest_cache/
+
+# Node (huge; not needed in the python worker image)
+node_modules/
+package-lock.json
+
+# Local audit artifacts (regenerated; large)
+reports/
+**/test_outputs/
+
+# One-off dev scratch scripts (not part of the runtime)
+aaa*.py
+_aaa*.py
+
+# Container build files for the OTHER service (worker doesn't need them)
+playwright_service/Dockerfile
+playwright_service/requirements.txt

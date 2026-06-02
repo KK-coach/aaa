@@ -54,8 +54,10 @@ def _report_uri(audit_id: str) -> str:
     return "firestore://%s/%s" % (_COLLECTION, audit_id)
 
 
-@app.get("/healthz")
-async def healthz() -> dict:
+@app.get("/health")
+async def health() -> dict:
+    # NOT /healthz — that literal path is intercepted by the Google Frontend on
+    # *.run.app and never reaches the container (same as the Playwright service).
     return {"status": "ok"}
 
 

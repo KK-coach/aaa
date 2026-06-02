@@ -1,0 +1,36 @@
+# AAA-31 S3b — audit worker image deps (full audit stack).
+# Pinned to the versions validated in the dev environment. Chromium is NOT
+# installed here (the browser lives in the separate playwright-render service;
+# the worker renders over PLAYWRIGHT_URL/HTTP) — but the `playwright` PYTHON
+# package IS required because playwright_service.renderer imports it at module
+# load (the in-process fallback path; never launched in prod).
+#
+# NOTE (flagged, not resolved here): the DataForSEO SERP step launches an MCP
+# server via `npx dataforseo-mcp-server` (Node.js). This python-only image has
+# no Node/npx, so that step will fail at runtime until Node is added or the MCP
+# call is replaced with a direct HTTP client. See Findings.
+
+# Web server (FastAPI worker entrypoint)
+fastapi==0.136.1
+uvicorn[standard]==0.47.0
+
+# Google ADK / Gemini / Vertex AI / Firestore
+google-adk==1.33.0
+google-genai==1.75.0
+google-cloud-aiplatform==1.153.1
+google-cloud-firestore==2.27.0
+
+# LLM + HTTP + HTML parsing + browser (python pkg only)
+openai==2.37.0
+httpx==0.28.1
+selectolax==0.4.9
+playwright==1.58.0
+python-dotenv==1.2.2
+mcp==1.27.1
+pillow==12.1.1
+pydantic==2.13.4
+
+# Report rendering (markdown -> sanitized HTML)
+markdown-it-py==4.2.0
+mdit-py-plugins==0.6.1
+nh3==0.3.5
