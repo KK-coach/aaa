@@ -1,0 +1,53 @@
+{
+  "url": "https://kk.coach",
+  "run": 3,
+  "duration_s": 62.0,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "organic growth consultancy",
+  "topic_cluster": "Organic Growth Strategy & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 4211,
+      "candidates": 796,
+      "total": 5007,
+      "calls": 3
+    },
+    "adk_in": 12170,
+    "adk_out_eff": 721,
+    "in": 16381,
+    "out": 1517
+  },
+  "cost_usd": 0.012741,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Alt Text",
+    "Alt Text Audit",
+    "CRO. The",
+    "Explicit Branding",
+    "Local Entity",
+    "Local Entity Signals",
+    "Organic Growth Strategy",
+    "Person Schema",
+    "Search Optimization",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site represents **kk.coach**, a professional services consultancy focused on \"Organic Growth.\" The brand identity is centered around **KK Organic Growth Consultant**, an unnamed consultant (referenced by the initials **KK** and social handle **@Krisztian__Kiss**). The site explicitly targets a **B2B and e-commerce** audience in the **United States**, offering an integrated approach that combines SEO, GEO (Generative Engine Optimization), UX, and CRO. The site profile grounding is high, and no further user confirmation for the target country is required.\n\n**Primary Keywords & Topic Cluster**\nThe content is tightly focused on the **Organic Growth Strategy & Search Optimization** topic cluster. The primary keyword is **\"organic growth consultant,\"** with a clear commercial intent. The page successfully introduces emerging concepts like **\"AI visibility optimization\"** and **\"GEO\"** alongside traditional long-tail keywords such as **\"structured organic growth for B2B and ecommerce.\"** The strategy aims to bridge the gap between search visibility and actual revenue conversion.\n\n**Technical Health**\nThe site demonstrates excellent technical health with high content confidence (0.95) and no risk of exceeding the Googlebot 2MB limit. It utilizes semantic HTML5 for content structuring and includes **HTTPS** and canonical tags. While there are no complex SPA indicators or Playwright escalation needs, the audit noted a lack of detailed JSON-LD entities in the metadata, which could be an opportunity for richer schema implementation to support its GEO objectives.\n\n**Content Quality & Performance**\nContent quality is high, with 1,834 words of substantive material and clear heading structures. Performance is a significant strength; the site achieves near-perfect PageSpeed scores: **98/100 on Desktop** and **95/100 on Mobile**. Core Web Vitals and accessibility scores (97) are excellent. The site is exceptionally fast, providing a strong foundation for both user experience and search engine ranking.\n\n**Top Actionable Findings**\n1.  **Schema Enhancement:** Implement detailed **Service and Person Schema** (JSON-LD) to explicitly define the \"KK\" entity and the specific GEO/SEO service offerings to better feed generative search engines.\n2.  **Explicit Branding:** While \"@Krisztian__Kiss\" is in the metadata, the main body copy relies heavily on \"KK.\" Using the full professional name more explicitly in the text or footer could strengthen E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).\n3.  **Alt Text Audit:** Ensure all imagery related to the \"Growth System\" diagrams has descriptive alt text to improve accessibility and visibility in image search for complex concepts.\n4.  **Local Entity Signals:** Since the target is the United States, adding a physical office location or localized service area signals in the footer could further bolster regional authority."
+}

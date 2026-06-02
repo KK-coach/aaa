@@ -1,0 +1,68 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 2,
+  "duration_s": 153.0,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2462,
+      "candidates": 718,
+      "total": 3606,
+      "calls": 3
+    },
+    "adk_in": 14681,
+    "adk_out_eff": 1845,
+    "in": 17143,
+    "out": 2989
+  },
+  "cost_usd": 0.017538,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Answer Engine",
+    "Answer Engine Optimization",
+    "App Router",
+    "Cloud Deployment",
+    "Fix Bot",
+    "Fix Bot Accessibility",
+    "Frontend Teams",
+    "Generative Engine",
+    "Increase Content",
+    "Increase Content Density",
+    "JavaScript. While",
+    "Next.js App Router",
+    "Performance\nThe",
+    "Performance\nThe PageSpeed",
+    "Scalable Infrastructure",
+    "Search Console",
+    "Semantic Header",
+    "Semantic Header Overhaul",
+    "Single Page",
+    "Single Page Application",
+    "Technical Health",
+    "Technical Health\nThe",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "Topic Cluster\nThe",
+    "United States",
+    "Vercel Platform"
+  ],
+  "summary_markdown": "## Audit summary for https://vercel.com/products/vercel-platform\n\n### Brand & Target Identification\nThe page is a core product landing for **Vercel**, a leader in the **cloud computing and deployment platform** industry. It targets a **B2B audience**, specifically developers and engineering teams in the **United States** looking for scalable frontend infrastructure. The brand identity is strong and professional, although no individual author is specified on the page.\n\n### Primary Keywords & Topic Cluster\nThe content sits within the **Cloud Deployment and Infrastructure** topic cluster. The primary keyword is **\"Vercel Platform,\"** supported by secondary terms like \"production deployment\" and \"deployment observability.\" There is a **high keyword gap severity**: the page lacks descriptive, non-branded headers (H1/H2s) that would capture users searching for broader terms like \"frontend cloud solutions\" or \"automated deployment tools,\" relying instead almost entirely on branded navigation and product names.\n\n### Technical Health\nThe site is built using the **Next.js App Router**, making it a highly modern Single Page Application (SPA). However, this presents technical challenges: initial crawls yielded very **low content confidence (0.3)** and low word counts, indicating that the majority of the information is rendered via JavaScript. While this is typical for Vercel's own stack, it can sometimes hinder search engines from fully grasping the page's semantic depth without significant rendering resources.\n\n### Content Quality\nContent quality for GEO/AEO (Generative Engine/Answer Engine Optimization) is currently **limited**. Automated extraction identifies the page as thin on text, focusing more on interactive elements and internal links than on descriptive, authoritative prose. The lack of robust semantic headers means the page may struggle to appear in \"AI-generated\" summaries or featured snippets for non-branded queries.\n\n### Performance\nThe PageSpeed analysis for both mobile and desktop returned **failed document requests** (net::ERR_ABORTED). This suggests that Vercel’s security layers or bot protection may be interfering with standard Lighthouse/automated testing tools. While the site likely has excellent real-world performance (given Vercel's focus on Speed Insights), the inability for bots to consistently score the page is a technical risk for Search Console reporting and Core Web Vitals tracking.\n\n### Top Actionable Findings\n1.  **Semantic Header Overhaul:** Replace or augment branded headers with descriptive, keyword-rich H1 and H2 tags (e.g., \"Scalable Infrastructure for Frontend Teams\") to improve non-branded search visibility.\n2.  **Increase Content Density:** Add 400-600 words of descriptive content explaining the \"how\" and \"why\" of the platform to provide more \"hooks\" for LLMs and search engines.\n3.  **Fix Bot Accessibility:** Review firewall/WAF settings that caused the `ERR_ABORTED` error in PageSpeed tools to ensure Googlebot can reliably measure and index the page's performance.\n4.  **Schema Enrichment:** Implement detailed \"Product\" or \"Service\" Schema.org markup to explicitly define the features (Speed Insights, AI Gateway) for search engines, compensating for the thin on-page text."
+}

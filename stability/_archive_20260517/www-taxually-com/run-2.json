@@ -1,0 +1,57 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 2,
+  "duration_s": 81.3,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software-as-a-service",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 5358,
+      "candidates": 1036,
+      "total": 6394,
+      "calls": 4
+    },
+    "adk_in": 15691,
+    "adk_out_eff": 1377,
+    "in": 21049,
+    "out": 2413
+  },
+  "cost_usd": 0.017763,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "Enhance Accessibility",
+    "Granular Keyword",
+    "Granular Keyword Targeting",
+    "Knowledge Graph",
+    "Optimize Core",
+    "Optimize Core Web Vitals",
+    "Tax Compliance Automation",
+    "Technical Health",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "US Sales Tax Compliance",
+    "United States",
+    "VAT Automation",
+    "Web Vitals",
+    "While SEO-specific"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\n**Brand & Target Identification**\nTaxually is a global B2B tax compliance SaaS provider targeting the United States and international markets. The brand focuses on automating complex tax requirements such as VAT and US Sales Tax for ecommerce businesses, enterprises, and accounting providers. The site profile identifies major sub-brands including CrossTax, LumaTax, EcoTax, and OneTax, positioning the company as a comprehensive solution for global tax management.\n\n**Primary Keywords & Topic Cluster**\nThe page targets the \"Tax Compliance Automation\" topic cluster, with \"tax compliance software\" as the primary keyword. The intent is heavily commercial, aiming to capture users seeking automation solutions for international tax filing. While the content is robust, there is a strategic opportunity to further segment landing pages for \"VAT compliance\" versus \"US Sales Tax automation\" to better capture granular search intent and improve relevance for specific regional tax queries.\n\n**Technical Health**\nThe site demonstrates strong technical SEO foundations with a valid HTTPS connection and clear canonical tagging. The crawl achieved high confidence (95%) using semantic HTML5, indicating a well-structured document that search engines can easily parse. With a main content weight of approximately 1,627 words, the page provides significant depth without hitting the 2MB Googlebot risk threshold. Schema markup is present, identifying Taxually as an \"Organization,\" which supports brand authority and Knowledge Graph potential.\n\n**Content Quality**\nContent quality is high, characterized by a clear hierarchy of headings and strong topical relevance. The site effectively uses its proprietary product names (LumaTax, CrossTax) to differentiate its offerings. However, there is room to improve image alt-text coverage and ensure that accessibility standards are fully met to support inclusive navigation and SEO.\n\n**Performance**\nPerformance is a significant area for improvement. The site scored **59 on mobile** and **60 on desktop**, indicating potential issues with Core Web Vitals that could impact search rankings and user experience. While SEO-specific scores are high (92), the underlying performance and \"Best Practices\" (77) suggest that code bloat or unoptimized assets may be slowing down the initial load.\n\n**Top Actionable Findings**\n1.  **Optimize Core Web Vitals:** Address the mediocre performance scores (approx. 60) by optimizing image delivery, leveraging browser caching, and reducing JavaScript execution times to improve mobile visibility.\n2.  **Granular Keyword Targeting:** Create dedicated sub-pages or sections that specifically target \"VAT Automation\" and \"US Sales Tax Compliance\" to fill the identified keyword gaps and capture lower-funnel traffic.\n3.  **Enhance Accessibility & Best Practices:** Improve the \"Best Practices\" score (77) by fixing console errors or insecure resource requests, and ensure all interactive elements have proper ARIA labels.\n4.  **Schema Expansion:** Expand the Organization schema to include more detailed `Offer` or `SoftwareApplication` markup for specific products like LumaTax and CrossTax to enhance SERP rich snippets."
+}

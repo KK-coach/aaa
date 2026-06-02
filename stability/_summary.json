@@ -1,0 +1,850 @@
+{
+  "records": [
+    {
+      "url": "https://www.agrobook.hu",
+      "run": 1,
+      "duration_s": 167.5,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "agricultural machinery and parts retailer",
+      "topic_cluster": "Agricultural Machinery and Spare Parts",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Agrobook.hu Kft.",
+      "tokens": {
+        "vertex": {
+          "prompt": 5143,
+          "candidates": 892,
+          "total": 6035,
+          "calls": 3
+        },
+        "adk_in": 14882,
+        "adk_out_eff": 1398,
+        "in": 20025,
+        "out": 2290
+      },
+      "cost_usd": 0.016883,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Conversion Optimization",
+        "Critical Mobile",
+        "Critical Mobile Optimization",
+        "PageSpeed Insights",
+        "Rich Results",
+        "Secondary Keywords",
+        "Top Actionable",
+        "Top Actionable Findings"
+      ],
+      "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is an established online retailer specializing in agricultural machinery parts and automated steering systems, operated by **Agrobook.hu Kft.** based in **Csávoly, Hungary**. The site clearly targets the Hungarian agricultural sector, focusing on both high-tech steering solutions (like the **Terranav** system) and replacement parts for major brands such as **Claas** and **Fendt**. The site profile is well-defined, and no further user confirmation is required for the target market identification.\n\nThe primary keyword focus is **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop), supported by a transactional topic cluster including **\"automata kormány\"** (auto-steering) and specific machinery brands. While the homepage effectively highlights the Terranav steering system, there is a minor keyword gap; the title tag emphasizes auto-steering, which might overshadow the broader parts catalog. Expanding dedicated landing pages for high-intent long-tail keywords like **\"univerzális automata kormány 2,5 cm pontosság\"** could further improve conversion rates.\n\nTechnically, the page is healthy with valid HTTPS and high SEO scores (100/100 on PageSpeed Insights). It utilizes semantic HTML5, and the content extraction confidence is very high (0.95), suggesting a search-engine-friendly structure. Organization schema is present, though expanding this to include `Product` and `LocalBusiness` schema (specifically for the Csávoly location) would enhance visibility in Rich Results and Google Maps. The 316-word main content is concise but effective for a homepage, though it risks being considered \"thin\" compared to content-heavy competitors if not supplemented by detailed category descriptions.\n\nPerformance is the most significant area for improvement. While desktop scores are mediocre (64), **mobile performance is poor (33)**. This low score, combined with the lack of specific Core Web Vitals data in the audit, suggests that users on mobile devices—common for farmers in the field—may experience significant lag and layout shifts. Accessibility scores are strong (91 on mobile), but the performance bottleneck likely impacts the overall user experience and potentially mobile search rankings.\n\n### Top Actionable Findings:\n1.  **Critical Mobile Optimization:** Address the low mobile performance score (33) by optimizing image delivery (WebP), reducing JavaScript execution time, and leveraging browser caching to improve the experience for on-the-go agricultural users.\n2.  **Schema Expansion:** Implement `LocalBusiness` schema for the physical address in **Csávoly** and `Product` schema for key items like the Terranav system to capture more real estate in SERP features.\n3.  **Content Depth for Secondary Keywords:** While the focus on auto-steering is clear, develop more robust content clusters around **Claas**, **Fendt**, and **Amazone** parts to improve ranking for these high-volume secondary keywords.\n4.  **UX/Conversion Optimization:** Ensure that the \"Automata kormány\" (auto-steering) value proposition doesn't distract from the broader \"Alkatrész\" (parts) search intent by refining the homepage visual hierarchy."
+    },
+    {
+      "url": "https://www.agrobook.hu",
+      "run": 2,
+      "duration_s": 94.9,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "agricultural machinery and parts retailer",
+      "topic_cluster": "Agricultural Machinery and Spare Parts",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Agrobook.hu Kft.",
+      "tokens": {
+        "vertex": {
+          "prompt": 5143,
+          "candidates": 903,
+          "total": 6046,
+          "calls": 3
+        },
+        "adk_in": 14571,
+        "adk_out_eff": 1189,
+        "in": 19714,
+        "out": 2092
+      },
+      "cost_usd": 0.016133,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Accessibility Polish",
+        "Answer Engine",
+        "Answer Engine Optimization",
+        "Critical Performance",
+        "Critical Performance Optimization",
+        "Enhance Product",
+        "Enhance Product Category SEO",
+        "Largest Contentful",
+        "Largest Contentful Paint",
+        "Top Actionable",
+        "Top Actionable Findings"
+      ],
+      "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is an established Hungarian e-commerce platform operated by **Agrobook.hu Kft.**, specializing in the retail of agricultural machinery and spare parts. The site primarily targets the Hungarian market (language: `hu`, location: `Hungary`) with a focus on both B2B and B2C segments. The brand is clearly identified through its physical presence in Csávoly and a comprehensive footer containing legal and contact information. The site successfully establishes its authority in the agricultural sector, featuring prominent brands like **Terranav**, **Claas**, and **Fendt**.\n\nThe primary keyword strategy centers on transactional terms such as **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop) and specialized products like **\"automata kormány\"** (automated steering). The content is logically organized into topic clusters around machinery maintenance, including sprayers, seeders, and tractor parts. While the primary keyword alignment is strong, there is a noted opportunity to further segment landing pages for high-intent long-tail keywords, such as specific universal automated steering systems with 2.5 cm accuracy.\n\nTechnically, the site demonstrates high reliability with a clean `semantic_html5` structure and a high content extraction confidence score (0.95). It employs standard HTTPS and well-formed metadata, achieving a perfect **SEO score of 100** on both mobile and desktop in PageSpeed assessments. However, performance is a critical weakness. The **mobile performance score of 31** is particularly concerning, characterized by slow load times that could lead to high bounce rates for field-based users accessing the site via mobile networks. Desktop performance is also mediocre (62), suggesting a need for better resource optimization.\n\n### Top Actionable Findings\n*   **Critical Performance Optimization:** Immediately address mobile performance (currently 31/100). Focus on reducing JavaScript execution time and optimizing image delivery (e.g., WebP format) to improve Core Web Vitals, specifically Largest Contentful Paint (LCP).\n*   **Enhance Product Category SEO:** While brand-level keywords like **Claas** and **Fendt** are present, expanding unique descriptive content on these category pages will help capture more \"near-me\" and \"fast delivery\" agricultural part searches.\n*   **Deepen \"Automata Kormány\" Content:** The \"Terranav\" automated steering system is a high-value entity. Creating more in-depth technical guides or installation case studies could improve AEO (Answer Engine Optimization) for farmers researching GPS-guided precision farming.\n*   **Accessibility Polish:** While mobile accessibility is strong (91), the desktop score of 88 indicates minor issues (likely color contrast or missing ARIA labels) that should be addressed to ensure a seamless experience for all users."
+    },
+    {
+      "url": "https://www.agrobook.hu",
+      "run": 3,
+      "duration_s": 583.7,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "agricultural machinery and parts retailer",
+      "topic_cluster": "Agricultural Machinery and Spare Parts",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Agrobook.hu Kft.",
+      "tokens": {
+        "vertex": {
+          "prompt": 5143,
+          "candidates": 892,
+          "total": 6035,
+          "calls": 3
+        },
+        "adk_in": 7631,
+        "adk_out_eff": 1314,
+        "in": 12774,
+        "out": 2206
+      },
+      "cost_usd": 0.013005,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Accessibility Polish",
+        "Click-Through Rates",
+        "Critical Performance",
+        "Critical Performance Optimization",
+        "Local Business",
+        "Local SEO Reinforcement",
+        "Metadata Expansion",
+        "Through Rates",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "URL. While"
+      ],
+      "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is a Hungarian agricultural machinery and parts e-commerce platform operated by **Agrobook.hu Kft.**, based in **Csávoly, Hungary**. The site targets a specialized audience of farmers and agricultural businesses looking for replacement parts and advanced technology like steering systems. The brand positioning is professional and transaction-oriented, focusing on reliability and technical precision within the Hungarian market.\n\nThe primary keyword cluster revolves around **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop) and specific high-intent products like **\"automata kormány\"** (automatic steering) and major brands such as **Claas**, **Fendt**, and **Amazone**. The content is well-aligned with transactional intent, particularly for the **Terranav** automatic steering system, which appears to be a flagship offering. There is a minor gap where specific high-value items could benefit from more dedicated long-form educational content to capture top-of-funnel research traffic.\n\nTechnically, the site is in a healthy state regarding crawlability and basic SEO hygiene, achieving a perfect **100 SEO score** in PageSpeed diagnostics. It utilizes **Organization schema** and maintains a secure HTTPS connection. The crawl confidence is high (0.95), suggesting a clean, semantic HTML structure that search engines can easily parse. However, there is a risk of content thinness on some deeper category pages, and the site's footprint is primarily limited to its product catalog.\n\nPerformance is the most significant bottleneck for this URL. While the desktop performance is mediocre (**64**), the mobile experience is poor with a performance score of **39**. The site struggles with **Core Web Vitals**, particularly in loading speeds on mobile devices, which could negatively impact search rankings and user conversion rates in rural areas where mobile connectivity may be less stable.\n\n### Top Actionable Findings\n*   **Critical Performance Optimization:** Address mobile performance (39 score) by optimizing image delivery (WebP/Lazy-loading) and reducing JavaScript execution time to improve Core Web Vitals.\n*   **Content Deepening for 'Terranav':** Expand the landing page for the \"Terranav automata kormányzási rendszer\" with more technical specifications, case studies, or installation guides to dominate this niche topic.\n*   **Local SEO Reinforcement:** Enhance the local presence by ensuring the **Csávoly** pickup point is clearly linked to a Google Business Profile and using Local Business schema to capture regional search intent.\n*   **Accessibility Polish:** Improve the accessibility score (currently 88-91) by ensuring all interactive elements have proper labels and sufficient color contrast, particularly in the e-commerce navigation.\n*   **Metadata Expansion:** While the primary SEO score is high, refining meta-descriptions for category pages to include more \"benefit-driven\" copy (e.g., \"fast shipping,\" \"expert support\") could improve Click-Through Rates (CTR)."
+    },
+    {
+      "url": "https://kk.coach",
+      "run": 1,
+      "duration_s": 67.8,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy & Search Optimization",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "kk.coach",
+      "tokens": {
+        "vertex": {
+          "prompt": 4211,
+          "candidates": 796,
+          "total": 5007,
+          "calls": 3
+        },
+        "adk_in": 14166,
+        "adk_out_eff": 1808,
+        "in": 18377,
+        "out": 2604
+      },
+      "cost_usd": 0.017001,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Best Practices",
+        "CRO. The",
+        "Double Down",
+        "Enhance Schema",
+        "Enhance Schema Markup",
+        "Optimize Performance",
+        "Organic Growth Strategy",
+        "Search Optimization",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://kk.coach\n\nThe website **kk.coach** represents a professional services consultancy focused on high-level organic growth strategies for B2B and ecommerce businesses. Based on site metadata, the brand is identified as **kk.coach**, with **Krisztian__Kiss** listed as a main entity and Twitter creator. The site targets an audience in the **United States**, specializing in an integrated approach that combines traditional SEO with emerging **Generative Engine Optimization (GEO)**, UX, and CRO. The site profile indicates a high level of grounding confidence in its mission to turn search visibility into revenue.\n\nThe primary keyword targeted is **\"organic growth consultant,\"** supported by a topic cluster centered on **Organic Growth Strategy & Search Optimization**. Secondary keywords like **\"SEO and GEO consultant\"** and **\"B2B organic growth system\"** highlight the page's focus on data-driven, multi-channel visibility. The content is substantial, with over 1,800 words of semantic HTML5 content, demonstrating a high level of topical authority in AI-driven visibility and structured growth systems.\n\nTechnically, the page is healthy, utilizing **semantic HTML5** for structure, which resulted in a high main content confidence score of 0.95. It achieves a perfect **100/100 SEO score** and **100/100 Best Practices score** on both mobile and desktop via Google PageSpeed Insights. While the indexing status is officially \"unknown\" due to tool limitations, the technical architecture (HTTPS, canonicals, and structured meta tags) suggests a site that is well-prepared for search engine crawling and indexing. \n\nPerformance is the primary area for improvement, with PageSpeed scores of **79 on mobile** and **70 on desktop**. While accessibility is strong at 97, the performance lag suggests potential issues with heavy assets or script execution that could impact user experience and Core Web Vitals. The content quality is high, with clear headings and a commercial intent that aligns well with the \"organic growth\" topic cluster.\n\n### Top Actionable Findings:\n1.  **Optimize Performance:** Improve the desktop performance score (currently 70) by addressing render-blocking resources or optimizing image assets to better align with Core Web Vitals.\n2.  **Double Down on GEO:** Since \"GEO\" (Generative Engine Optimization) is a primary differentiator but has lower traditional search volume, create more educational content around this specific entity to capture early-mover advantage in AI search.\n3.  **Enhance Schema Markup:** While the site has a high SEO score, explicitly defining the relationship between **Krisztian__Kiss** and the brand through **Person** and **ProfessionalService** schema could further strengthen E-A-T (Expertise, Authoritativeness, and Trustworthiness) signals.\n4.  **Conversion Optimization:** Given the high word count, ensure that clear, distinct calls-to-action (CTAs) are distributed throughout the semantic sections to capitalize on the \"commercial\" intent identified."
+    },
+    {
+      "url": "https://kk.coach",
+      "run": 2,
+      "duration_s": 40.3,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy & Search Optimization",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "kk.coach",
+      "tokens": {
+        "vertex": {
+          "prompt": 4211,
+          "candidates": 796,
+          "total": 5007,
+          "calls": 3
+        },
+        "adk_in": 7660,
+        "adk_out_eff": 1663,
+        "in": 11871,
+        "out": 2459
+      },
+      "cost_usd": 0.013312,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Enhance Entity",
+        "Enhance Entity Clarity",
+        "GEO Knowledge Gap",
+        "Knowledge Gap",
+        "Optimize Desktop",
+        "Optimize Desktop Performance",
+        "Organic Growth Strategy",
+        "Personal Brand",
+        "Personal Brand E-E-A-T",
+        "Search Optimization",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://kk.coach\n\nThe website **kk.coach** represents an organic growth consultancy targeting the United States market with a focus on both B2B and e-commerce audiences. The brand, identified as **kk.coach**, positions itself at the intersection of traditional SEO and emerging Generative Engine Optimization (GEO). The site identifies a primary owner/creator associated with the handle **Krisztian__Kiss**, though a full formal name is not explicitly confirmed in the structured text. The consultancy offers a structured system for organic growth, integrating data-driven visibility with user experience (UX) and conversion rate optimization (CRO).\n\nThe primary keyword for the page is **\"organic growth consultant,\"** supported by a topic cluster focused on **Organic Growth Strategy & Search Optimization**. The content targets commercial intent, emphasizing specialized services like \"B2B organic growth systems\" and \"AI visibility optimization.\" The keyword strategy appears well-aligned with high-value professional services, though the inclusion of newer terms like \"GEO\" indicates a forward-looking approach to search trends. The content density is robust with over 1,800 words, providing high semantic confidence for search engines.\n\nTechnically, the site demonstrates strong SEO hygiene with a perfect 100/100 SEO score on both mobile and desktop audits. It utilizes semantic HTML5 for content structure, ensuring high accessibility for crawlers. While the mobile performance is exceptional at 96, the desktop performance score of 70 indicates room for optimization in asset delivery or server response times on larger screens. The site effectively mentions key industry technologies such as **Google Analytics 4 (GA4)** and **Google Search Console (GSC)**, reinforcing its technical authority in the field of data-driven growth.\n\n### Top Actionable Findings:\n*   **Optimize Desktop Performance:** While mobile performance is excellent, the desktop score of 70 suggests that specific scripts or large assets may be impacting load times for desktop users. A performance audit of desktop-specific CSS/JS is recommended.\n*   **Enhance Entity Clarity:** While the brand uses the initials **KK** and the handle **Krisztian__Kiss**, explicitly defining the full professional name in the structured data (JSON-LD) and footer could strengthen Personal Brand E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).\n*   **Bridge the GEO Knowledge Gap:** Since \"GEO\" is an emerging concept with lower search volume than \"SEO,\" the site should continue to provide educational content that links these two terms to capture traffic from traditional searchers while establishing early authority in AI search optimization.\n*   **Schema Expansion:** Ensure that Service and Consultant schema are fully implemented to clearly define the \"organic growth system\" as a distinct product/service entity for search engines."
+    },
+    {
+      "url": "https://kk.coach",
+      "run": 3,
+      "duration_s": 62.0,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy & Search Optimization",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "kk.coach",
+      "tokens": {
+        "vertex": {
+          "prompt": 4211,
+          "candidates": 796,
+          "total": 5007,
+          "calls": 3
+        },
+        "adk_in": 12170,
+        "adk_out_eff": 721,
+        "in": 16381,
+        "out": 1517
+      },
+      "cost_usd": 0.012741,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Alt Text",
+        "Alt Text Audit",
+        "CRO. The",
+        "Explicit Branding",
+        "Local Entity",
+        "Local Entity Signals",
+        "Organic Growth Strategy",
+        "Person Schema",
+        "Search Optimization",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site represents **kk.coach**, a professional services consultancy focused on \"Organic Growth.\" The brand identity is centered around **KK Organic Growth Consultant**, an unnamed consultant (referenced by the initials **KK** and social handle **@Krisztian__Kiss**). The site explicitly targets a **B2B and e-commerce** audience in the **United States**, offering an integrated approach that combines SEO, GEO (Generative Engine Optimization), UX, and CRO. The site profile grounding is high, and no further user confirmation for the target country is required.\n\n**Primary Keywords & Topic Cluster**\nThe content is tightly focused on the **Organic Growth Strategy & Search Optimization** topic cluster. The primary keyword is **\"organic growth consultant,\"** with a clear commercial intent. The page successfully introduces emerging concepts like **\"AI visibility optimization\"** and **\"GEO\"** alongside traditional long-tail keywords such as **\"structured organic growth for B2B and ecommerce.\"** The strategy aims to bridge the gap between search visibility and actual revenue conversion.\n\n**Technical Health**\nThe site demonstrates excellent technical health with high content confidence (0.95) and no risk of exceeding the Googlebot 2MB limit. It utilizes semantic HTML5 for content structuring and includes **HTTPS** and canonical tags. While there are no complex SPA indicators or Playwright escalation needs, the audit noted a lack of detailed JSON-LD entities in the metadata, which could be an opportunity for richer schema implementation to support its GEO objectives.\n\n**Content Quality & Performance**\nContent quality is high, with 1,834 words of substantive material and clear heading structures. Performance is a significant strength; the site achieves near-perfect PageSpeed scores: **98/100 on Desktop** and **95/100 on Mobile**. Core Web Vitals and accessibility scores (97) are excellent. The site is exceptionally fast, providing a strong foundation for both user experience and search engine ranking.\n\n**Top Actionable Findings**\n1.  **Schema Enhancement:** Implement detailed **Service and Person Schema** (JSON-LD) to explicitly define the \"KK\" entity and the specific GEO/SEO service offerings to better feed generative search engines.\n2.  **Explicit Branding:** While \"@Krisztian__Kiss\" is in the metadata, the main body copy relies heavily on \"KK.\" Using the full professional name more explicitly in the text or footer could strengthen E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).\n3.  **Alt Text Audit:** Ensure all imagery related to the \"Growth System\" diagrams has descriptive alt text to improve accessibility and visibility in image search for complex concepts.\n4.  **Local Entity Signals:** Since the target is the United States, adding a physical office location or localized service area signals in the footer could further bolster regional authority."
+    },
+    {
+      "url": "https://www.aboutyou.hu",
+      "run": 1,
+      "duration_s": 146.0,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "online fashion retail marketplace",
+      "topic_cluster": "Online Fashion Retail",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "ABOUT YOU",
+      "tokens": {
+        "vertex": {
+          "prompt": 5542,
+          "candidates": 860,
+          "total": 6402,
+          "calls": 3
+        },
+        "adk_in": 13969,
+        "adk_out_eff": 1202,
+        "in": 19511,
+        "out": 2062
+      },
+      "cost_usd": 0.015942,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Best Practices",
+        "Critical Performance",
+        "Critical Performance Optimization",
+        "Desktop Performance",
+        "Mobile Performance",
+        "Monitor Payload",
+        "Monitor Payload Size",
+        "Online Fashion",
+        "Online Fashion Retail",
+        "Semantic HTML5",
+        "The SEO",
+        "Top Actionable",
+        "Top Actionable Findings"
+      ],
+      "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe page is the Hungarian portal for **ABOUT YOU**, a major B2C online fashion retail marketplace targeting the Hungarian market. The site profile analysis confirms a high grounding confidence in its identity as a leading fashion platform. It effectively serves as a hub for over 1,500 brands, including **ADIDAS**, **NIKE**, **GUESS**, and **LEVI'S**. The target audience is clearly identified as B2C, specifically focusing on female consumers in Hungary, with no further user confirmation required for location targeting.\n\nThe primary keyword identified is **\"női divat online\"** (women's fashion online), which perfectly aligns with the transactional intent of the page. The topic cluster is centered on **Online Fashion Retail**, supported by strong secondary keywords like \"női ruházat\" (women's clothing) and \"márkás ruhák\" (branded clothes). While the keywords are highly competitive, the content depth is significant, with over 1,000 words of semantic HTML5 content and a rich ecosystem of brand-related long-tail keywords.\n\nFrom a technical standpoint, the site is healthy with a successful status 200 crawl and high content extraction confidence (0.95). It utilizes **Semantic HTML5** effectively for content structuring. However, there is a potential risk concerning the page's weight; while not explicitly flagged as exceeding the 2MB Googlebot limit, the extensive list of brands and image-heavy nature of a fashion site requires careful monitoring. The SEO and Accessibility scores are perfect at **100** on both mobile and desktop, indicating a very strong foundation for search visibility and user inclusion.\n\nPerformance is the most significant area for improvement. The **Mobile Performance score is poor (38)**, and the **Desktop Performance score is moderate (56)**. While the site follows technical \"Best Practices\" (92-96), the actual loading speeds and Core Web Vitals are likely hindered by the complexity of the marketplace's frontend. This performance lag could negatively impact GEO/AEO rankings where speed and user experience metrics are heavily weighted.\n\n### Top Actionable Findings:\n1.  **Critical Performance Optimization:** Prioritize improving Mobile Performance (currently 38). Focus on reducing JavaScript execution time and optimizing image delivery (LCP) to better align with Core Web Vitals requirements.\n2.  **Brand Entity Enrichment:** While the site lists many brands, further enhancing the structured data (JSON-LD) for individual product categories and specific brand entities mentioned in the footer (e.g., MICHAEL KORS, VAGABOND) could improve AEO visibility.\n3.  **Content Consolidation:** The \"női divat online\" keyword is highly competitive; consider strengthening the internal linking between the homepage and high-intent subcategories (like \"női cipők\" or \"kötött ruhák\") to better distribute authority.\n4.  **Monitor Payload Size:** Ensure that the aggregate size of the main HTML and critical assets stays well under the 2MB threshold to ensure seamless indexing of the vast brand directory by Googlebot."
+    },
+    {
+      "url": "https://www.aboutyou.hu",
+      "run": 2,
+      "duration_s": 84.8,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "online fashion retail marketplace",
+      "topic_cluster": "Online Fashion Retail",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "ABOUT YOU",
+      "tokens": {
+        "vertex": {
+          "prompt": 5542,
+          "candidates": 860,
+          "total": 6402,
+          "calls": 3
+        },
+        "adk_in": 14079,
+        "adk_out_eff": 1444,
+        "in": 19621,
+        "out": 2304
+      },
+      "cost_usd": 0.016723,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Address Core",
+        "Address Core Web Vitals",
+        "Cumulative Layout",
+        "Cumulative Layout Shift",
+        "Enhance Structured",
+        "Enhance Structured Data",
+        "HTML5. The",
+        "Keyword Expansion",
+        "Largest Contentful",
+        "Largest Contentful Paint",
+        "Online Fashion",
+        "Online Fashion Retail",
+        "Optimize Mobile",
+        "Optimize Mobile Performance",
+        "Technical Health",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "Topic Cluster",
+        "Web Vitals"
+      ],
+      "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\n**Brand & Target Identification**\nABOUT YOU is a major online fashion retail marketplace specifically targeting the Hungarian market (B2C). The platform serves as a central hub for over 1,500 brands, including prominent names like **ADIDAS**, **NIKE**, **GUESS**, and **LEVI'S**. The site successfully identifies its target audience through localized language (Hungarian) and region-specific services such as cash on delivery (\"Fizetés utánvéttel\") and free shipping/returns within 30 days. No user confirmation is required for the target country as the localization is explicit.\n\n**Primary Keywords & Topic Cluster**\nThe site is heavily optimized for the \"Online Fashion Retail\" topic cluster. The primary target keyword is **\"női divat online\"** (online women's fashion), supported by secondary terms like **\"női ruházat\"** (women's clothing) and **\"divat webáruház\"** (fashion webshop). The content strategy leverages long-tail keywords focused on brand-specific searches and trend-based queries (e.g., \"női divat 1500 legnépszerűbb márkától\"). The intent is purely transactional, aimed at converting users looking for branded apparel and accessories.\n\n**Technical Health**\nThe technical foundation is solid with high confidence in main content extraction (0.95) using semantic HTML5. The site utilizes HTTPS and maintains a clear canonical structure. While the site profile indicates a lack of rich JSON-LD brand entities in the initial scan, the semantic structure is robust. There is a potential risk with page weight given the heavy reliance on product imagery, which often approaches the 2MB threshold for Googlebot's efficient rendering on large category pages.\n\n**Content Quality**\nThe content quality is high for an e-commerce platform, with a significant word count (1,075 words) on the landing page that balances SEO-friendly text with product listings. The site effectively uses brand mentions and category descriptions to build topical authority. Accessibility and SEO scores are excellent at 100, indicating high standards for alt text coverage, heading hierarchy, and metadata.\n\n**Performance**\nPerformance is the primary area for improvement. While **Desktop performance is moderate (57)**, the **Mobile performance score is low (38)**. This is a critical concern for a fashion retailer where a majority of traffic typically originates from mobile devices. The low mobile score suggests issues with Core Web Vitals, likely driven by large image assets, JavaScript execution time, and Cumulative Layout Shift (CLS) common in dynamic retail environments.\n\n**Top Actionable Findings**\n1.  **Optimize Mobile Performance:** Prioritize reducing JavaScript execution time and implementing advanced image compression (WebP/AVIF) to raise the mobile performance score from 38 to at least the \"orange\" zone (>50).\n2.  **Enhance Structured Data:** Implement or repair Schema.org markup (Product, Brand, and Offer) to ensure rich snippets are correctly generated in SERPs, as the current scan showed empty JSON-LD entities.\n3.  **Address Core Web Vitals:** Focus on Largest Contentful Paint (LCP) and CLS by pre-loading hero images and reserving space for dynamic banners to prevent layout jumps.\n4.  **Keyword Expansion:** While broad terms are covered, there is an opportunity to further capture \"bottom-of-the-funnel\" traffic by creating more dedicated landing pages for specific brand-category intersections (e.g., \"Levi's női farmer\")."
+    },
+    {
+      "url": "https://www.aboutyou.hu",
+      "run": 3,
+      "duration_s": 81.0,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "online fashion retail marketplace",
+      "topic_cluster": "Online Fashion Retail",
+      "serp_strategy": "country_specific",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "ABOUT YOU",
+      "tokens": {
+        "vertex": {
+          "prompt": 5542,
+          "candidates": 860,
+          "total": 6402,
+          "calls": 3
+        },
+        "adk_in": 14209,
+        "adk_out_eff": 1328,
+        "in": 19751,
+        "out": 2188
+      },
+      "cost_usd": 0.01644,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Accessibility Standards",
+        "Actionable Findings",
+        "Cumulative Layout",
+        "Cumulative Layout Shift",
+        "Enhance Structured",
+        "Enhance Structured Data",
+        "Keyword Presence",
+        "Largest Contentful",
+        "Largest Contentful Paint",
+        "Maintain High",
+        "Maintain High Accessibility Standards",
+        "Optimize Mobile",
+        "Optimize Mobile Performance",
+        "Strengthen Secondary",
+        "Strengthen Secondary Keyword Presence",
+        "The SEO",
+        "Vitals Remediation",
+        "While Best",
+        "While Best Practices"
+      ],
+      "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nABOUT YOU is a major player in the **online fashion retail marketplace** industry, specifically targeting the Hungarian market (**B2C**). The site profile indicates a high level of grounding confidence in its identity as a distributor of over 1,500 brands, including prominent names such as **ADIDAS, NIKE, GUESS, LEVI'S,** and **MICHAEL KORS**. The target country is **Hungary**, and the primary language is **Hungarian**. No user confirmation is required to proceed with this localization context.\n\nThe primary keyword focus is **\"női divat online\"** (women's fashion online), supported by a transactional topic cluster including **\"női ruházat\"** (women's clothing) and **\"márkás ruhák\"** (branded clothes). The SEO strategy effectively leverages brand-plus-category long-tail keywords like **\"női divat 1500 legnépszerűbb márkától\"**. The search intent is clearly transactional, aimed at users looking to browse and purchase apparel and accessories online.\n\nTechnically, the page is healthy with high content confidence (0.95) and uses **semantic HTML5** for structure. While specific schema types were not extracted in the JSON-LD field during this crawl, the presence of comprehensive meta tags and high SEO scores in performance audits suggest a robust technical foundation. The accessibility and SEO scores are perfect (**100**) on both mobile and desktop, indicating excellent compliance with web standards and search engine best practices.\n\nPerformance is the most significant area for improvement. The site currently faces challenges with speed, scoring **40 on mobile** and **58 on desktop**. While Best Practices and Accessibility are nearly flawless, the low performance scores likely stem from the heavy visual nature of a fashion marketplace (large images and scripts). These scores indicate potential issues with Core Web Vitals that could impact search rankings and user conversion rates on slower connections.\n\n### Top 5 Actionable Findings:\n1.  **Optimize Mobile Performance:** The performance score of 40 on mobile is a critical bottleneck. Implementing more aggressive image compression (WebP/AVIF), lazy loading, and script minification is essential for GEO/AEO optimization.\n2.  **Enhance Structured Data:** While the page has a perfect SEO score, the crawl did not detect specific JSON-LD entities. Explicitly implementing **Product, Offer, and Brand schema** could improve visibility in rich snippets and AI-driven discovery engines.\n3.  **Core Web Vitals Remediation:** Focus on Largest Contentful Paint (LCP) and Cumulative Layout Shift (CLS), which are likely dragging down the performance scores for this image-heavy site.\n4.  **Strengthen Secondary Keyword Presence:** While \"női divat\" is well-covered, increasing content depth for category-specific terms like **\"márkás női cipők és táskák\"** could capture more high-intent traffic.\n5.  **Maintain High Accessibility Standards:** The 100/100 accessibility score is a significant competitive advantage; ensuring all new product uploads maintain high-quality alt-text and semantic structure is vital."
+    },
+    {
+      "url": "https://www.taxually.com",
+      "run": 1,
+      "duration_s": 116.4,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "Tax Compliance Automation",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Taxually",
+      "tokens": {
+        "vertex": {
+          "prompt": 4244,
+          "candidates": 722,
+          "total": 4966,
+          "calls": 3
+        },
+        "adk_in": 14101,
+        "adk_out_eff": 1476,
+        "in": 18345,
+        "out": 2198
+      },
+      "cost_usd": 0.015766,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Actionable Findings",
+        "Author Authority",
+        "Best Practices",
+        "Critical Mobile",
+        "Critical Mobile Optimization",
+        "Enhance Accessibility",
+        "Facebook.\n\nThe",
+        "Improve Asset",
+        "Improve Asset Delivery",
+        "Largest Contentful",
+        "Largest Contentful Paint",
+        "Tax Compliance Automation",
+        "Technical SEO Refinement",
+        "Total Blocking",
+        "Total Blocking Time",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a B2B tax compliance software vendor established as a global player in automated tax management. The site correctly identifies its primary audience in the United States while emphasizing global capabilities through its suite of products, including **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax**. The brand identity is clearly defined through its organization schema and consistent messaging across social platforms like Twitter, LinkedIn, and Facebook.\n\nThe page targets high-intent commercial keywords, specifically **\"VAT and Sales Tax Compliance Software\"** and **\"automated sales tax filing.\"** The content is well-structured within the **Tax Compliance Automation** topic cluster, effectively bridging the gap between brand-specific solutions and general industry search terms. While the primary keyword alignment is strong, the high estimated difficulty of this niche suggests that the site must rely on its comprehensive product descriptions and automated data processing narratives to compete.\n\nTechnical health is generally robust, with high-confidence semantic HTML5 extraction and valid JSON-LD organization schema. The site uses HTTPS and has well-configured SEO meta tags, resulting in an SEO score of 92. However, there is a moderate risk concerning technical \"Best Practices\" on mobile (69), and the author/owner information is primarily identified as the organization \"Taxually\" rather than specific individuals.\n\nPerformance is the most significant area for improvement. The site scores a **30 on Mobile performance** and a **59 on Desktop**, indicating severe bottlenecks in loading speeds and potentially poor Core Web Vitals. These scores likely stem from heavy script execution or unoptimized assets, which can negatively impact user experience and search engine ranking in competitive commercial sectors.\n\n**Top 5 Actionable Findings:**\n1.  **Critical Mobile Optimization:** Address the mobile performance score of 30 by optimizing Largest Contentful Paint (LCP) and reducing Total Blocking Time.\n2.  **Improve Asset Delivery:** Audit the \"Best Practices\" score on mobile (69) to identify and fix insecure or outdated web technologies.\n3.  **Enhance Accessibility:** Improve the accessibility score (88) by refining color contrast and ensuring all interactive elements have descriptive ARIA labels.\n4.  **Author Authority:** While the organization is well-defined, introducing specific expert authors or founders in the metadata and content could further boost E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) signals.\n5.  **Technical SEO Refinement:** Ensure all product pages (CrossTax, LumaTax, etc.) are deeply interlinked within the topic cluster to reinforce the site's authority on automated international tax management."
+    },
+    {
+      "url": "https://www.taxually.com",
+      "run": 2,
+      "duration_s": 65.5,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "Tax Compliance Automation",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Taxually",
+      "tokens": {
+        "vertex": {
+          "prompt": 4244,
+          "candidates": 722,
+          "total": 4966,
+          "calls": 3
+        },
+        "adk_in": 14012,
+        "adk_out_eff": 1106,
+        "in": 18256,
+        "out": 1828
+      },
+      "cost_usd": 0.014612,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Accessibility Improvements",
+        "Critical Mobile",
+        "Critical Mobile Performance Optimization",
+        "Entity Strengthening",
+        "Performance Optimization",
+        "Refine Best",
+        "Refine Best Practices",
+        "Tax Compliance Automation. The",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a high-authority B2B tax compliance software vendor targeting the global market, with a strong focus on the United States and English-speaking audiences. The brand positions itself as a comprehensive solution for automated VAT and sales tax management, catering to ecommerce owners, enterprises, and accounting providers. The site effectively showcases its core product suite, including CrossTax, LumaTax, EcoTax, and OneTax, aiming to simplify international tax reporting and registration through technology-driven automation.\n\nThe primary keyword focus is **VAT and Sales Tax Compliance Software**, supported by a robust topic cluster around Tax Compliance Automation. The content strategy is commercial and solution-oriented, targeting high-intent long-tail keywords such as \"automate global VAT and US sales tax compliance\" and \"automated sales tax filing.\" The page content is deep (over 1,600 words) and utilizes semantic HTML5 structures, which provides high confidence for search engine parsing and entity extraction.\n\nTechnically, the site is well-structured but faces a significant performance bottleneck on mobile devices. While the desktop experience is relatively healthy (Score: 80), the **mobile performance score of 50** indicates substantial room for improvement in Core Web Vitals, likely impacting mobile search rankings and user experience. Accessibility and SEO scores are generally strong across both platforms (92 for SEO), but accessibility (88) still has minor room for optimization to meet industry best practices.\n\n### Top Actionable Findings:\n*   **Critical Mobile Performance Optimization:** With a mobile performance score of 50, immediate attention is needed for resource optimization (e.g., image compression, reducing main-thread work, or minimizing render-blocking resources) to improve user retention and mobile search visibility.\n*   **Refine Best Practices:** The best practices scores (81 desktop / 77 mobile) suggest potential issues with modern web standards, such as image aspect ratios, deprecated API usage, or security headers that should be addressed.\n*   **Accessibility Improvements:** While the score of 88 is good, achieving 90+ is recommended for enterprise B2B software to ensure compliance and a professional user experience for all potential clients.\n*   **Content & Entity Strengthening:** While the \"Taxually\" organization is well-defined via JSON-LD, there is a lack of identified authors or founders in the metadata; adding structured \"Person\" entities (e.g., for key leadership) could further enhance E-E-A-T signals."
+    },
+    {
+      "url": "https://www.taxually.com",
+      "run": 3,
+      "duration_s": 80.7,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "Tax Compliance Automation",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "high",
+      "warning_present": false,
+      "brand": "Taxually",
+      "tokens": {
+        "vertex": {
+          "prompt": 4244,
+          "candidates": 710,
+          "total": 4954,
+          "calls": 3
+        },
+        "adk_in": 13839,
+        "adk_out_eff": 1043,
+        "in": 18083,
+        "out": 1753
+      },
+      "cost_usd": 0.0143,
+      "tools": [
+        "crawl_html_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Desktop Performance",
+        "Desktop Performance Monitoring",
+        "Internal Linking",
+        "Largest Contentful",
+        "Largest Contentful Paint",
+        "Localization Refinement",
+        "Performance Optimization",
+        "Tax Compliance Automation",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "Topic Clusters",
+        "United States"
+      ],
+      "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a high-authority B2B tax compliance software vendor targeting the global market, specifically focusing on businesses needing automated VAT and US Sales Tax solutions. The site effectively positions its proprietary product ecosystem—including CrossTax, LumaTax, EcoTax, and OneTax—to serve a broad range of clients from individual ecommerce owners to large-scale enterprises and accounting providers. The brand identity is well-established through strong social signals (LinkedIn, Twitter, Facebook) and clear organizational schema, though the target country is identified as the United States while the service offering is inherently global.\n\nThe primary keyword focus is \"VAT and Sales Tax Compliance Software,\" which aligns perfectly with its commercial intent and high-intent long-tail keywords like \"automated sales tax filing\" and \"international tax management platform.\" The content strategy successfully clusters around \"Tax Compliance Automation,\" utilizing semantic HTML5 to clearly define its service pillars. There is a healthy balance between product-specific entities and broad industry concepts, ensuring the site is well-positioned for both direct brand searches and discovery-based GEO/AEO queries.\n\nTechnically, the site demonstrates high content confidence and utilizes modern web standards, though it faces significant performance challenges. While the SEO score on mobile is strong (92) and accessibility is good (88), the performance score is lagging at 42. Mobile users may experience slow load times, which could impact conversion rates for the commercial-intent landing pages. Metadata and schema are present and correctly identify the organization, though the audit noted a failure in desktop PageSpeed data collection, suggesting potential infrastructure or firewall restrictions on some automated crawlers.\n\n**Top Actionable Findings:**\n1. **Performance Optimization:** Prioritize mobile performance improvements, specifically targeting the low 42 score. Focus on Core Web Vitals like Largest Contentful Paint (LCP) and reducing JavaScript execution time to improve user experience.\n2. **Schema Enhancement:** While the organizational schema is present, expanding to include specific Product schema for CrossTax, LumaTax, and EcoTax could improve rich snippet visibility in SERPs.\n3. **Internal Linking for Topic Clusters:** Strengthen the internal link architecture between the high-level \"Tax Compliance\" content and the specific product sub-pages to reinforce the topic cluster authority.\n4. **Desktop Performance Monitoring:** Investigate the Lighthouse error for desktop performance to ensure that the site is fully accessible and optimized for desktop-heavy B2B users.\n5. **Localization Refinement:** Given the global nature of VAT and sales tax, ensure that Geo-targeting is clearly defined for international sub-sections if the brand intends to dominate outside the primary US market."
+    },
+    {
+      "url": "https://vercel.com/products/vercel-platform",
+      "run": 1,
+      "duration_s": 268.1,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "frontend cloud deployment platform",
+      "topic_cluster": "Cloud Deployment and Infrastructure",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "low",
+      "warning_present": true,
+      "brand": "Vercel",
+      "tokens": {
+        "vertex": {
+          "prompt": 2856,
+          "candidates": 764,
+          "total": 3620,
+          "calls": 3
+        },
+        "adk_in": 9417,
+        "adk_out_eff": 1621,
+        "in": 12273,
+        "out": 2385
+      },
+      "cost_usd": 0.013291,
+      "tools": [
+        "crawl_html_tool",
+        "crawl_with_playwright_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "Accessibility Barriers",
+        "Address Performance",
+        "App Router",
+        "Cloud Deployment",
+        "English. While",
+        "Enhance Crawlability",
+        "Expand Long",
+        "Expand Long-Tail Content",
+        "Generative Engine",
+        "Generative Engine Optimization",
+        "Implement Comprehensive",
+        "Implement Comprehensive Schema",
+        "Next.js App Router",
+        "Optimize Header",
+        "Optimize Header Hierarchy",
+        "PageSpeed Insights",
+        "Scalable Frontend",
+        "Scalable Frontend Cloud Deployment",
+        "Server-Side Rendering",
+        "Side Rendering",
+        "Tail Content",
+        "Text Density",
+        "The PageSpeed",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States",
+        "Vercel Platform"
+      ],
+      "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel is clearly identified as the brand, operating in the cloud computing and deployment platform industry with a primary focus on B2B audiences. The target country is identified as the United States, and the page is in English. While the brand context is well-established through the domain and common associations, the on-page metadata and schema entities are surprisingly sparse for a platform of this scale. The audit did not require user confirmation for the site profile, but the grounding confidence remains low due to the technical nature of the page delivery.\n\nThe primary target keyword is **\"Vercel Platform,\"** reflecting a strong commercial intent centered on frontend cloud deployment. The topic cluster focuses on Cloud Deployment and Infrastructure, with secondary keywords like \"production deployment\" and \"frontend cloud platform.\" However, there is a **high keyword gap severity**. The page is heavily optimized for branded terms and internal navigation but lacks descriptive, non-branded SEO headers (H1/H2). This limits its ability to capture users searching for general deployment solutions or specific technical features like \"edge requests monitoring\" or \"serverless function invocations\" without the Vercel brand name attached.\n\nTechnically, the page presents significant challenges for search engine crawlers. Both standard HTML crawling and Playwright-rendered crawling returned extremely low word counts (between 38 and 116 words) and a low main content confidence score (0.3). The site utilizes the **Next.js App Router**, and the content appears to be delivered via dynamic components that are difficult for bots to parse as cohesive narrative text. Furthermore, PageSpeed Insights failed to return scores due to timeouts and document request errors, suggesting either aggressive bot protection or extremely heavy script execution that may hinder both user experience and search visibility.\n\nThe content quality is classified as \"thin\" from an SEO perspective. While the visual experience for a human user may be rich, the absence of high-quality, indexable text makes it difficult for GEO (Generative Engine Optimization) systems to extract deep meaning. The entities identified are almost exclusively products (e.g., Git, Edge Requests, AI Gateway) with no person-level entities or organizational schema details explicitly detected in the page source. This lack of structured data and descriptive text creates a \"content limited\" environment for search engines.\n\n### Top Actionable Findings\n1.  **Enhance Crawlability & Text Density:** The current JS-heavy delivery results in very low content confidence. Implement more robust Server-Side Rendering (SSR) or ensure that key product descriptions and value propositions are present in the initial HTML payload to improve indexing.\n2.  **Optimize Header Hierarchy:** Replace generic or branded headers with descriptive, keyword-rich H1 and H2 tags. For example, instead of just \"Platform,\" use \"Scalable Frontend Cloud Deployment Platform\" to capture non-branded search traffic.\n3.  **Address Performance & Accessibility Barriers:** The PageSpeed failures (ERR_ABORTED and timeouts) indicate a critical issue. Investigate if server-side firewall rules or script overhead are blocking automated tools, as this can negatively impact Google's ability to render and rank the page.\n4.  **Implement Comprehensive Schema:** Add structured data (JSON-LD) for SoftwareApplication or Product to explicitly define features, pricing models (if applicable), and organizational details. This will help search engines and AI agents better understand the product's place in the market.\n5.  **Expand Long-Tail Content:** To support \"Discovery\" and \"GEO\" visibility, add a dedicated section or FAQ that addresses common deployment challenges using the long-tail keywords identified (e.g., \"how to manage environment variables for production\")."
+    },
+    {
+      "url": "https://vercel.com/products/vercel-platform",
+      "run": 2,
+      "duration_s": 68.8,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "frontend cloud deployment platform",
+      "topic_cluster": "Cloud Deployment and Infrastructure",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "low",
+      "warning_present": true,
+      "brand": "Vercel",
+      "tokens": {
+        "vertex": {
+          "prompt": 2856,
+          "candidates": 764,
+          "total": 3620,
+          "calls": 3
+        },
+        "adk_in": 16361,
+        "adk_out_eff": 1478,
+        "in": 19217,
+        "out": 2242
+      },
+      "cost_usd": 0.016335,
+      "tools": [
+        "crawl_html_tool",
+        "crawl_with_playwright_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "App Router",
+        "Crawler Accessibility",
+        "Enhance Semantic",
+        "Enhance Semantic HTML",
+        "Frontend Cloud",
+        "Frontend Teams",
+        "Investigate Bot",
+        "Investigate Bot Protection Impact",
+        "Next.js App Router",
+        "PageSpeed Insights",
+        "Protection Impact",
+        "Scalable Infrastructure",
+        "Strengthen Metadata",
+        "Technical Health",
+        "The URL",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "Topic Cluster",
+        "United States",
+        "Vercel Platform",
+        "Web Application",
+        "Web Application Firewall"
+      ],
+      "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\n**Brand & Target Identification**\nThe page represents **Vercel**, specifically focusing on the **Vercel Platform** product. It is positioned within the **cloud computing and deployment platform** industry, targeting a **B2B** audience in the **United States**. The content is primarily in **English**. The brand identity is strong, though the site profile indicates low grounding confidence due to the highly dynamic nature of the page, which functions as a Next.js single-page application (SPA).\n\n**Primary Keywords & Topic Cluster**\nThe primary keyword for this page is \"**Vercel Platform**,\" categorized under the \"**frontend cloud deployment platform**\" cluster. Secondary keywords include \"**production deployment**,\" \"**frontend cloud platform**,\" and \"**deployment observability**.\" The intent is clearly **commercial**. A significant keyword gap was identified: the page is heavily optimized for branded terms but lacks descriptive, non-branded headers (H1/H2) that could capture users searching for more general deployment infrastructure solutions.\n\n**Technical Health**\nThe page is built using the **Next.js App Router**, which presents challenges for traditional crawlers, as evidenced by low main content confidence (0.3) and limited word extraction. While technically modern, the reliance on a JavaScript-heavy \"shell\" architecture may pose a risk for indexation of deep content if search bots do not execute JavaScript fully. The URL uses HTTPS, but specific schema and canonical tags were not fully parsed due to the content extraction limits of the SPA structure.\n\n**Content Quality**\nThe audit revealed \"**content limited**\" status across multiple extraction tools. The page effectively targets branded concepts such as **Git** integration, **Edge Requests**, and **AI Gateway**, but the actual body text visibility to crawlers is thin (approximately 38-116 words identified). This suggests that much of the value-driven content is likely rendered client-side or nested within interactive components that are difficult for static analysis to process.\n\n**Performance**\nPerformance testing via PageSpeed Insights was unsuccessful, returning a `FAILED_DOCUMENT_REQUEST` error. This typically indicates the presence of aggressive bot protection or a Web Application Firewall (WAF) that prevents automated Lighthouse testing. Consequently, Core Web Vitals and mobile/desktop performance scores could not be verified. Given the brand's focus on speed and \"Frontend Cloud,\" it is likely optimized, but this cannot be confirmed via external automated audit tools.\n\n### Top Actionable Findings\n1.  **Enhance Semantic HTML:** Incorporate more descriptive, non-branded H1 and H2 tags (e.g., \"Scalable Infrastructure for Frontend Teams\") to improve visibility for non-branded search queries.\n2.  **Optimize for Crawler Accessibility:** Ensure that critical product descriptions and value propositions are included in the initial HTML payload (SSR) rather than relying solely on client-side hydration, to improve content confidence for search engines.\n3.  **Investigate Bot Protection Impact:** The failure of performance auditing tools suggests that search engine crawlers might also face friction; verify that essential search bots (Googlebot, Bingbot) are explicitly allow-listed in the WAF.\n4.  **Strengthen Metadata and Schema:** Explicitly define JSON-LD for \"Product\" and \"SoftwareApplication\" entities within the static head to ensure rich results even if the body content extraction is inconsistent."
+    },
+    {
+      "url": "https://vercel.com/products/vercel-platform",
+      "run": 3,
+      "duration_s": 83.6,
+      "model_versions": {
+        "site_profile": "gemini-3-flash-preview",
+        "keywords": "gemini-3-flash-preview",
+        "entities": "gemini-3-flash-preview"
+      },
+      "category_keyword": "frontend cloud deployment platform",
+      "topic_cluster": "Cloud Deployment and Infrastructure",
+      "serp_strategy": "english_global_default",
+      "grounding_confidence": "low",
+      "warning_present": true,
+      "brand": "Vercel",
+      "tokens": {
+        "vertex": {
+          "prompt": 2856,
+          "candidates": 764,
+          "total": 3620,
+          "calls": 3
+        },
+        "adk_in": 16676,
+        "adk_out_eff": 1553,
+        "in": 19532,
+        "out": 2317
+      },
+      "cost_usd": 0.016717,
+      "tools": [
+        "crawl_html_tool",
+        "crawl_with_playwright_tool",
+        "analyze_site_profile_tool",
+        "extract_target_keywords_tool",
+        "extract_entities_tool",
+        "pagespeed_score_tool",
+        "check_indexing_status_tool"
+      ],
+      "errors": [],
+      "halluc_candidates": [
+        "App Router",
+        "Cloud Deployment",
+        "Enhance On-Page Metadata",
+        "Enterprise Deployment",
+        "Enterprise Deployment Automation",
+        "Implementing Product",
+        "Keyword Gap",
+        "Next.js App Router",
+        "Page Metadata",
+        "Resolve Crawler",
+        "Resolve Crawler Accessibility",
+        "Scalable Frontend",
+        "Scalable Frontend Infrastructure",
+        "Single Page",
+        "Single Page Application",
+        "Top Actionable",
+        "Top Actionable Findings",
+        "United States",
+        "Vercel Platform"
+      ],
+      "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel's platform page is identified as a high-authority B2B destination within the cloud computing and deployment industry. The site targets a global audience, primarily in the United States, focusing on developers and technical decision-makers. While the brand \"Vercel\" is clearly established, the audit process encountered significant technical hurdles, resulting in low grounding confidence for deep content analysis. The page is built using the Next.js App Router, which serves as a Single Page Application (SPA), potentially contributing to the \"content limited\" status reported by extraction tools.\n\nThe primary keyword targeted is **Vercel Platform**, with a focus on the broader topic cluster of **Cloud Deployment and Infrastructure**. The page is heavily optimized for branded terms and commercial intent, specifically for users looking to \"connect git repository for production deployment\" or manage \"serverless function invocations.\" However, there is a notable gap in non-branded, high-volume educational headers. The current structure relies heavily on internal navigation and interactive elements, which may hinder organic discovery for users searching for general \"frontend cloud deployment\" solutions without mentioning the brand.\n\nTechnical health and performance assessments were hampered by accessibility issues. Both desktop and mobile PageSpeed tests returned a `FAILED_DOCUMENT_REQUEST` error (net::ERR_ABORTED), suggesting the server may be blocking automated requests or that the complex rendering process is timing out. Furthermore, content extraction confidence remained low (0.3) even after Playwright escalation, indicating that much of the page's value is likely trapped within interactive JavaScript components that are not easily indexed or parsed by standard SEO crawlers. No significant JSON-LD structured data or specific author metadata was identified during the crawl.\n\n### Top Actionable Findings:\n1. **Resolve Crawler Accessibility & Performance:** The server-side abortion of Lighthouse requests and low content confidence scores suggest that search engine bots may struggle to fully render and understand the page. Investigate bot-management settings and server response stability to ensure reliable indexing.\n2. **Bridge the Keyword Gap:** Incorporate descriptive, non-branded H1 and H2 headers. Transitioning from purely brand-centric language to broader industry terms like \"Scalable Frontend Infrastructure\" or \"Enterprise Deployment Automation\" could capture a wider top-of-funnel audience.\n3. **Enhance On-Page Metadata:** The audit found no explicit JSON-LD entities or meta authors. Implementing Product or SoftwareApplication schema would help search engines better categorize the platform's specific features, such as \"AI Gateway\" and \"Edge Requests.\"\n4. **Optimize for Core Web Vitals:** Since the PageSpeed audit failed to execute, a manual review of Core Web Vitals via Google Search Console is recommended to ensure the SPA's hydration and rendering times are not negatively impacting user experience or ranking potential."
+    }
+  ],
+  "total_cost_usd": 0.2292,
+  "aborted": null
+}

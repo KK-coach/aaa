@@ -1,0 +1,52 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 3,
+  "duration_s": 583.7,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 5143,
+      "candidates": 892,
+      "total": 6035,
+      "calls": 3
+    },
+    "adk_in": 7631,
+    "adk_out_eff": 1314,
+    "in": 12774,
+    "out": 2206
+  },
+  "cost_usd": 0.013005,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Polish",
+    "Click-Through Rates",
+    "Critical Performance",
+    "Critical Performance Optimization",
+    "Local Business",
+    "Local SEO Reinforcement",
+    "Metadata Expansion",
+    "Through Rates",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "URL. While"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is a Hungarian agricultural machinery and parts e-commerce platform operated by **Agrobook.hu Kft.**, based in **Csávoly, Hungary**. The site targets a specialized audience of farmers and agricultural businesses looking for replacement parts and advanced technology like steering systems. The brand positioning is professional and transaction-oriented, focusing on reliability and technical precision within the Hungarian market.\n\nThe primary keyword cluster revolves around **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop) and specific high-intent products like **\"automata kormány\"** (automatic steering) and major brands such as **Claas**, **Fendt**, and **Amazone**. The content is well-aligned with transactional intent, particularly for the **Terranav** automatic steering system, which appears to be a flagship offering. There is a minor gap where specific high-value items could benefit from more dedicated long-form educational content to capture top-of-funnel research traffic.\n\nTechnically, the site is in a healthy state regarding crawlability and basic SEO hygiene, achieving a perfect **100 SEO score** in PageSpeed diagnostics. It utilizes **Organization schema** and maintains a secure HTTPS connection. The crawl confidence is high (0.95), suggesting a clean, semantic HTML structure that search engines can easily parse. However, there is a risk of content thinness on some deeper category pages, and the site's footprint is primarily limited to its product catalog.\n\nPerformance is the most significant bottleneck for this URL. While the desktop performance is mediocre (**64**), the mobile experience is poor with a performance score of **39**. The site struggles with **Core Web Vitals**, particularly in loading speeds on mobile devices, which could negatively impact search rankings and user conversion rates in rural areas where mobile connectivity may be less stable.\n\n### Top Actionable Findings\n*   **Critical Performance Optimization:** Address mobile performance (39 score) by optimizing image delivery (WebP/Lazy-loading) and reducing JavaScript execution time to improve Core Web Vitals.\n*   **Content Deepening for 'Terranav':** Expand the landing page for the \"Terranav automata kormányzási rendszer\" with more technical specifications, case studies, or installation guides to dominate this niche topic.\n*   **Local SEO Reinforcement:** Enhance the local presence by ensuring the **Csávoly** pickup point is clearly linked to a Google Business Profile and using Local Business schema to capture regional search intent.\n*   **Accessibility Polish:** Improve the accessibility score (currently 88-91) by ensuring all interactive elements have proper labels and sufficient color contrast, particularly in the e-commerce navigation.\n*   **Metadata Expansion:** While the primary SEO score is high, refining meta-descriptions for category pages to include more \"benefit-driven\" copy (e.g., \"fast shipping,\" \"expert support\") could improve Click-Through Rates (CTR)."
+}

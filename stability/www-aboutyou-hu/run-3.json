@@ -1,0 +1,60 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 3,
+  "duration_s": 81.0,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retail marketplace",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5542,
+      "candidates": 860,
+      "total": 6402,
+      "calls": 3
+    },
+    "adk_in": 14209,
+    "adk_out_eff": 1328,
+    "in": 19751,
+    "out": 2188
+  },
+  "cost_usd": 0.01644,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Standards",
+    "Actionable Findings",
+    "Cumulative Layout",
+    "Cumulative Layout Shift",
+    "Enhance Structured",
+    "Enhance Structured Data",
+    "Keyword Presence",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Maintain High",
+    "Maintain High Accessibility Standards",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "Strengthen Secondary",
+    "Strengthen Secondary Keyword Presence",
+    "The SEO",
+    "Vitals Remediation",
+    "While Best",
+    "While Best Practices"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nABOUT YOU is a major player in the **online fashion retail marketplace** industry, specifically targeting the Hungarian market (**B2C**). The site profile indicates a high level of grounding confidence in its identity as a distributor of over 1,500 brands, including prominent names such as **ADIDAS, NIKE, GUESS, LEVI'S,** and **MICHAEL KORS**. The target country is **Hungary**, and the primary language is **Hungarian**. No user confirmation is required to proceed with this localization context.\n\nThe primary keyword focus is **\"női divat online\"** (women's fashion online), supported by a transactional topic cluster including **\"női ruházat\"** (women's clothing) and **\"márkás ruhák\"** (branded clothes). The SEO strategy effectively leverages brand-plus-category long-tail keywords like **\"női divat 1500 legnépszerűbb márkától\"**. The search intent is clearly transactional, aimed at users looking to browse and purchase apparel and accessories online.\n\nTechnically, the page is healthy with high content confidence (0.95) and uses **semantic HTML5** for structure. While specific schema types were not extracted in the JSON-LD field during this crawl, the presence of comprehensive meta tags and high SEO scores in performance audits suggest a robust technical foundation. The accessibility and SEO scores are perfect (**100**) on both mobile and desktop, indicating excellent compliance with web standards and search engine best practices.\n\nPerformance is the most significant area for improvement. The site currently faces challenges with speed, scoring **40 on mobile** and **58 on desktop**. While Best Practices and Accessibility are nearly flawless, the low performance scores likely stem from the heavy visual nature of a fashion marketplace (large images and scripts). These scores indicate potential issues with Core Web Vitals that could impact search rankings and user conversion rates on slower connections.\n\n### Top 5 Actionable Findings:\n1.  **Optimize Mobile Performance:** The performance score of 40 on mobile is a critical bottleneck. Implementing more aggressive image compression (WebP/AVIF), lazy loading, and script minification is essential for GEO/AEO optimization.\n2.  **Enhance Structured Data:** While the page has a perfect SEO score, the crawl did not detect specific JSON-LD entities. Explicitly implementing **Product, Offer, and Brand schema** could improve visibility in rich snippets and AI-driven discovery engines.\n3.  **Core Web Vitals Remediation:** Focus on Largest Contentful Paint (LCP) and Cumulative Layout Shift (CLS), which are likely dragging down the performance scores for this image-heavy site.\n4.  **Strengthen Secondary Keyword Presence:** While \"női divat\" is well-covered, increasing content depth for category-specific terms like **\"márkás női cipők és táskák\"** could capture more high-intent traffic.\n5.  **Maintain High Accessibility Standards:** The 100/100 accessibility score is a significant competitive advantage; ensuring all new product uploads maintain high-quality alt-text and semantic structure is vital."
+}

@@ -1,0 +1,60 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 2,
+  "duration_s": 84.8,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retail marketplace",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5542,
+      "candidates": 860,
+      "total": 6402,
+      "calls": 3
+    },
+    "adk_in": 14079,
+    "adk_out_eff": 1444,
+    "in": 19621,
+    "out": 2304
+  },
+  "cost_usd": 0.016723,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Address Core",
+    "Address Core Web Vitals",
+    "Cumulative Layout",
+    "Cumulative Layout Shift",
+    "Enhance Structured",
+    "Enhance Structured Data",
+    "HTML5. The",
+    "Keyword Expansion",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Online Fashion",
+    "Online Fashion Retail",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "Technical Health",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "Web Vitals"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\n**Brand & Target Identification**\nABOUT YOU is a major online fashion retail marketplace specifically targeting the Hungarian market (B2C). The platform serves as a central hub for over 1,500 brands, including prominent names like **ADIDAS**, **NIKE**, **GUESS**, and **LEVI'S**. The site successfully identifies its target audience through localized language (Hungarian) and region-specific services such as cash on delivery (\"Fizetés utánvéttel\") and free shipping/returns within 30 days. No user confirmation is required for the target country as the localization is explicit.\n\n**Primary Keywords & Topic Cluster**\nThe site is heavily optimized for the \"Online Fashion Retail\" topic cluster. The primary target keyword is **\"női divat online\"** (online women's fashion), supported by secondary terms like **\"női ruházat\"** (women's clothing) and **\"divat webáruház\"** (fashion webshop). The content strategy leverages long-tail keywords focused on brand-specific searches and trend-based queries (e.g., \"női divat 1500 legnépszerűbb márkától\"). The intent is purely transactional, aimed at converting users looking for branded apparel and accessories.\n\n**Technical Health**\nThe technical foundation is solid with high confidence in main content extraction (0.95) using semantic HTML5. The site utilizes HTTPS and maintains a clear canonical structure. While the site profile indicates a lack of rich JSON-LD brand entities in the initial scan, the semantic structure is robust. There is a potential risk with page weight given the heavy reliance on product imagery, which often approaches the 2MB threshold for Googlebot's efficient rendering on large category pages.\n\n**Content Quality**\nThe content quality is high for an e-commerce platform, with a significant word count (1,075 words) on the landing page that balances SEO-friendly text with product listings. The site effectively uses brand mentions and category descriptions to build topical authority. Accessibility and SEO scores are excellent at 100, indicating high standards for alt text coverage, heading hierarchy, and metadata.\n\n**Performance**\nPerformance is the primary area for improvement. While **Desktop performance is moderate (57)**, the **Mobile performance score is low (38)**. This is a critical concern for a fashion retailer where a majority of traffic typically originates from mobile devices. The low mobile score suggests issues with Core Web Vitals, likely driven by large image assets, JavaScript execution time, and Cumulative Layout Shift (CLS) common in dynamic retail environments.\n\n**Top Actionable Findings**\n1.  **Optimize Mobile Performance:** Prioritize reducing JavaScript execution time and implementing advanced image compression (WebP/AVIF) to raise the mobile performance score from 38 to at least the \"orange\" zone (>50).\n2.  **Enhance Structured Data:** Implement or repair Schema.org markup (Product, Brand, and Offer) to ensure rich snippets are correctly generated in SERPs, as the current scan showed empty JSON-LD entities.\n3.  **Address Core Web Vitals:** Focus on Largest Contentful Paint (LCP) and CLS by pre-loading hero images and reserving space for dynamic banners to prevent layout jumps.\n4.  **Keyword Expansion:** While broad terms are covered, there is an opportunity to further capture \"bottom-of-the-funnel\" traffic by creating more dedicated landing pages for specific brand-category intersections (e.g., \"Levi's női farmer\")."
+}

@@ -1,0 +1,56 @@
+{
+  "url": "https://kk.coach",
+  "run": 2,
+  "duration_s": 40.3,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "organic growth consultancy",
+  "topic_cluster": "Organic Growth Strategy & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 4211,
+      "candidates": 796,
+      "total": 5007,
+      "calls": 3
+    },
+    "adk_in": 7660,
+    "adk_out_eff": 1663,
+    "in": 11871,
+    "out": 2459
+  },
+  "cost_usd": 0.013312,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Enhance Entity",
+    "Enhance Entity Clarity",
+    "GEO Knowledge Gap",
+    "Knowledge Gap",
+    "Optimize Desktop",
+    "Optimize Desktop Performance",
+    "Organic Growth Strategy",
+    "Personal Brand",
+    "Personal Brand E-E-A-T",
+    "Search Optimization",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\nThe website **kk.coach** represents an organic growth consultancy targeting the United States market with a focus on both B2B and e-commerce audiences. The brand, identified as **kk.coach**, positions itself at the intersection of traditional SEO and emerging Generative Engine Optimization (GEO). The site identifies a primary owner/creator associated with the handle **Krisztian__Kiss**, though a full formal name is not explicitly confirmed in the structured text. The consultancy offers a structured system for organic growth, integrating data-driven visibility with user experience (UX) and conversion rate optimization (CRO).\n\nThe primary keyword for the page is **\"organic growth consultant,\"** supported by a topic cluster focused on **Organic Growth Strategy & Search Optimization**. The content targets commercial intent, emphasizing specialized services like \"B2B organic growth systems\" and \"AI visibility optimization.\" The keyword strategy appears well-aligned with high-value professional services, though the inclusion of newer terms like \"GEO\" indicates a forward-looking approach to search trends. The content density is robust with over 1,800 words, providing high semantic confidence for search engines.\n\nTechnically, the site demonstrates strong SEO hygiene with a perfect 100/100 SEO score on both mobile and desktop audits. It utilizes semantic HTML5 for content structure, ensuring high accessibility for crawlers. While the mobile performance is exceptional at 96, the desktop performance score of 70 indicates room for optimization in asset delivery or server response times on larger screens. The site effectively mentions key industry technologies such as **Google Analytics 4 (GA4)** and **Google Search Console (GSC)**, reinforcing its technical authority in the field of data-driven growth.\n\n### Top Actionable Findings:\n*   **Optimize Desktop Performance:** While mobile performance is excellent, the desktop score of 70 suggests that specific scripts or large assets may be impacting load times for desktop users. A performance audit of desktop-specific CSS/JS is recommended.\n*   **Enhance Entity Clarity:** While the brand uses the initials **KK** and the handle **Krisztian__Kiss**, explicitly defining the full professional name in the structured data (JSON-LD) and footer could strengthen Personal Brand E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).\n*   **Bridge the GEO Knowledge Gap:** Since \"GEO\" is an emerging concept with lower search volume than \"SEO,\" the site should continue to provide educational content that links these two terms to capture traffic from traditional searchers while establishing early authority in AI search optimization.\n*   **Schema Expansion:** Ensure that Service and Consultant schema are fully implemented to clearly define the \"organic growth system\" as a distinct product/service entity for search engines."
+}

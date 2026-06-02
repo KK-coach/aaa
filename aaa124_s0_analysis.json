@@ -1,0 +1,339 @@
+{
+  "variant_table": [
+    {
+      "slot": "C1",
+      "url": "https://emag.hu/lego-classic-creative-bricks-90-darab-10713/pd/D1JS44BBM/",
+      "page_type": "product_page",
+      "bm": "marketplace",
+      "loc": "national",
+      "aud": "B2C",
+      "V1_cost": 0.007738500000000001,
+      "V1_lat": 60.771,
+      "V1_complete_7of7": true,
+      "V2_cost": 0.0171595,
+      "V2_lat": 75.93599999999999,
+      "V2_complete_3of3": true,
+      "V2_aspect_coverage": 7,
+      "V3_cost": 0.006629,
+      "V3_lat": 18.225,
+      "V3_complete": true,
+      "V3_aspect_coverage": 7,
+      "V3_has_3_indices": true
+    },
+    {
+      "slot": "C2",
+      "url": "https://www.lab.coop/services/",
+      "page_type": "homepage",
+      "bm": "b2b_service",
+      "loc": "global",
+      "aud": "B2B",
+      "V1_cost": 0.0076325,
+      "V1_lat": 63.339,
+      "V1_complete_7of7": true,
+      "V2_cost": 0.0134635,
+      "V2_lat": 77.291,
+      "V2_complete_3of3": true,
+      "V2_aspect_coverage": 7,
+      "V3_cost": 0.006475,
+      "V3_lat": 22.048,
+      "V3_complete": true,
+      "V3_aspect_coverage": 7,
+      "V3_has_3_indices": true
+    },
+    {
+      "slot": "C3",
+      "url": "https://www.theverge.com/24106799/x-men-97-review-marvel-disney-plus",
+      "page_type": "news_article",
+      "bm": "publisher_or_media",
+      "loc": "global",
+      "aud": "B2C",
+      "V1_cost": 0.008365,
+      "V1_lat": 55.059999999999995,
+      "V1_complete_7of7": true,
+      "V2_cost": 0.014443,
+      "V2_lat": 75.144,
+      "V2_complete_3of3": true,
+      "V2_aspect_coverage": 7,
+      "V3_cost": 0.0049995,
+      "V3_lat": 26.22,
+      "V3_complete": true,
+      "V3_aspect_coverage": 7,
+      "V3_has_3_indices": true
+    },
+    {
+      "slot": "C4",
+      "url": "https://vercel.com",
+      "page_type": "homepage",
+      "bm": "b2b_saas",
+      "loc": "global",
+      "aud": "B2B",
+      "V1_cost": 0.007674499999999999,
+      "V1_lat": 57.923,
+      "V1_complete_7of7": true,
+      "V2_cost": 0.0158755,
+      "V2_lat": 71.24,
+      "V2_complete_3of3": true,
+      "V2_aspect_coverage": 7,
+      "V3_cost": 0.006472,
+      "V3_lat": 15.862,
+      "V3_complete": true,
+      "V3_aspect_coverage": 7,
+      "V3_has_3_indices": true
+    }
+  ],
+  "detective": {
+    "V1": {
+      "claim_count": 140,
+      "contradict_count": 0,
+      "null_count": 0,
+      "contradictions": []
+    },
+    "V2": {
+      "claim_count": 100,
+      "contradict_count": 0,
+      "null_count": 320,
+      "contradictions": []
+    },
+    "V3": {
+      "claim_count": 24,
+      "contradict_count": 0,
+      "null_count": 116,
+      "contradictions": []
+    }
+  },
+  "d1_check": [
+    {
+      "sub_dim": "schema_entity",
+      "high": "C1",
+      "low": "C3",
+      "descr": "ProductPage > BlogPost (schema_org page-type-specific)",
+      "per_variant": {
+        "V1": {
+          "high_weight": 0.8,
+          "low_weight": 0.85,
+          "delta": -0.05,
+          "verdict": "FAIL"
+        },
+        "V2": {
+          "high_weight": 0.95,
+          "low_weight": 0.9,
+          "delta": 0.05,
+          "verdict": "PASS"
+        },
+        "V3": {
+          "high_weight": 0.85,
+          "low_weight": 0.9,
+          "delta": -0.05,
+          "verdict": "FAIL"
+        }
+      }
+    },
+    {
+      "sub_dim": "forms_conversion_points",
+      "high": "C4",
+      "low": "C1",
+      "descr": "LandingPage b2b_saas > ProductPage ecommerce (form quality for b2b funnel)",
+      "per_variant": {
+        "V1": {
+          "high_weight": 0.8,
+          "low_weight": 0.85,
+          "delta": -0.05,
+          "verdict": "FAIL"
+        },
+        "V2": {
+          "high_weight": 0.85,
+          "low_weight": 0.9,
+          "delta": -0.05,
+          "verdict": "FAIL"
+        },
+        "V3": {
+          "high_weight": 0.85,
+          "low_weight": 0.9,
+          "delta": -0.05,
+          "verdict": "FAIL"
+        }
+      }
+    },
+    {
+      "sub_dim": "above_the_fold",
+      "high": "C2",
+      "low": "C3",
+      "descr": "ServicePage B2B > BlogPost B2C (LocalBusiness+NAP locality, NOTE: C2 lost local axis — degraded test)",
+      "per_variant": {
+        "V1": {
+          "high_weight": 0.85,
+          "low_weight": 0.7,
+          "delta": 0.15,
+          "verdict": "PASS"
+        },
+        "V2": {
+          "high_weight": 0.9,
+          "low_weight": 0.9,
+          "delta": 0.0,
+          "verdict": "FAIL"
+        },
+        "V3": {
+          "high_weight": 0.8,
+          "low_weight": 0.8,
+          "delta": 0.0,
+          "verdict": "FAIL"
+        }
+      }
+    },
+    {
+      "sub_dim": "schema_entity",
+      "high": "C2",
+      "low": "C3",
+      "descr": "ServicePage B2B > BlogPost B2C (E-E-A-T entity-density audience proxy)",
+      "per_variant": {
+        "V1": {
+          "high_weight": 0.6,
+          "low_weight": 0.85,
+          "delta": -0.25,
+          "verdict": "FAIL"
+        },
+        "V2": {
+          "high_weight": 0.6,
+          "low_weight": 0.9,
+          "delta": -0.3,
+          "verdict": "FAIL"
+        },
+        "V3": {
+          "high_weight": 0.7,
+          "low_weight": 0.9,
+          "delta": -0.2,
+          "verdict": "FAIL"
+        }
+      }
+    }
+  ],
+  "d2_check": [
+    {
+      "sub_dim": "heading_semantics",
+      "per_variant": {
+        "V1": {
+          "weights_per_slot": {
+            "C1": 0.85,
+            "C2": 0.85,
+            "C3": 0.85,
+            "C4": 0.85
+          },
+          "stdev": 0.0,
+          "min": 0.85,
+          "max": 0.85,
+          "verdict": "UNIFORM"
+        },
+        "V2": {
+          "weights_per_slot": {
+            "C1": 0.9,
+            "C2": 0.9,
+            "C3": 0.8,
+            "C4": 0.8
+          },
+          "stdev": 0.05,
+          "min": 0.8,
+          "max": 0.9,
+          "verdict": "UNIFORM"
+        },
+        "V3": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.9,
+            "C3": 0.85,
+            "C4": 0.8
+          },
+          "stdev": 0.041,
+          "min": 0.8,
+          "max": 0.9,
+          "verdict": "UNIFORM"
+        }
+      }
+    },
+    {
+      "sub_dim": "micro_semantics",
+      "per_variant": {
+        "V1": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.8,
+            "C3": 0.8,
+            "C4": 0.8
+          },
+          "stdev": 0.0,
+          "min": 0.8,
+          "max": 0.8,
+          "verdict": "UNIFORM"
+        },
+        "V2": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.8,
+            "C3": 0.85,
+            "C4": 0.8
+          },
+          "stdev": 0.022,
+          "min": 0.8,
+          "max": 0.85,
+          "verdict": "UNIFORM"
+        },
+        "V3": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.85,
+            "C3": 0.85,
+            "C4": 0.85
+          },
+          "stdev": 0.022,
+          "min": 0.8,
+          "max": 0.85,
+          "verdict": "UNIFORM"
+        }
+      }
+    },
+    {
+      "sub_dim": "inline_link_semantics",
+      "per_variant": {
+        "V1": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.65,
+            "C3": 0.8,
+            "C4": 0.85
+          },
+          "stdev": 0.075,
+          "min": 0.65,
+          "max": 0.85,
+          "verdict": "UNIFORM"
+        },
+        "V2": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.8,
+            "C3": 0.8,
+            "C4": 0.8
+          },
+          "stdev": 0.0,
+          "min": 0.8,
+          "max": 0.8,
+          "verdict": "UNIFORM"
+        },
+        "V3": {
+          "weights_per_slot": {
+            "C1": 0.8,
+            "C2": 0.8,
+            "C3": 0.8,
+            "C4": 0.8
+          },
+          "stdev": 0.0,
+          "min": 0.8,
+          "max": 0.8,
+          "verdict": "UNIFORM"
+        }
+      }
+    }
+  ],
+  "audit_cost": 0.103135,
+  "gemini_total": 0.1169275,
+  "sunk_v1_broken": 0.0831,
+  "grand_total": 0.3031625
+}

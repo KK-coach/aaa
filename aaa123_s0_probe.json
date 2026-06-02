@@ -1,0 +1,326 @@
+[
+  {
+    "label": "agrobook.hu",
+    "url": "https://agrobook.hu",
+    "final_url": "https://www.agrobook.hu/",
+    "status": 200,
+    "fetch_wall_s": 1.406,
+    "measurement_wall_s": 1.774,
+    "A_semantic": {
+      "heading_tree_count": 1,
+      "heading_tree_sample_first3": [
+        {
+          "level": 2,
+          "text": "Miért válassz minket? – 5+1 érv az Agrobook.hu mellett",
+          "position": 0,
+          "zone": "main",
+          "char_count": 54
+        }
+      ],
+      "headings_by_zone": {
+        "main": 1
+      },
+      "structural_noise_warning": false,
+      "list_structure": {
+        "ul": 17,
+        "ol": 0,
+        "li": 67,
+        "dl": 0
+      },
+      "heading_stacking_candidate": false,
+      "table_structure": {
+        "table": 1,
+        "thead": 0,
+        "tbody": 1,
+        "tr": 1,
+        "th": 0
+      },
+      "div_table_suspicious": 0,
+      "blockquote_count": 0,
+      "blockquote_with_cite": 0,
+      "figure_count": 0,
+      "figure_with_figcaption": 0,
+      "inline_emphasis": {
+        "strong": 15,
+        "em": 0,
+        "b": 1,
+        "i": 0
+      },
+      "semantic_to_visual_ratio": 0.938,
+      "link_semantic": {
+        "anchor_count": 142,
+        "blank_target_count": 32,
+        "blank_target_unsafe_count": 21,
+        "generic_anchor_text_count": 0
+      },
+      "form_quality_extended": {
+        "form_count": 5,
+        "input_count": 14,
+        "input_type_distribution": {
+          "search": 2,
+          "hidden": 4,
+          "radio": 2,
+          "text": 1,
+          "password": 1,
+          "checkbox": 4
+        },
+        "submit_button_count": 1,
+        "submit_button_generic_count": 0
+      },
+      "jsonld_types_found": [
+        "WebSite",
+        "Organization"
+      ],
+      "expected_page_type_synthetic": "MarketplacePage",
+      "schema_pagetype_match": false
+    },
+    "B_cutoff": {
+      "raw_html_bytes_uncompressed": 953672,
+      "http_response_headers_bytes": 929,
+      "inline_css_bytes": 581248,
+      "inline_js_bytes": 53349,
+      "inline_base64_image_bytes": 0,
+      "inline_total_bytes": 634597,
+      "total_counting_toward_2mb": 954601,
+      "google_2mb_threshold": 2097152,
+      "exceeds_2mb_cutoff": false,
+      "cutoff_position": null,
+      "content_after_cutoff_pct": null
+    },
+    "C_rendering": {
+      "raw_html_visible_text_chars": 5305,
+      "raw_html_text_to_markup_ratio": 0.0056,
+      "body_main_content_chars": 99746,
+      "inline_script_total_bytes": 53349,
+      "is_csr_likely": false,
+      "ai_crawler_visibility_warning": false,
+      "spa_framework_signals": []
+    }
+  },
+  {
+    "label": "vercel.com",
+    "url": "https://vercel.com",
+    "final_url": "https://vercel.com",
+    "status": 200,
+    "fetch_wall_s": 0.127,
+    "measurement_wall_s": 0.158,
+    "A_semantic": {
+      "heading_tree_count": 36,
+      "heading_tree_sample_first3": [
+        {
+          "level": 1,
+          "text": "Build and deploy on the AI Cloud.",
+          "position": 0,
+          "zone": "main",
+          "char_count": 33
+        },
+        {
+          "level": 1,
+          "text": "Build and deploy on the AI Cloud.",
+          "position": 1,
+          "zone": "main",
+          "char_count": 33
+        },
+        {
+          "level": 2,
+          "text": "Framework-Defined Infrastructure",
+          "position": 2,
+          "zone": "main",
+          "char_count": 32
+        }
+      ],
+      "headings_by_zone": {
+        "main": 11,
+        "nav": 20,
+        "header": 5
+      },
+      "structural_noise_warning": true,
+      "list_structure": {
+        "ul": 29,
+        "ol": 0,
+        "li": 132,
+        "dl": 0
+      },
+      "heading_stacking_candidate": true,
+      "table_structure": {
+        "table": 0,
+        "thead": 0,
+        "tbody": 0,
+        "tr": 0,
+        "th": 0
+      },
+      "div_table_suspicious": 0,
+      "blockquote_count": 0,
+      "blockquote_with_cite": 0,
+      "figure_count": 0,
+      "figure_with_figcaption": 0,
+      "inline_emphasis": {
+        "strong": 5,
+        "em": 0,
+        "b": 0,
+        "i": 0
+      },
+      "semantic_to_visual_ratio": 1.0,
+      "link_semantic": {
+        "anchor_count": 171,
+        "blank_target_count": 14,
+        "blank_target_unsafe_count": 0,
+        "generic_anchor_text_count": 1
+      },
+      "form_quality_extended": {
+        "form_count": 0,
+        "input_count": 6,
+        "input_type_distribution": {
+          "radio": 6
+        },
+        "submit_button_count": 2,
+        "submit_button_generic_count": 0
+      },
+      "jsonld_types_found": [
+        "SoftwareApplication"
+      ],
+      "expected_page_type_synthetic": "LandingPage",
+      "schema_pagetype_match": false
+    },
+    "B_cutoff": {
+      "raw_html_bytes_uncompressed": 1010498,
+      "http_response_headers_bytes": 3703,
+      "inline_css_bytes": 375,
+      "inline_js_bytes": 491878,
+      "inline_base64_image_bytes": 0,
+      "inline_total_bytes": 492253,
+      "total_counting_toward_2mb": 1014201,
+      "google_2mb_threshold": 2097152,
+      "exceeds_2mb_cutoff": false,
+      "cutoff_position": null,
+      "content_after_cutoff_pct": null
+    },
+    "C_rendering": {
+      "raw_html_visible_text_chars": 6599,
+      "raw_html_text_to_markup_ratio": 0.0065,
+      "body_main_content_chars": 3231,
+      "inline_script_total_bytes": 491878,
+      "is_csr_likely": false,
+      "ai_crawler_visibility_warning": false,
+      "spa_framework_signals": []
+    }
+  },
+  {
+    "label": "kk.coach",
+    "url": "https://kk.coach",
+    "final_url": "https://kk.coach",
+    "status": 200,
+    "fetch_wall_s": 0.351,
+    "measurement_wall_s": 0.362,
+    "A_semantic": {
+      "heading_tree_count": 45,
+      "heading_tree_sample_first3": [
+        {
+          "level": 1,
+          "text": "— AI and Data Driven Organic Growth",
+          "position": 0,
+          "zone": "main",
+          "char_count": 35
+        },
+        {
+          "level": 2,
+          "text": "Fix what blocks growth —turnvisibilityinto revenue.",
+          "position": 1,
+          "zone": "main",
+          "char_count": 51
+        },
+        {
+          "level": 2,
+          "text": "The market is full of noise.Few real solutions.",
+          "position": 2,
+          "zone": "main",
+          "char_count": 47
+        }
+      ],
+      "headings_by_zone": {
+        "main": 45
+      },
+      "structural_noise_warning": false,
+      "list_structure": {
+        "ul": 6,
+        "ol": 0,
+        "li": 28,
+        "dl": 0
+      },
+      "heading_stacking_candidate": true,
+      "table_structure": {
+        "table": 0,
+        "thead": 0,
+        "tbody": 0,
+        "tr": 0,
+        "th": 0
+      },
+      "div_table_suspicious": 0,
+      "blockquote_count": 0,
+      "blockquote_with_cite": 0,
+      "figure_count": 0,
+      "figure_with_figcaption": 0,
+      "inline_emphasis": {
+        "strong": 15,
+        "em": 8,
+        "b": 0,
+        "i": 0
+      },
+      "semantic_to_visual_ratio": 1.0,
+      "link_semantic": {
+        "anchor_count": 21,
+        "blank_target_count": 1,
+        "blank_target_unsafe_count": 0,
+        "generic_anchor_text_count": 0
+      },
+      "form_quality_extended": {
+        "form_count": 0,
+        "input_count": 4,
+        "input_type_distribution": {
+          "checkbox": 4
+        },
+        "submit_button_count": 0,
+        "submit_button_generic_count": 0
+      },
+      "jsonld_types_found": [
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "SiteNavigationElement",
+        "WebSite",
+        "WebPage",
+        "FAQPage"
+      ],
+      "expected_page_type_synthetic": "ServicePage",
+      "schema_pagetype_match": false
+    },
+    "B_cutoff": {
+      "raw_html_bytes_uncompressed": 86816,
+      "http_response_headers_bytes": 1234,
+      "inline_css_bytes": 24228,
+      "inline_js_bytes": 11744,
+      "inline_base64_image_bytes": 306,
+      "inline_total_bytes": 36278,
+      "total_counting_toward_2mb": 88050,
+      "google_2mb_threshold": 2097152,
+      "exceeds_2mb_cutoff": false,
+      "cutoff_position": null,
+      "content_after_cutoff_pct": null
+    },
+    "C_rendering": {
+      "raw_html_visible_text_chars": 12121,
+      "raw_html_text_to_markup_ratio": 0.14,
+      "body_main_content_chars": 14740,
+      "inline_script_total_bytes": 11744,
+      "is_csr_likely": false,
+      "ai_crawler_visibility_warning": false,
+      "spa_framework_signals": []
+    }
+  }
+]

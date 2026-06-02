@@ -1,0 +1,56 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 1,
+  "duration_s": 63.4,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retailer",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5190,
+      "candidates": 893,
+      "total": 6083,
+      "calls": 3
+    },
+    "adk_in": 6645,
+    "adk_out_eff": 1102,
+    "in": 11835,
+    "out": 1995
+  },
+  "cost_usd": 0.011902,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "AI Search",
+    "Best Practices",
+    "Enhance Alt",
+    "Enhance Alt Text Coverage",
+    "Leverage Entity",
+    "Leverage Entity-Based SEO",
+    "Online Fashion",
+    "Online Fashion Retail",
+    "Optimize Performance",
+    "Technical Health",
+    "Text Coverage",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "Topic Cluster\nThe",
+    "Vitals\nPerformance",
+    "While Accessibility"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe audited page belongs to **ABOUT YOU**, a prominent online fashion retailer targeting the **Hungarian** market (B2C audience). The site identifies as a major player in the fashion industry, emphasizing its vast selection of over 1,500 brands and customer-centric benefits like free shipping and 30-day returns. The target profile is well-defined and does not require further user confirmation for competitive analysis.\n\n### Primary Keywords & Topic Cluster\nThe page is effectively optimized for the topic cluster of **Online Fashion Retail**. The primary target keyword is **\"női divat online\"** (online women's fashion), which carries strong transactional intent. Secondary keywords include \"online ruházati bolt\" and \"márkás ruhák webshop,\" supported by long-tail phrases focusing on the variety of brands and specific service perks. The keyword gap severity is low, as the content aligns well with the high-difficulty, high-competition nature of the fashion niche.\n\n### Technical Health & Content Quality\nTechnical indicators are strong, with a high confidence score (0.95) for the main content extraction. The site utilizes semantic HTML5 structures effectively. While the page is content-rich (approx. 1,000 words), it serves primarily as a navigational and transactional hub. The schema and metadata are well-implemented, resulting in a perfect **100/100 SEO score** from Google PageSpeed Insights. There is a low risk of exceeding Google's 2MB crawl limit despite the heavy visual nature of the site.\n\n### Performance & Core Web Vitals\nPerformance is the primary area for improvement. Both **Desktop (54/100)** and **Mobile (56/100)** performance scores are in the \"needs improvement\" range. While Accessibility (96) and Best Practices (92-96) are excellent, the performance is likely hindered by the heavy load of brand assets, product images, and tracking scripts typical of large-scale e-commerce platforms.\n\n### Top Actionable Findings\n1.  **Optimize Performance:** Prioritize improving Core Web Vitals, specifically targeting image optimization and script execution times to raise performance scores above 75.\n2.  **Leverage Entity-Based SEO:** While the site lists many brands, deepening the content connections between \"ABOUT YOU\" and its top-tier partners (like Nike, Adidas, and Guess) through more descriptive landing page copy could improve GEO/AEO visibility.\n3.  **Localize for Voice/AI Search:** Incorporate more natural-language \"question and answer\" formats regarding shipping policies and brand availability to capture emerging AI-driven search queries (AEO).\n4.  **Enhance Alt Text Coverage:** Ensure all dynamic brand banners and product thumbnails have descriptive, keyword-rich alt text to maximize image search traffic and accessibility."
+}

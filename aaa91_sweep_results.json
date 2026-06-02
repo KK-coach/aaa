@@ -1,0 +1,1568 @@
+{
+ "results": [
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 1,
+   "audit_id": "a10f9a8c-4773-49c9-a626-53bf9eb9f6d3",
+   "kw_classify_cost": 0.004533,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "automata kormány",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 2,
+   "audit_id": "b8c6570a-d823-4980-8ca4-89b3a7bfdba5",
+   "kw_classify_cost": 0.004497,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "automata kormány",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 3,
+   "audit_id": "0a4d15dc-d691-431c-b35f-205632124e2b",
+   "kw_classify_cost": 0.004421,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "automata kormány",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "l1": "commercial",
+     "l2": "pricing_research"
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 4,
+   "audit_id": "fe271996-6808-4ac7-93c7-e404ec8f9a2a",
+   "kw_classify_cost": 0.004493,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automata kormány",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 5,
+   "audit_id": "109057cb-fb45-43f2-9d0c-1dbcac253a26",
+   "kw_classify_cost": 0.003845,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "l1": "commercial",
+     "l2": "review"
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automata kormány",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "l1": "commercial",
+     "l2": "review"
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 1,
+   "audit_id": "9646160b-d39a-44bf-868c-c24d4ee9a42e",
+   "kw_classify_cost": 0.00413,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "organic growth consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "integrated organic growth",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "UX and CRO services",
+     "l1": "commercial",
+     "l2": "best_of"
+    }
+   ]
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 2,
+   "audit_id": "17e6979d-506d-469b-b9ed-461e753e13bd",
+   "kw_classify_cost": 0.004109,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "organic growth consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "l1": "commercial",
+     "l2": "alternatives"
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "integrated organic growth",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "UX and CRO services",
+     "l1": "commercial",
+     "l2": "best_of"
+    }
+   ]
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 3,
+   "audit_id": "f152c148-3cea-4fa2-bb58-922d04f5e7f6",
+   "kw_classify_cost": 0.004105,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "organic growth consultant",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "l1": "commercial",
+     "l2": "review"
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "integrated organic growth",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "UX and CRO services",
+     "l1": "commercial",
+     "l2": "best_of"
+    }
+   ]
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 4,
+   "audit_id": "27b90b7e-9d9c-424e-b610-7993d57d97d7",
+   "kw_classify_cost": 0.004164,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "organic growth consultant",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "integrated organic growth",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "UX and CRO services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    }
+   ]
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 5,
+   "audit_id": "b427e281-47fc-465b-bdee-2be0ec5701f7",
+   "kw_classify_cost": 0.004159,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "organic growth consultant",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "l1": "commercial",
+     "l2": "alternatives"
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "l1": "commercial",
+     "l2": "alternatives"
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "l1": "transactional",
+     "l2": "quote_request"
+    },
+    {
+     "keyword": "integrated organic growth",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "UX and CRO services",
+     "l1": "transactional",
+     "l2": "quote_request"
+    }
+   ]
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 1,
+   "audit_id": "2b30a9b5-bac5-4865-af6f-dc6922dfc9cf",
+   "kw_classify_cost": 0.004366,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "női divat online",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "női ruházat",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "márkás ruhák",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "több mint 1500 divat márka",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "online divat",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "ingyenes szállítás és visszaküldés",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női cipők",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női kiegészítők",
+     "l1": "commercial",
+     "l2": "best_of"
+    }
+   ]
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 2,
+   "audit_id": "d98f873d-e798-4fc3-8e16-452b815c2cb8",
+   "kw_classify_cost": 0.004329,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "női divat online",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "női ruházat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "márkás ruhák",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "több mint 1500 divat márka",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "online divat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női cipők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női kiegészítők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "ingyenes szállítás és visszaküldés",
+     "l1": "informational",
+     "l2": "knowledge"
+    }
+   ]
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 3,
+   "audit_id": "87be13ad-77f1-4733-a8a0-7e207e63b46d",
+   "kw_classify_cost": 0.00434,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "női divat online",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "női ruházat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "online divat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "több mint 1500 divat márka",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "márkás ruhák",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női cipők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női kiegészítők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "ingyenes szállítás és visszaküldés",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 4,
+   "audit_id": "dea94853-20f2-44ae-a82e-9c7b7ef7d138",
+   "kw_classify_cost": 0.004333,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "női divat online",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "női ruházat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "több mint 1500 divat márka",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "márkás ruhák",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "ingyenes szállítás és visszaküldés",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "online divat",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női cipők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női kiegészítők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "l1": "informational",
+     "l2": "knowledge"
+    }
+   ]
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 5,
+   "audit_id": "50203bfe-f7ba-4fd9-9f80-2fc4e3937181",
+   "kw_classify_cost": 0.004367,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "női divat online",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "női ruházat",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "több mint 1500 divat márka",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "márkás ruhák",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "női cipők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "online divat",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "női kiegészítők",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "ingyenes szállítás és visszaküldés",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 1,
+   "audit_id": "88ae66c4-20ab-411e-9401-5eb61625a779",
+   "kw_classify_cost": 0.003596,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "global tax management platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "VAT registration services",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "international tax compliance",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "l1": "informational",
+     "l2": "how_to"
+    }
+   ]
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 2,
+   "audit_id": "9a718528-832c-4fd8-aeb1-85776fbba841",
+   "kw_classify_cost": 0.009007,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "global tax management platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax compliance",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "VAT registration services",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "l1": "informational",
+     "l2": "knowledge"
+    }
+   ]
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 3,
+   "audit_id": "f2ce93d2-7ed1-4ca3-bc7d-75337626dc2f",
+   "kw_classify_cost": 0.003482,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "global tax management platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "international tax compliance",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "VAT registration services",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "l1": "informational",
+     "l2": "knowledge"
+    }
+   ]
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 4,
+   "audit_id": "add3ba3d-1e81-45df-89cb-9703f148413b",
+   "kw_classify_cost": 0.003524,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "global tax management platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "international tax compliance",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "VAT registration services",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "l1": "informational",
+     "l2": "knowledge"
+    }
+   ]
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 5,
+   "audit_id": "d388d009-adbf-4035-804a-e0ed5e0ab439",
+   "kw_classify_cost": 0.003569,
+   "grounding": "high",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "global tax management platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "l1": "transactional",
+     "l2": "purchase"
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "international tax compliance",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "VAT registration services",
+     "l1": "transactional",
+     "l2": "purchase"
+    }
+   ]
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 1,
+   "audit_id": "20469378-073d-49ff-a5ff-5aec76080204",
+   "kw_classify_cost": 0.003612,
+   "grounding": "low",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "Vercel Platform",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "production deployment platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "edge computing platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "l1": "informational",
+     "l2": "how_to"
+    }
+   ]
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 2,
+   "audit_id": "4fab6ac3-6922-4072-8e9d-25e7f25340c1",
+   "kw_classify_cost": 0.003776,
+   "grounding": "low",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "Vercel Platform",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "frontend cloud platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "managed frontend deployment and hosting",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Vercel observability",
+     "l1": "commercial",
+     "l2": "review"
+    },
+    {
+     "keyword": "monitoring edge requests and function invocations",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "production deployment",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "continuous deployment for web applications",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "edge computing",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "production checklist for web deployments",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "deployment settings",
+     "l1": "transactional",
+     "l2": "sign_up"
+    }
+   ]
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 3,
+   "audit_id": "42ad68ea-92df-4576-a4bd-bdab2706fdf8",
+   "kw_classify_cost": 0.003581,
+   "grounding": "low",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "Vercel Platform",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "production deployment platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "edge computing platform",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "l1": "informational",
+     "l2": "how_to"
+    }
+   ]
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 4,
+   "audit_id": "4d5f971d-53c6-4e08-8077-c118ef79c189",
+   "kw_classify_cost": 0.003804,
+   "grounding": "low",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "Vercel Platform",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "frontend cloud platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "managed frontend deployment and hosting",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Vercel observability",
+     "l1": "navigational",
+     "l2": "section_lookup"
+    },
+    {
+     "keyword": "continuous deployment for web applications",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "monitoring edge requests and function invocations",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "production deployment",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "production checklist for web deployments",
+     "l1": "informational",
+     "l2": "how_to"
+    },
+    {
+     "keyword": "edge computing",
+     "l1": "informational",
+     "l2": "definition"
+    },
+    {
+     "keyword": "deployment settings",
+     "l1": "transactional",
+     "l2": "sign_up"
+    }
+   ]
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 5,
+   "audit_id": "f8223803-ee7f-4067-ad36-9ba8b7537c7f",
+   "kw_classify_cost": 0.003579,
+   "grounding": "low",
+   "eeat": true,
+   "tk_keys": 13,
+   "classified": [
+    {
+     "keyword": "Vercel Platform",
+     "l1": "navigational",
+     "l2": "branded"
+    },
+    {
+     "keyword": "production deployment platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "edge computing platform",
+     "l1": "informational",
+     "l2": "knowledge"
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "l1": "commercial",
+     "l2": "best_of"
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "l1": "transactional",
+     "l2": "sign_up"
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "l1": "transactional",
+     "l2": "sign_up"
+    }
+   ]
+  }
+ ],
+ "n_done": 25,
+ "n_fail": 0,
+ "total_kw_cost": 0.10572,
+ "wall_s": 6934.4
+}

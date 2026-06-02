@@ -1,0 +1,52 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 2,
+  "duration_s": 65.5,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 4244,
+      "candidates": 722,
+      "total": 4966,
+      "calls": 3
+    },
+    "adk_in": 14012,
+    "adk_out_eff": 1106,
+    "in": 18256,
+    "out": 1828
+  },
+  "cost_usd": 0.014612,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Improvements",
+    "Critical Mobile",
+    "Critical Mobile Performance Optimization",
+    "Entity Strengthening",
+    "Performance Optimization",
+    "Refine Best",
+    "Refine Best Practices",
+    "Tax Compliance Automation. The",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a high-authority B2B tax compliance software vendor targeting the global market, with a strong focus on the United States and English-speaking audiences. The brand positions itself as a comprehensive solution for automated VAT and sales tax management, catering to ecommerce owners, enterprises, and accounting providers. The site effectively showcases its core product suite, including CrossTax, LumaTax, EcoTax, and OneTax, aiming to simplify international tax reporting and registration through technology-driven automation.\n\nThe primary keyword focus is **VAT and Sales Tax Compliance Software**, supported by a robust topic cluster around Tax Compliance Automation. The content strategy is commercial and solution-oriented, targeting high-intent long-tail keywords such as \"automate global VAT and US sales tax compliance\" and \"automated sales tax filing.\" The page content is deep (over 1,600 words) and utilizes semantic HTML5 structures, which provides high confidence for search engine parsing and entity extraction.\n\nTechnically, the site is well-structured but faces a significant performance bottleneck on mobile devices. While the desktop experience is relatively healthy (Score: 80), the **mobile performance score of 50** indicates substantial room for improvement in Core Web Vitals, likely impacting mobile search rankings and user experience. Accessibility and SEO scores are generally strong across both platforms (92 for SEO), but accessibility (88) still has minor room for optimization to meet industry best practices.\n\n### Top Actionable Findings:\n*   **Critical Mobile Performance Optimization:** With a mobile performance score of 50, immediate attention is needed for resource optimization (e.g., image compression, reducing main-thread work, or minimizing render-blocking resources) to improve user retention and mobile search visibility.\n*   **Refine Best Practices:** The best practices scores (81 desktop / 77 mobile) suggest potential issues with modern web standards, such as image aspect ratios, deprecated API usage, or security headers that should be addressed.\n*   **Accessibility Improvements:** While the score of 88 is good, achieving 90+ is recommended for enterprise B2B software to ensure compliance and a professional user experience for all potential clients.\n*   **Content & Entity Strengthening:** While the \"Taxually\" organization is well-defined via JSON-LD, there is a lack of identified authors or founders in the metadata; adding structured \"Person\" entities (e.g., for key leadership) could further enhance E-E-A-T signals."
+}

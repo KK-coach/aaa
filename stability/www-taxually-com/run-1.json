@@ -1,0 +1,57 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 1,
+  "duration_s": 116.4,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 4244,
+      "candidates": 722,
+      "total": 4966,
+      "calls": 3
+    },
+    "adk_in": 14101,
+    "adk_out_eff": 1476,
+    "in": 18345,
+    "out": 2198
+  },
+  "cost_usd": 0.015766,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Actionable Findings",
+    "Author Authority",
+    "Best Practices",
+    "Critical Mobile",
+    "Critical Mobile Optimization",
+    "Enhance Accessibility",
+    "Facebook.\n\nThe",
+    "Improve Asset",
+    "Improve Asset Delivery",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Tax Compliance Automation",
+    "Technical SEO Refinement",
+    "Total Blocking",
+    "Total Blocking Time",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a B2B tax compliance software vendor established as a global player in automated tax management. The site correctly identifies its primary audience in the United States while emphasizing global capabilities through its suite of products, including **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax**. The brand identity is clearly defined through its organization schema and consistent messaging across social platforms like Twitter, LinkedIn, and Facebook.\n\nThe page targets high-intent commercial keywords, specifically **\"VAT and Sales Tax Compliance Software\"** and **\"automated sales tax filing.\"** The content is well-structured within the **Tax Compliance Automation** topic cluster, effectively bridging the gap between brand-specific solutions and general industry search terms. While the primary keyword alignment is strong, the high estimated difficulty of this niche suggests that the site must rely on its comprehensive product descriptions and automated data processing narratives to compete.\n\nTechnical health is generally robust, with high-confidence semantic HTML5 extraction and valid JSON-LD organization schema. The site uses HTTPS and has well-configured SEO meta tags, resulting in an SEO score of 92. However, there is a moderate risk concerning technical \"Best Practices\" on mobile (69), and the author/owner information is primarily identified as the organization \"Taxually\" rather than specific individuals.\n\nPerformance is the most significant area for improvement. The site scores a **30 on Mobile performance** and a **59 on Desktop**, indicating severe bottlenecks in loading speeds and potentially poor Core Web Vitals. These scores likely stem from heavy script execution or unoptimized assets, which can negatively impact user experience and search engine ranking in competitive commercial sectors.\n\n**Top 5 Actionable Findings:**\n1.  **Critical Mobile Optimization:** Address the mobile performance score of 30 by optimizing Largest Contentful Paint (LCP) and reducing Total Blocking Time.\n2.  **Improve Asset Delivery:** Audit the \"Best Practices\" score on mobile (69) to identify and fix insecure or outdated web technologies.\n3.  **Enhance Accessibility:** Improve the accessibility score (88) by refining color contrast and ensuring all interactive elements have descriptive ARIA labels.\n4.  **Author Authority:** While the organization is well-defined, introducing specific expert authors or founders in the metadata and content could further boost E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) signals.\n5.  **Technical SEO Refinement:** Ensure all product pages (CrossTax, LumaTax, etc.) are deeply interlinked within the topic cluster to reinforce the site's authority on automated international tax management."
+}

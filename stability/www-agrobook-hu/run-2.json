@@ -1,0 +1,52 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 2,
+  "duration_s": 94.9,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 5143,
+      "candidates": 903,
+      "total": 6046,
+      "calls": 3
+    },
+    "adk_in": 14571,
+    "adk_out_eff": 1189,
+    "in": 19714,
+    "out": 2092
+  },
+  "cost_usd": 0.016133,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Polish",
+    "Answer Engine",
+    "Answer Engine Optimization",
+    "Critical Performance",
+    "Critical Performance Optimization",
+    "Enhance Product",
+    "Enhance Product Category SEO",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Top Actionable",
+    "Top Actionable Findings"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is an established Hungarian e-commerce platform operated by **Agrobook.hu Kft.**, specializing in the retail of agricultural machinery and spare parts. The site primarily targets the Hungarian market (language: `hu`, location: `Hungary`) with a focus on both B2B and B2C segments. The brand is clearly identified through its physical presence in Csávoly and a comprehensive footer containing legal and contact information. The site successfully establishes its authority in the agricultural sector, featuring prominent brands like **Terranav**, **Claas**, and **Fendt**.\n\nThe primary keyword strategy centers on transactional terms such as **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop) and specialized products like **\"automata kormány\"** (automated steering). The content is logically organized into topic clusters around machinery maintenance, including sprayers, seeders, and tractor parts. While the primary keyword alignment is strong, there is a noted opportunity to further segment landing pages for high-intent long-tail keywords, such as specific universal automated steering systems with 2.5 cm accuracy.\n\nTechnically, the site demonstrates high reliability with a clean `semantic_html5` structure and a high content extraction confidence score (0.95). It employs standard HTTPS and well-formed metadata, achieving a perfect **SEO score of 100** on both mobile and desktop in PageSpeed assessments. However, performance is a critical weakness. The **mobile performance score of 31** is particularly concerning, characterized by slow load times that could lead to high bounce rates for field-based users accessing the site via mobile networks. Desktop performance is also mediocre (62), suggesting a need for better resource optimization.\n\n### Top Actionable Findings\n*   **Critical Performance Optimization:** Immediately address mobile performance (currently 31/100). Focus on reducing JavaScript execution time and optimizing image delivery (e.g., WebP format) to improve Core Web Vitals, specifically Largest Contentful Paint (LCP).\n*   **Enhance Product Category SEO:** While brand-level keywords like **Claas** and **Fendt** are present, expanding unique descriptive content on these category pages will help capture more \"near-me\" and \"fast delivery\" agricultural part searches.\n*   **Deepen \"Automata Kormány\" Content:** The \"Terranav\" automated steering system is a high-value entity. Creating more in-depth technical guides or installation case studies could improve AEO (Answer Engine Optimization) for farmers researching GPS-guided precision farming.\n*   **Accessibility Polish:** While mobile accessibility is strong (91), the desktop score of 88 indicates minor issues (likely color contrast or missing ARIA labels) that should be addressed to ensure a seamless experience for all users."
+}

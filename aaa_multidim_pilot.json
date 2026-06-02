@@ -1,0 +1,36 @@
+{
+  "grid": [
+    {
+      "run": 1,
+      "audit_id": "66067c24-61e6-434c-9c41-655638ba3c03",
+      "page_type": "homepage",
+      "page_type_parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Shopping",
+      "locality": "national",
+      "audience_relationship_primary": "B2C",
+      "audience_relationship_secondary": "B2B",
+      "audience_confidence": 85,
+      "audit_multi_dim_classify_cost_usd": 0.001971,
+      "total_audit_cost_usd": 0.121894,
+      "latency_s": 220.8
+    },
+    {
+      "run": 2,
+      "audit_id": "fc0affea-9eb9-458e-a51b-a3d5cd43e0f2",
+      "page_type": "homepage",
+      "page_type_parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Shopping",
+      "locality": "national",
+      "audience_relationship_primary": "B2B",
+      "audience_relationship_secondary": "B2C",
+      "audience_confidence": 85,
+      "audit_multi_dim_classify_cost_usd": 0.001973,
+      "total_audit_cost_usd": 0.114936,
+      "latency_s": 257.9
+    }
+  ],
+  "wall_s": 478.7,
+  "cost_usd_total": 0.23682950000000003
+}

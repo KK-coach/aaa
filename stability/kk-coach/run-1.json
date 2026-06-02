@@ -1,0 +1,52 @@
+{
+  "url": "https://kk.coach",
+  "run": 1,
+  "duration_s": 67.8,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "organic growth consultancy",
+  "topic_cluster": "Organic Growth Strategy & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 4211,
+      "candidates": 796,
+      "total": 5007,
+      "calls": 3
+    },
+    "adk_in": 14166,
+    "adk_out_eff": 1808,
+    "in": 18377,
+    "out": 2604
+  },
+  "cost_usd": 0.017001,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "CRO. The",
+    "Double Down",
+    "Enhance Schema",
+    "Enhance Schema Markup",
+    "Optimize Performance",
+    "Organic Growth Strategy",
+    "Search Optimization",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\nThe website **kk.coach** represents a professional services consultancy focused on high-level organic growth strategies for B2B and ecommerce businesses. Based on site metadata, the brand is identified as **kk.coach**, with **Krisztian__Kiss** listed as a main entity and Twitter creator. The site targets an audience in the **United States**, specializing in an integrated approach that combines traditional SEO with emerging **Generative Engine Optimization (GEO)**, UX, and CRO. The site profile indicates a high level of grounding confidence in its mission to turn search visibility into revenue.\n\nThe primary keyword targeted is **\"organic growth consultant,\"** supported by a topic cluster centered on **Organic Growth Strategy & Search Optimization**. Secondary keywords like **\"SEO and GEO consultant\"** and **\"B2B organic growth system\"** highlight the page's focus on data-driven, multi-channel visibility. The content is substantial, with over 1,800 words of semantic HTML5 content, demonstrating a high level of topical authority in AI-driven visibility and structured growth systems.\n\nTechnically, the page is healthy, utilizing **semantic HTML5** for structure, which resulted in a high main content confidence score of 0.95. It achieves a perfect **100/100 SEO score** and **100/100 Best Practices score** on both mobile and desktop via Google PageSpeed Insights. While the indexing status is officially \"unknown\" due to tool limitations, the technical architecture (HTTPS, canonicals, and structured meta tags) suggests a site that is well-prepared for search engine crawling and indexing. \n\nPerformance is the primary area for improvement, with PageSpeed scores of **79 on mobile** and **70 on desktop**. While accessibility is strong at 97, the performance lag suggests potential issues with heavy assets or script execution that could impact user experience and Core Web Vitals. The content quality is high, with clear headings and a commercial intent that aligns well with the \"organic growth\" topic cluster.\n\n### Top Actionable Findings:\n1.  **Optimize Performance:** Improve the desktop performance score (currently 70) by addressing render-blocking resources or optimizing image assets to better align with Core Web Vitals.\n2.  **Double Down on GEO:** Since \"GEO\" (Generative Engine Optimization) is a primary differentiator but has lower traditional search volume, create more educational content around this specific entity to capture early-mover advantage in AI search.\n3.  **Enhance Schema Markup:** While the site has a high SEO score, explicitly defining the relationship between **Krisztian__Kiss** and the brand through **Person** and **ProfessionalService** schema could further strengthen E-A-T (Expertise, Authoritativeness, and Trustworthiness) signals.\n4.  **Conversion Optimization:** Given the high word count, ensure that clear, distinct calls-to-action (CTAs) are distributed throughout the semantic sections to capitalize on the \"commercial\" intent identified."
+}

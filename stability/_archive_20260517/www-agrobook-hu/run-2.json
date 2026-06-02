@@ -1,0 +1,48 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 2,
+  "duration_s": 75.2,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 4749,
+      "candidates": 916,
+      "total": 5665,
+      "calls": 3
+    },
+    "adk_in": 11625,
+    "adk_out_eff": 710,
+    "in": 16374,
+    "out": 1626
+  },
+  "cost_usd": 0.013065,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Cumulative Layout",
+    "Cumulative Layout Shift",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Mobile Performance",
+    "Mobile Performance Optimization",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "UI Tweaks"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is a specialized Hungarian e-commerce platform operated by **Agrobook.hu Kft.**, focusing on agricultural machinery parts and advanced farming technology like the Terranav automatic steering systems. The site successfully targets a transactional B2B and B2C audience in Hungary, established through a clear industry focus on agricultural equipment (Claas, Fendt, Amazone). The brand identity is well-defined with physical location data in Csávoly and a professional presence, though user confirmation of the target country is always recommended for regional SERP depth, despite the clear Hungarian language focus.\n\nThe primary keyword cluster revolves around **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop) and high-intent technical terms like **\"automata kormány\"** (automatic steering). The content strategy effectively bridges general replacement parts with high-value technical solutions. However, the site's semantic structure could be further optimized; while the `main_content` confidence is high (0.95), the word count is relatively low (approx. 316 words), suggesting that product category descriptions could be expanded to capture more long-tail \"how-to\" or compatibility-based search queries.\n\nTechnically, the site is healthy with a secure HTTPS implementation and valid schema for an `Organization`. It avoids common pitfalls like massive page weights (staying well under the 2MB Googlebot threshold), but performance is a significant bottleneck. Mobile performance is particularly weak with a score of **45/100**, indicating potential issues with Largest Contentful Paint (LCP) or Cumulative Layout Shift (CLS) that could hinder mobile rankings in a sector where field-based mobile searches are likely common. Desktop performance is better (64/100) but still leaves room for optimization.\n\n### Top Actionable Findings:\n*   **Mobile Performance Optimization:** Prioritize improving mobile Core Web Vitals (specifically LCP). The current score of 45 is a critical barrier for mobile-first indexing and user experience in the field.\n*   **Content Expansion:** Increase the textual depth of the homepage and main category pages. Expanding the current 316 words to include more detailed guides on part compatibility or steering system benefits will improve GEO/AEO visibility.\n*   **Targeted Landing Pages:** While \"automata kormány\" is a secondary keyword, it carries high commercial value. Developing a dedicated, content-rich landing page for the Terranav system (rather than just a product listing) could capture higher-intent technical traffic.\n*   **Accessibility & UI Tweaks:** With accessibility scores in the 88-91 range, minor improvements to color contrast or aria-labels for navigation elements would ensure a \"best-in-class\" technical profile."
+}

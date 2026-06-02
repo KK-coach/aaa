@@ -1,0 +1,63 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 1,
+  "duration_s": 84.2,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2462,
+      "candidates": 718,
+      "total": 3606,
+      "calls": 3
+    },
+    "adk_in": 15421,
+    "adk_out_eff": 1755,
+    "in": 17883,
+    "out": 2899
+  },
+  "cost_usd": 0.017639,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "App Router",
+    "Bot Blocking",
+    "Cloud Deployment",
+    "Edge Middleware",
+    "Enhance Entity",
+    "Enhance Entity Density",
+    "Generative Engine",
+    "Generative Engine Optimization",
+    "Increase Semantic",
+    "Increase Semantic Text Volume",
+    "Next.js App Router",
+    "Optimize Heading",
+    "Optimize Heading Structure",
+    "PageSpeed Insights",
+    "Resolve Lighthouse",
+    "Serverless Functions",
+    "Single Page",
+    "Single Page Application",
+    "Text Volume",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "Vercel Platform"
+  ],
+  "summary_markdown": "## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel is clearly identified as a leading brand in the **cloud computing and deployment platform** industry, specifically targeting a **B2B audience** of developers and engineering teams. The page is highly specialized, focusing on the \"Vercel Platform\" and its associated ecosystem (e.g., Speed Insights, AI Gateway, Edge Requests). While the target country (United States) and language (English) are well-defined, the site profile suggests a strong focus on technical users already familiar with the Vercel brand.\n\nThe primary keyword targeted is **\"Vercel Platform,\"** with secondary emphasis on **\"production deployment\"** and **\"frontend cloud platform.\"** However, there is a **high keyword gap severity**. The page is heavily optimized for branded terms but lacks descriptive, non-branded SEO headers (H1/H2) that would capture users searching for broader solutions like \"managed frontend infrastructure\" or \"CI/CD for Next.js.\" The topic cluster is firmly \"Cloud Deployment and Infrastructure,\" yet the content relies heavily on internal product nomenclature rather than general industry problem-solving terms.\n\nTechnically, the page utilizes the **Next.js App Router**, behaving as a Single Page Application (SPA). This results in a low main content confidence score (0.3) for traditional crawlers, as the content is dynamically rendered. While the site uses HTTPS and valid canonicals, the **low word count (approximately 38-116 words)** and sparse heading structure pose a risk for Googlebot’s content understanding. Furthermore, the PageSpeed Insights tool encountered a `FAILED_DOCUMENT_REQUEST`, suggesting that Vercel’s bot protection or server-side rendering configuration might be aggressively blocking automated audit tools, which could potentially hinder some search engine discovery processes.\n\nContent quality is currently a weakness from a traditional SEO perspective. The page is \"content limited,\" meaning it lacks the semantic depth and volume of text required for high-authority ranking on non-branded queries. The headers are primarily product names rather than descriptive benefits or search-intent-driven phrases. While the user experience is likely sleek and visual, the lack of alt text coverage and thin textual descriptions limits its visibility for GEO/AEO (Generative Engine Optimization) where AI agents look for explicit, descriptive text to summarize services.\n\n### Top Actionable Findings:\n*   **Increase Semantic Text Volume:** Expand the on-page copy to include more descriptive, non-branded terminology (e.g., \"automated frontend CI/CD,\" \"serverless infrastructure management\") to improve visibility for general industry searches.\n*   **Optimize Heading Structure:** Replace or supplement product-name headers with H1s and H2s that include primary and long-tail keywords to bridge the \"high severity\" keyword gap.\n*   **Resolve Lighthouse/Bot Blocking:** Investigate why performance tools (Lighthouse/PageSpeed) are being aborted. Ensuring these tools can crawl the site is crucial for monitoring Core Web Vitals, which are critical for SEO.\n*   **Enhance Entity Density:** Add more explicit definitions and descriptions of core technologies (e.g., Edge Middleware, Serverless Functions) to move beyond \"content limited\" status and provide more context for AI-driven search agents."
+}

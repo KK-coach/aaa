@@ -1,0 +1,455 @@
+{
+  "slot1_agrobook": {
+    "audit_id": "b4908500-7728-4290-b320-eb030ba2179a",
+    "url": "https://agrobook.hu",
+    "page_type": "homepage",
+    "gt": {
+      "h1_count": 0,
+      "total_headings": 0,
+      "alt_pct": 100.0,
+      "exceeds_2mb": false
+    },
+    "in_tok": 2133,
+    "out_tok": 2861,
+    "latency_s": 35.195,
+    "cost_official": 0.028949,
+    "cost_module_rates": 0.00965,
+    "hallucinations": [
+      "total_headings claim 2 vs gt 0",
+      "total_headings claim 3 vs gt 0"
+    ],
+    "result": {
+      "macro_structure": {
+        "structured_finding": "The homepage of Agrobook.hu utilizes standard HTML5 landmark elements, including nav, main, header, and footer, which establishes a solid foundation for search engine crawlers and assistive technologies. However, with a raw HTML size of 955,187 bytes and a high density of interactive elements (45 buttons and 161 ARIA interactive elements), the page's content-to-chrome ratio is heavily skewed toward navigation and interactive widgets rather than structured editorial content. While the presence of the main landmark successfully isolates the primary content area, the complete lack of any heading elements within this structure severely weakens the semantic hierarchy of the layout.",
+        "confidence_0_1": 0.95,
+        "justification": "The presence of all major landmarks (nav, main, header, footer) is confirmed by the ground truth measurements. The high raw HTML size (nearly 1MB) combined with 161 ARIA interactive elements indicates a complex, script-heavy, or markup-heavy layout typical of B2B e-commerce portals, which can dilute the core content if not carefully managed.",
+        "recommendation": "1. Optimize the raw HTML payload by minifying code, removing redundant inline styles, and lazy-loading non-critical interactive components to bring the page size down from 955 KB.\n2. Ensure that the main element contains a clear, logical flow of content sections, each introduced by a semantic heading (which is currently entirely missing).\n3. Audit the 161 ARIA interactive elements to ensure they are not creating keyboard traps or accessibility barriers for B2B buyers using assistive technologies.",
+        "educational_context": "Macro structure refers to the high-level semantic organization of a webpage using standardized HTML5 landmarks. These landmarks help search engine crawlers and assistive technologies quickly identify the header, primary navigation, main content, and footer. A clean macro structure improves crawl efficiency, indexation accuracy, and user accessibility by separating the core content from repetitive site-wide navigation."
+      },
+      "heading_semantics": {
+        "structured_finding": "The homepage completely lacks any HTML heading elements (h1 through h6), resulting in a total heading count of zero. This is a critical SEO and accessibility failure, as there is no h1 to establish the primary topic of the page (Agrobook.hu Kft. as a B2B agricultural e-commerce platform) and no subheadings to organize the content sections. Search engines are forced to rely on flat text, lists, and visual styling to guess the hierarchy and topical relevance of the page's sections.",
+        "confidence_0_1": 1.0,
+        "justification": "The absolute absence of headings (total_headings=0) is a severe structural deficit for a homepage, especially for a B2B e-commerce site where clear categorization and brand positioning are vital.",
+        "recommendation": "1. Add a single, unique h1 at the top of the main content area containing the primary target keyword and brand name (e.g., 'Agrobook.hu – Mezőgazdasági Webáruház és B2B Kereskedelem').\n2. Structure the homepage sections (e.g., featured products, categories, about us, latest news) using logical h2 headings.\n3. Use h3 headings for sub-sections or product names within grids to establish a clear, nested hierarchy without skipping levels.",
+        "educational_context": "Headings (h1-h6) establish the semantic hierarchy of a webpage, acting as a table of contents for search engines and users. The h1 tag signals the primary topic of the page, while subsequent headings organize subtopics. Proper heading nesting helps search engines understand the relationships between different content blocks, which is crucial for ranking on complex, multi-topic queries and enabling voice search or answer engine extraction."
+      },
+      "above_the_fold": {
+        "structured_finding": "The above-the-fold area of this B2B e-commerce homepage lacks a clear, text-based semantic value proposition due to the complete absence of heading elements. While the page is highly interactive with numerous buttons and ARIA elements, the lack of an h1 means the immediate visual and structural hook for B2B buyers is likely reliant on images or styled non-semantic text. This reduces the page's ability to immediately communicate its core business model (agricultural shopping/B2B) to both search engine crawlers and first-time visitors within the critical first few seconds.",
+        "confidence_0_1": 0.9,
+        "justification": "Without headings, any above-the-fold value proposition is structurally invisible as a heading to search engines. The high button count (45) suggests a highly interactive, product-heavy layout that likely dominates the initial viewport, potentially overwhelming users without a clear, text-based guiding headline.",
+        "recommendation": "1. Implement a prominent, above-the-fold hero section featuring the new h1 heading that clearly states the B2B agricultural value proposition.\n2. Place a primary, high-contrast Call to Action (CTA) button (e.g., 'Böngészés a Termékek Között' or 'Regisztráció Partnereknek') immediately below the hero headline.\n3. Ensure that any background images in the hero section load quickly and have descriptive alt text, maintaining the site's excellent 100% alt text coverage.",
+        "educational_context": "The above-the-fold area is the first content visible to a user before scrolling. For e-commerce and B2B sites, this space must immediately communicate the brand's value proposition, establish trust, and present a clear primary Call to Action (CTA). Search engines heavily weigh above-the-fold content to determine user intent match and page quality, penalizing layouts that push core content down in favor of excessive ads or non-informative elements."
+      },
+      "micro_semantics": {
+        "structured_finding": "The page exhibits a strong foundation in some micro-semantic areas, notably achieving 100% alt text coverage across all 43 images, which is exceptional for an e-commerce site. It also utilizes 17 unordered lists (ul) containing 67 list items (li), which is excellent for structuring product features, categories, or navigation links. However, the inline emphasis is extremely sparse, with only 17 strong tags and 1 b tag, and no use of em or other rich semantic elements like figure, figcaption, or blockquote to add depth to the content.",
+        "confidence_0_1": 0.95,
+        "justification": "The data shows excellent image accessibility (43/43 alt tags) and healthy list usage, but a very limited palette of inline semantic tags. This suggests that while basic accessibility is handled well, the textual content lacks the rich semantic formatting that helps search engines parse emphasis and context.",
+        "recommendation": "1. Maintain the 100% image alt text coverage by ensuring all future product and promotional images continue to have descriptive, keyword-relevant alt attributes.\n2. Use strong and em tags strategically within body copy to emphasize key B2B benefits, shipping terms, or product specifications, rather than relying solely on CSS styling.\n3. Wrap product images and their captions in figure and figcaption elements to provide explicit semantic association between images and their text descriptions.",
+        "educational_context": "Micro-semantics involve the use of fine-grained HTML tags (like strong, em, ul, ol, figure, and cite) to provide precise meaning to specific words, lists, and media elements. These tags signal to search engines which pieces of information are highly important, structured, or related. Rich micro-semantics improve the machine-readability of content, making it easier for search engines to extract snippets, bullet points, and structured answers for search results."
+      },
+      "inline_link_semantics": {
+        "structured_finding": "With 45 buttons and 161 ARIA interactive elements, the homepage is highly interactive, suggesting a dense network of internal links to product categories, brand pages, and B2B services. However, the high volume of interactive elements raises the risk of redundant or non-descriptive anchor texts (such as 'Részletek' or 'Kosárba') which fail to pass meaningful SEO value (anchor text equity) to destination pages. The lack of headings further compounds this, as links are not contextualized within well-defined, themed content blocks.",
+        "confidence_0_1": 0.85,
+        "justification": "A B2B e-commerce homepage with 161 interactive elements likely has a complex navigation and product grid. If these links rely on generic button text or icons without descriptive ARIA labels, search engines struggle to understand the topical relevance of the linked pages.",
+        "recommendation": "1. Audit all internal links and buttons to ensure they use descriptive anchor text (e.g., 'Összes Vetőmag Megtekintése' instead of 'Tovább' or 'Kattintson ide').\n2. Ensure all icon-only links or buttons have explicit, descriptive aria-label attributes to maintain accessibility and search engine understanding.\n3. Apply rel='noopener noreferrer' to any external links opening in new tabs to protect user security and performance.",
+        "educational_context": "Inline links and anchor texts are critical for distributing 'link equity' (ranking power) throughout a website and establishing a logical site architecture. Descriptive anchor text tells search engines exactly what the destination page is about, boosting its ranking potential for those keywords. Properly configured link attributes (like rel and target) also ensure security, crawl efficiency, and a seamless user experience."
+      },
+      "forms_conversion_points": {
+        "structured_finding": "As a B2B e-commerce homepage, conversion points are critical, and the presence of 45 buttons and 161 ARIA interactive elements indicates a highly transactional interface. These likely include quick-add-to-cart buttons, product filters, and B2B registration or inquiry forms. However, without structured headings to guide users through the conversion funnel, the path to conversion may feel visually cluttered or semantically confusing to search engines evaluating the page's transactional intent.",
+        "confidence_0_1": 0.85,
+        "justification": "B2B e-commerce requires clear, low-friction conversion paths (e.g., bulk ordering, quote requests, account registration). The high density of interactive elements suggests a feature-rich interface, but it must be structured logically to prevent user fatigue and ensure search engines recognize the primary conversion funnels.",
+        "recommendation": "1. Ensure that primary B2B conversion forms (like a partner registration or bulk quote request form) have clearly associated label elements for every input field.\n2. Group related form fields using fieldset and legend tags to improve semantic clarity and accessibility.\n3. Optimize the primary CTA buttons by ensuring they are actual HTML button or input type='submit' elements rather than generic styled div tags, ensuring they are fully crawlable and interactive.",
+        "educational_context": "Conversion points, such as forms and Call-to-Action (CTA) buttons, are the bridge between traffic and business revenue. For search engines, clear, accessible, and semantically marked-up forms signal a high-quality, user-centric transaction experience. Proper form semantics (using labels, fieldsets, and clear button types) not only boost conversion rates by reducing user friction but also help search engines understand the transactional capabilities of the page."
+      },
+      "schema_entity": {
+        "structured_finding": "The page successfully implements structured data that matches its page type, with verified 'Organization' and 'WebSite' schema types present. It also includes 2 schema actions, which likely correspond to search actions or transactional capabilities. This provides search engines with explicit, machine-readable metadata about Agrobook.hu Kft. as an organization and the website itself, helping to establish brand authority and eligibility for rich snippets in search results.",
+        "confidence_0_1": 0.95,
+        "justification": "The ground truth confirms the presence of correct schema types and actions. This is a strong point for the site, though it can be further enhanced to better represent its B2B e-commerce nature.",
+        "recommendation": "1. Expand the 'Organization' schema to include detailed B2B contact points, social media profiles (sameAs), and local business details if applicable.\n2. Implement 'Store' or 'OnlineBusiness' schema alongside 'Organization' to explicitly signal the e-commerce nature of the business to search engines.\n3. Integrate 'Product' schema on the homepage for featured products, including nested 'Offer' and 'AggregateRating' data to enable rich product snippets directly from homepage listings.",
+        "educational_context": "Schema markup (structured data) is a standardized vocabulary (Schema.org) added to a website's HTML to help search engines understand its content and context. By explicitly defining entities (like Organizations, Products, or Events) and their relationships, schema markup feeds search engines' Knowledge Graphs. This dramatically improves the site's visibility through rich snippets, interactive search results, and enhanced performance in AI-driven answer engines."
+      }
+    },
+    "char_lens": {
+      "macro_structure": {
+        "structured_finding": 685,
+        "justification": 343,
+        "recommendation": 501,
+        "educational_context": 421
+      },
+      "heading_semantics": {
+        "structured_finding": 484,
+        "justification": 195,
+        "recommendation": 437,
+        "educational_context": 442
+      },
+      "above_the_fold": {
+        "structured_finding": 577,
+        "justification": 312,
+        "recommendation": 468,
+        "educational_context": 451
+      },
+      "micro_semantics": {
+        "structured_finding": 538,
+        "justification": 308,
+        "recommendation": 496,
+        "educational_context": 464
+      },
+      "inline_link_semantics": {
+        "structured_finding": 534,
+        "justification": 271,
+        "recommendation": 429,
+        "educational_context": 426
+      },
+      "forms_conversion_points": {
+        "structured_finding": 496,
+        "justification": 325,
+        "recommendation": 465,
+        "educational_context": 465
+      },
+      "schema_entity": {
+        "structured_finding": 475,
+        "justification": 193,
+        "recommendation": 486,
+        "educational_context": 465
+      }
+    }
+  },
+  "slot2_kkcoach": {
+    "audit_id": "2a8c0b20-0635-4a67-9868-ff71eb08f721",
+    "url": "https://kk.coach",
+    "page_type": "homepage",
+    "gt": {
+      "h1_count": 1,
+      "total_headings": 45,
+      "alt_pct": 50.0,
+      "exceeds_2mb": false
+    },
+    "in_tok": 2130,
+    "out_tok": 2691,
+    "latency_s": 30.044,
+    "cost_official": 0.027414,
+    "cost_module_rates": 0.009138,
+    "hallucinations": [],
+    "result": {
+      "macro_structure": {
+        "structured_finding": "The page features a solid macro semantic layout with a dedicated <main> landmark, <header>, <nav>, and <article> elements. However, the standard <footer> landmark is notably absent from the detected landmark list, which can disrupt screen readers and search engine parsers looking for standard page boundaries. The content-to-chrome ratio is highly favorable, with a lightweight raw HTML size of 87,314 bytes indicating clean, non-bloated code. The presence of <article> suggests structured content blocks, but the lack of a semantic footer is a key structural gap.",
+        "confidence_0_1": 0.95,
+        "justification": "The presence of 'nav', 'main', 'article', and 'header' landmarks is excellent for accessibility and machine readability, but the omission of 'footer' from the landmark list indicates that the bottom of the page is likely wrapped in a generic <div> instead of a semantic <footer> tag. The 87KB file size confirms a highly optimized, fast-loading macro structure.",
+        "recommendation": "1. Locate the bottom section of the homepage template containing copyright, privacy links, and social icons.\n2. Replace the wrapping <div> or <section> tag with a semantic <footer> element to complete the landmark suite.\n3. Ensure the <nav> element inside the header has an aria-label=\"Primary\" to distinguish it if any other navigation blocks are added.",
+        "educational_context": "Macro structure refers to the high-level HTML landmarks (like header, nav, main, and footer) that define a webpage's layout. For search engines and assistive technologies, these landmarks act as a map, allowing them to instantly separate global navigation (\"chrome\") from the unique main content. A clean macro structure improves crawl efficiency and helps search engines index the core content accurately."
+      },
+      "heading_semantics": {
+        "structured_finding": "The page demonstrates an exceptionally well-organized heading hierarchy with exactly one <h1> tag and a total of 45 headings. Crucially, there are zero heading level skips (e.g., jumping from H2 to H4), which represents an ideal implementation of nested semantic structures. With 45 total headings, the page is highly granular, though we must ensure that this high density of headings contains descriptive, keyword-rich text rather than generic phrases. This structure provides an excellent framework for search engines to parse the page's topical sections.",
+        "confidence_0_1": 1.0,
+        "justification": "Having exactly one H1 and zero level skips across 45 headings is a rare and perfect technical score. It indicates a highly disciplined development process. The only potential risk is heading dilution if the 45 headings are over-segmented or contain non-descriptive text.",
+        "recommendation": "1. Audit all 45 headings to ensure they contain descriptive, B2B-focused keywords related to business coaching and consulting (e.g., \"Executive Coaching\", \"B2B Business Strategy\") rather than generic text like \"Read More\" or \"Our Process\".\n2. Maintain this strict nesting hierarchy (H1 -> H2 -> H3) during any future content updates or page redesigns.",
+        "educational_context": "Headings (H1-H6) establish a visual and semantic hierarchy on a page. Search engines use them to understand the main topics (H1) and subtopics (H2-H6) of the content. A logical, unskipped heading structure makes it easier for search crawlers to index the page and extract featured snippets for voice search and AI answer engines."
+      },
+      "above_the_fold": {
+        "structured_finding": "The above-the-fold area successfully establishes the brand identity for kk.coach with a single, clear <h1> heading that anchors the page's primary value proposition. As a B2B service homepage, the immediate hero area must instantly communicate the coaching specialization and provide a direct path to engagement. While the page features 7 buttons and 31 interactive ARIA elements overall, the above-the-fold area needs to ensure its primary call-to-action (CTA) is prominent, visually distinct, and optimized for high-intent B2B buyers. The lightweight 87KB page size ensures that this critical initial viewport loads almost instantly, minimizing bounce rates.",
+        "confidence_0_1": 0.9,
+        "justification": "For a B2B coaching service, the above-the-fold area is the handshake. The technical metrics show a fast-loading page (87KB) with a single H1, meaning the core message is delivered immediately without layout shifts or slow-loading framework scripts.",
+        "recommendation": "1. Verify that the single <h1> in the hero section explicitly mentions \"Business Coaching\" or \"Executive Coaching\" alongside the brand kk.coach to capture immediate intent.\n2. Position a high-contrast primary CTA button (e.g., \"Book a Discovery Call\") directly beneath the H1 above the fold.\n3. Ensure the hero image (if present) uses the one available alt text slot or is properly optimized to load instantly.",
+        "educational_context": "Above-the-fold content is the first thing a user sees before scrolling. For SEO and user experience, this area must immediately answer what the page is about, who it is for, and what action they should take. A clear value proposition and an obvious call-to-action in this space reduce bounce rates and signal high relevance to search engine algorithms."
+      },
+      "micro_semantics": {
+        "structured_finding": "The page exhibits rich micro-semantic markup, utilizing 15 <strong> tags and 8 <em> tags to apply inline emphasis to key terms and phrases. Additionally, the content is structured using 6 unordered lists (<ul>) containing 28 list items (<li>), which helps break down complex B2B service offerings into digestible points. However, there are no definition lists (<dl>) or ordered lists (<ol>) present. The most significant micro-semantic gap is the image alt text coverage, which stands at a low 50.0% (only 1 out of 2 images has an alt attribute), limiting accessibility and image search optimization.",
+        "confidence_0_1": 1.0,
+        "justification": "The list and emphasis counts show a healthy, human-readable text structure. However, the 50% alt text coverage is a clear, objective deficiency that directly impacts image SEO and screen-reader accessibility.",
+        "recommendation": "1. Identify the single image missing an alt attribute and add a descriptive, keyword-conscious alt text (e.g., \"kk.coach business coaching session with client\").\n2. Review the 15 <strong> and 8 <em> tags to ensure they are emphasizing high-value keywords and semantic entities rather than generic styling.\n3. Consider converting any step-by-step processes or methodologies into an ordered list (<ol>) to signal sequential importance to search engines.",
+        "educational_context": "Micro-semantics involve using specific HTML tags (like strong, em, lists, and alt attributes) to give precise meaning to text and media. Search engines use these micro-signals to understand context, emphasis, and relationships within the content. Proper micro-semantics improve accessibility and help search engines index content for rich snippets and visual search."
+      },
+      "inline_link_semantics": {
+        "structured_finding": "With 31 interactive ARIA elements and 7 buttons, the page has a highly interactive profile, but the semantic quality of its inline links requires careful optimization. For a national B2B service like kk.coach, internal links must use descriptive, anchor text that passes strong topical authority to deeper service pages. Generic anchor texts or over-reliance on non-semantic button elements can dilute the link equity. Furthermore, any external links must be audited to ensure they use secure attributes and do not leak authority unnecessarily.",
+        "confidence_0_1": 0.85,
+        "justification": "The high number of ARIA interactive elements (31) suggests a highly dynamic or accessible interface, but we must ensure that standard <a> tags are used for navigation rather than relying solely on javascript-driven button elements, which search crawlers may struggle to follow.",
+        "recommendation": "1. Audit all inline links to ensure anchor texts are descriptive (e.g., \"Explore our B2B Coaching Services\") instead of generic phrases like \"click here\" or \"learn more\".\n2. Ensure all external links pointing to third-party sites use rel=\"noopener\" or rel=\"noreferrer\" for security and performance.\n3. Verify that key service pages are linked directly from the homepage body text to distribute link equity effectively.",
+        "educational_context": "Inline links are the pathways search crawlers use to navigate and understand the relationship between pages. Descriptive anchor text provides context about the destination page's content, boosting its search rankings. Proper link attributes also protect site security and control the flow of search engine authority (PageRank) across the web."
+      },
+      "forms_conversion_points": {
+        "structured_finding": "As a B2B service provider, the homepage's primary goal is lead generation, supported here by 7 buttons and 31 interactive ARIA elements. However, the technical audit reveals a complete absence of schema actions (schema_actions_count=0), meaning search engines cannot programmatically identify or surface conversion actions (like booking a consultation) directly in search results. The presence of multiple interactive elements suggests a highly engaging user interface, but these must be backed by clear, accessible form fields and structured conversion funnels.",
+        "confidence_0_1": 0.9,
+        "justification": "B2B conversion relies heavily on low-friction contact points. While 7 buttons indicate plenty of CTA options, the lack of schema actions means the site is missing out on advanced search engine integrations (like direct action buttons in SERPs).",
+        "recommendation": "1. Implement a clear, simple lead capture form above the fold or in a highly visible sticky section, using semantic <form>, <input>, and <label> elements.\n2. Integrate PotentialAction schema (such as CommunicateAction or ContactAction) into the JSON-LD structured data to define the primary conversion point for search engines.\n3. Ensure all 7 buttons have explicit, accessible names (using aria-label where necessary) that describe the exact action (e.g., \"Schedule a free consultation\").",
+        "educational_context": "Conversion points are the elements on a page designed to turn visitors into leads or customers. For B2B sites, these are typically contact forms, consultation schedulers, or resource downloads. Optimizing these points with clear labels, accessible forms, and structured data actions helps search engines understand the user journey and can trigger interactive features in search results."
+      },
+      "schema_entity": {
+        "structured_finding": "The page successfully matches its schema page type, containing valid 'WebPage' and 'WebSite' schemas. However, the structured data is highly basic and lacks critical entity-level depth for a national B2B brand. With a schema_actions_count of 0, the schema fails to define any interactive capabilities or service offerings. To compete effectively in AI-driven search and answer engines, kk.coach must expand its schema to explicitly define its business entity, target audience, and specific B2B service catalog.",
+        "confidence_0_1": 0.95,
+        "justification": "While the basic technical validation passes (WebPage/WebSite match), a B2B service homepage requires much richer schema (like ProfessionalService or Organization with Service and offers properties) to establish strong entity relationships in Google's Knowledge Graph.",
+        "recommendation": "1. Upgrade the homepage schema from basic 'WebPage'/'WebSite' to a detailed ProfessionalService or Organization schema.\n2. Add nested Service schemas detailing the specific coaching programs offered, including serviceType, provider, and audience (B2B).\n3. Include sameAs links pointing to official social media profiles and authoritative directory listings to strengthen entity resolution.",
+        "educational_context": "Schema markup is a standardized vocabulary added to a website's HTML to help search engines understand its content and context. By defining explicit entities (like organizations, services, and locations), schema feeds search engine Knowledge Graphs, enabling rich snippets, voice search compatibility, and accurate placement in AI-generated answers."
+      }
+    },
+    "char_lens": {
+      "macro_structure": {
+        "structured_finding": 565,
+        "justification": 361,
+        "recommendation": 354,
+        "educational_context": 406
+      },
+      "heading_semantics": {
+        "structured_finding": 557,
+        "justification": 270,
+        "recommendation": 351,
+        "educational_context": 329
+      },
+      "above_the_fold": {
+        "structured_finding": 660,
+        "justification": 248,
+        "recommendation": 410,
+        "educational_context": 352
+      },
+      "micro_semantics": {
+        "structured_finding": 600,
+        "justification": 208,
+        "recommendation": 451,
+        "educational_context": 366
+      },
+      "inline_link_semantics": {
+        "structured_finding": 544,
+        "justification": 277,
+        "recommendation": 418,
+        "educational_context": 342
+      },
+      "forms_conversion_points": {
+        "structured_finding": 562,
+        "justification": 244,
+        "recommendation": 489,
+        "educational_context": 387
+      },
+      "schema_entity": {
+        "structured_finding": 510,
+        "justification": 267,
+        "recommendation": 389,
+        "educational_context": 349
+      }
+    }
+  },
+  "slot3_aboutyou": {
+    "audit_id": "3f16256f-b315-4288-8d05-4aa2c5fa5cf7",
+    "url": "https://www.aboutyou.hu/c/noi",
+    "page_type": "category_page",
+    "gt": {
+      "h1_count": 1,
+      "total_headings": 1,
+      "alt_pct": 88.6,
+      "exceeds_2mb": false
+    },
+    "in_tok": 2143,
+    "out_tok": 2798,
+    "latency_s": 31.648,
+    "cost_official": 0.028396,
+    "cost_module_rates": 0.009465,
+    "hallucinations": [
+      "total_headings claim 3 vs gt 1"
+    ],
+    "result": {
+      "macro_structure": {
+        "structured_finding": "The page utilizes a highly structured semantic layout with key HTML5 landmarks including nav, main, article, aside, header, and footer. This ensures that search engine crawlers and assistive technologies can easily segment the global navigation, main product grid, and footer elements. However, with a raw HTML size of 1.11 MB (1,109,305 bytes), the page carries a heavy DOM payload, likely due to the extensive product grid and interactive elements (110 buttons, 500 interactive ARIA elements). The content-to-chrome ratio is heavily skewed towards interactive product cards rather than static semantic text.",
+        "confidence_0_1": 0.95,
+        "justification": "The presence of all major landmarks (nav, main, article, aside, header, footer) indicates a modern, accessible layout. However, the massive HTML size of 1.1 MB for a category page suggests potential bloat from inline scripts, heavy SVG icons, or deeply nested divs, which can slow down mobile rendering for B2C fashion shoppers.",
+        "recommendation": "1. Optimize the DOM depth by consolidating nested wrapper divs within the product grid.\n2. Implement lazy loading or pagination for the product cards to reduce the initial raw HTML payload below 500KB.\n3. Ensure the aside element is properly utilized for product filtering (facets) to help search engines understand the faceted navigation structure.",
+        "educational_context": "Macro structure refers to the high-level semantic organization of a webpage using HTML5 landmark elements. Proper use of these landmarks helps search engine crawlers understand which parts of the page represent primary content versus global navigation or footers. This structural clarity improves crawl efficiency, indexing accuracy, and accessibility, which indirectly boosts search visibility and user experience."
+      },
+      "heading_semantics": {
+        "structured_finding": "The page exhibits an extremely sparse heading hierarchy, containing exactly one heading (total_headings=1), which is correctly designated as the h1. While there are no heading level skips, the complete absence of h2, h3, or other subheadings means the page lacks any hierarchical structure to organize its product categories, promotional banners, or editorial sections. For a major e-commerce category page like ABOUT YOU's women's section, this represents a significant missed opportunity to target secondary keywords and structure content for search engines.",
+        "confidence_0_1": 1.0,
+        "justification": "Having only a single H1 on a massive e-commerce category page means that all product grid sections, filter groups, and promotional blocks are styled visually rather than semantically. Search engines rely on a nested heading tree (H1 -> H2 -> H3) to understand the topical relationships of different page sections.",
+        "recommendation": "1. Retain the single H1 for the main category title (e.g., 'Női divat' or 'Női ruházat').\n2. Introduce H2 headings for major page sections, such as 'Népszerű kategóriák' (Popular Categories), 'Kiemelt ajánlatok' (Featured Offers), and 'Szezonális trendek' (Seasonal Trends).\n3. Use H3 headings within product grids or promotional banners to structure specific sub-collections or brand highlights.",
+        "educational_context": "Heading semantics establish a logical, hierarchical outline of a webpage's content. Search engines use headings (H1 through H6) to determine the primary topic of a page and the relative importance of its sub-sections. A well-structured heading hierarchy improves keyword targeting, supports featured snippet extraction, and enhances readability for users scanning the page."
+      },
+      "above_the_fold": {
+        "structured_finding": "The above-the-fold area for this B2C fashion category page is designed to immediately capture user attention, but it must balance visual appeal with semantic clarity. Given the single H1 heading, the primary value proposition is likely delivered via a prominent hero banner or the main category title. However, with 110 buttons and 500 ARIA-interactive elements on the page, the initial viewport is highly interactive, potentially overwhelming users with choices before establishing a clear visual hierarchy. The lack of inline emphasis tags suggests that the above-the-fold copy relies heavily on visual styling rather than semantic HTML to highlight key promotions.",
+        "confidence_0_1": 0.85,
+        "justification": "On an e-commerce category page, the above-the-fold area must quickly communicate the category's identity (Women's fashion) and provide immediate paths to conversion (filters, top subcategories). The high interactive density (500 ARIA elements) suggests a complex UI that needs to load efficiently to prevent layout shifts (CLS) in the critical initial viewport.",
+        "recommendation": "1. Ensure the single H1 is positioned prominently above the fold and rendered using standard HTML text rather than an image.\n2. Optimize the loading of above-the-fold interactive elements (like category quick-links) to ensure they are interactive immediately without causing Cumulative Layout Shift (CLS).\n3. Add a brief, semantically rich introductory paragraph (2-3 sentences) below the H1 to establish topical relevance for 'női divat' (women's fashion) immediately upon loading.",
+        "educational_context": "The above-the-fold area is the first part of a webpage a user sees before scrolling. For search engines and users alike, this area must instantly convey the page's purpose, load rapidly, and present a clear call-to-action (CTA). Optimizing this space reduces bounce rates, improves Core Web Vitals (specifically LCP and CLS), and signals high relevance to search engine algorithms."
+      },
+      "micro_semantics": {
+        "structured_finding": "The page's micro-semantic richness is exceptionally low, with zero instances of inline emphasis tags such as strong, em, b, or i detected in the HTML. While the page utilizes a structured list format with 34 unordered lists (ul) and 136 list items (li), it completely lacks semantic formatting within its textual content. Additionally, while image alt text coverage is decent at 88.6%, there are still 16 images out of 140 that lack alt attributes, which degrades both accessibility and image search optimization.",
+        "confidence_0_1": 0.98,
+        "justification": "The complete absence of inline emphasis tags indicates that any visual bolding or italicization is handled purely via CSS. While visually acceptable, this deprives search engines of semantic clues regarding which terms are most important. Furthermore, 16 missing alt tags on a highly visual fashion site represent lost opportunities for Google Images traffic.",
+        "recommendation": "1. Audit the 16 images missing alt attributes and add descriptive, Hungarian-language alt text (e.g., describing the clothing item, color, and style).\n2. Introduce semantic inline emphasis (<strong> or <em>) within category descriptions or promotional text to highlight key brand names or fashion terms.\n3. Ensure that the 34 unordered lists are used appropriately for navigation menus and product grids, maintaining clean, semantic markup without presentational bloat.",
+        "educational_context": "Micro semantics involve using specific HTML tags (like strong, em, lists, and alt attributes) to provide granular meaning to text and media. These tags help search engines understand the context, emphasis, and relationships of specific words and images. Proper micro-semantic markup enhances accessibility, improves image search visibility, and helps search engines index content more accurately."
+      },
+      "inline_link_semantics": {
+        "structured_finding": "With 500 ARIA-interactive elements and 110 buttons, the page is highly interconnected, likely featuring a dense network of internal links to product detail pages, subcategories, and brand filters. However, the high volume of interactive elements suggests a risk of 'link equity dilution' if not managed carefully. The category page serves as a critical hub for distributing authority across the ABOUT YOU Hungarian domain, meaning the anchor text quality and link attributes (such as rel values) are vital for search engine crawling.",
+        "confidence_0_1": 0.85,
+        "justification": "E-commerce category pages often suffer from generic anchor texts (e.g., 'Megtekintés', 'Részletek' or just image links). With 140 images and a high interactive count, ensuring that links use descriptive text rather than generic buttons is critical for internal PageRank distribution and keyword context.",
+        "recommendation": "1. Ensure all product grid links use the actual product name as the anchor text rather than generic 'Megnézem' (View) buttons.\n2. Verify that any external links or user-generated content links use appropriate rel='nofollow' or rel='sponsored' attributes.\n3. Implement descriptive title attributes or ARIA labels on image-only links to ensure search engines can associate target URLs with descriptive keywords.",
+        "educational_context": "Inline link semantics refer to the structure, anchor text, and attributes of hyperlinks on a page. Search engines use links to discover new pages, understand site architecture, and pass authority (PageRank). Descriptive anchor text provides essential context about the destination page's content, while proper link attributes guide search crawlers on how to treat specific connections."
+      },
+      "forms_conversion_points": {
+        "structured_finding": "As an e-commerce category page, the primary conversion points are the product filters, sorting mechanisms, and 'Add to Cart' or 'Add to Wishlist' buttons. The page features a high density of interactive elements, including 110 buttons, which likely represent these micro-conversion actions. However, there are no explicit schema actions (schema_actions_count=0) defined, meaning search engines cannot easily map these interactive conversion paths directly from search results. The forms and interactive elements must be structured to ensure they do not create crawl traps for search engine bots.",
+        "confidence_0_1": 0.9,
+        "justification": "E-commerce category pages rely heavily on faceted navigation (filters). If these filters are built using standard forms or links without proper crawl controls, they can generate millions of duplicate URLs. The lack of schema actions indicates that search engines are not being programmatically guided through the conversion funnel.",
+        "recommendation": "1. Ensure all product filter forms use AJAX or state management that does not generate unique, crawlable URLs for search bots, preventing index bloat.\n2. Add SearchAction or BuyAction schema markup where applicable to define the primary search and purchase funnels for search engines.\n3. Optimize the 110 buttons to ensure they have clear, accessible labels (using aria-label where necessary) to guide B2C users seamlessly toward checkout.",
+        "educational_context": "Conversion points and forms are the critical touchpoints where users transition from passive browsers to active leads or customers. For search engines, understanding these conversion paths helps determine page utility and user intent. Properly optimized forms and CTAs improve conversion rates, reduce form abandonment, and can be highlighted in search results through interactive rich snippets."
+      },
+      "schema_entity": {
+        "structured_finding": "The page successfully implements structured data that matches its page type, specifically utilizing the ItemList schema type (schema_pagetype_match=True). This is the correct schema implementation for an e-commerce category page, as it allows search engines to understand the list of products displayed. However, the page registers zero schema actions (schema_actions_count=0), indicating a lack of advanced interactive schema integrations. There is also room to expand the schema to include more detailed entity relationships, such as brand associations and product availability signals.",
+        "confidence_0_1": 0.95,
+        "justification": "While the basic ItemList schema is present and correct, a leading e-commerce brand like ABOUT YOU should leverage more advanced schema types (like Product nested within ItemList, BreadcrumbList, and Organization) to maximize its footprint in Google's Knowledge Graph and rich search results.",
+        "recommendation": "1. Enhance the existing ItemList schema by nesting detailed Product schema elements (including price, availability, and review ratings) for each item in the grid.\n2. Implement BreadcrumbList schema to clearly define the page's position within the ABOUT YOU site hierarchy (e.g., Home > Női).\n3. Add Organization schema to the global header/footer to reinforce brand entity signals and social profiles for ABOUT YOU Hungary.",
+        "educational_context": "Schema entity markup (structured data) is a standardized format for providing information about a page and classifying its content. By using schema, websites can explicitly tell search engines what the page content represents (e.g., a product, an organization, or a list). This structured data feeds search engines' Knowledge Graphs, enables rich snippets (like star ratings and prices in search results), and significantly improves visibility in AI-driven answer engines."
+      }
+    },
+    "char_lens": {
+      "macro_structure": {
+        "structured_finding": 609,
+        "justification": 328,
+        "recommendation": 349,
+        "educational_context": 415
+      },
+      "heading_semantics": {
+        "structured_finding": 560,
+        "justification": 313,
+        "recommendation": 396,
+        "educational_context": 373
+      },
+      "above_the_fold": {
+        "structured_finding": 667,
+        "justification": 361,
+        "recommendation": 482,
+        "educational_context": 381
+      },
+      "micro_semantics": {
+        "structured_finding": 513,
+        "justification": 359,
+        "recommendation": 469,
+        "educational_context": 396
+      },
+      "inline_link_semantics": {
+        "structured_finding": 533,
+        "justification": 303,
+        "recommendation": 409,
+        "educational_context": 385
+      },
+      "forms_conversion_points": {
+        "structured_finding": 595,
+        "justification": 331,
+        "recommendation": 439,
+        "educational_context": 395
+      },
+      "schema_entity": {
+        "structured_finding": 588,
+        "justification": 291,
+        "recommendation": 423,
+        "educational_context": 472
+      }
+    }
+  },
+  "slot4_theverge": {
+    "audit_id": "f0416968-e494-4f32-86d6-171df356d98d",
+    "url": "https://www.theverge.com/24106799/x-men-97-review-marvel-disney-plus",
+    "page_type": "news_article",
+    "gt": {
+      "h1_count": 2,
+      "total_headings": 36,
+      "alt_pct": 91.4,
+      "exceeds_2mb": false
+    },
+    "in_tok": 2170,
+    "out_tok": 2714,
+    "latency_s": 30.607,
+    "cost_official": 0.027681,
+    "cost_module_rates": 0.009227,
+    "hallucinations": [],
+    "result": {
+      "macro_structure": {
+        "structured_finding": "The page utilizes a highly structured semantic layout with key HTML5 landmarks including nav, main, article, aside, and footer. The presence of main and article ensures search engines can easily isolate the core review content from global navigation and sidebar elements. However, with 147 buttons and 353 interactive ARIA elements, the content-to-chrome ratio is heavily weighted toward interactive site features rather than pure editorial text. The raw HTML size of 840,831 bytes is well within safe limits but indicates a complex DOM structure typical of Next.js deployments.",
+        "confidence_0_1": 0.95,
+        "justification": "The presence of all major landmarks (nav, main, article, aside, footer) is programmatically confirmed. The high button count (147) and ARIA interactive elements (353) support the finding of a heavy chrome-to-content ratio, which is common for modern media sites but requires careful management to avoid diluting the main content.",
+        "recommendation": "1. Audit the 147 buttons and 353 ARIA interactive elements to ensure they are not cluttering the DOM or delaying the rendering of the primary article content.\n2. Implement lazy-loading or deferred hydration for non-critical interactive elements (like comments or sidebar widgets) using Next.js dynamic imports.\n3. Ensure that the aside landmark only contains secondary, non-essential content to help search engines prioritize the article content.",
+        "educational_context": "Macro structure refers to the high-level semantic organization of a webpage using HTML5 landmark elements. These landmarks help search engine crawlers and assistive technologies understand the layout, distinguishing the primary content from global navigation, sidebars, and footers. A clean macro structure improves crawl efficiency and content extraction accuracy."
+      },
+      "heading_semantics": {
+        "structured_finding": "The page contains a total of 36 headings with zero level skips, indicating a logical progression of content depth. However, there are 2 h1 elements present on the page, which violates the best practice of having a single, unique h1 representing the main topic of the article. The rest of the 36 headings are nested correctly, but the dual h1 structure can confuse search engines regarding the primary title of the review.",
+        "confidence_0_1": 0.98,
+        "justification": "The measurements explicitly state h1_count=2 and level_skips=0 within a total of 36 headings. This confirms a clean nesting structure but a critical flaw at the root level (multiple H1s).",
+        "recommendation": "1. Identify the two h1 elements in the HTML source. Typically, one is the site logo/brand name and the other is the article title ('X-Men '97 review...').\n2. Change the non-article h1 (likely the brand logo or a hidden utility heading) to a div or span styled appropriately, reserving the sole h1 for the article title.\n3. Verify that the remaining 34 headings (h2 through h6) flow logically under the single h1 without introducing any new level skips.",
+        "educational_context": "Heading semantics establish the hierarchical outline of a webpage. A single, unique h1 acts as the document's title, while h2 through h6 act as section and subsection headers. Proper nesting without skips helps search engines understand the relationship between topics and improves accessibility for screen readers."
+      },
+      "above_the_fold": {
+        "structured_finding": "The above-the-fold area for this B2C pop culture review on The Verge immediately establishes the article's identity as a NewsArticle about 'X-Men '97'. However, the presence of dual h1 elements may dilute the immediate visual and semantic hierarchy for search engines scanning the top of the page. The page loads via Next.js without relying heavily on client-side rendering (CSR is unlikely), ensuring that the hero image, title, and initial paragraphs are immediately available in the raw HTML. This fast initial delivery is crucial for capturing user attention and satisfying Core Web Vitals.",
+        "confidence_0_1": 0.9,
+        "justification": "Next.js is detected, but is_csr_likely is false, meaning server-side rendering (SSR) or static site generation (SSG) is used, delivering the above-the-fold content directly in the initial HTML payload. The dual H1s and high interactive element count are key factors here.",
+        "recommendation": "1. Ensure the primary h1 (the article title) is positioned high in the DOM and rendered as plain text in the initial HTML response.\n2. Optimize the hero image associated with the 'X-Men '97' review by ensuring it has a descriptive alt tag (currently 3 out of 35 images lack alt tags; ensure the hero is not one of them) and is preloaded using <link rel='preload'>.\n3. Minimize render-blocking CSS or JS in the head to ensure the Largest Contentful Paint (LCP) occurs within the recommended 2.5-second threshold.",
+        "educational_context": "The above-the-fold (ATF) area is the portion of a webpage visible without scrolling. For SEO and user experience, this area must immediately communicate the page's purpose, load critical visual elements rapidly, and provide a clear value proposition or call to action, directly influencing bounce rates and engagement metrics."
+      },
+      "micro_semantics": {
+        "structured_finding": "The page exhibits moderate micro-semantic richness, utilizing 30 em tags for emphasis but only 1 strong tag. This heavy reliance on italicization (em) over bolding (strong) may under-represent key entities or critical takeaways to search engines looking for strong semantic signals. On the media side, the page features 35 images, with a solid alt text coverage of 91.4% (32 out of 35 images have alt text), leaving 3 images without descriptive text. The list structure is highly active with 42 unordered lists (ul) and 1 ordered list (ol), totaling 153 list items (li), which helps break down complex review details.",
+        "confidence_0_1": 0.95,
+        "justification": "The exact counts of em (30), strong (1), ul (42), ol (1), li (153), and alt text coverage (91.4%, 32/35) are directly pulled from the ground-truth measurements.",
+        "recommendation": "1. Identify the 3 images missing alt text and add descriptive, keyword-rich alt attributes that describe the visual content (e.g., specific characters from X-Men '97).\n2. Review the usage of em versus strong. Convert non-stylistic, highly important keywords or summary points from em to strong to signal key concepts to search crawlers.\n3. Ensure that the 153 list items are used for structured data presentation (like cast lists, episode guides, or review pros/cons) rather than layout purposes.",
+        "educational_context": "Micro semantics involve the use of inline HTML elements (like strong, em, lists, and image alt attributes) to provide granular context to text and media. These elements help search engines understand the nuance, emphasis, and structure of the content, improving the page's eligibility for rich snippets and featured snippets."
+      },
+      "inline_link_semantics": {
+        "structured_finding": "With a highly interactive Next.js framework and 353 ARIA interactive elements, the page likely contains a dense network of inline links connecting this review to other Marvel, Disney Plus, or pop culture content on The Verge. However, the high volume of interactive elements (including 147 buttons) suggests a risk of search engines encountering non-standard link structures (like buttons acting as links) which can hinder link equity flow. The presence of structured navigation and footer landmarks helps guide crawlers, but the inline links within the article body must be strictly semantic a tags.",
+        "confidence_0_1": 0.85,
+        "justification": "The high button count (147) and ARIA interactive elements (353) indicate a complex interactive environment where standard link semantics might be bypassed or obscured by JavaScript-driven interactions.",
+        "recommendation": "1. Audit all 147 buttons to ensure that any element navigating to another URL is coded as a standard <a href='...'> rather than a <button> with a JS click handler.\n2. Ensure all inline links within the review body use descriptive anchor text (e.g., 'our review of Disney Plus' instead of 'click here' or 'read more').\n3. Verify that external links to Disney Plus or Marvel sources use appropriate rel='noopener' or rel='nofollow' attributes where editorially necessary.",
+        "educational_context": "Inline link semantics dictate how links are structured and described within content. Using standard a tags with descriptive anchor text allows search engines to crawl the site effectively, distribute link equity (PageRank), and understand the topical relevance of the linked pages."
+      },
+      "forms_conversion_points": {
+        "structured_finding": "As a publisher/media business model, the primary conversion points on this page are likely newsletter sign-ups, subscription prompts, or affiliate links rather than traditional lead-gen forms. The ground-truth measurements show 0 schema actions, indicating that no interactive search actions (like SearchAction) are defined in the structured data. The high button count (147) suggests numerous micro-conversion points (such as social sharing, comments, or newsletter forms) embedded within the page chrome.",
+        "confidence_0_1": 0.88,
+        "justification": "The business model is publisher_or_media and schema_actions_count=0. The high button count (147) points to a heavy presence of interactive widgets, which typically serve as secondary conversion points on media sites.",
+        "recommendation": "1. Optimize the primary newsletter sign-up form (if present) by ensuring it has clear <label> elements for all input fields and a single, prominent CTA button.\n2. If affiliate links to Disney Plus are present, ensure they are clearly marked with rel='sponsored' to comply with search engine guidelines.\n3. Consider adding a SearchAction schema to the homepage or global schema to enable a sitelink search box in Google search results.",
+        "educational_context": "For media and publisher sites, conversion points focus on user retention (newsletters, subscriptions) and monetization (affiliate links, ads). Optimizing these forms and buttons ensures high conversion rates while maintaining search engine compliance and page performance."
+      },
+      "schema_entity": {
+        "structured_finding": "The page successfully matches its intended schema type, with schema_pagetype_match=True and matched_types=['NewsArticle']. This structured data helps search engines identify the page as an editorial news article, enabling rich snippet features in search results. However, the schema_actions_count is 0, indicating a lack of interactive schema markup. Given the topic domain of Pop Culture and the specific review of 'X-Men '97', there is a significant opportunity to enrich the schema with specific entity relationships (such as the TV series, actors, and creators).",
+        "confidence_0_1": 0.95,
+        "justification": "The measurements confirm schema_pagetype_match=True and matched_types=['NewsArticle'], but also show schema_actions_count=0. This indicates a solid baseline but room for advanced entity-level optimization.",
+        "recommendation": "1. Expand the existing NewsArticle schema to include about or mentions properties pointing to Wikidata or Wikipedia entities for 'X-Men '97', 'Marvel', and 'Disney Plus'.\n2. Integrate Review schema (or nest a Review within the NewsArticle) containing itemReviewed (type TVSeries), reviewRating, and author details to secure star ratings in SERPs.\n3. Ensure the publisher organization schema is fully populated with The Verge's official logo, social profiles, and sameAs links.",
+        "educational_context": "Schema markup (structured data) translates human-readable content into machine-readable data for search engines. By defining explicit entities (people, places, creative works) and their relationships, schema helps search engines build a Knowledge Graph, leading to enhanced search visibility, rich snippets, and better performance in AI-driven answer engines."
+      }
+    },
+    "char_lens": {
+      "macro_structure": {
+        "structured_finding": 578,
+        "justification": 329,
+        "recommendation": 446,
+        "educational_context": 365
+      },
+      "heading_semantics": {
+        "structured_finding": 421,
+        "justification": 187,
+        "recommendation": 452,
+        "educational_context": 315
+      },
+      "above_the_fold": {
+        "structured_finding": 594,
+        "justification": 271,
+        "recommendation": 511,
+        "educational_context": 326
+      },
+      "micro_semantics": {
+        "structured_finding": 617,
+        "justification": 160,
+        "recommendation": 496,
+        "educational_context": 325
+      },
+      "inline_link_semantics": {
+        "structured_finding": 600,
+        "justification": 201,
+        "recommendation": 469,
+        "educational_context": 281
+      },
+      "forms_conversion_points": {
+        "structured_finding": 506,
+        "justification": 216,
+        "recommendation": 434,
+        "educational_context": 272
+      },
+      "schema_entity": {
+        "structured_finding": 566,
+        "justification": 205,
+        "recommendation": 476,
+        "educational_context": 359
+      }
+    }
+  }
+}

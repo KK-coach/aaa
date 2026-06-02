@@ -1,0 +1,2989 @@
+{
+  "results": {
+    "C1": {
+      "slot": "C1",
+      "label": "ProductPage/ecommerce/national/B2C",
+      "audit_id": "5dfb38aa-7e2c-45ea-b570-4f6bb81c39af",
+      "url": "https://emag.hu/lego-classic-creative-bricks-90-darab-10713/pd/D1JS44BBM/",
+      "page_type": "product_page",
+      "business_model": "marketplace",
+      "locality": "national",
+      "audience": "B2C",
+      "ground_truth": {
+        "h1_count": 1,
+        "total_headings": 6,
+        "alt_coverage_pct": 88.9,
+        "has_main": true,
+        "schema_actions_count": 0,
+        "exceeds_2mb": false
+      },
+      "runs": {
+        "V1": {
+          "macro_structure": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 78,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Macro semantic structure is critical for e-commerce to isolate product details from global marketplace navigation.",
+              "key_findings": [
+                "The page correctly implements a single H1 heading with a total of 6 headings.",
+                "A main landmark is present, helping assistive technologies isolate primary content.",
+                "The HTML payload is lightweight at 158 KB, indicating a good content-to-code ratio."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1059,
+            "out_tok": 174,
+            "cost_usd": 0.0010515,
+            "latency_s": 12.603,
+            "hallucinations": []
+          },
+          "heading_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Heading semantics are a universal SEO and accessibility standard, requiring high weight across all B2C marketplace product pages.",
+              "key_findings": [
+                "Single H1 is correctly implemented, ensuring clear page-level topic definition.",
+                "Total of six headings indicates a clean, though potentially minimal, structural hierarchy.",
+                "Heading tree count matches total headings, suggesting consistent nesting without skipped levels."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1059,
+            "out_tok": 171,
+            "cost_usd": 0.0010425,
+            "latency_s": 8.568,
+            "hallucinations": []
+          },
+          "above_the_fold": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Above-the-fold layout is highly critical for B2C marketplace product pages to immediately engage users and drive purchase decisions.",
+              "key_findings": [
+                "Single H1 heading provides clear, immediate product identification above the fold.",
+                "High image alt text coverage (88.9%) ensures strong visual accessibility for product gallery elements.",
+                "Lack of structured schema actions may limit rich snippet interaction directly from search results."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1059,
+            "out_tok": 232,
+            "cost_usd": 0.0012255,
+            "latency_s": 7.419,
+            "hallucinations": []
+          },
+          "micro_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Micro-semantic elements are universally important for accessibility and readability, warranting a high baseline weight.",
+              "key_findings": [
+                "Good use of basic semantic structure with a single H1 and main landmark present.",
+                "Alt text coverage is decent at 88.9%, though some images lack descriptive attributes.",
+                "Inline emphasis and list structures are present but could be optimized for product specifications."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1058,
+            "out_tok": 226,
+            "cost_usd": 0.001207,
+            "latency_s": 6.824,
+            "hallucinations": []
+          },
+          "inline_link_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 70,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Link semantics are universally important for e-commerce crawlability and user navigation safety.",
+              "key_findings": [
+                "Breadcrumb links provide clear hierarchical structure and descriptive anchor texts.",
+                "Product cross-links use relevant titles, aiding search engine discovery.",
+                "External marketplace links require standard security attributes to prevent vulnerability."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 1058,
+            "out_tok": 210,
+            "cost_usd": 0.001159,
+            "latency_s": 8.311,
+            "hallucinations": []
+          },
+          "forms_conversion_points": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "For B2C e-commerce, conversion elements like the primary CTA are critical for revenue.",
+              "key_findings": [
+                "Primary 'Add to Cart' conversion point is highly prominent and optimized for B2C transactions.",
+                "Clear layout supporting immediate purchase decisions with minimal form friction.",
+                "Standard e-commerce funnel signals are present, though secondary actions could be streamlined."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 1057,
+            "out_tok": 171,
+            "cost_usd": 0.0010415,
+            "latency_s": 8.977,
+            "hallucinations": []
+          },
+          "schema_entity": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 35,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Product schema is critical for e-commerce marketplace pages to enable rich search results.",
+              "key_findings": [
+                "No matching product schema or expected page-type structured data was detected.",
+                "Missing critical e-commerce entity markup such as price, availability, and reviews.",
+                "Zero schema actions detected, limiting interactive search result features."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 88.9,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1057,
+            "out_tok": 161,
+            "cost_usd": 0.0010115,
+            "latency_s": 8.069,
+            "hallucinations": []
+          }
+        },
+        "V2": {
+          "technical_semantic_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 62,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 74,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Universal structural integrity is critical for search engine parsing and accessibility.",
+                  "key_findings": [
+                    "Main element is present",
+                    "Page size is well within limits"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Heading hierarchy is a universal SEO standard and must be strictly followed.",
+                  "key_findings": [
+                    "Single H1 present",
+                    "Low total heading count for a complex product page"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 62,
+                  "weight_in_context_0_1": 0.4,
+                  "weight_justification": "Moderate importance for technical semantic index, though crucial for UX.",
+                  "key_findings": [
+                    "Standard layout observed",
+                    "Key elements visible above fold"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "micro_semantics": {
+                  "score_0_100": 71,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Alt text coverage is a universal accessibility and image SEO requirement.",
+                  "key_findings": [
+                    "Good alt text coverage at 88.9%",
+                    "Some images still lack descriptive alt attributes"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 88.9,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "Internal linking structure is moderately important for product discovery.",
+                  "key_findings": [
+                    "Standard link structures used",
+                    "Anchor text optimization could be improved"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.3,
+                  "weight_justification": "Low direct impact on technical semantic index, though vital for transactional success.",
+                  "key_findings": [
+                    "Standard add-to-cart form present",
+                    "Form accessibility is basic"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.6
+                },
+                "schema_entity": {
+                  "score_0_100": 42,
+                  "weight_in_context_0_1": 0.95,
+                  "weight_justification": "Product schema is highly critical for e-commerce rich snippets and search visibility.",
+                  "key_findings": [
+                    "No schema actions detected",
+                    "Schema page type mismatch observed"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 3348,
+            "out_tok": 1334,
+            "cost_usd": 0.005676,
+            "latency_s": 25.253,
+            "hallucinations": []
+          },
+          "ux_conversion_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 74,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.4,
+                  "weight_justification": "Standard structural integrity is important but secondary to direct conversion elements on a product page.",
+                  "key_findings": [
+                    "Main element is correctly implemented.",
+                    "HTML payload size is well within acceptable limits."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "Heading structure provides SEO and accessibility support but has moderate direct impact on conversion.",
+                  "key_findings": [
+                    "Single H1 is present as recommended.",
+                    "Total heading count is low for a complex marketplace product page."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 78,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Critical for B2C e-commerce to display product images, price, and CTA immediately without scrolling.",
+                  "key_findings": [
+                    "Primary product details and buy CTA are positioned for immediate visibility.",
+                    "Layout is optimized for standard desktop and mobile viewports."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.85
+                },
+                "micro_semantics": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal accessibility and image alt text coverage are essential for search and screen readers.",
+                  "key_findings": [
+                    "Alt text coverage is relatively high at 88.9%.",
+                    "Minor image elements lack descriptive alternative text."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 88.9,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal link safety and descriptive anchor text prevent user friction during navigation.",
+                  "key_findings": [
+                    "Most links use descriptive anchors.",
+                    "Some navigational elements rely on generic labels."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "The primary add-to-cart form is the single most important conversion element on a product page.",
+                  "key_findings": [
+                    "Add-to-cart button is highly prominent and interactive.",
+                    "Form submission flow is streamlined for B2C users."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.85
+                },
+                "schema_entity": {
+                  "score_0_100": 50,
+                  "weight_in_context_0_1": 0.3,
+                  "weight_justification": "Schema markup is important for rich snippets but has indirect influence on immediate page conversion.",
+                  "key_findings": [
+                    "Schema page type mismatch detected.",
+                    "No schema actions are defined in the markup."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.88
+            },
+            "in_tok": 3349,
+            "out_tok": 1402,
+            "cost_usd": 0.0058805,
+            "latency_s": 22.041,
+            "hallucinations": []
+          },
+          "ai_geo_readability_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 60,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "General structural health is moderately important for crawlability.",
+                  "key_findings": [
+                    "Main element is present.",
+                    "HTML payload size is well within limits."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 88.9,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Heading structure is a universal requirement for document outline.",
+                  "key_findings": [
+                    "Single H1 heading is correctly implemented.",
+                    "Total of six headings provides a basic outline."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "above_the_fold": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "Visual priority is secondary to semantic structure in this index.",
+                  "key_findings": [
+                    "Standard product layout with primary elements visible."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "micro_semantics": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Alt text coverage is a universal accessibility and semantic standard.",
+                  "key_findings": [
+                    "High image alt text coverage at 88.9%.",
+                    "Some minor images lack descriptive attributes."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 88.9,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "Link safety and structure are standard across e-commerce.",
+                  "key_findings": [
+                    "Basic navigation and product links are functional."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "Form elements are evaluated for basic transactional capability.",
+                  "key_findings": [
+                    "Standard add-to-cart form is present."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 42,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Product schema is highly critical for e-commerce search visibility.",
+                  "key_findings": [
+                    "No schema actions detected.",
+                    "Schema page type match failed."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3346,
+            "out_tok": 1310,
+            "cost_usd": 0.005603,
+            "latency_s": 28.642,
+            "hallucinations": []
+          }
+        },
+        "V3": {
+          "ok": true,
+          "parsed": {
+            "technical_semantic_index": {
+              "score_0_100": 66,
+              "confidence_0_1": 0.88
+            },
+            "ux_conversion_index": {
+              "score_0_100": 72,
+              "confidence_0_1": 0.85
+            },
+            "ai_geo_readability_index": {
+              "score_0_100": 64,
+              "confidence_0_1": 0.87
+            },
+            "per_aspect_evaluations": {
+              "macro_structure": {
+                "score_0_100": 72,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal structural integrity is critical for search engine parsing and accessibility.",
+                "key_findings": [
+                  "Valid main element present.",
+                  "HTML payload size is well within limits.",
+                  "Standard document structure observed."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": 1,
+                  "alt_coverage_pct_claimed": 88.9,
+                  "has_main_claimed": true,
+                  "schema_actions_count_claimed": 0,
+                  "exceeds_2mb_claimed": false
+                },
+                "confidence_0_1": 0.9
+              },
+              "heading_semantics": {
+                "score_0_100": 68,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal heading hierarchy ensures logical document flow and readability.",
+                "key_findings": [
+                  "Single H1 present as required.",
+                  "Total of 6 headings provides basic structure.",
+                  "Heading nesting is moderately consistent."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": 1,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              },
+              "above_the_fold": {
+                "score_0_100": 75,
+                "weight_in_context_0_1": 0.9,
+                "weight_justification": "Crucial for B2C e-commerce product pages to capture immediate user intent.",
+                "key_findings": [
+                  "Product title and primary imagery are prominent.",
+                  "Add-to-cart CTA is visible above the fold.",
+                  "Price and availability are clearly displayed."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.85
+              },
+              "micro_semantics": {
+                "score_0_100": 70,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal micro-semantic elements support accessibility and machine readability.",
+                "key_findings": [
+                  "Good image alt text coverage at 88.9%.",
+                  "Standard semantic tags used for product details.",
+                  "Some presentational elements could be optimized."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": 88.9,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              },
+              "inline_link_semantics": {
+                "score_0_100": 65,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal link safety and descriptive anchor text are essential for UX and SEO.",
+                "key_findings": [
+                  "Descriptive anchor texts used for category links.",
+                  "Link targets are generally secure.",
+                  "Some generic 'read more' links present."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "forms_conversion_points": {
+                "score_0_100": 74,
+                "weight_in_context_0_1": 0.9,
+                "weight_justification": "High importance for marketplace product pages to drive direct purchases.",
+                "key_findings": [
+                  "Add to cart form is functional and clear.",
+                  "Quantity selector is easily accessible.",
+                  "No complex multi-step forms above the fold."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": 0,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.85
+              },
+              "schema_entity": {
+                "score_0_100": 55,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Product schema is highly critical for e-commerce rich snippets.",
+                "key_findings": [
+                  "No schema actions detected.",
+                  "Schema page type match failed.",
+                  "Structured data needs alignment with product type."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": 0,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              }
+            },
+            "overall_summary": "The product page demonstrates solid macro structure and above-the-fold layout optimized for B2C shopping. However, schema entity integration is weak and requires alignment with standard product schemas to improve search visibility.",
+            "overall_confidence_0_1": 0.88
+          },
+          "in_tok": 3670,
+          "out_tok": 1598,
+          "cost_usd": 0.006629,
+          "latency_s": 18.225,
+          "hallucinations": []
+        }
+      }
+    },
+    "C2": {
+      "slot": "C2",
+      "label": "ServicePage/agency/local-or-national/B2B",
+      "audit_id": "b6e1a446-f19a-4c80-9389-7adfbd01da73",
+      "url": "https://www.lab.coop/services/",
+      "page_type": "homepage",
+      "business_model": "b2b_service",
+      "locality": "global",
+      "audience": "B2B",
+      "ground_truth": {
+        "h1_count": 1,
+        "total_headings": 24,
+        "alt_coverage_pct": 93.3,
+        "has_main": false,
+        "schema_actions_count": 0,
+        "exceeds_2mb": false
+      },
+      "runs": {
+        "V1": {
+          "macro_structure": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 58,
+              "weight_in_context_0_1": 0.75,
+              "weight_justification": "Macro structure is key for B2B navigation and accessibility, though partially offset by solid heading hierarchy.",
+              "key_findings": [
+                "Missing semantic <main> landmark element, which negatively impacts accessibility.",
+                "Appropriate heading hierarchy with a single H1 and 24 total headings.",
+                "Efficient page weight under 250KB suggests a favorable content-to-chrome ratio."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1039,
+            "out_tok": 174,
+            "cost_usd": 0.0010415,
+            "latency_s": 10.227,
+            "hallucinations": []
+          },
+          "heading_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Heading structure and H1 presence are universal SEO and accessibility requirements, necessitating a high baseline weight.",
+              "key_findings": [
+                "Single H1 present, meeting baseline SEO and accessibility requirements.",
+                "Total of 24 headings indicates a well-segmented layout, though nesting verification is recommended."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1039,
+            "out_tok": 206,
+            "cost_usd": 0.0011375,
+            "latency_s": 10.527,
+            "hallucinations": []
+          },
+          "above_the_fold": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 65,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Crucial for B2B homepages to capture user attention and convey the core value proposition immediately.",
+              "key_findings": [
+                "Clear hero structure with a single H1 heading establishing the primary service focus.",
+                "Excellent alt text coverage of 93.3% ensures visual hero elements are accessible.",
+                "Missing semantic main element slightly reduces document structure quality above the fold."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1039,
+            "out_tok": 171,
+            "cost_usd": 0.0010325,
+            "latency_s": 10.583,
+            "hallucinations": []
+          },
+          "micro_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 62,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Micro-semantics are universally important for accessibility and SEO, warranting a high baseline weight.",
+              "key_findings": [
+                "Good heading structure with 24 elements, though lacking a main landmark element.",
+                "High image alt text coverage at 93.3% supports visual semantics.",
+                "Opportunity to improve structural clarity by implementing a main landmark and refining inline emphasis."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1038,
+            "out_tok": 169,
+            "cost_usd": 0.001026,
+            "latency_s": 8.115,
+            "hallucinations": []
+          },
+          "inline_link_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.65,
+              "weight_justification": "B2B service pages require clear, accessible navigation and secure external links to establish trust and guide prospects.",
+              "key_findings": [
+                "Link anchor texts are mostly descriptive, supporting basic accessibility.",
+                "External links generally adhere to safety standards, though minor rel attribute optimizations are possible.",
+                "Internal linking depth is appropriate for a standard B2B service directory."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.8
+            },
+            "in_tok": 1038,
+            "out_tok": 167,
+            "cost_usd": 0.00102,
+            "latency_s": 8.671,
+            "hallucinations": []
+          },
+          "forms_conversion_points": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 65,
+              "weight_in_context_0_1": 0.75,
+              "weight_justification": "For a B2B service homepage, conversion points and clear CTAs are highly critical for lead generation, though secondary to primary brand positioning.",
+              "key_findings": [
+                "Clear call-to-action placement is expected for B2B lead acquisition, though the lack of a main landmark may hinder direct accessibility to forms.",
+                "No schema actions were detected, suggesting a missed opportunity to integrate search-directed conversion actions.",
+                "The overall page structure supports multiple service-related touchpoints suitable for a professional B2B audience."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 1037,
+            "out_tok": 255,
+            "cost_usd": 0.0012835,
+            "latency_s": 6.014,
+            "hallucinations": []
+          },
+          "schema_entity": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 38,
+              "weight_in_context_0_1": 0.6,
+              "weight_justification": "Schema is moderately important for B2B entity definition but currently absent.",
+              "key_findings": [
+                "No schema page-type match or structured entity types detected.",
+                "Zero schema actions defined, missing rich snippet opportunities."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 1,
+                "alt_coverage_pct_claimed": 93.3,
+                "has_main_claimed": false,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1037,
+            "out_tok": 191,
+            "cost_usd": 0.0010915,
+            "latency_s": 9.202,
+            "hallucinations": []
+          }
+        },
+        "V2": {
+          "technical_semantic_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 58,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 52,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Universal structural integrity metric, highly weighted across all page types.",
+                  "key_findings": [
+                    "Missing main landmark element reduces structural clarity.",
+                    "Page size is well within acceptable limits under 2MB."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 64,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Universal heading hierarchy metric, critical for document outline and SEO.",
+                  "key_findings": [
+                    "Single H1 present, which aligns with best practices.",
+                    "Total of 24 headings indicates a dense content structure."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "above_the_fold": {
+                  "score_0_100": 50,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the technical semantic index evaluation.",
+                  "key_findings": [
+                    "Not evaluated for this specific index."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.5
+                },
+                "micro_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal accessibility and image semantics metric.",
+                  "key_findings": [
+                    "High alt text coverage of 93.3% on images.",
+                    "Strong baseline for image-level micro-semantics."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 50,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the technical semantic index evaluation.",
+                  "key_findings": [
+                    "Not evaluated for this specific index."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.5
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 50,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the technical semantic index evaluation.",
+                  "key_findings": [
+                    "Not evaluated for this specific index."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.5
+                },
+                "schema_entity": {
+                  "score_0_100": 46,
+                  "weight_in_context_0_1": 0.6,
+                  "weight_justification": "B2B service page context makes structured schema moderately important.",
+                  "key_findings": [
+                    "No schema actions detected.",
+                    "Schema page type match was not established."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.85
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3328,
+            "out_tok": 932,
+            "cost_usd": 0.00446,
+            "latency_s": 23.523,
+            "hallucinations": []
+          },
+          "ux_conversion_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 61,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.1,
+                  "weight_justification": "Low priority for the UX conversion index focus.",
+                  "key_findings": [
+                    "Lacks main landmark element which impacts semantic structure."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.1,
+                  "weight_justification": "Low priority for UX conversion index but important for general readability.",
+                  "key_findings": [
+                    "Single H1 is present with 24 total headings, indicating a dense structure."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Highly critical for B2B service pages to capture user attention immediately.",
+                  "key_findings": [
+                    "Clear value proposition is likely present but visual hierarchy can be improved.",
+                    "Hero area lacks immediate interactive elements."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.1,
+                  "weight_justification": "Low priority for UX conversion index.",
+                  "key_findings": [
+                    "High image alt coverage of 93.3% supports accessibility."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 62,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal requirement for clear navigation and user flow.",
+                  "key_findings": [
+                    "Links generally use descriptive anchor text.",
+                    "Some generic read-more style links may exist in service listings."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Crucial for B2B lead generation and user conversion.",
+                  "key_findings": [
+                    "CTAs are present but could benefit from more descriptive, action-oriented labels.",
+                    "No direct inline form detected above the fold."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 50,
+                  "weight_in_context_0_1": 0.1,
+                  "weight_justification": "Low priority for UX conversion index.",
+                  "key_findings": [
+                    "No schema actions or matched page types detected in ground truth."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 3329,
+            "out_tok": 964,
+            "cost_usd": 0.0045565,
+            "latency_s": 21.621,
+            "hallucinations": []
+          },
+          "ai_geo_readability_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 67,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "Moderate importance for B2B service discovery; lack of main element is a minor structural issue.",
+                  "key_findings": [
+                    "Page size is well under 2MB.",
+                    "Missing semantic main landmark element."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": false,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 78,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Universal aspect. Crucial for document outline and machine readability.",
+                  "key_findings": [
+                    "Exactly one H1 heading present.",
+                    "Good distribution of 24 total headings."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 1,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "above_the_fold": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.75,
+                  "weight_justification": "Important for B2B user engagement and immediate value proposition.",
+                  "key_findings": [
+                    "Standard layout with typical hero area."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "micro_semantics": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal aspect. High alt text coverage supports image accessibility.",
+                  "key_findings": [
+                    "Excellent image alt text coverage at over 93%."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 93.3,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal aspect. Essential for crawler navigation and link equity.",
+                  "key_findings": [
+                    "Links are functional but anchor text descriptive quality varies."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "B2B service pages require clear conversion paths.",
+                  "key_findings": [
+                    "Standard contact options present but form optimization is basic."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "schema_entity": {
+                  "score_0_100": 40,
+                  "weight_in_context_0_1": 0.6,
+                  "weight_justification": "Schema is helpful for B2B entity definition but currently absent.",
+                  "key_findings": [
+                    "No structured schema actions or matching page types detected."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3326,
+            "out_tok": 928,
+            "cost_usd": 0.004447,
+            "latency_s": 32.147,
+            "hallucinations": []
+          }
+        },
+        "V3": {
+          "ok": true,
+          "parsed": {
+            "technical_semantic_index": {
+              "score_0_100": 66,
+              "confidence_0_1": 0.9
+            },
+            "ux_conversion_index": {
+              "score_0_100": 64,
+              "confidence_0_1": 0.8
+            },
+            "ai_geo_readability_index": {
+              "score_0_100": 67,
+              "confidence_0_1": 0.85
+            },
+            "per_aspect_evaluations": {
+              "macro_structure": {
+                "score_0_100": 60,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal structural integrity is critical for search engine parsing and accessibility.",
+                "key_findings": [
+                  "Missing main element reduces semantic clarity.",
+                  "Page size is well within optimal limits under 2MB."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": false,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": false
+                },
+                "confidence_0_1": 0.9
+              },
+              "heading_semantics": {
+                "score_0_100": 75,
+                "weight_in_context_0_1": 0.9,
+                "weight_justification": "Proper heading hierarchy is universally essential for document outline and machine readability.",
+                "key_findings": [
+                  "Single H1 present as recommended.",
+                  "Total of 24 headings provides a detailed content structure."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": 1,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.95
+              },
+              "above_the_fold": {
+                "score_0_100": 65,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Crucial for B2B service landing pages to establish immediate value proposition.",
+                "key_findings": [
+                  "Clear service-oriented messaging above the fold.",
+                  "Call-to-action visibility could be enhanced for better conversion."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "micro_semantics": {
+                "score_0_100": 78,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal accessibility and image context are highly important for search crawlers.",
+                "key_findings": [
+                  "Excellent image alt text coverage at over 93%.",
+                  "Semantic HTML tags are used consistently throughout."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": 93.3,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              },
+              "inline_link_semantics": {
+                "score_0_100": 70,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal link safety and descriptive anchor text ensure crawlability and trust.",
+                "key_findings": [
+                  "Descriptive anchor texts are generally utilized.",
+                  "Link target safety practices are mostly followed."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "forms_conversion_points": {
+                "score_0_100": 58,
+                "weight_in_context_0_1": 0.75,
+                "weight_justification": "B2B service pages rely heavily on clear conversion pathways and contact forms.",
+                "key_findings": [
+                  "Form fields are structured but could benefit from better inline validation.",
+                  "Conversion points are present but lack prominent visual contrast."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "schema_entity": {
+                "score_0_100": 45,
+                "weight_in_context_0_1": 0.7,
+                "weight_justification": "Structured data is moderately important for B2B services to define organization and service entities.",
+                "key_findings": [
+                  "No schema actions detected.",
+                  "Lack of matching schema page types limits rich snippet potential."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": 0,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              }
+            },
+            "overall_summary": "The page demonstrates solid heading structure and excellent image alt coverage, but lacks a semantic main element and structured schema markup. Improving schema integration and adding a main content wrapper will significantly boost technical SEO and machine readability.",
+            "overall_confidence_0_1": 0.87
+          },
+          "in_tok": 3650,
+          "out_tok": 1550,
+          "cost_usd": 0.006475,
+          "latency_s": 22.048,
+          "hallucinations": []
+        }
+      }
+    },
+    "C3": {
+      "slot": "C3",
+      "label": "BlogPost/content_publisher/global/B2C",
+      "audit_id": "f0416968-e494-4f32-86d6-171df356d98d",
+      "url": "https://www.theverge.com/24106799/x-men-97-review-marvel-disney-plus",
+      "page_type": "news_article",
+      "business_model": "publisher_or_media",
+      "locality": "global",
+      "audience": "B2C",
+      "ground_truth": {
+        "h1_count": 2,
+        "total_headings": 36,
+        "alt_coverage_pct": 91.4,
+        "has_main": true,
+        "schema_actions_count": 0,
+        "exceeds_2mb": false
+      },
+      "runs": {
+        "V1": {
+          "macro_structure": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 68,
+              "weight_in_context_0_1": 0.65,
+              "weight_justification": "Macro structure is moderately important for media sites to separate article content from dense navigation and ads.",
+              "key_findings": [
+                "Valid main landmark isolates the primary news content successfully.",
+                "Dual H1 headings create a minor deviation from ideal single-H1 hierarchy.",
+                "Large heading count indicates complex peripheral layout elements."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.75
+            },
+            "in_tok": 1070,
+            "out_tok": 213,
+            "cost_usd": 0.001174,
+            "latency_s": 7.491,
+            "hallucinations": []
+          },
+          "heading_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 62,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Heading hierarchy is a universal SEO and accessibility standard, requiring high weight across all page types.",
+              "key_findings": [
+                "The page contains two H1 elements, which deviates from the single H1 best practice.",
+                "A total of 36 headings indicates a highly segmented content structure.",
+                "The heading tree is extensive, typical for media rich publisher layouts but potentially complex for screen readers."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1070,
+            "out_tok": 228,
+            "cost_usd": 0.001219,
+            "latency_s": 9.143,
+            "hallucinations": []
+          },
+          "above_the_fold": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.7,
+              "weight_justification": "Above-the-fold layout is highly important for media articles to capture attention via headlines and hero imagery, though it lacks transactional CTAs.",
+              "key_findings": [
+                "The page features a clear hero layout typical of Next.js-powered media sites, optimizing initial visual impact.",
+                "Multiple H1 elements (2 detected) may dilute the primary title focus above the fold.",
+                "High image alt text coverage (91.4%) ensures that above-the-fold visual assets are accessible."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 1070,
+            "out_tok": 196,
+            "cost_usd": 0.001123,
+            "latency_s": 6.935,
+            "hallucinations": []
+          },
+          "micro_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Micro-semantics are highly important for editorial news articles to ensure readability, structured quotes, and media presentation.",
+              "key_findings": [
+                "High alt text coverage of 91.4% indicates strong semantic figure and image optimization.",
+                "The page structure uses a valid NewsArticle schema matching its editorial nature.",
+                "Multiple headings (36 total) suggest a well-segmented content layout, though having two H1s is non-standard."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1069,
+            "out_tok": 238,
+            "cost_usd": 0.0012485,
+            "latency_s": 8.841,
+            "hallucinations": []
+          },
+          "inline_link_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Inline link semantics are highly important for editorial credibility and user navigation in news and review articles.",
+              "key_findings": [
+                "Descriptive anchor texts are consistently used throughout the article body to link to related reviews and tags.",
+                "Internal link depth is well-structured, connecting the review to broader topic hubs.",
+                "External links to streaming platforms and production details are contextualized appropriately."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1069,
+            "out_tok": 223,
+            "cost_usd": 0.0012035,
+            "latency_s": 8.958,
+            "hallucinations": []
+          },
+          "forms_conversion_points": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 55,
+              "weight_in_context_0_1": 0.3,
+              "weight_justification": "For a B2C news article on a media site, editorial content and ad engagement take precedence over direct lead-generation forms, reducing the importance of transactional conversion points.",
+              "key_findings": [
+                "Primary conversion focus is on soft actions like newsletter signups and social sharing rather than hard lead-gen forms.",
+                "The absence of intrusive commercial forms preserves the editorial reading experience, matching user expectations for media sites."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.85
+            },
+            "in_tok": 1068,
+            "out_tok": 230,
+            "cost_usd": 0.001224,
+            "latency_s": 6.85,
+            "hallucinations": []
+          },
+          "schema_entity": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 74,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Schema is highly critical for publisher sites to ensure proper indexing in Google News and Discover.",
+              "key_findings": [
+                "Valid NewsArticle schema is present, matching the page type.",
+                "No schema actions were detected, indicating potential for interactive markup additions.",
+                "Structured data aligns well with the editorial nature of the content."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 91.4,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 0,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1068,
+            "out_tok": 213,
+            "cost_usd": 0.001173,
+            "latency_s": 6.842,
+            "hallucinations": []
+          }
+        },
+        "V2": {
+          "technical_semantic_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 73,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 78,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Universal structural health is critical for crawlability and page parsing.",
+                  "key_findings": [
+                    "Main element is present.",
+                    "Page size is well under the 2MB threshold."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "heading_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Heading structure is a universal SEO and accessibility requirement.",
+                  "key_findings": [
+                    "Multiple H1 elements detected.",
+                    "Large heading tree with 36 elements."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "above_the_fold": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "Important for user engagement on media and review pages.",
+                  "key_findings": [
+                    "Standard hero layout for editorial content."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Alt text and micro-formatting are universal accessibility standards.",
+                  "key_findings": [
+                    "High alt text coverage of 91.4%.",
+                    "Good semantic HTML usage."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 91.4,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.75,
+                  "weight_justification": "Links are essential for editorial authority and navigation.",
+                  "key_findings": [
+                    "Standard inline linking practices observed."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.4,
+                  "weight_justification": "Low priority for informational news articles.",
+                  "key_findings": [
+                    "Minimal transactional forms present."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.7
+                },
+                "schema_entity": {
+                  "score_0_100": 80,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Structured data is highly critical for news publishers.",
+                  "key_findings": [
+                    "Valid NewsArticle schema matches page type.",
+                    "No schema actions defined."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3359,
+            "out_tok": 911,
+            "cost_usd": 0.0044125,
+            "latency_s": 20.921,
+            "hallucinations": []
+          },
+          "ux_conversion_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 57,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal baseline for document outline.",
+                  "key_findings": [
+                    "Main content element is present",
+                    "Standard publisher layout with sidebar"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal heading hierarchy and structure.",
+                  "key_findings": [
+                    "Multiple H1 elements detected",
+                    "Large heading tree count of 36"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Crucial for publisher engagement and bounce rate.",
+                  "key_findings": [
+                    "Hero image and title load promptly",
+                    "Ad placements slightly crowd the fold"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal accessibility and image semantics.",
+                  "key_findings": [
+                    "High image alt text coverage at 91.4%",
+                    "Standard semantic elements utilized"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 91.4,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 58,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal link accessibility and context.",
+                  "key_findings": [
+                    "Links integrated naturally in text",
+                    "Some generic anchor text used"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 45,
+                  "weight_in_context_0_1": 0.3,
+                  "weight_justification": "Low priority for editorial news content.",
+                  "key_findings": [
+                    "Newsletter signup is secondary",
+                    "No primary transactional forms"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Highly important for publisher rich snippets.",
+                  "key_findings": [
+                    "NewsArticle schema matches page type",
+                    "No schema actions defined"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3360,
+            "out_tok": 1289,
+            "cost_usd": 0.005547,
+            "latency_s": 24.811,
+            "hallucinations": []
+          },
+          "ai_geo_readability_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 74,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the ai_geo_readability_index.",
+                  "key_findings": [
+                    "Main element is present and contains the primary content."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal heading structure requirements apply to all content pages.",
+                  "key_findings": [
+                    "Multiple H1 elements detected, which is slightly non-standard.",
+                    "A large total of 36 headings provides a detailed outline."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "above_the_fold": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the ai_geo_readability_index.",
+                  "key_findings": [
+                    "Above the fold content loads quickly with standard Next.js optimization."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal accessibility and image alt text coverage requirements.",
+                  "key_findings": [
+                    "High image alt text coverage of over 91% ensures good accessibility."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 91.4,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the ai_geo_readability_index.",
+                  "key_findings": [
+                    "Inline links are descriptive and contextual."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 60,
+                  "weight_in_context_0_1": 0.0,
+                  "weight_justification": "Not included in the ai_geo_readability_index.",
+                  "key_findings": [
+                    "Minimal form elements present on this news article page."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 78,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Highly critical for news articles to establish entity relationships and metadata.",
+                  "key_findings": [
+                    "NewsArticle schema is correctly implemented and matches the page type."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 0,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.95
+                }
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 3357,
+            "out_tok": 935,
+            "cost_usd": 0.0044835,
+            "latency_s": 29.412,
+            "hallucinations": []
+          }
+        },
+        "V3": {
+          "ok": true,
+          "parsed": {
+            "technical_semantic_index": {
+              "score_0_100": 67,
+              "confidence_0_1": 0.9
+            },
+            "ux_conversion_index": {
+              "score_0_100": 64,
+              "confidence_0_1": 0.85
+            },
+            "ai_geo_readability_index": {
+              "score_0_100": 65,
+              "confidence_0_1": 0.9
+            },
+            "per_aspect_evaluations": {
+              "macro_structure": {
+                "score_0_100": 72,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal structural integrity is critical for search engine parsing and accessibility.",
+                "key_findings": [
+                  "Valid main element present",
+                  "HTML size is well under 2MB limit"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": true,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": false
+                },
+                "confidence_0_1": 0.95
+              },
+              "heading_semantics": {
+                "score_0_100": 58,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Heading hierarchy is a universal standard for document outline and readability.",
+                "key_findings": [
+                  "Multiple H1 elements detected",
+                  "Large heading tree with 36 elements"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": 2,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.95
+              },
+              "above_the_fold": {
+                "score_0_100": 65,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Crucial for user engagement on media and news articles.",
+                "key_findings": [
+                  "Hero image and title load quickly",
+                  "Good visual hierarchy above the fold"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "micro_semantics": {
+                "score_0_100": 70,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Alt text coverage is a universal accessibility and semantic requirement.",
+                "key_findings": [
+                  "High image alt text coverage of 91.4%",
+                  "Good semantic markup usage"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": 91.4,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.95
+              },
+              "inline_link_semantics": {
+                "score_0_100": 68,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal standard for crawlability and user navigation.",
+                "key_findings": [
+                  "Descriptive anchor texts used",
+                  "Good link density in article body"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.85
+              },
+              "forms_conversion_points": {
+                "score_0_100": 52,
+                "weight_in_context_0_1": 0.4,
+                "weight_justification": "Low priority for editorial news articles compared to transactional pages.",
+                "key_findings": [
+                  "Minimal conversion forms present",
+                  "Newsletter signup is secondary"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "schema_entity": {
+                "score_0_100": 68,
+                "weight_in_context_0_1": 0.9,
+                "weight_justification": "Highly critical for news articles to be correctly indexed by search engines.",
+                "key_findings": [
+                  "Correct NewsArticle schema type matched",
+                  "No schema actions defined"
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": 0,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.95
+              }
+            },
+            "overall_summary": "The page demonstrates solid technical and semantic foundations with valid NewsArticle schema and high image alt text coverage. However, the presence of multiple H1 elements and low conversion focus slightly impact the overall semantic and UX scores.",
+            "overall_confidence_0_1": 0.9
+          },
+          "in_tok": 3681,
+          "out_tok": 1053,
+          "cost_usd": 0.0049995,
+          "latency_s": 26.22,
+          "hallucinations": []
+        }
+      }
+    },
+    "C4": {
+      "slot": "C4",
+      "label": "LandingPage/b2b_saas/global/B2B",
+      "audit_id": "18c133f2",
+      "url": "https://vercel.com",
+      "page_type": "homepage",
+      "business_model": "b2b_saas",
+      "locality": "global",
+      "audience": "B2B",
+      "ground_truth": {
+        "h1_count": 2,
+        "total_headings": 36,
+        "alt_coverage_pct": 87.5,
+        "has_main": true,
+        "schema_actions_count": 1,
+        "exceeds_2mb": false
+      },
+      "runs": {
+        "V1": {
+          "macro_structure": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 78,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Macro semantic structure is a universal accessibility and SEO foundation, requiring high weight across all page types.",
+              "key_findings": [
+                "Valid main landmark is present, ensuring proper screen reader navigation.",
+                "Multiple H1 elements detected, which may slightly dilute primary keyword focus.",
+                "Robust heading hierarchy with 36 total elements, indicating a highly structured layout."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1039,
+            "out_tok": 220,
+            "cost_usd": 0.0011795,
+            "latency_s": 6.942,
+            "hallucinations": []
+          },
+          "heading_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 65,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Heading structure is a universal SEO and accessibility element, requiring high weight across all page types.",
+              "key_findings": [
+                "The page contains two H1 elements, which deviates from the single H1 best practice.",
+                "A total of 36 headings are present, indicating a highly structured layout.",
+                "The heading tree is well-populated, supporting content organization for B2B SaaS audiences."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1039,
+            "out_tok": 228,
+            "cost_usd": 0.0012035,
+            "latency_s": 8.759,
+            "hallucinations": []
+          },
+          "above_the_fold": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 78,
+              "weight_in_context_0_1": 0.9,
+              "weight_justification": "Above-the-fold content is highly critical for a B2B SaaS homepage to establish immediate value and drive conversions.",
+              "key_findings": [
+                "Clear value proposition tailored to developers and businesses, though multiple H1 elements are present.",
+                "Primary CTAs are prominent and encourage immediate engagement with the platform.",
+                "Visual hierarchy is strong, leveraging modern design principles typical of high-performing SaaS landing pages."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.95
+            },
+            "in_tok": 1039,
+            "out_tok": 177,
+            "cost_usd": 0.0010505,
+            "latency_s": 7.375,
+            "hallucinations": []
+          },
+          "micro_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 74,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "Universal semantic rules require consistent weighting across all page types to ensure accessibility.",
+              "key_findings": [
+                "Strong baseline of semantic elements including main landmark and high image alt text coverage.",
+                "Presence of multiple H1 elements slightly dilutes document outline hierarchy.",
+                "Framework-rendered markup is clean but lacks fully integrated schema page-type matching."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1038,
+            "out_tok": 162,
+            "cost_usd": 0.001005,
+            "latency_s": 11.394,
+            "hallucinations": []
+          },
+          "inline_link_semantics": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 76,
+              "weight_in_context_0_1": 0.85,
+              "weight_justification": "Link safety and descriptive anchors are universal requirements for B2B SaaS homepages to maintain trust and accessibility.",
+              "key_findings": [
+                "Anchor texts are highly descriptive, avoiding generic phrases.",
+                "External links properly implement security attributes for target blank safety.",
+                "Internal links are structured logically to guide B2B users deeper into the product ecosystem."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1038,
+            "out_tok": 164,
+            "cost_usd": 0.001011,
+            "latency_s": 7.213,
+            "hallucinations": []
+          },
+          "forms_conversion_points": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 72,
+              "weight_in_context_0_1": 0.8,
+              "weight_justification": "As a B2B SaaS homepage, clear conversion pathways and CTA placement are critical for driving user acquisition and enterprise leads.",
+              "key_findings": [
+                "Prominent primary CTAs are strategically placed above the fold to encourage immediate sign-ups.",
+                "Secondary pathways for enterprise inquiries are clear, though direct inline form fields are minimized on the main landing area."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1037,
+            "out_tok": 166,
+            "cost_usd": 0.0010165,
+            "latency_s": 8.966,
+            "hallucinations": []
+          },
+          "schema_entity": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 45,
+              "weight_in_context_0_1": 0.5,
+              "weight_justification": "For a global B2B SaaS homepage, structured data like Organization or WebSite is beneficial for brand signals but less critical than for e-commerce or local businesses.",
+              "key_findings": [
+                "Schema page-type match failed with no standard matched types detected.",
+                "One schema action was identified, indicating minimal structured data implementation.",
+                "Missing robust Organization or WebSite JSON-LD to anchor brand entity signals."
+              ],
+              "structured_claims": {
+                "h1_count_claimed": 2,
+                "alt_coverage_pct_claimed": 87.5,
+                "has_main_claimed": true,
+                "schema_actions_count_claimed": 1,
+                "exceeds_2mb_claimed": false
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 1037,
+            "out_tok": 230,
+            "cost_usd": 0.0012085,
+            "latency_s": 7.274,
+            "hallucinations": []
+          }
+        },
+        "V2": {
+          "technical_semantic_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 68,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Critical for search engines to parse the main content area of a major SaaS homepage.",
+                  "key_findings": [
+                    "Valid main element present",
+                    "Page size is well under the 2MB threshold",
+                    "Next.js framework utilized effectively for SSR"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Headings are generally well-nested but multiple H1s exist.",
+                  "key_findings": [
+                    "Two H1 elements detected",
+                    "Total of 36 headings indicates deep content hierarchy"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "Standard hero area with clear value proposition.",
+                  "key_findings": [
+                    "Hero section loads quickly",
+                    "Primary CTA is visible above the fold"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Strong alt text coverage but room for minor improvements.",
+                  "key_findings": [
+                    "Alt text coverage is at 87.5%",
+                    "Semantic HTML tags used throughout"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 87.5,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Good descriptive anchor texts used across the homepage.",
+                  "key_findings": [
+                    "Links generally use descriptive anchor text",
+                    "No broken internal links identified"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "Clear conversion paths with minimal friction.",
+                  "key_findings": [
+                    "CTAs are prominent",
+                    "Form fields are accessible"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 55,
+                  "weight_in_context_0_1": 0.6,
+                  "weight_justification": "Schema markup is minimal and does not fully align with standard homepage expectations.",
+                  "key_findings": [
+                    "Schema page type match failed",
+                    "Only one schema action detected"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 1,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3328,
+            "out_tok": 1338,
+            "cost_usd": 0.005678,
+            "latency_s": 22.852,
+            "hallucinations": []
+          },
+          "ux_conversion_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 74,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal structural baseline for document accessibility.",
+                  "key_findings": [
+                    "Valid HTML5 semantic regions used.",
+                    "Main content area is explicitly defined."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal requirement for document outline and screen readers.",
+                  "key_findings": [
+                    "Two H1 elements present.",
+                    "Deep heading hierarchy with 36 total headings."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 78,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Critical for B2B SaaS homepage to immediately engage developers and decision makers.",
+                  "key_findings": [
+                    "Clear value proposition with Next.js integration.",
+                    "Prominent primary CTAs drive immediate action.",
+                    "High visual weight may impact initial load perception."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "micro_semantics": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal requirement for rich text and image accessibility.",
+                  "key_findings": [
+                    "High image alt text coverage at 87.5%.",
+                    "Some decorative elements could use better ARIA hiding."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 87.5,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal requirement for accessible navigation and search crawler discovery.",
+                  "key_findings": [
+                    "Descriptive anchor text used for primary navigation.",
+                    "Some icon-only links lack explicit ARIA labels.",
+                    "Good overall link density and contrast."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 87.5,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 74,
+                  "weight_in_context_0_1": 0.85,
+                  "weight_justification": "Primary driver for user acquisition and lead generation in SaaS.",
+                  "key_findings": [
+                    "Streamlined OAuth signup reduces friction.",
+                    "Clear secondary contact options for enterprise.",
+                    "Form fields are minimal and highly optimized."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 1,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "schema_entity": {
+                  "score_0_100": 48,
+                  "weight_in_context_0_1": 0.5,
+                  "weight_justification": "SaaS homepages benefit from Organization schema but rely less on local entity markup.",
+                  "key_findings": [
+                    "Basic schema actions detected.",
+                    "Missing comprehensive Organization or Product structured data."
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 1,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3329,
+            "out_tok": 986,
+            "cost_usd": 0.0046225,
+            "latency_s": 28.804,
+            "hallucinations": []
+          },
+          "ai_geo_readability_index": {
+            "ok": true,
+            "parsed": {
+              "score_0_100": 62,
+              "per_aspect_evaluations": {
+                "macro_structure": {
+                  "score_0_100": 75,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal structural baseline for document parsing.",
+                  "key_findings": [
+                    "Main element present",
+                    "HTML size well under 2MB limit"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": true,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": false
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "heading_semantics": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.9,
+                  "weight_justification": "Critical for document outline and machine readability.",
+                  "key_findings": [
+                    "Multiple H1 elements detected",
+                    "Large heading tree count of 36"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": 2,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "above_the_fold": {
+                  "score_0_100": 70,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "Important for initial user engagement and visual hierarchy.",
+                  "key_findings": [
+                    "Good visual structure",
+                    "Next.js framework optimization present"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "micro_semantics": {
+                  "score_0_100": 72,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal accessibility and image context indicator.",
+                  "key_findings": [
+                    "High image alt text coverage at 87.5%",
+                    "Some decorative elements lack descriptions"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": 87.5,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                },
+                "inline_link_semantics": {
+                  "score_0_100": 68,
+                  "weight_in_context_0_1": 0.8,
+                  "weight_justification": "Universal requirement for crawlability and link equity flow.",
+                  "key_findings": [
+                    "Descriptive anchor texts used",
+                    "Standard navigation links are crawlable"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "forms_conversion_points": {
+                  "score_0_100": 65,
+                  "weight_in_context_0_1": 0.6,
+                  "weight_justification": "Moderate importance for SaaS homepage lead generation.",
+                  "key_findings": [
+                    "Clear call-to-action buttons",
+                    "Interactive elements are accessible"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": null,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.8
+                },
+                "schema_entity": {
+                  "score_0_100": 45,
+                  "weight_in_context_0_1": 0.7,
+                  "weight_justification": "SaaS homepages benefit from structured organization data.",
+                  "key_findings": [
+                    "Schema page type mismatch detected",
+                    "Only one schema action found"
+                  ],
+                  "structured_claims": {
+                    "h1_count_claimed": null,
+                    "alt_coverage_pct_claimed": null,
+                    "has_main_claimed": null,
+                    "schema_actions_count_claimed": 1,
+                    "exceeds_2mb_claimed": null
+                  },
+                  "confidence_0_1": 0.9
+                }
+              },
+              "confidence_0_1": 0.9
+            },
+            "in_tok": 3326,
+            "out_tok": 1304,
+            "cost_usd": 0.005575,
+            "latency_s": 19.584,
+            "hallucinations": []
+          }
+        },
+        "V3": {
+          "ok": true,
+          "parsed": {
+            "technical_semantic_index": {
+              "score_0_100": 68,
+              "confidence_0_1": 0.85
+            },
+            "ux_conversion_index": {
+              "score_0_100": 68,
+              "confidence_0_1": 0.85
+            },
+            "ai_geo_readability_index": {
+              "score_0_100": 65,
+              "confidence_0_1": 0.85
+            },
+            "per_aspect_evaluations": {
+              "macro_structure": {
+                "score_0_100": 75,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal structural integrity is critical for global SaaS discovery and accessibility.",
+                "key_findings": [
+                  "Valid main element present.",
+                  "Page size is well within acceptable limits under 2MB."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": true,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": false
+                },
+                "confidence_0_1": 0.9
+              },
+              "heading_semantics": {
+                "score_0_100": 65,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Heading hierarchy is a universal standard for semantic parsing.",
+                "key_findings": [
+                  "Multiple H1 elements detected, which can dilute primary topic focus.",
+                  "Large heading tree count indicates complex layout structure."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": 2,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              },
+              "above_the_fold": {
+                "score_0_100": 70,
+                "weight_in_context_0_1": 0.9,
+                "weight_justification": "Crucial for B2B SaaS homepages to establish immediate value proposition.",
+                "key_findings": [
+                  "Clear developer-focused messaging above the fold.",
+                  "Strong visual hierarchy with Next.js framework integration."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "micro_semantics": {
+                "score_0_100": 72,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "Universal accessibility and image semantics are highly weighted.",
+                "key_findings": [
+                  "Good image alt text coverage at 87.5%.",
+                  "Modern semantic markup utilized throughout."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": 87.5,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              },
+              "inline_link_semantics": {
+                "score_0_100": 68,
+                "weight_in_context_0_1": 0.8,
+                "weight_justification": "Universal link safety and descriptive anchor text standards apply.",
+                "key_findings": [
+                  "Clear navigation paths for developer documentation.",
+                  "Some generic learn-more style anchors could be improved."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "forms_conversion_points": {
+                "score_0_100": 65,
+                "weight_in_context_0_1": 0.85,
+                "weight_justification": "B2B SaaS homepages require frictionless entry points and clear CTAs.",
+                "key_findings": [
+                  "Primary CTAs are prominent but rely heavily on external auth flows.",
+                  "Minimal inline form friction."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": null,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.8
+              },
+              "schema_entity": {
+                "score_0_100": 55,
+                "weight_in_context_0_1": 0.6,
+                "weight_justification": "Schema is moderately important for homepages, though less critical than on product pages.",
+                "key_findings": [
+                  "Low schema action count and lack of explicit page-type matching schema.",
+                  "Basic entity representation could be enhanced for better AI search visibility."
+                ],
+                "structured_claims": {
+                  "h1_count_claimed": null,
+                  "alt_coverage_pct_claimed": null,
+                  "has_main_claimed": null,
+                  "schema_actions_count_claimed": 1,
+                  "exceeds_2mb_claimed": null
+                },
+                "confidence_0_1": 0.9
+              }
+            },
+            "overall_summary": "Vercel's homepage demonstrates strong technical execution with solid micro-semantics and fast-loading Next.js architecture. Improvements can be made by consolidating H1 headings and enriching structured schema markup to boost AI search engine readability.",
+            "overall_confidence_0_1": 0.88
+          },
+          "in_tok": 3650,
+          "out_tok": 1549,
+          "cost_usd": 0.006472,
+          "latency_s": 15.862,
+          "hallucinations": []
+        }
+      }
+    }
+  },
+  "cumulative_cost_usd": 0.1169275,
+  "halt_triggered": false
+}

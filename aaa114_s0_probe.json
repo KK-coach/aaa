@@ -1,0 +1,1471 @@
+{
+  "audits": [
+    {
+      "target": {
+        "label": "agrobook.hu",
+        "audit_id": "f2792df5-3fb1-484e-9d03-84c749637701",
+        "url": "https://agrobook.hu",
+        "page_type": "homepage",
+        "parent_intent_group": "navigation",
+        "business_model": "ecommerce",
+        "topic_domain": "Shopping",
+        "locality": "national",
+        "audience_primary": "B2B",
+        "audience_secondary": "B2C",
+        "audience_confidence": 85
+      },
+      "classified": [
+        {
+          "url": "https://webaruhaz.habi.hu/?srsltid=AfmBOoqZTQryfddcjW-3ExH4GP7vXLSnEngOm5CPy8avIssUyXOirPOx",
+          "title": "Mezőgazdasági Gépek és Gépalkatrészek",
+          "snippet": "... alkatrészek · Rendsodrók, rendkezelők alkatrészei · Szárzúzó alkatrészek · Egyéb munkagép alkatrész · Faaprító alkatrészek · Homlokrakodók alkatrészei · Egyéb ...",
+          "position_in_serp": 1,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://webaruhaz.habi.hu/?srsltid=AfmBOoqZTQryfddcjW-3ExH4GP7vXLSnEngOm5CPy8avIssUyXOirPOx",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002086,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://gardamax.hu/",
+          "title": "Mezőgazdasági alkatrészek webáruháza | GARDAMAX",
+          "snippet": "Traktor alkatrészek · Mezőgazdasági gépalkatrészek · Utánfutó alkatrészek · Villástargonca alkatrészek · Kasza alkatrészek · Rendsodró alkatrészek.",
+          "position_in_serp": 2,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://gardamax.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2C",
+            "audience_secondary": "B2B",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001479,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://webshop.agrokeri.hu/",
+          "title": "Mezőgazdasági gépalkatrész webáruház - Agrokeri Kft.",
+          "snippet": "IH10-720 eke alkatrészek · Kuhn eke alkatrészek · Kverneland eke alkatrészek · Lajta /Kühne/ eke alkatrészek · Lemken eke alkatrészek · Niemeyer eke alkatrészek ...",
+          "position_in_serp": 3,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://webshop.agrokeri.hu/",
+            "page_type": "form_page",
+            "parent_intent_group": "conversion",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2C",
+            "audience_secondary": "B2B",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001434,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://webshop.keletagro.hu/",
+          "title": "Kelet-Agro Kft.",
+          "snippet": "MTZ alkatrészek verhetetlen áron · MTZ 3. gyorskapcsoló készletek · MTZ ablaktisztítók · MTZ alváz, fülke és karosszéria elemek.",
+          "position_in_serp": 4,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://webshop.keletagro.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001911,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://webshop.agropark.hu/?srsltid=AfmBOopy_ynKOtq8V_o7nuWb8yNgjuth6iYuLHq7zltm40vkvePuOP-j",
+          "title": "webshop.agropark.hu - Márkafüggetlen mezőgazdasági ...",
+          "snippet": "Eredeti gyári és magas minőségű utángyártott alkatrészek, Csengelén, az M5 autópálya kisteleki lehajtójánál vagy kiszállítással Magyarország teljes területére ...",
+          "position_in_serp": 5,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://webshop.agropark.hu/?srsltid=AfmBOopy_ynKOtq8V_o7nuWb8yNgjuth6iYuLHq7zltm40vkvePuOP-j",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001323,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.agrotempo.hu/ALKATRESZEK?srsltid=AfmBOor1H_Yr45v47y13eEVQJ276QvoxgaZ0Ra7ZsIAnb-EUg5jKrb9p",
+          "title": "ALKATRÉSZEK",
+          "snippet": "Mezőgazdasági gépalkatrészek és pótalkatrészek – Az egyik legnagyobb online kínálat Magyarországon - Több millió alkatrész – Agrotempo - a Te Partnered a ...",
+          "position_in_serp": 6,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.agrotempo.hu/ALKATRESZEK?srsltid=AfmBOor1H_Yr45v47y13eEVQJ276QvoxgaZ0Ra7ZsIAnb-EUg5jKrb9p",
+            "page_type": "category_page",
+            "parent_intent_group": "comparison_discovery",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001777,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.habi.hu/",
+          "title": "Habi - Mezőgazdasági Gépek és Gépalkatrészek",
+          "snippet": "HBR ALKATRÉSZEK Keresse webáruházunkban a minőségi, megfizethető áru HBR termékeket, mely kiváló alternatíva a gyári alkatrészek helyettesítésére. WEBÁRUHÁZ ...",
+          "position_in_serp": 7,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.habi.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001442,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://wirax.hu/",
+          "title": "WIRAX Mezőgazdasági gép és alkatrész webáruház",
+          "snippet": "WIRAX - Mezőgazdasági gépek, traktor alkatrészek, munkagépek és kiegészítők széles választéka. Európai beszállítók, gyors szállítás, kedvező árak!",
+          "position_in_serp": 8,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://wirax.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002014,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://agrotipp.hu/alkatresz/",
+          "title": "Alkatrész - Agro-Tipp Kft",
+          "snippet": "Az Agro-Tipp Kft. mezőgazdasági gépalkatrész kereskedelemmel 1996-os megalakulása óta foglalkozik. Jelenleg Tolnán, 1000m 2 -es területen a legkorszerűbb ...",
+          "position_in_serp": 9,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://agrotipp.hu/alkatresz/",
+            "page_type": "service_page",
+            "parent_intent_group": "conversion",
+            "business_model": "local_business",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001564,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://webshop.dorker.hu/?srsltid=AfmBOorm3IrEz0qGO_nEnV4CJIxiZIkzYZTCib9TV3lIFMJxKnVQbyhh",
+          "title": "Dorker Kft. Webshop - Mezőgazdasági erő-és munkagép ...",
+          "snippet": "Mezőgazdasági alkatrészek széles választékban -erőgép alkatrészek, munkagép alkatrészek, kötözőanyagok, műhelyfelszerelés, ruházat, reklámanyagok, játékok.",
+          "position_in_serp": 10,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://webshop.dorker.hu/?srsltid=AfmBOorm3IrEz0qGO_nEnV4CJIxiZIkzYZTCib9TV3lIFMJxKnVQbyhh",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.00177,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.ferwant.hu/?srsltid=AfmBOorAUMgTlTmRBgf8wwCAwfReaYQbOKoSJcdiyOf3TGP67viK_yE2",
+          "title": "Mezőgazdasági gépek és gépalkatrészek, Ferwant",
+          "snippet": "Mezőgazdasági gépek és gépalkatrészek. Munkagépek széles választéka. Fűkasza, permetező, szárzúzó, kombinátor, tárcsa, bálázó. MTZ alkatrészek Ferwant.hu.",
+          "position_in_serp": 2,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.ferwant.hu/?srsltid=AfmBOorAUMgTlTmRBgf8wwCAwfReaYQbOKoSJcdiyOf3TGP67viK_yE2",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Shopping",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002149,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://auto.jofogas.hu/magyarorszag/mezogazdasagi-gep-",
+          "title": "Mezőgazdasági gép alkatrészek",
+          "snippet": "Mezőgazdasági gép alkatrészek az ország egész területén. Válogass a Jófogás új és használt termékei között!",
+          "position_in_serp": 3,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://auto.jofogas.hu/magyarorszag/mezogazdasagi-gep-",
+            "page_type": "category_page",
+            "parent_intent_group": "comparison_discovery",
+            "business_model": "marketplace",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "C2C",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002101,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.facebook.com/61579121540335/photos/122150808362970718/",
+          "title": "Mezőgazdasági gépalkatrész kereskedés",
+          "snippet": "✨Teljes felújítás egy kézben.   Ha érdekel, nálad mit lehetne kihozni, írj üzenetet vagy hívj! 3630/620 38 06 #tárcsa #teljesfelújítás ...",
+          "position_in_serp": 4,
+          "__from_cache": false,
+          "classification": {
+            "_error": "crawl-error: Client error '400 Bad Request' for url 'https://www.facebook.com/61579121540335/photos/122150808362970718/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+            "url": "https://www.facebook.com/61579121540335/photos/122150808362970718/"
+          }
+        },
+        {
+          "url": "https://www.agrix.hu/mezogazdasagi-gepalkatresz-forgalmazas/",
+          "title": "Alkatrész forgalmazás - AGRIX - Mezőgazdasági gépalkatrész",
+          "snippet": "2024. ápr. 9. — Az Agrix kínálatában több ezer mezőgazdasági gépalkatrész, erőgép- és munkagép alkatrész áll az Ön rendelkezésére.",
+          "position_in_serp": 5,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.agrix.hu/mezogazdasagi-gepalkatresz-forgalmazas/",
+            "page_type": "service_page",
+            "parent_intent_group": "conversion",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001326,
+            "_error": null
+          }
+        },
+        {
+          "url": "http://borsodagroker.hu/",
+          "title": "Mezőgazdasági Termékek, Gépek, Alkatrészek, Szolgáltatások",
+          "snippet": "Mezőgazdasági inputanyagok, termények, gépek, alkatrészek és szolgáltatások széles választékát forgalmazzuk személyre szabott feltételekkel és gyorsan.",
+          "position_in_serp": 6,
+          "__from_cache": false,
+          "classification": {
+            "url": "http://borsodagroker.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "regional",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002008,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.gepalkatreszplaza.hu/",
+          "title": "Gépalkatrészbolt",
+          "snippet": "Kategóriáinkból · Minden ami egy mezőgazdasági gépműhely környékén szükséges lehet · Kombájn alkatrészek · Gépjármű alkatrészek · Kiemelt termékek.",
+          "position_in_serp": 7,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.gepalkatreszplaza.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Home & Garden",
+            "locality": "national",
+            "audience_primary": "B2C",
+            "audience_secondary": "B2B",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002194,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.orszagosszaknevsor.hu/?t=mez%C5%91gazdas%C3%A1gi%20g%C3%A9palkatr%C3%A9sz",
+          "title": "Keresés: Mezőgazdasági gépalkatrész",
+          "snippet": "SHADOM-HIDROGÉP Gépjavító és Kereskedelmi Kft. Bemutatkozás. 1975 óta foglalkozik cégünk szervizeléssel. Elsősorban földmunkagépek javításával foglalkoztunk, ...",
+          "position_in_serp": 8,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.orszagosszaknevsor.hu/?t=mez%C5%91gazdas%C3%A1gi%20g%C3%A9palkatr%C3%A9sz",
+            "page_type": "search_results_page",
+            "parent_intent_group": "navigation",
+            "business_model": "directory",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002221,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.agro-viko.hu/",
+          "title": "AGRO-VIKO Kft.",
+          "snippet": "Az AGRO-VIKO Kft. 2010. januárjában kezdte meg működését . Eleinte főleg MTZ alkatrészek értékesítésével foglalkoztunk, majd elkezdtük a Lengyel munkagépek ...",
+          "position_in_serp": 9,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.agro-viko.hu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.002017,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://traktoralkatresz.eu/",
+          "title": "Nagytraktor Kft",
+          "snippet": "Profilunk mezőgazdasági munkagépek és alkatrészeik kiskereskedelme. Új MTZ traktorok, komplett munkagépek, akár egyedi kéréseknek megfelelően is ...",
+          "position_in_serp": 10,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://traktoralkatresz.eu/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "ecommerce",
+            "topic_domain": "Automotive",
+            "locality": "national",
+            "audience_primary": "B2C",
+            "audience_secondary": "B2B",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001408,
+            "_error": null
+          }
+        }
+      ]
+    },
+    {
+      "target": {
+        "label": "kk.coach",
+        "audit_id": "2a2c335c-33f9-4ec2-97a9-082865acbd2c",
+        "url": "https://kk.coach",
+        "page_type": "homepage",
+        "parent_intent_group": "navigation",
+        "business_model": "b2b_service",
+        "topic_domain": "Business and Finance",
+        "locality": "national",
+        "audience_primary": "B2B",
+        "audience_secondary": "B2C",
+        "audience_confidence": 90
+      },
+      "classified": [
+        {
+          "url": "https://www.linkedin.com/company/organic-growth-consultants",
+          "title": "Organic Growth Consultants",
+          "snippet": "We are a boutique consultancy designed to help businesses large and small grow sales and revenue. With over 35 years combined experience working in ... Read more",
+          "position_in_serp": 1,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.linkedin.com/company/organic-growth-consultants",
+            "page_type": "other_or_unknown",
+            "parent_intent_group": null,
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001469,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://janegentry.com/growth-consultant/",
+          "title": "Growth Consultants: What They Do & How to Hire | Jane Gentry",
+          "snippet": "Sep 28, 2024 — A growth consultant is a specialized expert who helps businesses identify and seize expansion opportunities. Read more",
+          "position_in_serp": 2,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://janegentry.com/growth-consultant/",
+            "page_type": "guide_or_resource",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 90,
+            "classify_cost_usd": 0.001591,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.reddit.com/r/SaaS/comments/qs1b2f/would_you_hire_a_growth_consultant_to_help_grow/",
+          "title": "Would you hire a “Growth Consultant” to help grow your ...",
+          "snippet": "And how much would you pay?",
+          "position_in_serp": 3,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.reddit.com/r/SaaS/comments/qs1b2f/would_you_hire_a_growth_consultant_to_help_grow/",
+            "page_type": "other_or_unknown",
+            "parent_intent_group": null,
+            "business_model": "social_media",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "C2C",
+            "audience_secondary": "B2B",
+            "audience_confidence": 70,
+            "classify_cost_usd": 0.001288,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.investopedia.com/terms/o/organicgrowth.asp",
+          "title": "Organic Growth Explained: Boosting Sales and Investor ...",
+          "snippet": "Organic growth is achieved internally by boosting production and driving sales growth without buying new businesses. Read more",
+          "position_in_serp": 4,
+          "__from_cache": false,
+          "classification": {
+            "_error": "crawl-error: Client error '402 Payment Required' for url 'https://www.investopedia.com/terms/o/organicgrowth.asp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
+            "url": "https://www.investopedia.com/terms/o/organicgrowth.asp"
+          }
+        },
+        {
+          "url": "https://www.marketingog.com/",
+          "title": "Organic Growth Marketing: OGM",
+          "snippet": "OGM is an organic growth marketing agency that drives attributable revenue through SEO, content strategy, and UX for B2B SaaS companies.",
+          "position_in_serp": 5,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.marketingog.com/",
+            "page_type": "homepage",
+            "parent_intent_group": "navigation",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001271,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://rankwizards.co/articles/business-growth-consultants",
+          "title": "Top 5 Business Growth Consultants",
+          "snippet": "Dec 5, 2025 — Business growth consultants assist business with growth strategy and fundraising strategy that ensures long term growth and revenue. Read more",
+          "position_in_serp": 6,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://rankwizards.co/articles/business-growth-consultants",
+            "page_type": "blog_article",
+            "parent_intent_group": "informational",
+            "business_model": "affiliate_or_review_site",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": "C2B",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001599,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://virtuecpas.com/business-growth-consultant/",
+          "title": "What Is a Business Growth Consultant? A Detailed Guide",
+          "snippet": "Apr 22, 2024 — A business growth consultant is an expert advisor or analyst who focuses on understanding business goals, implementing strategies, addressing key challenges, Read more",
+          "position_in_serp": 7,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://virtuecpas.com/business-growth-consultant/",
+            "page_type": "guide_or_resource",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001582,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/",
+          "title": "TikTok Organic Growth Consultant",
+          "snippet": "Job Title: TikTok Organic Growth Consultant for Luxury Lifestyle Content Job Description: We are looking for an experienced TikTok organic growth consultant ...",
+          "position_in_serp": 8,
+          "__from_cache": false,
+          "classification": {
+            "_error": "crawl-error: Client error '403 Forbidden' for url 'https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+            "url": "https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/"
+          }
+        },
+        {
+          "url": "https://mailchimp.com/resources/organic-growth/",
+          "title": "Organic Growth: Five Ways to Achieve Success",
+          "snippet": "Scale your business with low‑risk and steady organic growth. Learn more about what organic growth entails and practical steps to ensure success. Read more",
+          "position_in_serp": 9,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://mailchimp.com/resources/organic-growth/",
+            "page_type": "guide_or_resource",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_saas",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 90,
+            "classify_cost_usd": 0.001587,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.data-mania.com/blog/growth-marketing-consultants-to-watch/",
+          "title": "10 Best Growth Marketing Consultants for Tech Startups ...",
+          "snippet": "May 12, 2026 — Growth marketing consultants act as strategic problem-solvers, crafting systems designed to drive revenue growth. Read more",
+          "position_in_serp": 10,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.data-mania.com/blog/growth-marketing-consultants-to-watch/",
+            "page_type": "blog_article",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001655,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://hingemarketing.com/blog/story/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms",
+          "title": "How to Drive Organic Growth: 5 Proven Strategies for ...",
+          "snippet": "Sep 18, 2023 — Learn what is meant by organic growth and the top proven, research-based strategies used by the fastest growing professional services firms.",
+          "position_in_serp": 3,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://hingemarketing.com/blog/story/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms",
+            "page_type": "blog_article",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001607,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.simon-kucher.com/en/insights/organic-growth-building-stronger-business-within",
+          "title": "Organic growth: Building a stronger business from within",
+          "snippet": "Dec 10, 2025 — Organic growth is expansion driven by improved operations, innovation, and enhanced customer engagement – all from existing resources. Focusing ... Read more",
+          "position_in_serp": 4,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.simon-kucher.com/en/insights/organic-growth-building-stronger-business-within",
+            "page_type": "blog_article",
+            "parent_intent_group": "informational",
+            "business_model": "b2b_service",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 95,
+            "classify_cost_usd": 0.001591,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.consultancy.com.au/news/1728/10-recommendations-for-an-organic-growth-strategy",
+          "title": "10 recommendations for an organic growth strategy",
+          "snippet": "Mar 8, 2020 — The simplest path to growth is to sell more products or services to existing customers, and increase the customer base.",
+          "position_in_serp": 6,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.consultancy.com.au/news/1728/10-recommendations-for-an-organic-growth-strategy",
+            "page_type": "news_article",
+            "parent_intent_group": "informational",
+            "business_model": "publisher_or_media",
+            "topic_domain": "Business and Finance",
+            "locality": "national",
+            "audience_primary": "B2B",
+            "audience_secondary": null,
+            "audience_confidence": 90,
+            "classify_cost_usd": 0.001606,
+            "_error": null
+          }
+        },
+        {
+          "url": "https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/",
+          "title": "Fueling Sustainable Success: Strategies for Organic ...",
+          "snippet": "Feb 22, 2024 — Organic growth is the process of expanding your business through internal means, such as increasing sales, expanding into new markets, and improving operations. Read more",
+          "position_in_serp": 7,
+          "__from_cache": false,
+          "classification": {
+            "_error": "crawl-error: Client error '403 Forbidden' for url 'https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+            "url": "https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/"
+          }
+        },
+        {
+          "url": "https://www.mombossinaustin.com/post/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms-1",
+          "title": "How to Drive Organic Growth: 5 Proven Strategies for ...",
+          "snippet": "Feb 2, 2024 — Organic growth is the slow, steady friend you need to set your professional service firm up for long-term success. Read more",
+          "position_in_serp": 9,
+          "__from_cache": false,
+          "classification": {
+            "url": "https://www.mombossinaustin.com/post/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms-1",
+            "page_type": "blog_article",
+            "parent_intent_group": "informational",
+            "business_model": "blog_or_personal_brand",
+            "topic_domain": "Business and Finance",
+            "locality": "global",
+            "audience_primary": "B2B",
+            "audience_secondary": "B2C",
+            "audience_confidence": 85,
+            "classify_cost_usd": 0.001611,
+            "_error": null
+          }
+        }
+      ]
+    }
+  ],
+  "by_url_classification": {
+    "https://webaruhaz.habi.hu/?srsltid=AfmBOoqZTQryfddcjW-3ExH4GP7vXLSnEngOm5CPy8avIssUyXOirPOx": {
+      "url": "https://webaruhaz.habi.hu/?srsltid=AfmBOoqZTQryfddcjW-3ExH4GP7vXLSnEngOm5CPy8avIssUyXOirPOx",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002086,
+      "_error": null
+    },
+    "https://gardamax.hu/": {
+      "url": "https://gardamax.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2C",
+      "audience_secondary": "B2B",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001479,
+      "_error": null
+    },
+    "https://webshop.agrokeri.hu/": {
+      "url": "https://webshop.agrokeri.hu/",
+      "page_type": "form_page",
+      "parent_intent_group": "conversion",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2C",
+      "audience_secondary": "B2B",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001434,
+      "_error": null
+    },
+    "https://webshop.keletagro.hu/": {
+      "url": "https://webshop.keletagro.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001911,
+      "_error": null
+    },
+    "https://webshop.agropark.hu/?srsltid=AfmBOopy_ynKOtq8V_o7nuWb8yNgjuth6iYuLHq7zltm40vkvePuOP-j": {
+      "url": "https://webshop.agropark.hu/?srsltid=AfmBOopy_ynKOtq8V_o7nuWb8yNgjuth6iYuLHq7zltm40vkvePuOP-j",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001323,
+      "_error": null
+    },
+    "https://www.agrotempo.hu/ALKATRESZEK?srsltid=AfmBOor1H_Yr45v47y13eEVQJ276QvoxgaZ0Ra7ZsIAnb-EUg5jKrb9p": {
+      "url": "https://www.agrotempo.hu/ALKATRESZEK?srsltid=AfmBOor1H_Yr45v47y13eEVQJ276QvoxgaZ0Ra7ZsIAnb-EUg5jKrb9p",
+      "page_type": "category_page",
+      "parent_intent_group": "comparison_discovery",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001777,
+      "_error": null
+    },
+    "https://www.habi.hu/": {
+      "url": "https://www.habi.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001442,
+      "_error": null
+    },
+    "https://wirax.hu/": {
+      "url": "https://wirax.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002014,
+      "_error": null
+    },
+    "https://agrotipp.hu/alkatresz/": {
+      "url": "https://agrotipp.hu/alkatresz/",
+      "page_type": "service_page",
+      "parent_intent_group": "conversion",
+      "business_model": "local_business",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001564,
+      "_error": null
+    },
+    "https://webshop.dorker.hu/?srsltid=AfmBOorm3IrEz0qGO_nEnV4CJIxiZIkzYZTCib9TV3lIFMJxKnVQbyhh": {
+      "url": "https://webshop.dorker.hu/?srsltid=AfmBOorm3IrEz0qGO_nEnV4CJIxiZIkzYZTCib9TV3lIFMJxKnVQbyhh",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.00177,
+      "_error": null
+    },
+    "https://www.ferwant.hu/?srsltid=AfmBOorAUMgTlTmRBgf8wwCAwfReaYQbOKoSJcdiyOf3TGP67viK_yE2": {
+      "url": "https://www.ferwant.hu/?srsltid=AfmBOorAUMgTlTmRBgf8wwCAwfReaYQbOKoSJcdiyOf3TGP67viK_yE2",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Shopping",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002149,
+      "_error": null
+    },
+    "https://auto.jofogas.hu/magyarorszag/mezogazdasagi-gep-": {
+      "url": "https://auto.jofogas.hu/magyarorszag/mezogazdasagi-gep-",
+      "page_type": "category_page",
+      "parent_intent_group": "comparison_discovery",
+      "business_model": "marketplace",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "C2C",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002101,
+      "_error": null
+    },
+    "https://www.facebook.com/61579121540335/photos/122150808362970718/": {
+      "_error": "crawl-error: Client error '400 Bad Request' for url 'https://www.facebook.com/61579121540335/photos/122150808362970718/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+      "url": "https://www.facebook.com/61579121540335/photos/122150808362970718/"
+    },
+    "https://www.agrix.hu/mezogazdasagi-gepalkatresz-forgalmazas/": {
+      "url": "https://www.agrix.hu/mezogazdasagi-gepalkatresz-forgalmazas/",
+      "page_type": "service_page",
+      "parent_intent_group": "conversion",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001326,
+      "_error": null
+    },
+    "http://borsodagroker.hu/": {
+      "url": "http://borsodagroker.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "regional",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002008,
+      "_error": null
+    },
+    "https://www.gepalkatreszplaza.hu/": {
+      "url": "https://www.gepalkatreszplaza.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Home & Garden",
+      "locality": "national",
+      "audience_primary": "B2C",
+      "audience_secondary": "B2B",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002194,
+      "_error": null
+    },
+    "https://www.orszagosszaknevsor.hu/?t=mez%C5%91gazdas%C3%A1gi%20g%C3%A9palkatr%C3%A9sz": {
+      "url": "https://www.orszagosszaknevsor.hu/?t=mez%C5%91gazdas%C3%A1gi%20g%C3%A9palkatr%C3%A9sz",
+      "page_type": "search_results_page",
+      "parent_intent_group": "navigation",
+      "business_model": "directory",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002221,
+      "_error": null
+    },
+    "https://www.agro-viko.hu/": {
+      "url": "https://www.agro-viko.hu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.002017,
+      "_error": null
+    },
+    "https://traktoralkatresz.eu/": {
+      "url": "https://traktoralkatresz.eu/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "ecommerce",
+      "topic_domain": "Automotive",
+      "locality": "national",
+      "audience_primary": "B2C",
+      "audience_secondary": "B2B",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001408,
+      "_error": null
+    },
+    "https://www.linkedin.com/company/organic-growth-consultants": {
+      "url": "https://www.linkedin.com/company/organic-growth-consultants",
+      "page_type": "other_or_unknown",
+      "parent_intent_group": null,
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001469,
+      "_error": null
+    },
+    "https://janegentry.com/growth-consultant/": {
+      "url": "https://janegentry.com/growth-consultant/",
+      "page_type": "guide_or_resource",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 90,
+      "classify_cost_usd": 0.001591,
+      "_error": null
+    },
+    "https://www.reddit.com/r/SaaS/comments/qs1b2f/would_you_hire_a_growth_consultant_to_help_grow/": {
+      "url": "https://www.reddit.com/r/SaaS/comments/qs1b2f/would_you_hire_a_growth_consultant_to_help_grow/",
+      "page_type": "other_or_unknown",
+      "parent_intent_group": null,
+      "business_model": "social_media",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "C2C",
+      "audience_secondary": "B2B",
+      "audience_confidence": 70,
+      "classify_cost_usd": 0.001288,
+      "_error": null
+    },
+    "https://www.investopedia.com/terms/o/organicgrowth.asp": {
+      "_error": "crawl-error: Client error '402 Payment Required' for url 'https://www.investopedia.com/terms/o/organicgrowth.asp'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402",
+      "url": "https://www.investopedia.com/terms/o/organicgrowth.asp"
+    },
+    "https://www.marketingog.com/": {
+      "url": "https://www.marketingog.com/",
+      "page_type": "homepage",
+      "parent_intent_group": "navigation",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001271,
+      "_error": null
+    },
+    "https://rankwizards.co/articles/business-growth-consultants": {
+      "url": "https://rankwizards.co/articles/business-growth-consultants",
+      "page_type": "blog_article",
+      "parent_intent_group": "informational",
+      "business_model": "affiliate_or_review_site",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": "C2B",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001599,
+      "_error": null
+    },
+    "https://virtuecpas.com/business-growth-consultant/": {
+      "url": "https://virtuecpas.com/business-growth-consultant/",
+      "page_type": "guide_or_resource",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001582,
+      "_error": null
+    },
+    "https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/": {
+      "_error": "crawl-error: Client error '403 Forbidden' for url 'https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+      "url": "https://www.upwork.com/freelance-jobs/apply/TikTok-Organic-Growth-Consultant_~022056608133967257873/"
+    },
+    "https://mailchimp.com/resources/organic-growth/": {
+      "url": "https://mailchimp.com/resources/organic-growth/",
+      "page_type": "guide_or_resource",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_saas",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 90,
+      "classify_cost_usd": 0.001587,
+      "_error": null
+    },
+    "https://www.data-mania.com/blog/growth-marketing-consultants-to-watch/": {
+      "url": "https://www.data-mania.com/blog/growth-marketing-consultants-to-watch/",
+      "page_type": "blog_article",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001655,
+      "_error": null
+    },
+    "https://hingemarketing.com/blog/story/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms": {
+      "url": "https://hingemarketing.com/blog/story/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms",
+      "page_type": "blog_article",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001607,
+      "_error": null
+    },
+    "https://www.simon-kucher.com/en/insights/organic-growth-building-stronger-business-within": {
+      "url": "https://www.simon-kucher.com/en/insights/organic-growth-building-stronger-business-within",
+      "page_type": "blog_article",
+      "parent_intent_group": "informational",
+      "business_model": "b2b_service",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 95,
+      "classify_cost_usd": 0.001591,
+      "_error": null
+    },
+    "https://www.consultancy.com.au/news/1728/10-recommendations-for-an-organic-growth-strategy": {
+      "url": "https://www.consultancy.com.au/news/1728/10-recommendations-for-an-organic-growth-strategy",
+      "page_type": "news_article",
+      "parent_intent_group": "informational",
+      "business_model": "publisher_or_media",
+      "topic_domain": "Business and Finance",
+      "locality": "national",
+      "audience_primary": "B2B",
+      "audience_secondary": null,
+      "audience_confidence": 90,
+      "classify_cost_usd": 0.001606,
+      "_error": null
+    },
+    "https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/": {
+      "_error": "crawl-error: Client error '403 Forbidden' for url 'https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+      "url": "https://www.alliancevirtualoffices.com/virtual-office-blog/strategies-for-organic-business-growth/"
+    },
+    "https://www.mombossinaustin.com/post/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms-1": {
+      "url": "https://www.mombossinaustin.com/post/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms-1",
+      "page_type": "blog_article",
+      "parent_intent_group": "informational",
+      "business_model": "blog_or_personal_brand",
+      "topic_domain": "Business and Finance",
+      "locality": "global",
+      "audience_primary": "B2B",
+      "audience_secondary": "B2C",
+      "audience_confidence": 85,
+      "classify_cost_usd": 0.001611,
+      "_error": null
+    }
+  },
+  "formula_results": [
+    {
+      "audit": "agrobook.hu",
+      "url": "https://webaruhaz.habi.hu/?srsltid=AfmBOoqZTQryfddcjW-3ExH4GP7vXLSnEngOm5CPy8avIssUyXOirPOx",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://gardamax.hu/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "aud:B2B≠B2C",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=0.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "aud-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://webshop.agrokeri.hu/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "aud:B2B≠B2C",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=1.0 aud=0.0 pt=0.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "aud-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://webshop.keletagro.hu/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://webshop.agropark.hu/?srsltid=AfmBOopy_ynKOtq8V_o7nuWb8yNgjuth6iYuLHq7zltm40vkvePuOP-j",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.agrotempo.hu/ALKATRESZEK?srsltid=AfmBOor1H_Yr45v47y13eEVQJ276QvoxgaZ0Ra7ZsIAnb-EUg5jKrb9p",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "hard-OK; soft=td*0.0+pt*0.0=0.00 < 0.5 SOFT EXCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.habi.hu/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://wirax.hu/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://agrotipp.hu/alkatresz/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:ecommerce≠local_business",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://webshop.dorker.hu/?srsltid=AfmBOorm3IrEz0qGO_nEnV4CJIxiZIkzYZTCib9TV3lIFMJxKnVQbyhh",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.ferwant.hu/?srsltid=AfmBOorAUMgTlTmRBgf8wwCAwfReaYQbOKoSJcdiyOf3TGP67viK_yE2",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 5.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=1.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*1.0=1.00 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://auto.jofogas.hu/magyarorszag/mezogazdasagi-gep-",
+      "apriori": "EXCLUDE",
+      "A_include": false,
+      "A_reason": "bm:ecommerce≠marketplace; aud:B2B≠C2C",
+      "B_score": 1.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=0.0 pt=0.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch; aud-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.agrix.hu/mezogazdasagi-gepalkatresz-forgalmazas/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:ecommerce≠b2b_service",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "http://borsodagroker.hu/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:ecommerce≠b2b_service",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=1.0 td=0.0 loc=0.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.gepalkatreszplaza.hu/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "aud:B2B≠B2C",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=0.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "aud-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.orszagosszaknevsor.hu/?t=mez%C5%91gazdas%C3%A1gi%20g%C3%A9palkatr%C3%A9sz",
+      "apriori": "EXCLUDE",
+      "A_include": false,
+      "A_reason": "bm:ecommerce≠directory",
+      "B_score": 2.5,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.5 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://www.agro-viko.hu/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*0.0+pt*1.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "agrobook.hu",
+      "url": "https://traktoralkatresz.eu/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "aud:B2B≠B2C",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=0.0 pt=1.0 td=0.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "aud-mismatch"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.linkedin.com/company/organic-growth-consultants",
+      "apriori": "EXCLUDE",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://janegentry.com/growth-consultant/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.reddit.com/r/SaaS/comments/qs1b2f/would_you_hire_a_growth_consultant_to_help_grow/",
+      "apriori": "EXCLUDE",
+      "A_include": false,
+      "A_reason": "bm:b2b_service≠social_media; aud:B2B≠C2C",
+      "B_score": 1.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=0.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch; aud-mismatch"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.marketingog.com/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=1.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*1.0=1.00 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://rankwizards.co/articles/business-growth-consultants",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:b2b_service≠affiliate_or_review_site",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://virtuecpas.com/business-growth-consultant/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 4.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=1.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://mailchimp.com/resources/organic-growth/",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:b2b_service≠b2b_saas",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.data-mania.com/blog/growth-marketing-consultants-to-watch/",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://hingemarketing.com/blog/story/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.simon-kucher.com/en/insights/organic-growth-building-stronger-business-within",
+      "apriori": "unclear",
+      "A_include": true,
+      "A_reason": "all match",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=1.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": true,
+      "C_reason": "hard-OK; soft=td*1.0+pt*0.0=0.50 >= 0.5 INCLUDE"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.consultancy.com.au/news/1728/10-recommendations-for-an-organic-growth-strategy",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:b2b_service≠publisher_or_media",
+      "B_score": 3.0,
+      "B_include": true,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=1.0 loc=1.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    },
+    {
+      "audit": "kk.coach",
+      "url": "https://www.mombossinaustin.com/post/how-to-drive-organic-growth-5-proven-strategies-for-professional-services-firms-1",
+      "apriori": "unclear",
+      "A_include": false,
+      "A_reason": "bm:b2b_service≠blog_or_personal_brand",
+      "B_score": 2.0,
+      "B_include": false,
+      "B_reason": "bm=0.0 aud=1.0 pt=0.0 td=1.0 loc=0.0",
+      "C_include": false,
+      "C_reason": "bm-mismatch"
+    }
+  ],
+  "aggregate": {
+    "A": {
+      "fp": 1,
+      "fn": 0,
+      "incl": 16
+    },
+    "B": {
+      "fp": 1,
+      "fn": 0,
+      "incl": 20
+    },
+    "C": {
+      "fp": 1,
+      "fn": 0,
+      "incl": 15
+    }
+  },
+  "cost_usd": 0.050681000000000004,
+  "wall_s": 130.9
+}

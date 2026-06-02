@@ -1,0 +1,69 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 1,
+  "duration_s": 268.1,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "low",
+  "warning_present": true,
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2856,
+      "candidates": 764,
+      "total": 3620,
+      "calls": 3
+    },
+    "adk_in": 9417,
+    "adk_out_eff": 1621,
+    "in": 12273,
+    "out": 2385
+  },
+  "cost_usd": 0.013291,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Barriers",
+    "Address Performance",
+    "App Router",
+    "Cloud Deployment",
+    "English. While",
+    "Enhance Crawlability",
+    "Expand Long",
+    "Expand Long-Tail Content",
+    "Generative Engine",
+    "Generative Engine Optimization",
+    "Implement Comprehensive",
+    "Implement Comprehensive Schema",
+    "Next.js App Router",
+    "Optimize Header",
+    "Optimize Header Hierarchy",
+    "PageSpeed Insights",
+    "Scalable Frontend",
+    "Scalable Frontend Cloud Deployment",
+    "Server-Side Rendering",
+    "Side Rendering",
+    "Tail Content",
+    "Text Density",
+    "The PageSpeed",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "Vercel Platform"
+  ],
+  "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel is clearly identified as the brand, operating in the cloud computing and deployment platform industry with a primary focus on B2B audiences. The target country is identified as the United States, and the page is in English. While the brand context is well-established through the domain and common associations, the on-page metadata and schema entities are surprisingly sparse for a platform of this scale. The audit did not require user confirmation for the site profile, but the grounding confidence remains low due to the technical nature of the page delivery.\n\nThe primary target keyword is **\"Vercel Platform,\"** reflecting a strong commercial intent centered on frontend cloud deployment. The topic cluster focuses on Cloud Deployment and Infrastructure, with secondary keywords like \"production deployment\" and \"frontend cloud platform.\" However, there is a **high keyword gap severity**. The page is heavily optimized for branded terms and internal navigation but lacks descriptive, non-branded SEO headers (H1/H2). This limits its ability to capture users searching for general deployment solutions or specific technical features like \"edge requests monitoring\" or \"serverless function invocations\" without the Vercel brand name attached.\n\nTechnically, the page presents significant challenges for search engine crawlers. Both standard HTML crawling and Playwright-rendered crawling returned extremely low word counts (between 38 and 116 words) and a low main content confidence score (0.3). The site utilizes the **Next.js App Router**, and the content appears to be delivered via dynamic components that are difficult for bots to parse as cohesive narrative text. Furthermore, PageSpeed Insights failed to return scores due to timeouts and document request errors, suggesting either aggressive bot protection or extremely heavy script execution that may hinder both user experience and search visibility.\n\nThe content quality is classified as \"thin\" from an SEO perspective. While the visual experience for a human user may be rich, the absence of high-quality, indexable text makes it difficult for GEO (Generative Engine Optimization) systems to extract deep meaning. The entities identified are almost exclusively products (e.g., Git, Edge Requests, AI Gateway) with no person-level entities or organizational schema details explicitly detected in the page source. This lack of structured data and descriptive text creates a \"content limited\" environment for search engines.\n\n### Top Actionable Findings\n1.  **Enhance Crawlability & Text Density:** The current JS-heavy delivery results in very low content confidence. Implement more robust Server-Side Rendering (SSR) or ensure that key product descriptions and value propositions are present in the initial HTML payload to improve indexing.\n2.  **Optimize Header Hierarchy:** Replace generic or branded headers with descriptive, keyword-rich H1 and H2 tags. For example, instead of just \"Platform,\" use \"Scalable Frontend Cloud Deployment Platform\" to capture non-branded search traffic.\n3.  **Address Performance & Accessibility Barriers:** The PageSpeed failures (ERR_ABORTED and timeouts) indicate a critical issue. Investigate if server-side firewall rules or script overhead are blocking automated tools, as this can negatively impact Google's ability to render and rank the page.\n4.  **Implement Comprehensive Schema:** Add structured data (JSON-LD) for SoftwareApplication or Product to explicitly define features, pricing models (if applicable), and organizational details. This will help search engines and AI agents better understand the product's place in the market.\n5.  **Expand Long-Tail Content:** To support \"Discovery\" and \"GEO\" visibility, add a dedicated section or FAQ that addresses common deployment challenges using the long-tail keywords identified (e.g., \"how to manage environment variables for production\")."
+}

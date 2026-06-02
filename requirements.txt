@@ -1,0 +1,7 @@
+httpx>=0.28.0
+selectolax>=0.3.21
+playwright>=1.49.0
+python-dotenv>=1.0.0
+mcp>=1.2.0
+google-genai>=1.51.0
+google-adk>=1.33.0

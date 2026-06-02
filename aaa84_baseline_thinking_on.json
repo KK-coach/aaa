@@ -1,0 +1,104 @@
+{
+  "audit_id": "8350851c-319b-4b99-9383-61f207c1a537",
+  "cost": 0.011963,
+  "classified": [
+    {
+      "keyword": "organic growth consultant",
+      "tail_type": "midtail",
+      "search_intent": "commercial",
+      "relevance_score": 1.0
+    },
+    {
+      "keyword": "organic growth consultant for ecommerce teams",
+      "tail_type": "longtail",
+      "search_intent": "commercial",
+      "relevance_score": 0.97
+    },
+    {
+      "keyword": "SEO and GEO consultant",
+      "tail_type": "longtail",
+      "search_intent": "commercial",
+      "relevance_score": 0.95
+    },
+    {
+      "keyword": "B2B organic growth system",
+      "tail_type": "longtail",
+      "search_intent": "transactional",
+      "relevance_score": 0.92
+    },
+    {
+      "keyword": "AI and data driven organic growth system",
+      "tail_type": "longtail",
+      "search_intent": "transactional",
+      "relevance_score": 0.9
+    },
+    {
+      "keyword": "AI visibility optimization",
+      "tail_type": "midtail",
+      "search_intent": "commercial",
+      "relevance_score": 0.88
+    },
+    {
+      "keyword": "structured organic growth for B2B and ecommerce",
+      "tail_type": "longtail",
+      "search_intent": "commercial",
+      "relevance_score": 0.85
+    },
+    {
+      "keyword": "turning search visibility into revenue for B2B",
+      "tail_type": "longtail",
+      "search_intent": "informational",
+      "relevance_score": 0.82
+    },
+    {
+      "keyword": "SEO GEO UX and CRO integrated services",
+      "tail_type": "longtail",
+      "search_intent": "transactional",
+      "relevance_score": 0.8
+    },
+    {
+      "keyword": "integrated organic growth",
+      "tail_type": "midtail",
+      "search_intent": "informational",
+      "relevance_score": 0.75
+    },
+    {
+      "keyword": "UX and CRO services",
+      "tail_type": "longtail",
+      "search_intent": "commercial",
+      "relevance_score": 0.62
+    }
+  ],
+  "summary_first200": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site is branded as **kk.coach**, identifying as an **organic growth consultancy** led by **Krisztian Kiss**. It targets a p",
+  "tk_dict": {
+    "primary_keyword": "organic growth consultant",
+    "category_competitors_likely": [
+      "GrowthRocks",
+      "Single Grain",
+      "Terakeet"
+    ],
+    "topic_cluster": "Organic Growth Strategy & Search Optimization",
+    "_model_version": "gemini-3-flash-preview",
+    "category_keyword": "organic growth consultancy",
+    "secondary_keywords": [
+      "SEO and GEO consultant",
+      "B2B organic growth system",
+      "AI visibility optimization",
+      "UX and CRO services",
+      "integrated organic growth"
+    ],
+    "long_tail_keywords": [
+      "AI and data driven organic growth system",
+      "structured organic growth for B2B and ecommerce",
+      "SEO GEO UX and CRO integrated services",
+      "organic growth consultant for ecommerce teams",
+      "turning search visibility into revenue for B2B"
+    ],
+    "intent": "commercial",
+    "is_branded_primary": false,
+    "keyword_gap_severity": "low",
+    "gap_interpretation": "The primary keyword is highly descriptive of the service category, though the page introduces the emerging 'GEO' (Generative Engine Optimization) term which may have lower search volume than traditional SEO terms.",
+    "reasoning": "The page positions itself as a specialized consultancy focusing on a 'system' rather than siloed services. The title tag and H1 explicitly target 'Organic Growth Consultant' and 'AI and Data Driven Organic Growth'. The inclusion of GEO (Generative Engine Optimization) indicates a forward-looking search strategy targeting businesses concerned with AI visibility.",
+    "estimated_difficulty": "medium"
+  }
+}

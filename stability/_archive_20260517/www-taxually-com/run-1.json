@@ -1,0 +1,60 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 1,
+  "duration_s": 68.5,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software-as-a-service",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 3860,
+      "candidates": 711,
+      "total": 4571,
+      "calls": 3
+    },
+    "adk_in": 12303,
+    "adk_out_eff": 1024,
+    "in": 16163,
+    "out": 1735
+  },
+  "cost_usd": 0.013286,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "EcoTax. The",
+    "Enhance Schema",
+    "Enhance Schema Markup",
+    "Expand Granular",
+    "Expand Granular Landing Pages",
+    "Improve Core",
+    "Improve Core Web Vitals",
+    "Landing Pages",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "Tax Compliance Automation",
+    "Technical Best",
+    "Technical Best Practices",
+    "Technical Health",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "United States",
+    "Web Vitals",
+    "While Organization"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\n**Brand & Target Identification**\nTaxually is a B2B tax compliance software-as-a-service (SaaS) provider targeting the United States and international markets. The brand focuses on automating global VAT and US sales tax compliance for ecommerce businesses, enterprises, and accounting providers. The site profile identifies a clear B2B focus with a professional tone, though the specific target country for SERP competitive analysis is currently set to the United States (no user confirmation required based on site signals).\n\n**Primary Keywords & Topic Cluster**\nThe page operates within the **Tax Compliance Automation** topic cluster. The primary keyword is \"tax compliance software,\" supported by secondary keywords like \"VAT compliance software\" and \"US sales tax automation.\" While the content is robust (~1,627 words), there is a strategic opportunity to further segment \"VAT\" and \"Sales Tax\" content to better capture granular search intent for international vs. domestic tax requirements.\n\n**Technical Health**\nThe technical foundation is solid with a high main content confidence score (0.95), suggesting a clean semantic HTML5 structure that is easily parsed by search engines. The site utilizes Organization schema and maintains an active presence across major social platforms (LinkedIn, Twitter, Facebook). There is no immediate risk of hitting the 2MB Googlebot limit, as the content is well-structured.\n\n**Content Quality**\nThe content quality is high, featuring detailed descriptions of proprietary products like CrossTax, LumaTax, and EcoTax. The semantic structure is sound, though the \"best practices\" score (77) suggests potential improvements in modern web standards or security headers. The presence of clear CTAs and distinct product offerings supports a strong commercial intent and a clear path for B2B conversions.\n\n**Performance & Core Web Vitals**\nPerformance is a significant area for improvement. Mobile performance is currently \"Poor\" (55), while desktop performance is \"Fair\" (68). Key metrics such as Accessibility (84-88) and SEO (92) are strong, but the overall speed and Best Practices (77) need attention to ensure a smoother user experience and better ranking potential in speed-sensitive mobile search results.\n\n**Top Actionable Findings**\n1. **Optimize Mobile Performance:** Improve Core Web Vitals (specifically for mobile) to raise the performance score from 55 into the \"Good\" range (90+).\n2. **Expand Granular Landing Pages:** Create dedicated, deep-dive landing pages for \"VAT Compliance\" vs. \"US Sales Tax\" to capture specific international search volume.\n3. **Enhance Schema Markup:** While Organization schema exists, adding Product and FAQ schema could improve SERP visibility and rich snippet potential.\n4. **Technical Best Practices:** Review and resolve issues lowering the \"Best Practices\" score (77) to ensure full compliance with modern web standards and security."
+}

@@ -1,0 +1,58 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 3,
+  "duration_s": 84.8,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retailer",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5190,
+      "candidates": 893,
+      "total": 6083,
+      "calls": 3
+    },
+    "adk_in": 12744,
+    "adk_out_eff": 1257,
+    "in": 17934,
+    "out": 2150
+  },
+  "cost_usd": 0.015417,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Actionable Findings",
+    "Enhance Visual",
+    "Enhance Visual Descriptions",
+    "Execution Time",
+    "HTML5. The",
+    "Monitor Page",
+    "Monitor Page Weight",
+    "Needs Improvement",
+    "Online Fashion",
+    "Online Fashion Retail",
+    "Optimize Performance",
+    "Reduce JavaScript Execution Time",
+    "Strengthen Long",
+    "Strengthen Long-Tail Targeting",
+    "Tail Targeting",
+    "Technical Health",
+    "The URL",
+    "Topic Cluster",
+    "While SEO"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe URL represents the Hungarian localized homepage of **ABOUT YOU**, a major European online fashion retailer. The site successfully targets a B2C audience in **Hungary**, with a primary focus on women's fashion (\"női divat online\"). The brand identity is strong and consistent, featuring over 1,500 brands including high-profile names like Nike, Adidas, and Levi's. The content strategy is clearly transactional, aimed at driving sales through a vast inventory and competitive service offerings like free shipping and 30-day returns.\n\n**Primary Keywords & Topic Cluster**\nThe page is well-optimized for the topic cluster of **Online Fashion Retail**. The primary keyword is \"női divat online\" (women's fashion online), supported by secondary keywords like \"online ruházati bolt\" (online clothing store) and \"márkás ruhák webshop\" (branded clothes webshop). The keyword difficulty is high, reflecting the competitive nature of the fashion industry in Hungary, but the page's topical authority is bolstered by deep categorization and celebrity-led collection pages.\n\n**Technical Health & Content Quality**\nThe technical foundation is solid, with a high crawl confidence (0.95) and effective use of semantic HTML5. The page contains over 1,000 words of content, balancing SEO-driven text with highly visual product categories. Schema implementation appears robust, contributing to a perfect SEO score of 100 in automated tests. However, the heavy use of high-resolution imagery and dynamic scripts creates a potential risk for \"Googlebot 2MB\" limits if individual pages scale too large with unoptimized assets.\n\n**Performance & Core Web Vitals**\nWhile accessibility and SEO scores are excellent (96-100), **Performance** is a significant bottleneck. Both mobile (50) and desktop (54) scores indicate substantial room for improvement. The site suffers from typical e-commerce performance drags, likely related to large image payloads and JavaScript-heavy brand carousels. Core Web Vitals are likely in the \"Needs Improvement\" or \"Poor\" range for many users, which could negatively impact ranking and user conversion in high-latency environments.\n\n**Top 5 Actionable Findings:**\n1.  **Optimize Performance:** Implement aggressive image compression (WebP/AVIF) and lazy-loading for off-screen carousels to improve the Performance scores (currently in the 50s).\n2.  **Reduce JavaScript Execution Time:** The low performance scores suggest heavy main-thread work; auditing and deferring non-critical scripts is essential for a smoother mobile experience.\n3.  **Enhance Visual Descriptions:** While SEO is high, ensuring that all alt-text for brand logos and product thumbnails is descriptive will further solidify keyword density without hurting the user experience.\n4.  **Monitor Page Weight:** Ensure that the total transfer size stays well below the 2MB threshold where Googlebot may begin truncating content.\n5.  **Strengthen Long-Tail Targeting:** While the primary keywords are strong, creating more specific landing pages for the long-tail keywords identified (e.g., \"exkluzív sztár kollekciók\") could capture more high-intent, lower-competition traffic."
+}

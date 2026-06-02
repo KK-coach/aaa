@@ -1,0 +1,2480 @@
+{
+ "runs": [
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 1,
+   "audit_id": "a7c9324d-29ee-462d-8233-b4c050136269",
+   "target_keywords_classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "automata kormány",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.7
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002518,
+   "audit_cost_usd": 0.01892,
+   "audit_fan_out_cost_usd": 0.035428,
+   "query_fan_out": [
+    "mezogazdasagi alkatresz webaruhaz"
+   ],
+   "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\n**Brand & Target Identification**\nAgrobook.hu Kft. is a Hungarian-based online retailer specializing in agricultural machinery and spare parts. Operating from its physical pickup point in Csávoly, the brand targets the domestic agricultural sector, catering to both B2B and B2C audiences. The site facilitates the distribution of specialized hardware suc",
+   "checkpoint": {
+    "audit_cost_usd": 0.01892,
+    "audit_fan_out_cost_usd": 0.035428,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "mezőgazdasági alkatrész webáruház"
+   }
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 2,
+   "audit_id": "43b9e758-607d-4bec-992d-8b613f8668e2",
+   "target_keywords_classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "automata kormány",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.7
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.00249,
+   "audit_cost_usd": 0.018631,
+   "audit_fan_out_cost_usd": 0.035656,
+   "query_fan_out": [
+    "mezogazdasagi gépalkatrész webáruház trendek",
+    "mezogazdasagi alkatresz piac hirek",
+    "mezogazdasagi alkatresz webaruhaz"
+   ],
+   "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu Kft. operates as a specialized online retailer targeting the Hungarian agricultural sector, specifically focused on machinery parts and precision farming equipment. The site serves both individual farmers and agricultural enterprises from its physical location in **Csávoly**, utilizing **GLS** for nationwide distribution. It features a robu",
+   "checkpoint": {
+    "audit_cost_usd": 0.018631,
+    "audit_fan_out_cost_usd": 0.035656,
+    "query_fan_out_n": 3,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "mezőgazdasági alkatrész webáruház"
+   }
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 3,
+   "audit_id": "a2ff2b54-a0ee-4419-9af5-9af94bc5d5b0",
+   "target_keywords_classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "automata kormány",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002547,
+   "audit_cost_usd": 0.019841,
+   "audit_fan_out_cost_usd": 0.035338,
+   "query_fan_out": [
+    "mezogazdasagi alkatresz webaruhaz"
+   ],
+   "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu, operated by **Agrobook.hu Kft.**, is a specialized online retailer based in **Csávoly**, Hungary, targeting the agricultural machinery and spare parts industry. The site positions itself as a comprehensive source for farm equipment maintenance, offering products from established brands such as **Claas**, **Fendt**, **Amazone**, **Lemken**,",
+   "checkpoint": {
+    "audit_cost_usd": 0.019841,
+    "audit_fan_out_cost_usd": 0.035338,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "mezőgazdasági alkatrész webáruház"
+   }
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 4,
+   "audit_id": "dcfdeac1-8c62-4f9d-b190-513096945463",
+   "target_keywords_classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "automata kormány",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002488,
+   "audit_cost_usd": 0.019031,
+   "audit_fan_out_cost_usd": 0.035395,
+   "query_fan_out": [
+    "mezogazdasagi alkatresz webaruhaz"
+   ],
+   "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is an established Hungarian online retailer (operated by Agrobook.hu Kft.) specializing in agricultural machinery and spare parts. The site targets farmers and agricultural professionals in Hungary, offering a comprehensive inventory that includes brands like **Claas**, **Fendt**, **Amazone**, and **Lemken**. A significant focus of the curr",
+   "checkpoint": {
+    "audit_cost_usd": 0.019031,
+    "audit_fan_out_cost_usd": 0.035395,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "mezőgazdasági alkatrész webáruház"
+   }
+  },
+  {
+   "url": "https://www.agrobook.hu",
+   "run": 5,
+   "audit_id": "02ecd790-da2c-4577-9772-7e8310a8312e",
+   "target_keywords_classified": [
+    {
+     "keyword": "mezőgazdasági alkatrész webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "Claas alkatrészek",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Fendt alkatrészek",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "Amazone műtrágyaszóró és vetőgép alkatrészek",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "Terranav automata kormányzási rendszer",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "mezőgazdasági gépalkatrészek gyors szállítással",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "automata kormány",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "vetőgép alkatrészek",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "permetező alkatrészek",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "univerzális automata kormány 2,5 cm pontosság",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "traktor és gépfestékek webáruháza",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002502,
+   "audit_cost_usd": 0.018542,
+   "audit_fan_out_cost_usd": 0.035542,
+   "query_fan_out": [
+    "mezogazdasagi alkatresz webaruhaz"
+   ],
+   "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu, operated by **Agrobook.hu Kft.**, is a specialized Hungarian e-commerce platform targeting the agricultural machinery and parts industry. The site caters to a Hungarian-speaking audience, providing a centralized hub for both professional farmers and hobbyists. It prominently features high-end brands such as **Claas**, **Fendt**, and **Amaz",
+   "checkpoint": {
+    "audit_cost_usd": 0.018542,
+    "audit_fan_out_cost_usd": 0.035542,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "mezőgazdasági alkatrész webáruház"
+   }
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 1,
+   "audit_id": "7ab7ce2e-7548-4df3-9493-ad1e50401ccd",
+   "target_keywords_classified": [
+    {
+     "keyword": "organic growth consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "integrated organic growth",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.78
+    },
+    {
+     "keyword": "UX and CRO services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.00234,
+   "audit_cost_usd": 0.019547,
+   "audit_fan_out_cost_usd": 0.035417,
+   "query_fan_out": [
+    "organic growth consulting trends 2026",
+    "organic growth consultant"
+   ],
+   "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site identifies as **kk.coach**, a professional services consultancy specializing in organic growth for B2B and e-commerce sectors, targeting the United States market. The brand is associated with **Krisztian Kiss** and positions itself as a partner for turning search visibility into revenue. The service offering revolves",
+   "checkpoint": {
+    "audit_cost_usd": 0.019547,
+    "audit_fan_out_cost_usd": 0.035417,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "organic growth consultant"
+   }
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 2,
+   "audit_id": "e3652b19-be6b-4756-b99a-c371226a1541",
+   "target_keywords_classified": [
+    {
+     "keyword": "organic growth consultant",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "integrated organic growth",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "UX and CRO services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002315,
+   "audit_cost_usd": 0.018034,
+   "audit_fan_out_cost_usd": 0.03545,
+   "query_fan_out": [
+    "organic growth consultant trends 2026",
+    "organic growth consultant"
+   ],
+   "summary_markdown": "## Audit summary for https://kk.coach\n\nThe website **kk.coach** serves as a digital storefront for an **organic growth consultancy** targeting the **United States** market. The site identifies its founder as **Krisztian Kiss** and positions itself at the intersection of traditional SEO and emerging AI-driven visibility. The brand utilizes a specific service framework known as the **Organic Growth ",
+   "checkpoint": {
+    "audit_cost_usd": 0.018034,
+    "audit_fan_out_cost_usd": 0.03545,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "organic growth consultant"
+   }
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 3,
+   "audit_id": "0461672e-e511-4292-af3b-b9c8ee5d4677",
+   "target_keywords_classified": [
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "organic growth consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.87
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "integrated organic growth",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.78
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "UX and CRO services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002028,
+   "audit_cost_usd": 0.009538,
+   "audit_fan_out_cost_usd": 0.035366,
+   "query_fan_out": [
+    "organic growth consulting trends",
+    "organic growth consultant"
+   ],
+   "summary_markdown": "\n\n## E-E-A-T Validation (Knowledge Graph)\n\n**Recommendations:**\n- Brand **kk.coach** is not present in Google Knowledge Graph. Build foundational brand presence: consistent schema:Organization markup, sameAs links across verified social profiles, branded mentions on recognized external sites, and a clear, unique brand identity. KG inclusion typically follows established presence.\n",
+   "checkpoint": {
+    "audit_cost_usd": 0.009538,
+    "audit_fan_out_cost_usd": 0.035366,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "organic growth consultant"
+   }
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 4,
+   "audit_id": "73e54a2e-f8d1-44d7-b4d9-8d178304d5dc",
+   "target_keywords_classified": [
+    {
+     "keyword": "organic growth consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.87
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "integrated organic growth",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.78
+    },
+    {
+     "keyword": "UX and CRO services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002333,
+   "audit_cost_usd": 0.016814,
+   "audit_fan_out_cost_usd": 0.035423,
+   "query_fan_out": [
+    "organic growth consulting trends 2025 2026",
+    "organic growth consultant"
+   ],
+   "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & target identification**\nThe site represents **kk.coach**, a professional services consultancy specializing in organic growth strategy for B2B and e-commerce brands. The primary target audience is based in the **United States**, focusing on businesses seeking integrated marketing solutions. The brand identifies its founder as **Krisztian Kiss**, posi",
+   "checkpoint": {
+    "audit_cost_usd": 0.016814,
+    "audit_fan_out_cost_usd": 0.035423,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "organic growth consultant"
+   }
+  },
+  {
+   "url": "https://kk.coach",
+   "run": 5,
+   "audit_id": "5106c5b9-eb9a-4674-9b43-7c3b605bf31b",
+   "target_keywords_classified": [
+    {
+     "keyword": "organic growth consultant",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "SEO and GEO consultant",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "AI and data driven organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.97
+    },
+    {
+     "keyword": "B2B organic growth system",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "structured organic growth for B2B and ecommerce",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "AI visibility optimization",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "organic growth consultant for ecommerce teams",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "integrated organic growth",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "SEO GEO UX and CRO integrated services",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "turning search visibility into revenue for B2B",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "UX and CRO services",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002329,
+   "audit_cost_usd": 0.020381,
+   "audit_fan_out_cost_usd": 0.035324,
+   "query_fan_out": [
+    "organic growth consultant",
+    "organic growth consultant trends 2025 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://kk.coach\n\nThe site `kk.coach` represents a professional services consultancy focused on organic growth, identifying the founder as Krisztian Kiss. The brand positions itself at the intersection of traditional SEO and emerging Generative Engine Optimization (GEO). The primary target audience includes B2B and e-commerce companies seeking integrated growth systems that co",
+   "checkpoint": {
+    "audit_cost_usd": 0.020381,
+    "audit_fan_out_cost_usd": 0.035324,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "organic growth consultant"
+   }
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 1,
+   "audit_id": "9db55ad8-3059-4eb2-9ac6-da89fdcec702",
+   "target_keywords_classified": [
+    {
+     "keyword": "női divat online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "tail_type": "longtail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat 1500 legnépszerűbb márkától",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "női ruházat",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "női divat webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "márkás ruhák online",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik online",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "exkluzív női kollekciók rendelése",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.78
+    },
+    {
+     "keyword": "női cipők",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "divat kiegészítők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.7
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002477,
+   "audit_cost_usd": 0.018613,
+   "audit_fan_out_cost_usd": 0.035643,
+   "query_fan_out": [
+    "noi divat online trendek 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe site is the Hungarian portal for **ABOUT YOU**, a prominent B2C online fashion retail marketplace. It targets the Hungarian market with localized content and high-intent transactional offerings. The site features a wide array of brands, including **NIKE**, **ADIDAS**, **GUESS**, and **LEVI'S**, and highlights specific collections like the **NIKE SH",
+   "checkpoint": {
+    "audit_cost_usd": 0.018613,
+    "audit_fan_out_cost_usd": 0.035643,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "női divat online"
+   }
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 2,
+   "audit_id": "db52fb61-f868-4572-89d7-7a8cb3ec6c59",
+   "target_keywords_classified": [
+    {
+     "keyword": "női divat online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "tail_type": "longtail",
+     "search_intent": "navigational",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "női ruházat",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "női divat webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "márkás ruhák online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "női divat 1500 legnépszerűbb márkától",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "női cipők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik online",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "exkluzív női kollekciók rendelése",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "divat kiegészítők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002502,
+   "audit_cost_usd": 0.01956,
+   "audit_fan_out_cost_usd": 0.03537,
+   "query_fan_out": [
+    "noi divat online trendek 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe site is a prominent B2C online fashion retail marketplace targeting the Hungarian market. It identifies as the brand **ABOUT YOU** and focuses on a broad catalog of over 1,500 brands, including **NIKE**, **ADIDAS**, **GUESS**, and **LEVI'S**. The site successfully identifies its primary audience as fashion-conscious consumers in Hungary, offering l",
+   "checkpoint": {
+    "audit_cost_usd": 0.01956,
+    "audit_fan_out_cost_usd": 0.03537,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "női divat online"
+   }
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 3,
+   "audit_id": "b1dcf0fe-b547-4a73-b22c-ad2ab4d07981",
+   "target_keywords_classified": [
+    {
+     "keyword": "női divat online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "tail_type": "longtail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "női divat 1500 legnépszerűbb márkától",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.96
+    },
+    {
+     "keyword": "márkás ruhák online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "női ruházat",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "exkluzív női kollekciók rendelése",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "női cipők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "divat kiegészítők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik online",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002458,
+   "audit_cost_usd": 0.018806,
+   "audit_fan_out_cost_usd": 0.035379,
+   "query_fan_out": [
+    "noi divat online",
+    "noi divat online trendek 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe page is the Hungarian storefront for **ABOUT YOU**, a prominent online fashion retail marketplace. It serves a B2C audience with a high focus on women’s fashion, featuring a massive catalog of over 1,500 brands including **NIKE**, **ADIDAS**, **GUESS**, and **LEVI'S**. The site successfully identifies its target market in Hungary, utilizing a local",
+   "checkpoint": {
+    "audit_cost_usd": 0.018806,
+    "audit_fan_out_cost_usd": 0.035379,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "női divat online"
+   }
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 4,
+   "audit_id": "e781652f-5ce7-4c69-a3bd-cc63ac50de75",
+   "target_keywords_classified": [
+    {
+     "keyword": "női divat online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "tail_type": "longtail",
+     "search_intent": "navigational",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "női ruházat",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "női divat 1500 legnépszerűbb márkától",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "női divat webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "női cipők",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "márkás ruhák online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "divat kiegészítők",
+     "tail_type": "shorttail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik online",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "exkluzív női kollekciók rendelése",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002489,
+   "audit_cost_usd": 0.015876,
+   "audit_fan_out_cost_usd": 0.035415,
+   "query_fan_out": [
+    "noi divat online trendek 2026",
+    "noi divat online"
+   ],
+   "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nABOUT YOU is a major player in the Hungarian **online fashion retail marketplace**, targeting a B2C audience with a high-volume product catalog. The site identifies itself as a platform featuring over 1,500 brands, including prominent organizations like **NIKE**, **ONLY**, and **LASCANA**. The platform is localized for Hungary (hu-HU) and does not requ",
+   "checkpoint": {
+    "audit_cost_usd": 0.015876,
+    "audit_fan_out_cost_usd": 0.035415,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "női divat online"
+   }
+  },
+  {
+   "url": "https://www.aboutyou.hu",
+   "run": 5,
+   "audit_id": "3964cd21-30b9-4912-962e-f2fca146b069",
+   "target_keywords_classified": [
+    {
+     "keyword": "női divat online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női divat online az ABOUT YOU-n",
+     "tail_type": "longtail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "női ruházat",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "női divat 1500 legnépszerűbb márkától",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "márkás ruhák online",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "női divat webáruház",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "női felsőruházat és dzsekik online",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "exkluzív női kollekciók rendelése",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.78
+    },
+    {
+     "keyword": "női cipők",
+     "tail_type": "shorttail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "divat kiegészítők",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    },
+    {
+     "keyword": "stílus és márkaválaszték nőknek",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.55
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.002461,
+   "audit_cost_usd": 0.015724,
+   "audit_fan_out_cost_usd": 0.035388,
+   "query_fan_out": [
+    "noi divat online trendek 2026",
+    "noi divat online"
+   ],
+   "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nABOUT YOU is a major online fashion retail marketplace targeting the Hungarian B2C market. The site features a wide array of brands, including **NIKE**, **ADIDAS**, **GUESS**, and **LEVI'S**, positioning itself as a comprehensive destination for \"női divat online\" (women's fashion online). The platform emphasizes value-added services such as free shipp",
+   "checkpoint": {
+    "audit_cost_usd": 0.015724,
+    "audit_fan_out_cost_usd": 0.035388,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "női divat online"
+   }
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 1,
+   "audit_id": "868765ac-8771-45ca-b912-a35c717f8ca6",
+   "target_keywords_classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "global tax management platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "international tax compliance",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "VAT registration services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001967,
+   "audit_cost_usd": 0.014556,
+   "audit_fan_out_cost_usd": 0.035442,
+   "query_fan_out": [
+    "VAT and Sales Tax Compliance Software market news 2026",
+    "VAT and Sales Tax Compliance Software trends 2025 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is identified as a global tax compliance software vendor targeting a B2B audience, specifically ecommerce owners, enterprises, and accounting providers. The site features a suite of specialized products including **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax**, aimed at automating international tax management. The platform positions its",
+   "checkpoint": {
+    "audit_cost_usd": 0.014556,
+    "audit_fan_out_cost_usd": 0.035442,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "VAT and Sales Tax Compliance Software"
+   }
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 2,
+   "audit_id": "6fecd3d4-1a59-4f26-aca8-7d7dbb237e7c",
+   "target_keywords_classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "global tax management platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "VAT registration services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "international tax compliance",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001997,
+   "audit_cost_usd": 0.016605,
+   "audit_fan_out_cost_usd": 0.035448,
+   "query_fan_out": [
+    "VAT and Sales Tax Compliance Software trends 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.taxually.com\n\n**Brand & target identification**\nTaxually identifies as a B2B tax compliance software vendor targeting international businesses and e-commerce enterprises. The brand provides automated solutions for VAT and US sales tax, integrating with major platforms like **Amazon** and **Shopify**. The site profile indicates a focus on the United States and globa",
+   "checkpoint": {
+    "audit_cost_usd": 0.016605,
+    "audit_fan_out_cost_usd": 0.035448,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "VAT and Sales Tax Compliance Software"
+   }
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 3,
+   "audit_id": "4d75e221-ff62-471b-a454-c2956c6963ee",
+   "target_keywords_classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "global tax management platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "international tax compliance",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "VAT registration services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001995,
+   "audit_cost_usd": 0.018241,
+   "audit_fan_out_cost_usd": 0.035415,
+   "query_fan_out": [
+    "VAT and Sales Tax Compliance Software trends 2026",
+    "VAT and Sales Tax Compliance Software news 2025 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.taxually.com\n\n**Brand & target identification**\nThe site represents **Taxually**, a tax compliance software vendor targeting a B2B audience, primarily eCommerce owners and large enterprises. The platform offers a suite of automated solutions including **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax** to manage global VAT and US sales tax. The target market is p",
+   "checkpoint": {
+    "audit_cost_usd": 0.018241,
+    "audit_fan_out_cost_usd": 0.035415,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "VAT and Sales Tax Compliance Software"
+   }
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 4,
+   "audit_id": "1ac65682-f4b7-4eb5-a44a-4604eb7d6e52",
+   "target_keywords_classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "global tax management platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "international tax compliance",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "VAT registration services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.78
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001989,
+   "audit_cost_usd": 0.015341,
+   "audit_fan_out_cost_usd": 0.035433,
+   "query_fan_out": [
+    "best VAT and Sales Tax Compliance Software 2026",
+    "VAT and Sales Tax Compliance Software latest trends 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is identified as a high-authority tax compliance software vendor targeting a B2B audience, primarily within the United States and international markets. The platform serves as a comprehensive hub for global tax management, offering specialized products such as **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax**. The site successfully commun",
+   "checkpoint": {
+    "audit_cost_usd": 0.015341,
+    "audit_fan_out_cost_usd": 0.035433,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "VAT and Sales Tax Compliance Software"
+   }
+  },
+  {
+   "url": "https://www.taxually.com",
+   "run": 5,
+   "audit_id": "13d53411-40bc-43fd-be43-0aa8e2d6d301",
+   "target_keywords_classified": [
+    {
+     "keyword": "VAT and Sales Tax Compliance Software",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "automate global VAT and US sales tax compliance",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.98
+    },
+    {
+     "keyword": "automated sales tax filing",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "sales tax software for ecommerce owners",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.94
+    },
+    {
+     "keyword": "global tax management platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.92
+    },
+    {
+     "keyword": "international tax management platform for enterprise",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "international tax compliance",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "automated data processing for tax reporting",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "VAT registration services",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001993,
+   "audit_cost_usd": 0.019091,
+   "audit_fan_out_cost_usd": 0.03543,
+   "query_fan_out": [
+    "VAT and Sales Tax Compliance Software market news 2026"
+   ],
+   "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is identified as a B2B tax compliance software vendor targeting the United States market with a focus on global VAT and sales tax automation. The site serves as a landing page for its suite of tax solutions, including products such as **CrossTax**, **LumaTax**, **EcoTax**, and **OneTax**. The platform appears to integrate with or support majo",
+   "checkpoint": {
+    "audit_cost_usd": 0.019091,
+    "audit_fan_out_cost_usd": 0.03543,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "high",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "VAT and Sales Tax Compliance Software"
+   }
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 1,
+   "audit_id": "459f39ce-67a8-4c5a-b26b-b2ae79f68c5c",
+   "target_keywords_classified": [
+    {
+     "keyword": "Vercel Platform",
+     "tail_type": "shorttail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "production deployment platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.82
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "edge computing platform",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.65
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001966,
+   "audit_cost_usd": 0.018728,
+   "audit_fan_out_cost_usd": 0.035441,
+   "query_fan_out": [
+    "Vercel Platform latest news updates 2025 2026",
+    "Vercel new features announcements"
+   ],
+   "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side exper",
+   "checkpoint": {
+    "audit_cost_usd": 0.018728,
+    "audit_fan_out_cost_usd": 0.035441,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "low",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "Vercel Platform"
+   }
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 2,
+   "audit_id": "948e0282-890a-494d-96ab-15d5e5fb1645",
+   "target_keywords_classified": [
+    {
+     "keyword": "Vercel Platform",
+     "tail_type": "shorttail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "production deployment platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "edge computing platform",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.6
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.4
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.35
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001994,
+   "audit_cost_usd": 0.017813,
+   "audit_fan_out_cost_usd": 0.035441,
+   "query_fan_out": [
+    "Vercel Platform latest news 2025 2026",
+    "Vercel new features 2025 2026"
+   ],
+   "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side exper",
+   "checkpoint": {
+    "audit_cost_usd": 0.017813,
+    "audit_fan_out_cost_usd": 0.035441,
+    "query_fan_out_n": 2,
+    "eeat_section": true,
+    "grounding_confidence": "low",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "Vercel Platform"
+   }
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 3,
+   "audit_id": "79c3e54d-fab7-4450-a959-60884ac385e8",
+   "target_keywords_classified": [
+    {
+     "keyword": "Vercel Platform",
+     "tail_type": "shorttail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "production deployment platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "edge computing platform",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.65
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.55
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001978,
+   "audit_cost_usd": 0.015112,
+   "audit_fan_out_cost_usd": 0.035396,
+   "query_fan_out": [
+    "Vercel new features updates 2025 2026"
+   ],
+   "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side exper",
+   "checkpoint": {
+    "audit_cost_usd": 0.015112,
+    "audit_fan_out_cost_usd": 0.035396,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "low",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "Vercel Platform"
+   }
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 4,
+   "audit_id": "9c432341-f064-44bb-ad28-f4d5006adf21",
+   "target_keywords_classified": [
+    {
+     "keyword": "Vercel Platform",
+     "tail_type": "shorttail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "production deployment platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "edge computing platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.6
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.55
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001989,
+   "audit_cost_usd": 0.014207,
+   "audit_fan_out_cost_usd": 0.035414,
+   "query_fan_out": [
+    "Vercel Platform latest news updates"
+   ],
+   "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side exper",
+   "checkpoint": {
+    "audit_cost_usd": 0.014207,
+    "audit_fan_out_cost_usd": 0.035414,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "low",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "Vercel Platform"
+   }
+  },
+  {
+   "url": "https://vercel.com/products/vercel-platform",
+   "run": 5,
+   "audit_id": "ba77b5fd-a6f1-411f-b74e-4de632799e01",
+   "target_keywords_classified": [
+    {
+     "keyword": "Vercel Platform",
+     "tail_type": "shorttail",
+     "search_intent": "navigational",
+     "relevance_score": 1.0
+    },
+    {
+     "keyword": "production deployment platform",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.95
+    },
+    {
+     "keyword": "frontend cloud infrastructure",
+     "tail_type": "midtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.9
+    },
+    {
+     "keyword": "enterprise web application deployment workflow",
+     "tail_type": "longtail",
+     "search_intent": "informational",
+     "relevance_score": 0.88
+    },
+    {
+     "keyword": "Vercel deployment settings",
+     "tail_type": "midtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.85
+    },
+    {
+     "keyword": "frontend observability and speed insights platform",
+     "tail_type": "longtail",
+     "search_intent": "commercial",
+     "relevance_score": 0.8
+    },
+    {
+     "keyword": "connect git repository for production deployment",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.75
+    },
+    {
+     "keyword": "manage environment variables and custom domains",
+     "tail_type": "longtail",
+     "search_intent": "transactional",
+     "relevance_score": 0.7
+    },
+    {
+     "keyword": "edge computing platform",
+     "tail_type": "midtail",
+     "search_intent": "informational",
+     "relevance_score": 0.6
+    }
+   ],
+   "audit_keyword_classify_cost_usd": 0.001972,
+   "audit_cost_usd": 0.019659,
+   "audit_fan_out_cost_usd": 0.035336,
+   "query_fan_out": [
+    "Vercel blog latest updates"
+   ],
+   "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side exper",
+   "checkpoint": {
+    "audit_cost_usd": 0.019659,
+    "audit_fan_out_cost_usd": 0.035336,
+    "query_fan_out_n": 1,
+    "eeat_section": true,
+    "grounding_confidence": "low",
+    "tk_dict_keys": [
+     "_model_version",
+     "category_competitors_likely",
+     "category_keyword",
+     "estimated_difficulty",
+     "gap_interpretation",
+     "intent",
+     "is_branded_primary",
+     "keyword_gap_severity",
+     "long_tail_keywords",
+     "primary_keyword",
+     "reasoning",
+     "secondary_keywords",
+     "topic_cluster"
+    ],
+    "tk_primary": "Vercel Platform"
+   }
+  }
+ ],
+ "started": "2026-05-21 08:36:35",
+ "finished": "2026-05-21 10:01:55",
+ "n_done": 25,
+ "n_fail": 0,
+ "total_cost_usd": 1.37906,
+ "wall_seconds": 5119.8
+}

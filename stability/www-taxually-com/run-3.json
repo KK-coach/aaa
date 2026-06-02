@@ -1,0 +1,53 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 3,
+  "duration_s": 80.7,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 4244,
+      "candidates": 710,
+      "total": 4954,
+      "calls": 3
+    },
+    "adk_in": 13839,
+    "adk_out_eff": 1043,
+    "in": 18083,
+    "out": 1753
+  },
+  "cost_usd": 0.0143,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Desktop Performance",
+    "Desktop Performance Monitoring",
+    "Internal Linking",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Localization Refinement",
+    "Performance Optimization",
+    "Tax Compliance Automation",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Clusters",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a high-authority B2B tax compliance software vendor targeting the global market, specifically focusing on businesses needing automated VAT and US Sales Tax solutions. The site effectively positions its proprietary product ecosystem—including CrossTax, LumaTax, EcoTax, and OneTax—to serve a broad range of clients from individual ecommerce owners to large-scale enterprises and accounting providers. The brand identity is well-established through strong social signals (LinkedIn, Twitter, Facebook) and clear organizational schema, though the target country is identified as the United States while the service offering is inherently global.\n\nThe primary keyword focus is \"VAT and Sales Tax Compliance Software,\" which aligns perfectly with its commercial intent and high-intent long-tail keywords like \"automated sales tax filing\" and \"international tax management platform.\" The content strategy successfully clusters around \"Tax Compliance Automation,\" utilizing semantic HTML5 to clearly define its service pillars. There is a healthy balance between product-specific entities and broad industry concepts, ensuring the site is well-positioned for both direct brand searches and discovery-based GEO/AEO queries.\n\nTechnically, the site demonstrates high content confidence and utilizes modern web standards, though it faces significant performance challenges. While the SEO score on mobile is strong (92) and accessibility is good (88), the performance score is lagging at 42. Mobile users may experience slow load times, which could impact conversion rates for the commercial-intent landing pages. Metadata and schema are present and correctly identify the organization, though the audit noted a failure in desktop PageSpeed data collection, suggesting potential infrastructure or firewall restrictions on some automated crawlers.\n\n**Top Actionable Findings:**\n1. **Performance Optimization:** Prioritize mobile performance improvements, specifically targeting the low 42 score. Focus on Core Web Vitals like Largest Contentful Paint (LCP) and reducing JavaScript execution time to improve user experience.\n2. **Schema Enhancement:** While the organizational schema is present, expanding to include specific Product schema for CrossTax, LumaTax, and EcoTax could improve rich snippet visibility in SERPs.\n3. **Internal Linking for Topic Clusters:** Strengthen the internal link architecture between the high-level \"Tax Compliance\" content and the specific product sub-pages to reinforce the topic cluster authority.\n4. **Desktop Performance Monitoring:** Investigate the Lighthouse error for desktop performance to ensure that the site is fully accessible and optimized for desktop-heavy B2B users.\n5. **Localization Refinement:** Given the global nature of VAT and sales tax, ensure that Geo-targeting is clearly defined for international sub-sections if the brand intends to dominate outside the primary US market."
+}

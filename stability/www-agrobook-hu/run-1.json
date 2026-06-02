@@ -1,0 +1,49 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 1,
+  "duration_s": 167.5,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 5143,
+      "candidates": 892,
+      "total": 6035,
+      "calls": 3
+    },
+    "adk_in": 14882,
+    "adk_out_eff": 1398,
+    "in": 20025,
+    "out": 2290
+  },
+  "cost_usd": 0.016883,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Conversion Optimization",
+    "Critical Mobile",
+    "Critical Mobile Optimization",
+    "PageSpeed Insights",
+    "Rich Results",
+    "Secondary Keywords",
+    "Top Actionable",
+    "Top Actionable Findings"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is an established online retailer specializing in agricultural machinery parts and automated steering systems, operated by **Agrobook.hu Kft.** based in **Csávoly, Hungary**. The site clearly targets the Hungarian agricultural sector, focusing on both high-tech steering solutions (like the **Terranav** system) and replacement parts for major brands such as **Claas** and **Fendt**. The site profile is well-defined, and no further user confirmation is required for the target market identification.\n\nThe primary keyword focus is **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop), supported by a transactional topic cluster including **\"automata kormány\"** (auto-steering) and specific machinery brands. While the homepage effectively highlights the Terranav steering system, there is a minor keyword gap; the title tag emphasizes auto-steering, which might overshadow the broader parts catalog. Expanding dedicated landing pages for high-intent long-tail keywords like **\"univerzális automata kormány 2,5 cm pontosság\"** could further improve conversion rates.\n\nTechnically, the page is healthy with valid HTTPS and high SEO scores (100/100 on PageSpeed Insights). It utilizes semantic HTML5, and the content extraction confidence is very high (0.95), suggesting a search-engine-friendly structure. Organization schema is present, though expanding this to include `Product` and `LocalBusiness` schema (specifically for the Csávoly location) would enhance visibility in Rich Results and Google Maps. The 316-word main content is concise but effective for a homepage, though it risks being considered \"thin\" compared to content-heavy competitors if not supplemented by detailed category descriptions.\n\nPerformance is the most significant area for improvement. While desktop scores are mediocre (64), **mobile performance is poor (33)**. This low score, combined with the lack of specific Core Web Vitals data in the audit, suggests that users on mobile devices—common for farmers in the field—may experience significant lag and layout shifts. Accessibility scores are strong (91 on mobile), but the performance bottleneck likely impacts the overall user experience and potentially mobile search rankings.\n\n### Top Actionable Findings:\n1.  **Critical Mobile Optimization:** Address the low mobile performance score (33) by optimizing image delivery (WebP), reducing JavaScript execution time, and leveraging browser caching to improve the experience for on-the-go agricultural users.\n2.  **Schema Expansion:** Implement `LocalBusiness` schema for the physical address in **Csávoly** and `Product` schema for key items like the Terranav system to capture more real estate in SERP features.\n3.  **Content Depth for Secondary Keywords:** While the focus on auto-steering is clear, develop more robust content clusters around **Claas**, **Fendt**, and **Amazone** parts to improve ranking for these high-volume secondary keywords.\n4.  **UX/Conversion Optimization:** Ensure that the \"Automata kormány\" (auto-steering) value proposition doesn't distract from the broader \"Alkatrész\" (parts) search intent by refining the homepage visual hierarchy."
+}

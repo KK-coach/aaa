@@ -1,0 +1,175 @@
+{
+  "grid": [
+    {
+      "url": "https://kk.coach",
+      "run": 1,
+      "audit_id": "82d794d6-13a6-4cbb-8270-511a63ab97c7",
+      "primary_keyword": "organic growth consultant",
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy and Optimization",
+      "secondary_keywords": [
+        "SEO and GEO consultant",
+        "B2B organic growth system",
+        "UX and CRO services"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.01349,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.035312,
+        "audit_keyword_classify_cost_usd": 0.009145,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.043229,
+        "audit_fan_out_enrichment_cost_usd": 0.00134,
+        "audit_fan_out_coverage_cost_usd": 0.0097605
+      },
+      "total_cost_usd": 0.189277,
+      "latency_s": 182.0,
+      "error": null
+    },
+    {
+      "url": "https://kk.coach",
+      "run": 2,
+      "audit_id": "97f458cf-5380-4eec-8373-204888568539",
+      "primary_keyword": "organic growth consultant",
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy and Optimization",
+      "secondary_keywords": [
+        "SEO and GEO consultant",
+        "B2B organic growth system",
+        "UX and CRO services"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.01885,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.035357,
+        "audit_keyword_classify_cost_usd": 0.004728,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.043581,
+        "audit_fan_out_enrichment_cost_usd": 0.0013375,
+        "audit_fan_out_coverage_cost_usd": 0.0100315
+      },
+      "total_cost_usd": 0.190885,
+      "latency_s": 462.2,
+      "error": null
+    },
+    {
+      "url": "https://kk.coach",
+      "run": 3,
+      "audit_id": "86f05020-b8f9-4f2a-8355-2cd40fd9808f",
+      "primary_keyword": "organic growth consultant",
+      "category_keyword": "organic growth consultancy",
+      "topic_cluster": "Organic Growth Strategy and Optimization",
+      "secondary_keywords": [
+        "SEO and GEO consultant",
+        "B2B organic growth system",
+        "UX and CRO services"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.021663,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.0356,
+        "audit_keyword_classify_cost_usd": 0.004092,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.042531,
+        "audit_fan_out_enrichment_cost_usd": 0.001325,
+        "audit_fan_out_coverage_cost_usd": 0.0099645
+      },
+      "total_cost_usd": 0.192175,
+      "latency_s": 160.9,
+      "error": null
+    },
+    {
+      "url": "https://taxually.com",
+      "run": 1,
+      "audit_id": "dc632af2-4bfc-4273-8dd3-8ea48e8b82d5",
+      "primary_keyword": "tax compliance software",
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "tax compliance automation",
+      "secondary_keywords": [
+        "VAT compliance software",
+        "US sales tax automation",
+        "global tax management platform"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.017767,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.035405,
+        "audit_keyword_classify_cost_usd": 0.011573,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.043891,
+        "audit_fan_out_enrichment_cost_usd": 0.000841,
+        "audit_fan_out_coverage_cost_usd": 0.005547
+      },
+      "total_cost_usd": 0.192024,
+      "latency_s": 197.8,
+      "error": null
+    },
+    {
+      "url": "https://taxually.com",
+      "run": 2,
+      "audit_id": "4e2d0b8e-eb5a-4553-ace2-c7dbd38be166",
+      "primary_keyword": "tax compliance software",
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "tax compliance automation",
+      "secondary_keywords": [
+        "VAT compliance software",
+        "US sales tax automation",
+        "global tax management platform"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.022199,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.035465,
+        "audit_keyword_classify_cost_usd": 0.003595,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.044628,
+        "audit_fan_out_enrichment_cost_usd": 0.001306,
+        "audit_fan_out_coverage_cost_usd": 0.0099425
+      },
+      "total_cost_usd": 0.194136,
+      "latency_s": 199.0,
+      "error": null
+    },
+    {
+      "url": "https://taxually.com",
+      "run": 3,
+      "audit_id": "97cf4b99-c5da-43a2-bb25-1bc1f6d912cb",
+      "primary_keyword": "tax compliance software",
+      "category_keyword": "tax compliance software",
+      "topic_cluster": "tax compliance automation",
+      "secondary_keywords": [
+        "VAT compliance software",
+        "US sales tax automation",
+        "global tax management platform"
+      ],
+      "cost_fields": {
+        "audit_kg_cost_usd": 0.0,
+        "audit_cost_usd": 0.01722,
+        "audit_memory_retrieval_cost_usd": 0.0,
+        "audit_fan_out_cost_usd": 0.035384,
+        "audit_keyword_classify_cost_usd": 0.003527,
+        "audit_keywords_volume_cost_usd": 0.075,
+        "audit_ai_overview_cost_usd": 0.002,
+        "audit_chatgpt_cost_usd": 0.044725,
+        "audit_fan_out_enrichment_cost_usd": 0.00135,
+        "audit_fan_out_coverage_cost_usd": 0.0098245
+      },
+      "total_cost_usd": 0.18903,
+      "latency_s": 241.2,
+      "error": null
+    }
+  ],
+  "wall_time_s": 1443.1,
+  "total_cost_usd": 1.1475270000000002,
+  "breaker_hit": false
+}

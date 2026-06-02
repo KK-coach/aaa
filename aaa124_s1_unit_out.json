@@ -1,0 +1,79 @@
+{
+  "audit": "kk.coach 806e667c",
+  "ground_truth": {
+    "h1": {
+      "level_skips": 0,
+      "total_headings": 45,
+      "h1_count": 1
+    },
+    "images": {
+      "alt_count": 1,
+      "img_count": 2
+    },
+    "landmarks": {
+      "missing": [
+        "aside",
+        "footer"
+      ],
+      "present": [
+        "nav",
+        "main",
+        "article",
+        "header"
+      ],
+      "count": 4
+    }
+  },
+  "result": {
+    "macro_structure": {
+      "structured_finding": "The page features a solid macro semantic layout with key landmarks like nav, main, article, and header present, ensuring search engines can easily parse the primary content areas. However, an explicit footer landmark is missing from the detected landmarks.",
+      "confidence_0_1": 0.95,
+      "justification": "The presence of main, nav, article, and header indicates a highly structured HTML5 layout. The page size is lightweight (87.3 KB), which prevents DOM bloat and ensures a high content-to-chrome ratio, though the lack of a semantic footer landmark is a minor gap.",
+      "recommendation": "Verify if a semantic <footer> element is used at the bottom of the page; if it is currently a generic <div>, update it to a semantic <footer> tag to complete the standard landmark set."
+    },
+    "heading_semantics": {
+      "structured_finding": "The page has an excellent heading hierarchy with exactly one h1 element and a total of 45 headings with zero level skips, providing a highly logical and crawlable outline for search engines.",
+      "confidence_0_1": 1.0,
+      "justification": "Having 45 headings without a single level skip (e.g., jumping from H2 to H4) is rare and highly beneficial for semantic parsers. It ensures that the B2B coaching topics are structured logically.",
+      "recommendation": "Maintain this perfect nesting structure. Ensure that the single H1 contains the primary target keyword (e.g., 'B2B Executive Coaching') and that the 44 subheadings (H2-H6) remain descriptive and keyword-optimized."
+    },
+    "above_the_fold": {
+      "structured_finding": "The above-the-fold area successfully establishes the brand identity for kk.coach, but the visual assets lack complete accessibility support, with only 50% image alt text coverage.",
+      "confidence_0_1": 0.85,
+      "justification": "For a B2B coaching homepage, the hero area must immediately communicate the value proposition. While the technical structure is sound, the 50% alt text coverage (1 out of 2 images) suggests that key visual elements in the hero or primary sections may lack descriptive text for search engines and screen readers.",
+      "recommendation": "Identify the image lacking alt text (likely a hero image or logo) and add a descriptive, keyword-rich alt attribute to achieve 100% alt text coverage."
+    },
+    "micro_semantics": {
+      "structured_finding": "The page utilizes rich micro-semantic markup, including 15 strong tags, 8 em tags, and 6 unordered lists containing 28 list items to emphasize key concepts and structure information.",
+      "confidence_0_1": 0.95,
+      "justification": "The use of semantic emphasis (strong, em) and structured lists (ul with 28 li items) helps search engines understand the relative importance of terms and easily extract bulleted lists for featured snippets. No outdated presentational tags like b or i were detected.",
+      "recommendation": "Continue using strong and em for semantic emphasis rather than styling. Consider grouping any step-by-step coaching processes into ordered lists (<ol>) instead of unordered lists (<ul>) to signal sequential flow to search engines."
+    },
+    "inline_link_semantics": {
+      "structured_finding": "The page contains a high number of interactive elements (31 ARIA interactive elements and 7 buttons), indicating a highly interactive user experience, but inline link optimization needs to ensure descriptive anchor texts.",
+      "confidence_0_1": 0.8,
+      "justification": "With 7 buttons and 31 ARIA interactive elements, the page is highly actionable. However, high interactivity requires careful management of link semantics (e.g., avoiding generic 'click here' or 'learn more' anchors) to pass maximum SEO value.",
+      "recommendation": "Audit all inline links and buttons to ensure they use descriptive anchor text (e.g., 'Schedule a B2B Coaching Consultation' instead of 'Learn More') and verify that any external links use rel=\"noopener\" or rel=\"nofollow\" where appropriate."
+    },
+    "forms_conversion_points": {
+      "structured_finding": "The homepage features 7 buttons and 31 interactive elements, indicating multiple potential conversion points, but lacks structured schema actions to define these conversion paths for search engines.",
+      "confidence_0_1": 0.9,
+      "justification": "For a B2B service business, conversion is the primary goal. While the page has ample physical conversion points (7 buttons), the lack of schema actions (schema_actions_count=0) means search engines cannot programmatically identify these as conversion or interaction entry points.",
+      "recommendation": "Integrate a potentialAction property (such as a ContactAction or CommunicateAction) into your JSON-LD schema to explicitly define the primary consultation form or contact button for search engines."
+    },
+    "schema_entity": {
+      "structured_finding": "The page correctly implements WebPage and WebSite schema types, matching the homepage context, but lacks deeper B2B service-specific entity markup or schema actions.",
+      "confidence_0_1": 0.95,
+      "justification": "While the basic page-level schema is correct, a B2B coaching homepage should leverage more specific schemas like ProfessionalService, LocalBusiness, or ConsultingDecision to define the brand, founder, and services offered.",
+      "recommendation": "Expand the JSON-LD schema to include a ProfessionalService or Organization entity, detailing the brand kk.coach, and nest Service schemas for specific coaching programs to build stronger Knowledge Graph signals."
+    },
+    "_meta": {
+      "model_id": "gemini-3.5-flash",
+      "input_tokens": 1895,
+      "output_tokens": 1273,
+      "latency_s": 17.565,
+      "cost_usd": 0.0047665,
+      "error": null
+    }
+  }
+}

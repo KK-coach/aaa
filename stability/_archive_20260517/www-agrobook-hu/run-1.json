@@ -1,0 +1,58 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 1,
+  "duration_s": 85.0,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 4749,
+      "candidates": 916,
+      "total": 5665,
+      "calls": 3
+    },
+    "adk_in": 11625,
+    "adk_out_eff": 846,
+    "in": 16374,
+    "out": 1762
+  },
+  "cost_usd": 0.013473,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Actionable Findings",
+    "Agricultural Machinery",
+    "Best Practices",
+    "Expand Precision",
+    "Expand Precision Farming Content",
+    "Farming Content",
+    "Increase Homepage",
+    "Increase Homepage Text Density",
+    "Optimize Core",
+    "Optimize Core Web Vitals",
+    "Review Mobile",
+    "Review Mobile Accessibility",
+    "Spare Parts",
+    "Strengthen Local",
+    "Strengthen Local SEO",
+    "Technical Health",
+    "Text Density",
+    "Topic Cluster",
+    "Web Vitals"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\n**Brand & Target Identification**\nAgrobook.hu is an established Hungarian e-commerce platform operated by **Agrobook.hu Kft.**, specializing in the retail of agricultural machinery parts and advanced farming technologies. Based in Csávoly, Hungary, the site targets both B2B and B2C segments within the domestic agricultural industry. The brand positioning is professional and technical, focusing on high-precision equipment like the Terranav automatic steering systems alongside standard replacement parts for major brands such as Claas and Fendt.\n\n**Primary Keywords & Topic Cluster**\nThe site effectively targets the primary keyword \"**mezőgazdasági alkatrész webáruház**\" (agricultural parts webshop) within a broader topic cluster of \"Agricultural Machinery and Spare Parts.\" It captures high-intent transactional traffic through secondary keywords like \"**automata kormány**\" (automatic steering) and specific brand-related searches. The keyword strategy is well-aligned with the product catalog, though there is an opportunity to further dominate the \"precision farming\" niche by expanding content around long-tail technical queries.\n\n**Technical Health**\nThe technical foundation is solid with high confidence in content extraction and proper semantic HTML5 usage. The site uses HTTPS and has a clean canonical structure. Schema markup is present, identifying the organization and its local presence. However, the homepage content length is relatively lean (approx. 316 words), which presents a minor risk of being perceived as \"thin\" by search engines if not supported by the deeper product and category pages.\n\n**Content Quality**\nContent extraction confidence is high (0.95), indicating a well-structured site that search engines can easily parse. The headings and navigation are clear, and the site includes essential e-commerce trust signals such as GDPR compliance (Adatkezelési tájékoztató) and detailed shipping/payment information. Image alt-text coverage and metadata are generally well-implemented, contributing to a perfect SEO score in automated tests.\n\n**Performance**\nPerformance is the primary area for improvement. The site scores **50/100 on mobile** and **56/100 on desktop**. While the SEO and Best Practices scores are excellent (100 and 96 respectively), the low performance scores suggest issues with Core Web Vitals, likely stemming from large unoptimized images or render-blocking scripts that impact the initial load speed.\n\n**Top 5 Actionable Findings**\n1.  **Optimize Core Web Vitals:** Address the low performance scores (50-56) by implementing modern image formats (WebP), lazy loading, and minimizing render-blocking JavaScript to improve mobile user experience.\n2.  **Expand Precision Farming Content:** Create dedicated landing pages for \"automata kormány\" (automatic steering) to capture more informational search intent and explain the ROI of the Terranav system.\n3.  **Strengthen Local SEO:** Ensure the Csávoly physical location is fully optimized in Google Business Profile and consistently cited across Hungarian agricultural directories.\n4.  **Increase Homepage Text Density:** Add 200-400 words of keyword-rich introductory text to the homepage to reinforce topical authority for \"mezőgazdasági alkatrészek.\"\n5.  **Review Mobile Accessibility:** While the accessibility score is high (91), ensure all interactive elements (buttons, menus) are easily tappable for users in the field who may be using mobile devices under sunlight."
+}

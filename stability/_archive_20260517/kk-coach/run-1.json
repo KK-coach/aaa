@@ -1,0 +1,53 @@
+{
+  "url": "https://kk.coach",
+  "run": 1,
+  "duration_s": 39.4,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "digital marketing consultancy",
+  "topic_cluster": "Organic Growth & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 3823,
+      "candidates": 749,
+      "total": 4572,
+      "calls": 3
+    },
+    "adk_in": 6391,
+    "adk_out_eff": 1862,
+    "in": 10214,
+    "out": 2611
+  },
+  "cost_usd": 0.01294,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Enhance Person",
+    "Enhance Person Schema",
+    "Expand Traditional",
+    "Expand Traditional SEO Volume",
+    "Leverage GEO Terminology",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "Person Schema",
+    "SEO. However",
+    "Search Optimization",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "While GEO"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe website **kk.coach** (branded as KK Organic Growth Consultant) is an English-language platform targeting the United States market, specifically focusing on B2B and e-commerce audiences. The site represents the professional services of **Krisztian Kiss**, an organic growth consultant. The brand positioning is highly specialized, bridging the gap between traditional SEO and emerging AI-driven visibility strategies.\n\n**Primary Keywords & Topic Cluster**\nThe page centers on the topic cluster of **Organic Growth & Search Optimization**. The primary keyword is **\"organic growth consultant,\"** supported by secondary terms like **\"SEO and GEO consultant\"** and **\"AI visibility strategy.\"** The content introduces \"GEO\" (Generative Engine Optimization) as a core competency, positioning the brand at the forefront of AI-search integration. The keyword intent is purely commercial, aimed at businesses looking to turn search visibility into structured revenue through integrated SEO, GEO, and UX services.\n\n**Technical Health & Content Quality**\nThe technical foundation of the page is robust, utilizing semantic HTML5 with a high main content confidence score of 0.95. With a substantial word count of approximately 1,834 words, the content is deep and authoritative. The site successfully associates with key technologies and entities such as Google Analytics 4 and Google Search Console. While meta-author tags were not explicitly detected, the brand identity is clearly established through entity association and social signals (e.g., Twitter creator @Krisztian__Kiss).\n\n**Performance**\nThe page demonstrates exceptional performance on desktop, achieving a perfect **100/100 PageSpeed score** across performance, best practices, and SEO. However, there is a notable disparity on mobile, where the performance score drops to **72**. While accessibility remains high at 97, the mobile experience suggests potential issues with resource loading or execution that do not affect the desktop environment as severely.\n\n**Top Actionable Findings**\n*   **Optimize Mobile Performance:** With a score of 72, the mobile experience lags significantly behind the desktop's perfect rating. Focus on optimizing image delivery, reducing JavaScript execution time, or refining the critical rendering path for mobile viewports.\n*   **Leverage GEO Terminology:** As \"GEO\" (Generative Engine Optimization) is an emerging term, the site should continue to build foundational content around this topic to capture \"early mover\" advantage in AI-search queries before the keyword difficulty increases.\n*   **Enhance Person Schema:** While the site profile identifies the consultant, ensuring explicit Person Schema (JSON-LD) is present and detailed will further solidify the E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) of Krisztian Kiss as the primary entity.\n*   **Expand Traditional SEO Volume:** While GEO is a strong niche, the primary keyword \"organic growth consultant\" is of medium difficulty; ensuring the content also targets high-volume traditional SEO terms will help maintain a steady lead flow while the AI search market matures."
+}

@@ -1,0 +1,61 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 3,
+  "duration_s": 83.6,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "low",
+  "warning_present": true,
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2856,
+      "candidates": 764,
+      "total": 3620,
+      "calls": 3
+    },
+    "adk_in": 16676,
+    "adk_out_eff": 1553,
+    "in": 19532,
+    "out": 2317
+  },
+  "cost_usd": 0.016717,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "App Router",
+    "Cloud Deployment",
+    "Enhance On-Page Metadata",
+    "Enterprise Deployment",
+    "Enterprise Deployment Automation",
+    "Implementing Product",
+    "Keyword Gap",
+    "Next.js App Router",
+    "Page Metadata",
+    "Resolve Crawler",
+    "Resolve Crawler Accessibility",
+    "Scalable Frontend",
+    "Scalable Frontend Infrastructure",
+    "Single Page",
+    "Single Page Application",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "Vercel Platform"
+  ],
+  "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel's platform page is identified as a high-authority B2B destination within the cloud computing and deployment industry. The site targets a global audience, primarily in the United States, focusing on developers and technical decision-makers. While the brand \"Vercel\" is clearly established, the audit process encountered significant technical hurdles, resulting in low grounding confidence for deep content analysis. The page is built using the Next.js App Router, which serves as a Single Page Application (SPA), potentially contributing to the \"content limited\" status reported by extraction tools.\n\nThe primary keyword targeted is **Vercel Platform**, with a focus on the broader topic cluster of **Cloud Deployment and Infrastructure**. The page is heavily optimized for branded terms and commercial intent, specifically for users looking to \"connect git repository for production deployment\" or manage \"serverless function invocations.\" However, there is a notable gap in non-branded, high-volume educational headers. The current structure relies heavily on internal navigation and interactive elements, which may hinder organic discovery for users searching for general \"frontend cloud deployment\" solutions without mentioning the brand.\n\nTechnical health and performance assessments were hampered by accessibility issues. Both desktop and mobile PageSpeed tests returned a `FAILED_DOCUMENT_REQUEST` error (net::ERR_ABORTED), suggesting the server may be blocking automated requests or that the complex rendering process is timing out. Furthermore, content extraction confidence remained low (0.3) even after Playwright escalation, indicating that much of the page's value is likely trapped within interactive JavaScript components that are not easily indexed or parsed by standard SEO crawlers. No significant JSON-LD structured data or specific author metadata was identified during the crawl.\n\n### Top Actionable Findings:\n1. **Resolve Crawler Accessibility & Performance:** The server-side abortion of Lighthouse requests and low content confidence scores suggest that search engine bots may struggle to fully render and understand the page. Investigate bot-management settings and server response stability to ensure reliable indexing.\n2. **Bridge the Keyword Gap:** Incorporate descriptive, non-branded H1 and H2 headers. Transitioning from purely brand-centric language to broader industry terms like \"Scalable Frontend Infrastructure\" or \"Enterprise Deployment Automation\" could capture a wider top-of-funnel audience.\n3. **Enhance On-Page Metadata:** The audit found no explicit JSON-LD entities or meta authors. Implementing Product or SoftwareApplication schema would help search engines better categorize the platform's specific features, such as \"AI Gateway\" and \"Edge Requests.\"\n4. **Optimize for Core Web Vitals:** Since the PageSpeed audit failed to execute, a manual review of Core Web Vitals via Google Search Console is recommended to ensure the SPA's hydration and rendering times are not negatively impacting user experience or ranking potential."
+}

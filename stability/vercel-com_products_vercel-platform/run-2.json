@@ -1,0 +1,64 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 2,
+  "duration_s": 68.8,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "grounding_confidence": "low",
+  "warning_present": true,
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2856,
+      "candidates": 764,
+      "total": 3620,
+      "calls": 3
+    },
+    "adk_in": 16361,
+    "adk_out_eff": 1478,
+    "in": 19217,
+    "out": 2242
+  },
+  "cost_usd": 0.016335,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "App Router",
+    "Crawler Accessibility",
+    "Enhance Semantic",
+    "Enhance Semantic HTML",
+    "Frontend Cloud",
+    "Frontend Teams",
+    "Investigate Bot",
+    "Investigate Bot Protection Impact",
+    "Next.js App Router",
+    "PageSpeed Insights",
+    "Protection Impact",
+    "Scalable Infrastructure",
+    "Strengthen Metadata",
+    "Technical Health",
+    "The URL",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Topic Cluster",
+    "United States",
+    "Vercel Platform",
+    "Web Application",
+    "Web Application Firewall"
+  ],
+  "summary_markdown": "> ⚠️ **AUDIT CONFIDENCE: LOW**\n> This site delivered limited content to search crawlers at the time of audit (JS-heavy rendering or thin server-side HTML). The audit was performed on the content available, but specific product, technology, or branding claims should be verified manually. This itself is an SEO/GEO finding: AI assistants and search bots see what we saw, not the full client-side experience.\n\n## Audit summary for https://vercel.com/products/vercel-platform\n\n**Brand & Target Identification**\nThe page represents **Vercel**, specifically focusing on the **Vercel Platform** product. It is positioned within the **cloud computing and deployment platform** industry, targeting a **B2B** audience in the **United States**. The content is primarily in **English**. The brand identity is strong, though the site profile indicates low grounding confidence due to the highly dynamic nature of the page, which functions as a Next.js single-page application (SPA).\n\n**Primary Keywords & Topic Cluster**\nThe primary keyword for this page is \"**Vercel Platform**,\" categorized under the \"**frontend cloud deployment platform**\" cluster. Secondary keywords include \"**production deployment**,\" \"**frontend cloud platform**,\" and \"**deployment observability**.\" The intent is clearly **commercial**. A significant keyword gap was identified: the page is heavily optimized for branded terms but lacks descriptive, non-branded headers (H1/H2) that could capture users searching for more general deployment infrastructure solutions.\n\n**Technical Health**\nThe page is built using the **Next.js App Router**, which presents challenges for traditional crawlers, as evidenced by low main content confidence (0.3) and limited word extraction. While technically modern, the reliance on a JavaScript-heavy \"shell\" architecture may pose a risk for indexation of deep content if search bots do not execute JavaScript fully. The URL uses HTTPS, but specific schema and canonical tags were not fully parsed due to the content extraction limits of the SPA structure.\n\n**Content Quality**\nThe audit revealed \"**content limited**\" status across multiple extraction tools. The page effectively targets branded concepts such as **Git** integration, **Edge Requests**, and **AI Gateway**, but the actual body text visibility to crawlers is thin (approximately 38-116 words identified). This suggests that much of the value-driven content is likely rendered client-side or nested within interactive components that are difficult for static analysis to process.\n\n**Performance**\nPerformance testing via PageSpeed Insights was unsuccessful, returning a `FAILED_DOCUMENT_REQUEST` error. This typically indicates the presence of aggressive bot protection or a Web Application Firewall (WAF) that prevents automated Lighthouse testing. Consequently, Core Web Vitals and mobile/desktop performance scores could not be verified. Given the brand's focus on speed and \"Frontend Cloud,\" it is likely optimized, but this cannot be confirmed via external automated audit tools.\n\n### Top Actionable Findings\n1.  **Enhance Semantic HTML:** Incorporate more descriptive, non-branded H1 and H2 tags (e.g., \"Scalable Infrastructure for Frontend Teams\") to improve visibility for non-branded search queries.\n2.  **Optimize for Crawler Accessibility:** Ensure that critical product descriptions and value propositions are included in the initial HTML payload (SSR) rather than relying solely on client-side hydration, to improve content confidence for search engines.\n3.  **Investigate Bot Protection Impact:** The failure of performance auditing tools suggests that search engine crawlers might also face friction; verify that essential search bots (Googlebot, Bingbot) are explicitly allow-listed in the WAF.\n4.  **Strengthen Metadata and Schema:** Explicitly define JSON-LD for \"Product\" and \"SoftwareApplication\" entities within the static head to ensure rich results even if the body content extraction is inconsistent."
+}

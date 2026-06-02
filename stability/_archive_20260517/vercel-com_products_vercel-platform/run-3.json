@@ -1,0 +1,61 @@
+{
+  "url": "https://vercel.com/products/vercel-platform",
+  "run": 3,
+  "duration_s": 172.5,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "frontend cloud deployment platform",
+  "topic_cluster": "Cloud Deployment and Infrastructure",
+  "serp_strategy": "english_global_default",
+  "brand": "Vercel",
+  "tokens": {
+    "vertex": {
+      "prompt": 2462,
+      "candidates": 718,
+      "total": 3606,
+      "calls": 3
+    },
+    "adk_in": 14583,
+    "adk_out_eff": 1380,
+    "in": 17045,
+    "out": 2524
+  },
+  "cost_usd": 0.016095,
+  "tools": [
+    "crawl_html_tool",
+    "crawl_with_playwright_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Address Desktop",
+    "Address Desktop Accessibility",
+    "Answer Engine",
+    "Answer Engine Optimization",
+    "App Router",
+    "Cloud Deployment",
+    "Desktop Accessibility",
+    "Enhance Textual",
+    "Enhance Textual Content",
+    "Improve Mobile",
+    "Improve Mobile Performance",
+    "Mobile Performance",
+    "Next.js App Router",
+    "Optimize Header",
+    "Optimize Header Hierarchy",
+    "Scalable Frontend",
+    "Scalable Frontend Cloud Deployment",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "Vercel Platform"
+  ],
+  "summary_markdown": "## Audit summary for https://vercel.com/products/vercel-platform\n\nVercel's product page for its core platform is a high-intent commercial page targeting a B2B audience in the cloud computing and deployment industry. The brand is clearly identified as **Vercel**, focusing on its role as a frontend cloud platform. While the target country is identified as the United States and the language as English, the page serves a global developer community. The page structure is built using the **Next.js App Router**, which, while technically modern, resulted in low content extraction confidence (0.3) and limited word counts during analysis, suggesting the page may rely heavily on interactive or visual elements rather than dense textual SEO content.\n\nThe primary keyword targeted is **\"Vercel Platform,\"** supported by secondary terms like \"production deployment\" and \"frontend cloud platform.\" The page fits into a broader topic cluster of **Cloud Deployment and Infrastructure**. There is a high-severity keyword gap identified: the content is heavily optimized for branded terms but lacks descriptive, non-branded SEO headers (H1/H2) that would capture broader searches for general deployment solutions. This indicates the page is currently optimized more for users who are already familiar with the brand than for discovery via general industry queries.\n\nTechnically, the page uses HTTPS and modern SPA frameworks, but it presents significant performance challenges. The **Mobile Performance score is very low (28)**, which is surprising for a platform that champions web performance. While mobile accessibility (91) and SEO (83) scores are strong, the **Desktop Accessibility score is notably poor (37)**. The low content confidence and limited entity extraction (10 products, 1 technology, and 0 organizations identified) suggest that search engines may struggle to parse the full semantic value of the page without executing heavy JavaScript, potentially risking its AEO (Answer Engine Optimization) visibility.\n\n**Top Actionable Findings:**\n1.  **Improve Mobile Performance:** The performance score of 28 is a critical bottleneck. Optimize image assets, reduce JavaScript execution time, and address Core Web Vitals to align with Vercel's own \"Speed Insights\" marketing.\n2.  **Optimize Header Hierarchy:** Replace or augment branded headers with descriptive, keyword-rich H1 and H2 tags (e.g., \"Scalable Frontend Cloud Deployment Platform\") to capture non-branded organic traffic.\n3.  **Address Desktop Accessibility:** Investigate the low desktop accessibility score (37) to ensure the platform page is usable for all developers, focusing on ARIA labels and keyboard navigation which often suffer in complex SPA layouts.\n4.  **Enhance Textual Content:** Increase the volume of \"crawlable\" text. The limited word count detected (under 40 words in some renders) makes it difficult for search and answer engines to determine the page's depth. Adding detailed product specifications or use cases would improve semantic density."
+}

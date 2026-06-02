@@ -1,0 +1,61 @@
+{
+  "grid": [
+    {
+      "url": "https://agrobook.hu",
+      "audit_id": "061c20fa-2b53-45b2-a72c-197857cba691",
+      "page_type": "homepage",
+      "page_type_in_27_leaf_enum": true,
+      "page_type_parent_intent_group": "navigation",
+      "page_type_model_version": "gemini-3-flash-preview",
+      "audit_multi_dim_classify_cost_usd": 0.001981,
+      "total_audit_cost_usd": 0.112932,
+      "wall_s": 202.2
+    },
+    {
+      "url": "https://kk.coach",
+      "audit_id": "d2cf1cd3-6b4a-473f-a2d0-07edbae209b9",
+      "page_type": "homepage",
+      "page_type_in_27_leaf_enum": true,
+      "page_type_parent_intent_group": "navigation",
+      "page_type_model_version": "gemini-3-flash-preview",
+      "audit_multi_dim_classify_cost_usd": 0.00186,
+      "total_audit_cost_usd": 0.189979,
+      "wall_s": 179.9
+    },
+    {
+      "url": "https://vercel.com/pricing",
+      "audit_id": "2613837d-37f0-4786-8500-d09572ccb6dd",
+      "page_type": "pricing_page",
+      "page_type_in_27_leaf_enum": true,
+      "page_type_parent_intent_group": "conversion",
+      "page_type_model_version": "gemini-3-flash-preview",
+      "audit_multi_dim_classify_cost_usd": 0.0019,
+      "total_audit_cost_usd": 0.189475,
+      "wall_s": 218.4
+    },
+    {
+      "url": "https://nextjs.org/docs",
+      "audit_id": "5375d8ab-3a11-4808-8124-be43986e8596",
+      "page_type": "documentation",
+      "page_type_in_27_leaf_enum": true,
+      "page_type_parent_intent_group": "informational",
+      "page_type_model_version": "gemini-3-flash-preview",
+      "audit_multi_dim_classify_cost_usd": 0.001941,
+      "total_audit_cost_usd": 0.18249,
+      "wall_s": 159.9
+    },
+    {
+      "url": "https://www.aboutyou.hu/c/noi",
+      "audit_id": "3f16256f-b315-4288-8d05-4aa2c5fa5cf7",
+      "page_type": "category_page",
+      "page_type_in_27_leaf_enum": true,
+      "page_type_parent_intent_group": "comparison_discovery",
+      "page_type_model_version": "gemini-3-flash-preview",
+      "audit_multi_dim_classify_cost_usd": 0.002164,
+      "total_audit_cost_usd": 0.194931,
+      "wall_s": 216.7
+    }
+  ],
+  "wall_s": 977.0,
+  "cost_usd_total": 0.8698075
+}

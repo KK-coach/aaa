@@ -1,0 +1,56 @@
+{
+  "url": "https://kk.coach",
+  "run": 2,
+  "duration_s": 37.9,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "digital marketing consultancy",
+  "topic_cluster": "Organic Growth & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 3823,
+      "candidates": 749,
+      "total": 4572,
+      "calls": 3
+    },
+    "adk_in": 12155,
+    "adk_out_eff": 1550,
+    "in": 15978,
+    "out": 2299
+  },
+  "cost_usd": 0.014886,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "AEO Entity Alignment",
+    "Actionable Findings",
+    "Answer Engine",
+    "Answer Engine Optimization",
+    "Best Practices",
+    "Conversion Path",
+    "Conversion Path UX",
+    "Enhance Schema",
+    "Enhance Schema Markup",
+    "Entity Alignment",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "SEO. However",
+    "Search Optimization",
+    "United States",
+    "United States. The",
+    "User Experience"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site `kk.coach` functions as the professional platform for an organic growth and digital marketing consultancy. The brand is positioned as a high-end service provider focusing on structured, data-driven organic growth for B2B and e-commerce sectors. Based on site profile analysis, the target audience is a mix of B2B and B2C (primarily e-commerce) entities in the United States. The primary person associated with the brand is Krisztian Kiss (identified via `@Krisztian__Kiss` on Twitter).\n\n**Primary Keywords & Topic Cluster**\nThe site targets the \"Organic Growth & Search Optimization\" topic cluster. The primary keyword is **\"organic growth consultant,\"** supported by secondary keywords like \"SEO and GEO consultant\" and \"AI visibility strategy.\" The content strategy emphasizes modern search paradigms, specifically integrating traditional SEO with Generative Engine Optimization (GEO) and User Experience (UX). The keyword gap is low, as the site successfully maps its services to emerging search trends.\n\n**Technical Health**\nThe technical foundation of the page is solid, utilizing semantic HTML5 and maintaining a high content confidence score (0.95). With approximately 1,834 words, the page provides significant depth, reducing the risk of \"thin content\" flags. The page uses HTTPS and does not currently show signs of being at risk for Google’s 2MB response limit. Schema data is present but could be expanded to better define the professional services and personal branding (e.g., more robust `Person` and `ConsultingService` types).\n\n**Content Quality**\nContent quality is high, characterized by a structured approach to complex topics. The site focuses on the \"Organic Growth System,\" bridging the gap between visibility and revenue. While the main content is well-defined, there is room to improve image optimization (alt text coverage) and the specificity of entity linkages within the text to boost its AEO (Answer Engine Optimization) potential for generative search engines.\n\n**Performance**\nPerformance scores show a significant discrepancy between devices. On **Desktop**, the site achieves a perfect **100/100** in Performance, Best Practices, and SEO. However, **Mobile performance** drops to **72**, which indicates potential issues with image sizing, JavaScript execution, or layout shifts on smaller screens. Accessibility remains high across both (97).\n\n**Top 3-5 Actionable Findings**\n*   **Optimize Mobile Performance:** Address the mobile performance gap (72/100) by optimizing image delivery and reducing render-blocking resources to improve Core Web Vitals.\n*   **Enhance Schema Markup:** Implement or expand `Person` and `ProfessionalService` JSON-LD schema to explicitly link Krisztian Kiss to the consultancy, reinforcing E-E-A-T signals.\n*   **AEO Entity Alignment:** Further optimize content for Generative Engine Optimization (GEO) by using more explicit entity-based headings and FAQ sections that address direct natural language queries.\n*   **Conversion Path UX:** While the technical SEO is strong, ensuring the high word count doesn't bury call-to-action (CTA) buttons on mobile devices will help turn visibility into revenue more effectively."
+}

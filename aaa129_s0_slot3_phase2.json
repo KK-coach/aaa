@@ -1,0 +1,113 @@
+{
+  "url": "https://www.aboutyou.hu/c/noi",
+  "phase2_html_measurements": {
+    "semantic_structure": {
+      "heading_tree": [
+        {
+          "level": 1,
+          "text": "Divatnőknek",
+          "position": 0,
+          "zone": "header",
+          "char_count": 11
+        }
+      ],
+      "heading_tree_count": 1,
+      "headings_by_zone": {
+        "header": 1
+      },
+      "structural_noise_warning": false,
+      "list_structure": {
+        "ul": 34,
+        "ol": 0,
+        "li": 136,
+        "dl": 0
+      },
+      "heading_stacking_candidate": false,
+      "table_structure": {
+        "table": 0,
+        "thead": 0,
+        "tbody": 0,
+        "tr": 0,
+        "th": 0
+      },
+      "div_table_suspicious": 0,
+      "blockquote_count": 0,
+      "blockquote_with_cite": 0,
+      "figure_count": 0,
+      "figure_with_figcaption": 0,
+      "inline_emphasis": {
+        "strong": 0,
+        "em": 0,
+        "b": 0,
+        "i": 0
+      },
+      "semantic_to_visual_ratio": null,
+      "link_semantic": {
+        "anchor_count": 397,
+        "blank_target_count": 69,
+        "blank_target_unsafe_count": 0,
+        "generic_anchor_text_count": 0
+      },
+      "form_quality_extended": {
+        "form_count": 0,
+        "input_count": 2,
+        "input_type_distribution": {
+          "text": 1,
+          "checkbox": 1
+        },
+        "submit_button_count": 0,
+        "submit_button_generic_count": 0
+      },
+      "jsonld_types_found": [
+        "BreadcrumbList",
+        "ItemList"
+      ],
+      "jsonld_type_counts": {
+        "BreadcrumbList": 1,
+        "ItemList": 1
+      },
+      "schema_pagetype_match": {
+        "expected_schemas": [
+          "CollectionPage",
+          "ItemList",
+          "WebPage"
+        ],
+        "found_schemas": [
+          "BreadcrumbList",
+          "ItemList"
+        ],
+        "matched_types": [
+          "ItemList"
+        ],
+        "match": true,
+        "skipped": false
+      },
+      "_error": null
+    },
+    "google_2mb_cutoff": {
+      "raw_html_bytes_uncompressed": 1109305,
+      "http_response_headers_bytes": 1238,
+      "inline_css_bytes": 343136,
+      "inline_js_bytes": 416382,
+      "inline_base64_image_bytes": 0,
+      "inline_total_bytes": 759518,
+      "total_counting_toward_2mb": 1110543,
+      "google_2mb_threshold": 2097152,
+      "exceeds_2mb_cutoff": false,
+      "cutoff_position": null,
+      "content_after_cutoff_pct": null,
+      "_error": null
+    },
+    "rendering_mode": {
+      "raw_html_visible_text_chars": 10132,
+      "raw_html_text_to_markup_ratio": 0.0092,
+      "body_main_content_chars": 35947,
+      "inline_script_total_bytes": 416382,
+      "is_csr_likely": false,
+      "ai_crawler_visibility_warning": false,
+      "spa_framework_signals": [],
+      "spa_frameworks_detected": [],
+      "_error": null
+    }
+  }
+}

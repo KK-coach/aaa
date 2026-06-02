@@ -1,0 +1,55 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 2,
+  "duration_s": 74.1,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retailer",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5190,
+      "candidates": 893,
+      "total": 6083,
+      "calls": 3
+    },
+    "adk_in": 12844,
+    "adk_out_eff": 1407,
+    "in": 18034,
+    "out": 2300
+  },
+  "cost_usd": 0.015917,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Actionable Findings",
+    "Enhance Schema",
+    "Enhance Schema Markup",
+    "Improve Page",
+    "Improve Page Load Speed",
+    "Keyword Localization",
+    "Keyword Localization Refresh",
+    "Load Speed",
+    "Monitor Main",
+    "Monitor Main Content Weight",
+    "Online Fashion",
+    "Online Fashion Retail",
+    "Optimize Mobile",
+    "Optimize Mobile Resource Delivery",
+    "Resource Delivery",
+    "While SEO"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe page is the Hungarian storefront for **ABOUT YOU**, a major European online fashion retailer. It targets a **B2C audience** in **Hungary** (language: Hungarian) and positions itself as a comprehensive hub for over 1,500 brands, including prominent names like Nike, Adidas, Guess, and Levi's. The site profile identifies it clearly within the online fashion retail industry, with a strong emphasis on transactional intent and brand-driven shopping experiences.\n\nThe primary target keyword is **\"női divat online\"** (women's fashion online), supported by secondary terms like \"online ruházati bolt\" (online clothing store) and \"márkás ruhák webshop\" (branded clothes webshop). The topic cluster is tightly focused on **Online Fashion Retail**, utilizing long-tail keywords that highlight consumer benefits such as free shipping, returns, and the vast selection of brands. The keyword gap is low, as the content aligns well with the high-difficulty, high-intent terms typically sought by fashion shoppers in the Hungarian market.\n\nTechnically, the page is robust. It uses **semantic HTML5** for content structure, which allowed for a high-confidence (0.95) extraction of over 1,000 words of main content. The page employs HTTPS and follows standard SEO best practices, achieving a perfect **SEO score of 100** on both mobile and desktop. While the indexing status is reported as \"unknown\" via the stub, the high visibility of the brand suggests standard crawlability. However, the site's complexity and heavy brand catalog could pose a minor crawl budget risk if not managed, though no immediate Googlebot 2MB risks were flagged during this crawl.\n\nContent quality is high, with excellent heading structures and strong entity associations (22 organizations and multiple star collections). The page successfully balances transactional product listings with brand storytelling. Accessibility is also a highlight, scoring **96** on Google PageSpeed Insights, indicating well-implemented alt text and navigation labels. The site effectively uses its footer and JSON-LD (though limited in the raw crawl) to establish brand authority and trust signals like \"30-day returns\" and \"cash on delivery.\"\n\nPerformance is the primary area for improvement. Both mobile and desktop versions achieved a **performance score of 55**, which is considered mediocre for a modern e-commerce platform. While accessibility and SEO scores are near-perfect, the Core Web Vitals are likely impacted by the heavy use of high-resolution product imagery and scripts required for a multi-brand catalog.\n\n### Top 5 Actionable Findings:\n1.  **Improve Page Load Speed:** With a performance score of 55, prioritize image optimization (WebP/AVIF formats) and deferred loading of non-critical JavaScript to improve Core Web Vitals.\n2.  **Optimize Mobile Resource Delivery:** Given the B2C nature of the site, mobile performance is critical. Focus on reducing main-thread work and minimizing render-blocking resources.\n3.  **Enhance Schema Markup:** While SEO scores are high, expanding structured data (JSON-LD) for specific \"Product\" and \"Offer\" aggregates on the homepage could improve rich snippet visibility in SERPs.\n4.  **Keyword Localization Refresh:** Ensure that long-tail keywords like \"ingyenes szállítás\" (free shipping) are prominently placed in H1/H2 tags to capture high-intent \"value-seeking\" traffic.\n5.  **Monitor Main Content Weight:** With over 1,000 words and numerous brand entities, ensure the DOM size remains manageable to prevent browser rendering lag on mid-range mobile devices."
+}

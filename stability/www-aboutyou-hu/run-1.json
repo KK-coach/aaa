@@ -1,0 +1,54 @@
+{
+  "url": "https://www.aboutyou.hu",
+  "run": 1,
+  "duration_s": 146.0,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "online fashion retail marketplace",
+  "topic_cluster": "Online Fashion Retail",
+  "serp_strategy": "country_specific",
+  "grounding_confidence": "high",
+  "warning_present": false,
+  "brand": "ABOUT YOU",
+  "tokens": {
+    "vertex": {
+      "prompt": 5542,
+      "candidates": 860,
+      "total": 6402,
+      "calls": 3
+    },
+    "adk_in": 13969,
+    "adk_out_eff": 1202,
+    "in": 19511,
+    "out": 2062
+  },
+  "cost_usd": 0.015942,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "Critical Performance",
+    "Critical Performance Optimization",
+    "Desktop Performance",
+    "Mobile Performance",
+    "Monitor Payload",
+    "Monitor Payload Size",
+    "Online Fashion",
+    "Online Fashion Retail",
+    "Semantic HTML5",
+    "The SEO",
+    "Top Actionable",
+    "Top Actionable Findings"
+  ],
+  "summary_markdown": "## Audit summary for https://www.aboutyou.hu\n\nThe page is the Hungarian portal for **ABOUT YOU**, a major B2C online fashion retail marketplace targeting the Hungarian market. The site profile analysis confirms a high grounding confidence in its identity as a leading fashion platform. It effectively serves as a hub for over 1,500 brands, including **ADIDAS**, **NIKE**, **GUESS**, and **LEVI'S**. The target audience is clearly identified as B2C, specifically focusing on female consumers in Hungary, with no further user confirmation required for location targeting.\n\nThe primary keyword identified is **\"női divat online\"** (women's fashion online), which perfectly aligns with the transactional intent of the page. The topic cluster is centered on **Online Fashion Retail**, supported by strong secondary keywords like \"női ruházat\" (women's clothing) and \"márkás ruhák\" (branded clothes). While the keywords are highly competitive, the content depth is significant, with over 1,000 words of semantic HTML5 content and a rich ecosystem of brand-related long-tail keywords.\n\nFrom a technical standpoint, the site is healthy with a successful status 200 crawl and high content extraction confidence (0.95). It utilizes **Semantic HTML5** effectively for content structuring. However, there is a potential risk concerning the page's weight; while not explicitly flagged as exceeding the 2MB Googlebot limit, the extensive list of brands and image-heavy nature of a fashion site requires careful monitoring. The SEO and Accessibility scores are perfect at **100** on both mobile and desktop, indicating a very strong foundation for search visibility and user inclusion.\n\nPerformance is the most significant area for improvement. The **Mobile Performance score is poor (38)**, and the **Desktop Performance score is moderate (56)**. While the site follows technical \"Best Practices\" (92-96), the actual loading speeds and Core Web Vitals are likely hindered by the complexity of the marketplace's frontend. This performance lag could negatively impact GEO/AEO rankings where speed and user experience metrics are heavily weighted.\n\n### Top Actionable Findings:\n1.  **Critical Performance Optimization:** Prioritize improving Mobile Performance (currently 38). Focus on reducing JavaScript execution time and optimizing image delivery (LCP) to better align with Core Web Vitals requirements.\n2.  **Brand Entity Enrichment:** While the site lists many brands, further enhancing the structured data (JSON-LD) for individual product categories and specific brand entities mentioned in the footer (e.g., MICHAEL KORS, VAGABOND) could improve AEO visibility.\n3.  **Content Consolidation:** The \"női divat online\" keyword is highly competitive; consider strengthening the internal linking between the homepage and high-intent subcategories (like \"női cipők\" or \"kötött ruhák\") to better distribute authority.\n4.  **Monitor Payload Size:** Ensure that the aggregate size of the main HTML and critical assets stays well under the 2MB threshold to ensure seamless indexing of the vast brand directory by Googlebot."
+}

@@ -1,0 +1,53 @@
+{
+  "url": "https://www.agrobook.hu",
+  "run": 3,
+  "duration_s": 81.8,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "agricultural machinery and parts retailer",
+  "topic_cluster": "Agricultural Machinery and Spare Parts",
+  "serp_strategy": "country_specific",
+  "brand": "Agrobook.hu Kft.",
+  "tokens": {
+    "vertex": {
+      "prompt": 4749,
+      "candidates": 916,
+      "total": 5665,
+      "calls": 3
+    },
+    "adk_in": 11625,
+    "adk_out_eff": 728,
+    "in": 16374,
+    "out": 1644
+  },
+  "cost_usd": 0.013119,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Accessibility Refinement",
+    "Csávoly.\n\nThe",
+    "Enhance Schema",
+    "Enhance Schema Markup",
+    "High-Value Tech",
+    "Largest Contentful",
+    "Largest Contentful Paint",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "The HTML",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "Value Tech",
+    "While SEO"
+  ],
+  "summary_markdown": "## Audit summary for https://www.agrobook.hu\n\nAgrobook.hu is a specialized Hungarian e-commerce platform operated by **Agrobook.hu Kft.**, focusing on the retail of agricultural machinery, spare parts, and advanced farming technology like the Terranav automated steering system. The site successfully targets a B2B and professional consumer audience within the Hungarian agricultural sector. The branding is clear, and the site's identity is well-supported by explicit organizational data in the footer and metadata, including a physical pickup point in Csávoly.\n\nThe primary keyword focus is **\"mezőgazdasági alkatrész webáruház\"** (agricultural parts webshop), supported by a robust topic cluster around high-intent brands like **Claas, Fendt, and Amazone**. The content strategy effectively balances broad category terms with highly specific product entities (e.g., universal automatic steering with 2.5 cm accuracy). While the transactional intent is clear, there is an opportunity to further optimize landing pages for specialized equipment terms like \"automata kormány\" to capture more specific high-value search traffic.\n\nTechnically, the site is healthy with a secure HTTPS implementation and valid canonical tags. The HTML structure is clean, with high confidence in the semantic extraction of main content. However, the page size and resource management pose a slight risk; while well under the 2MB Googlebot limit, the performance metrics suggest heavy asset loading. Schema markup is present but could be expanded to include more specific `Product` and `LocalBusiness` properties to enhance visibility in rich snippets and local search results.\n\nPerformance is the most significant area for improvement. While the desktop experience is acceptable (score: 67), the **mobile performance is poor (score: 34)**. This is largely driven by slow initial server response times and unoptimized image delivery, which impacts Core Web Vitals. Given that modern agricultural professionals often use mobile devices in the field, this technical debt could lead to high bounce rates and lower mobile search rankings.\n\n### Top Actionable Findings\n1.  **Optimize Mobile Performance:** Address critical performance bottlenecks on mobile, focusing on reducing \"Largest Contentful Paint\" (LCP) and improving image compression/lazy loading to move the score above the current 34.\n2.  **Enhance Schema Markup:** Beyond the basic Organization schema, implement detailed `Product` schema for individual parts and `AggregateRating` to leverage social proof in search results.\n3.  **Content Expansion for High-Value Tech:** Create dedicated, educational landing pages for the \"Terranav\" and automatic steering systems to transition from simple product listings to \"solution-based\" content that captures research-phase queries.\n4.  **Accessibility Refinement:** While SEO scores are perfect (100), the accessibility score (88-91) indicates minor issues with contrast or ARIA labels that should be corrected to ensure a seamless experience for all users."
+}

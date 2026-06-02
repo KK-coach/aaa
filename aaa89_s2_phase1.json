@@ -1,0 +1,949 @@
+{
+ "grid": {
+  "https://agrobook.hu": [
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1296,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1188,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 661,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   }
+  ],
+  "https://kk.coach": [
+   {
+    "url_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "origin_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "origin_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "origin_level": {
+     "has_data": false,
+     "overall_category": null,
+     "metrics": {}
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   }
+  ],
+  "https://aboutyou.hu": [
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2023,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 370,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.13,
+       "category": "AVERAGE"
+      },
+      "fcp": {
+       "p75_ms": 1618,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 824,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2144,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 279,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.03,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1487,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 953,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2023,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 370,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.13,
+       "category": "AVERAGE"
+      },
+      "fcp": {
+       "p75_ms": 1618,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 824,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2144,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 279,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.03,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1487,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 953,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2023,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 370,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.13,
+       "category": "AVERAGE"
+      },
+      "fcp": {
+       "p75_ms": 1618,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 824,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2144,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 279,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.03,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1487,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 953,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   }
+  ],
+  "https://taxually.com": [
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1771,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 318,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1668,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 1343,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1594,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 312,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1368,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 605,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1771,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 318,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1668,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 1343,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1594,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 312,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1368,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 605,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1771,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 318,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1668,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 1343,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1594,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 312,
+       "category": "AVERAGE"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1368,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 605,
+       "category": "FAST"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   }
+  ],
+  "https://kormany.hu": [
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1935,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 171,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.02,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1265,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 474,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2177,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1643,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 954,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1935,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 171,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.02,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1265,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 474,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2177,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1643,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 954,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   },
+   {
+    "url_level": {
+     "has_data": true,
+     "overall_category": "FAST",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 1935,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 171,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.02,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1265,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 474,
+       "category": "FAST"
+      }
+     }
+    },
+    "origin_level": {
+     "has_data": true,
+     "overall_category": "AVERAGE",
+     "metrics": {
+      "lcp": {
+       "p75_ms": 2177,
+       "category": "FAST"
+      },
+      "inp": {
+       "p75_ms": 131,
+       "category": "FAST"
+      },
+      "cls": {
+       "p75": 0.0,
+       "category": "FAST"
+      },
+      "fcp": {
+       "p75_ms": 1643,
+       "category": "FAST"
+      },
+      "ttfb": {
+       "p75_ms": 954,
+       "category": "AVERAGE"
+      }
+     }
+    },
+    "form_factor": "phone",
+    "collection_period_end": null,
+    "_error": null
+   }
+  ]
+ },
+ "summary": {
+  "https://agrobook.hu": {
+   "ul_has": [
+    true,
+    true,
+    true
+   ],
+   "ol_has": [
+    true,
+    true,
+    true
+   ],
+   "ul_cat": [
+    "FAST",
+    "FAST",
+    "FAST"
+   ],
+   "ol_cat": [
+    "FAST",
+    "FAST",
+    "FAST"
+   ],
+   "errs": [
+    null,
+    null,
+    null
+   ],
+   "drifts": {
+    "url_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    },
+    "origin_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    }
+   }
+  },
+  "https://kk.coach": {
+   "ul_has": [
+    false,
+    false,
+    false
+   ],
+   "ol_has": [
+    false,
+    false,
+    false
+   ],
+   "ul_cat": [
+    null,
+    null,
+    null
+   ],
+   "ol_cat": [
+    null,
+    null,
+    null
+   ],
+   "errs": [
+    null,
+    null,
+    null
+   ],
+   "drifts": {
+    "url_level": {},
+    "origin_level": {}
+   }
+  },
+  "https://aboutyou.hu": {
+   "ul_has": [
+    true,
+    true,
+    true
+   ],
+   "ol_has": [
+    true,
+    true,
+    true
+   ],
+   "ul_cat": [
+    "AVERAGE",
+    "AVERAGE",
+    "AVERAGE"
+   ],
+   "ol_cat": [
+    "AVERAGE",
+    "AVERAGE",
+    "AVERAGE"
+   ],
+   "errs": [
+    null,
+    null,
+    null
+   ],
+   "drifts": {
+    "url_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    },
+    "origin_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    }
+   }
+  },
+  "https://taxually.com": {
+   "ul_has": [
+    true,
+    true,
+    true
+   ],
+   "ol_has": [
+    true,
+    true,
+    true
+   ],
+   "ul_cat": [
+    "AVERAGE",
+    "AVERAGE",
+    "AVERAGE"
+   ],
+   "ol_cat": [
+    "AVERAGE",
+    "AVERAGE",
+    "AVERAGE"
+   ],
+   "errs": [
+    null,
+    null,
+    null
+   ],
+   "drifts": {
+    "url_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    },
+    "origin_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    }
+   }
+  },
+  "https://kormany.hu": {
+   "ul_has": [
+    true,
+    true,
+    true
+   ],
+   "ol_has": [
+    true,
+    true,
+    true
+   ],
+   "ul_cat": [
+    "FAST",
+    "FAST",
+    "FAST"
+   ],
+   "ol_cat": [
+    "AVERAGE",
+    "AVERAGE",
+    "AVERAGE"
+   ],
+   "errs": [
+    null,
+    null,
+    null
+   ],
+   "drifts": {
+    "url_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    },
+    "origin_level": {
+     "lcp": 0.0,
+     "inp": 0.0,
+     "cls": 0.0,
+     "fcp": 0.0,
+     "ttfb": 0.0
+    }
+   }
+  }
+ },
+ "elapsed_s": 371.6
+}

@@ -1,0 +1,50 @@
+{
+  "url": "https://www.taxually.com",
+  "run": 3,
+  "duration_s": 82.6,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "tax compliance software-as-a-service",
+  "topic_cluster": "Tax Compliance Automation",
+  "serp_strategy": "english_global_default",
+  "brand": "Taxually",
+  "tokens": {
+    "vertex": {
+      "prompt": 3860,
+      "candidates": 711,
+      "total": 4571,
+      "calls": 3
+    },
+    "adk_in": 12381,
+    "adk_out_eff": 1054,
+    "in": 16241,
+    "out": 1765
+  },
+  "cost_usd": 0.013416,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "EcoTax. The",
+    "Granular Intent",
+    "Granular Intent Targeting",
+    "Improve Best",
+    "Improve Best Practices",
+    "Optimize Performance",
+    "Tax Compliance Automation",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States"
+  ],
+  "summary_markdown": "## Audit summary for https://www.taxually.com\n\nTaxually is a B2B tax compliance software-as-a-service (SaaS) provider targeting the global market, with a strong emphasis on the United States and international e-commerce. The platform positions itself as a comprehensive solution for automating VAT and US sales tax compliance, featuring specialized products such as CrossTax, LumaTax, and EcoTax. The target audience includes e-commerce enterprises, accounting providers, and global businesses looking for automated data processing and tax filing solutions.\n\nThe primary keyword targeting focuses on \"tax compliance software,\" supported by a logical topic cluster around \"Tax Compliance Automation.\" While the page effectively targets high-intent commercial keywords like \"VAT compliance software\" and \"US sales tax automation,\" there is an opportunity to further segment landing experiences. Distinguishing more sharply between the specific needs of VAT-focused international sellers versus US domestic sales tax users could help capture more granular search intent and improve conversion paths.\n\nTechnically, the site maintains a solid foundation with clear canonicals and well-implemented Organization schema. With a content length of approximately 1,627 words and high semantic confidence (0.95), the page provides sufficient depth for search engines to understand its niche. However, the PageSpeed scores reveal significant room for improvement. The mobile performance score of **43** and desktop score of **58** indicate that the site may suffer from Core Web Vitals issues, likely due to heavy script execution or unoptimized assets, which could negatively impact its ranking in highly competitive GEO/AEO landscapes.\n\n**Top Actionable Findings:**\n1.  **Optimize Performance:** Prioritize improving Core Web Vitals, particularly for mobile. Addressing the performance score of 43 is critical for maintaining rankings and providing a smooth user experience for high-value B2B leads.\n2.  **Granular Intent Targeting:** Develop or refine dedicated landing pages that separate \"Global VAT\" and \"US Sales Tax\" more distinctly. This would allow for more specific keyword targeting and better alignment with the distinct regulatory needs of those two audiences.\n3.  **Improve Best Practices & Accessibility:** With scores of 73-77 in Best Practices and 84 in Accessibility, the site should audit its security headers, image aspect ratios, and ARIA labels to meet modern web standards and improve inclusive design.\n4.  **Content Expansion for Authority:** While the main content is strong, adding detailed case studies or whitepapers on specific jurisdictional changes (e.g., DAC7 or new US nexus laws) could strengthen its position as an authoritative entity in the tax compliance space."
+}

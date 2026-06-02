@@ -1,0 +1,54 @@
+{
+  "url": "https://kk.coach",
+  "run": 3,
+  "duration_s": 55.6,
+  "model_versions": {
+    "site_profile": "gemini-3-flash-preview",
+    "keywords": "gemini-3-flash-preview",
+    "entities": "gemini-3-flash-preview"
+  },
+  "category_keyword": "digital marketing consultancy",
+  "topic_cluster": "Organic Growth & Search Optimization",
+  "serp_strategy": "english_global_default",
+  "brand": "kk.coach",
+  "tokens": {
+    "vertex": {
+      "prompt": 3823,
+      "candidates": 749,
+      "total": 4572,
+      "calls": 3
+    },
+    "adk_in": 11965,
+    "adk_out_eff": 1227,
+    "in": 15788,
+    "out": 1976
+  },
+  "cost_usd": 0.013822,
+  "tools": [
+    "crawl_html_tool",
+    "analyze_site_profile_tool",
+    "extract_target_keywords_tool",
+    "extract_entities_tool",
+    "pagespeed_score_tool",
+    "check_indexing_status_tool"
+  ],
+  "errors": [],
+  "halluc_candidates": [
+    "Best Practices",
+    "Conversion Path",
+    "Conversion Path Refinement",
+    "No Schema",
+    "Optimize Mobile",
+    "Optimize Mobile Performance",
+    "Person Schema",
+    "SEO. However",
+    "Search Optimization",
+    "Strengthen Entity",
+    "Strengthen Entity Mapping",
+    "Top Actionable",
+    "Top Actionable Findings",
+    "United States",
+    "United States. The"
+  ],
+  "summary_markdown": "## Audit summary for https://kk.coach\n\n**Brand & Target Identification**\nThe site is the professional portfolio and consultancy hub for **Krisztian Kiss** (brand name: **kk.coach**). It targets the organic growth and digital marketing consultancy industry, specifically catering to B2B and e-commerce companies in the United States. The site profile indicates a focus on integrated organic marketing systems, bridging the gap between traditional search optimization and emerging AI-driven visibility.\n\n**Primary Keywords & Topic Cluster**\nThe site is well-optimized for the primary keyword **\"organic growth consultant\"** and the broader topic cluster of **Organic Growth & Search Optimization**. It strategically positions itself in the evolving search landscape by targeting modern terms like **\"GEO consultant\"** (Generative Engine Optimization) and **\"AI visibility strategy.\"** Secondary keywords focus on B2B systems, UX, and CRO consultancy, suggesting a holistic approach to turning traffic into revenue.\n\n**Technical Health**\nThe page exhibits strong technical foundations with a high main content confidence score (0.95) and successful semantic HTML5 parsing. It utilizes HTTPS and maintains high accessibility (97) and SEO (100) scores according to lighthouse metrics. The content is substantial (~1,834 words), and the crawl did not identify any immediate risks of exceeding Googlebot’s 2MB rendering limit. No Schema errors were flagged, though the entity extraction highlights a strong focus on technologies like Google Analytics 4 and Google Search Console.\n\n**Content Quality**\nContent quality is high, with a clear focus on the owner's expertise in AI and data-driven organic growth. The site effectively uses structured semantic HTML to define its service offerings. The messaging is commercially oriented, aiming to attract business owners and marketing teams. While the entity extraction confirmed several core technologies and concepts, the site could potentially benefit from more explicit person-schema implementation to reinforce the \"Krisztian Kiss\" personal brand in knowledge graphs.\n\n**Performance**\nThe site displays a significant performance disparity between devices. **Desktop performance is exceptional (99)**, with perfect scores in Best Practices and SEO. However, **Mobile performance is notably lower (72)**. While mobile accessibility and SEO remain excellent, the performance gap suggests opportunities for optimization in areas such as image compression, script execution, or server response times specifically for mobile users to meet Core Web Vitals standards.\n\n**Top Actionable Findings**\n1.  **Optimize Mobile Performance:** Address the mobile performance score (72) to align it with the near-perfect desktop experience (99). This is critical for mobile-first indexing.\n2.  **Leverage \"GEO\" Authority:** Continue expanding content around Generative Engine Optimization (GEO) to capture early-mover advantage in AI-driven search results, as identified in the keyword gap analysis.\n3.  **Strengthen Entity Mapping:** Enhance on-page Person Schema to explicitly link \"Krisztian Kiss\" with the domain `kk.coach` and his professional history to improve E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness).\n4.  **Conversion Path Refinement:** Given the \"commercial\" intent identified, ensure that the high-value content leads into clear, data-tracked conversion funnels that align with the \"Revenue-Focused\" value proposition."
+}
