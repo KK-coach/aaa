@@ -1,156 +1,108 @@
-"""Render a URL with headless Chromium and return structured data.
+"""Render a URL and return structured DOM data — HTTP seam to the Playwright
+microservice (AAA-19 / AAA-31 Sub-step 2b).
 
-Standalone POC — no crawler imports here. The renderer is intentionally
-defensive: a flaky ``networkidle`` should degrade to usable data rather than
-fail the whole render, since this is used for httpx-vs-browser comparison.
+``render_url`` is the stable, contract-preserving entry point used by the
+crawler escalation path (``discovery_agent.tools.crawl_with_playwright_tool``).
+The heavy headless-Chromium logic now lives server-side in
+``playwright_service.renderer`` (the only place Chromium is bundled); this
+module reaches it over HTTP.
+
+Resolution order (documented contract):
+  1. HTTP-first — if ``PLAYWRIGHT_URL`` is set, POST to ``<PLAYWRIGHT_URL>/render``.
+     This is the PRODUCTION path: the worker/agent images are lean and never
+     launch a browser; all rendering happens in the microservice.
+  2. In-process fallback — ONLY when ``PLAYWRIGHT_URL`` is unset AND a local
+     Chromium is available. Pure local-dev convenience so a developer without
+     the service running can still render. Never used in prod (prod sets
+     ``PLAYWRIGHT_URL``).
+  3. Skip-finding — otherwise (no service + no local browser, or any
+     unreachable / error / timeout from either path) return
+     ``{"url", "error", "error_type"}``. Never raise / crash: the escalation
+     path treats an error dict as "rendered DOM unavailable" and keeps the
+     HTTP crawl, so the audit continues.
+
+The return contract is IDENTICAL to the old in-process renderer:
+  success -> {url, status_code, render_time_ms, page_load_strategy,
+              rendered_html_bytes, rendered_html, visible_text, ...}
+  failure -> {url, error, error_type}  (timeout|render_error|network_error)
 """
 
 from __future__ import annotations
 
-import re
-import time
+import os
 
-from selectolax.parser import HTMLParser
+import httpx
 
-from playwright.async_api import (
-    Error as PlaywrightError,
-    TimeoutError as PlaywrightTimeoutError,
-    async_playwright,
+# Backward-compat re-exports: callers historically imported these from here.
+from playwright_service.renderer import (  # noqa: F401
+    TIMEOUT_MS,
+    USER_AGENT,
+    VALID_WAIT,
+    VIEWPORT,
+    _dom_text,
+    _words,
 )
 
-# Realistic Chrome desktop UA — deliberately NOT a bot string, so sites serve
-# the same markup a real user would get.
-USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/124.0.0.0 Safari/537.36"
-)
+# HTTP client timeout must exceed the server-side render budget (TIMEOUT_MS)
+# plus network overhead, else we'd time out a render that is about to succeed.
+_HTTP_TIMEOUT_S = (TIMEOUT_MS / 1000.0) + 15.0
 
-VIEWPORT = {"width": 1920, "height": 1080}
-TIMEOUT_MS = 30_000
-_VALID_WAIT = {"networkidle", "domcontentloaded", "load"}
+# Cache the local-Chromium availability check (import is cheap; the real launch
+# is what's expensive, and we only do that in the dev fallback).
+_LOCAL_RENDER_DISABLED = os.environ.get("PLAYWRIGHT_DISABLE_LOCAL") == "1"
 
 
-def _words(text: str) -> int:
-    return len(text.split())
+async def _render_via_http(base_url: str, url: str, wait_for: str) -> dict:
+    """POST to the Playwright microservice. Maps transport faults to the
+    skip-finding contract (never raises)."""
+    endpoint = base_url.rstrip("/") + "/render"
+    try:
+        async with httpx.AsyncClient(timeout=_HTTP_TIMEOUT_S) as client:
+            resp = await client.post(endpoint, json={"url": url, "wait_for": wait_for})
+    except httpx.TimeoutException as exc:
+        return {"url": url, "error": f"{type(exc).__name__}: {exc}".strip(),
+                "error_type": "timeout"}
+    except Exception as exc:  # noqa: BLE001 — connect error / DNS / etc.
+        return {"url": url, "error": f"{type(exc).__name__}: {exc}".strip(),
+                "error_type": "network_error"}
+    if resp.status_code != 200:
+        return {"url": url,
+                "error": f"playwright service returned HTTP {resp.status_code}",
+                "error_type": "render_error"}
+    try:
+        return resp.json()
+    except Exception as exc:  # noqa: BLE001 — malformed body
+        return {"url": url, "error": f"invalid service response: {exc}",
+                "error_type": "render_error"}
 
 
-def _dom_text(rendered_html: str) -> str:
-    """All text in the rendered DOM, mirroring the crawler's visible_text.
-
-    Same logic as crawler.crawl_html: parse the (post-JS) HTML, strip
-    script/style/noscript, take body text, collapse whitespace. This is the
-    apples-to-apples counterpart to httpx's content.visible_text.
-    """
-    tree = HTMLParser(rendered_html)
-    for node in tree.css("script, style, noscript"):
-        node.decompose()
-    body = tree.css_first("body")
-    text = (body.text(separator=" ", strip=True) if body else "") or ""
-    return re.sub(r"\s+", " ", text).strip()
-
-
-def _classify_error(exc: Exception) -> str:
-    msg = str(exc)
-    if isinstance(exc, PlaywrightTimeoutError):
-        return "timeout"
-    if "net::" in msg or "NS_ERROR" in msg or "ERR_" in msg:
-        return "network_error"
-    return "render_error"
+async def _render_in_process_fallback(url: str, wait_for: str) -> dict:
+    """Local-dev fallback: render with a locally-installed Chromium. If Chromium
+    is absent the launch fails and render_in_process returns the error dict
+    (skip-finding) — no crash."""
+    from playwright_service.renderer import render_in_process
+    return await render_in_process(url, wait_for)
 
 
 async def render_url(url: str, wait_for: str = "networkidle") -> dict:
-    """Render a URL with Playwright Chromium headless and return structured data.
-
-    ``wait_for`` is one of ``networkidle`` | ``domcontentloaded`` | ``load``.
-    On failure returns ``{"url", "error", "error_type"}`` where ``error_type``
-    is ``timeout`` | ``render_error`` | ``network_error``.
-    """
-    if wait_for not in _VALID_WAIT:
+    """Render ``url`` and return structured DOM data. See module docstring for
+    the resolution order and the (unchanged) return contract."""
+    if wait_for not in VALID_WAIT:
         wait_for = "networkidle"
 
-    start = time.perf_counter()
-    browser = None
-    try:
-        async with async_playwright() as pw:
-            browser = await pw.chromium.launch(headless=True)
-            context = await browser.new_context(
-                viewport=VIEWPORT,
-                user_agent=USER_AGENT,
-            )
-            page = await context.new_page()
-            page.set_default_timeout(TIMEOUT_MS)
+    pw_url = os.environ.get("PLAYWRIGHT_URL")
+    # 1. HTTP-first (production).
+    if pw_url:
+        return await _render_via_http(pw_url, url, wait_for)
 
-            # Two-phase load: first reach a guaranteed state so we always get a
-            # Response (status code) and a parseable DOM. Then *upgrade* to the
-            # requested wait state. If the upgrade (commonly "networkidle" on
-            # pages with long-poll/analytics sockets) times out, we keep the
-            # DOM we already have instead of failing the whole render.
-            response = await page.goto(
-                url, wait_until="domcontentloaded", timeout=TIMEOUT_MS
-            )
-            effective_strategy = "domcontentloaded"
+    # 2. In-process fallback (local dev only).
+    if not _LOCAL_RENDER_DISABLED:
+        return await _render_in_process_fallback(url, wait_for)
 
-            if wait_for != "domcontentloaded":
-                elapsed_ms = (time.perf_counter() - start) * 1000
-                remaining = max(1000, TIMEOUT_MS - int(elapsed_ms))
-                try:
-                    await page.wait_for_load_state(wait_for, timeout=remaining)
-                    effective_strategy = wait_for
-                except PlaywrightTimeoutError:
-                    # Degrade gracefully — POC still wants the rendered DOM.
-                    effective_strategy = f"domcontentloaded (fallback: {wait_for} timed out)"
-
-            render_time_ms = int((time.perf_counter() - start) * 1000)
-
-            final_url = page.url
-            status_code = response.status if response is not None else 0
-
-            rendered_html = await page.content()
-
-            body = page.locator("body")
-            if await body.count() > 0:
-                visible_text = await body.inner_text()
-            else:
-                visible_text = await page.evaluate(
-                    "() => document.documentElement.innerText || ''"
-                )
-            visible_text = re.sub(r"\s+", " ", visible_text or "").strip()
-
-            dom_text = _dom_text(rendered_html)
-
-            actual_ua = await page.evaluate("() => navigator.userAgent")
-
-            await context.close()
-            await browser.close()
-            browser = None
-
-            return {
-                "url": final_url,
-                "status_code": status_code,
-                "render_time_ms": render_time_ms,
-                "page_load_strategy": effective_strategy,
-                "rendered_html_bytes": len(rendered_html.encode("utf-8")),
-                "rendered_html": rendered_html,
-                "visible_text": visible_text,
-                "visible_text_chars": len(visible_text),
-                "visible_text_words": _words(visible_text),
-                "dom_text": dom_text,
-                "dom_text_chars": len(dom_text),
-                "dom_text_words": _words(dom_text),
-                "viewport": dict(VIEWPORT),
-                "user_agent": actual_ua or USER_AGENT,
-            }
-
-    except (PlaywrightTimeoutError, PlaywrightError, Exception) as exc:
-        return {
-            "url": url,
-            "error": f"{type(exc).__name__}: {exc}".strip(),
-            "error_type": _classify_error(exc),
-        }
-    finally:
-        if browser is not None:
-            try:
-                await browser.close()
-            except Exception:
-                pass
+    # 3. Skip-finding.
+    return {
+        "url": url,
+        "error": ("PLAYWRIGHT_URL not set and local in-process rendering is "
+                  "disabled (set PLAYWRIGHT_URL or enable local fallback)"),
+        "error_type": "render_error",
+    }

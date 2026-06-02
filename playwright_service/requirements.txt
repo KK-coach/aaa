@@ -1,0 +1,7 @@
+# Playwright microservice — minimal runtime deps (NOT the full audit stack).
+# Chromium itself is provided by the base image (see Dockerfile).
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2
+playwright>=1.55
+selectolax>=0.3
