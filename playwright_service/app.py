@@ -9,7 +9,8 @@ Always HTTP 200 on a handled render (success OR render failure) — the caller
 distinguishes via the body's "error" key, mirroring render_url's old contract.
 Only malformed requests return 4xx.
 
-GET /healthz -> {"status": "ok"}
+GET /health -> {"status": "ok"}  (NOT /healthz — that literal path is
+  intercepted by the Google Frontend on *.run.app and never reaches the app)
 
 Deploy (Sub-step 3, NOT done here):
   - This is the ONLY image that bundles Chromium. See Dockerfile.
@@ -35,8 +36,8 @@ class RenderRequest(BaseModel):
     wait_for: str = "networkidle"
 
 
-@app.get("/healthz")
-async def healthz() -> dict:
+@app.get("/health")
+async def health() -> dict:
     return {"status": "ok"}
 
 
