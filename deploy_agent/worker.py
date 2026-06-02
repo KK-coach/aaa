@@ -91,8 +91,8 @@ async def readyz() -> dict:
     # europe-west3 RAG: init + list corpora (metadata only; never creates/embeds).
     try:
         import asyncio as _aio
-        from memory.embedding_layer import RAG_REGION, _rag
-        rag = _rag()
+        from memory.embedding_layer import RAG_REGION, _vertexai
+        rag = _vertexai()
         await _aio.to_thread(lambda: list(rag.list_corpora()))
         checks["rag_init"] = True
         checks["rag_region"] = RAG_REGION
