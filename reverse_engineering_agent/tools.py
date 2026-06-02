@@ -63,6 +63,35 @@ SERP_LIST_PRICE_USD = 0.003  # MCP trims cost; this is the known list price.
 
 
 # --------------------------------------------------------------------------
+# AAA-31 Sub-step 2 — forced CLIENT archive id (Flag-2 fix: job_id == archive_id)
+# --------------------------------------------------------------------------
+# The dispatcher (Sub-step 1) mints an audit_id and hands it to the worker.
+# run_one(url, audit_id=...) records it here; _run_discovery_archived consumes
+# it ONCE for the CLIENT audit (corpus_mode=False) so the archive doc id equals
+# the dispatcher job id. Competitor corpus archives (corpus_mode=True) keep
+# minting their own ids — they must never collide with the client id.
+#
+# Module-level state is intentional and SAFE under Cloud Run container
+# concurrency = 1 (one audit per instance; see deploy_agent/worker.py). A future
+# concurrency bump MUST move this (and _USAGE/_KG_USAGE) to request scope.
+_FORCED_CLIENT_AUDIT_ID: str | None = None
+
+
+def set_client_audit_id(audit_id: str | None) -> None:
+    """Record the dispatcher job id to use as the next CLIENT archive id."""
+    global _FORCED_CLIENT_AUDIT_ID
+    _FORCED_CLIENT_AUDIT_ID = audit_id or None
+
+
+def _consume_client_audit_id() -> str | None:
+    """Return-and-clear the forced client id (one-shot, client audit only)."""
+    global _FORCED_CLIENT_AUDIT_ID
+    aid = _FORCED_CLIENT_AUDIT_ID
+    _FORCED_CLIENT_AUDIT_ID = None
+    return aid
+
+
+# --------------------------------------------------------------------------
 # 1. Discovery sub-agent as a FunctionTool (nested runner + state harvest)
 # --------------------------------------------------------------------------
 async def _run_discovery(url: str, target_country: str) -> dict:
@@ -123,7 +152,11 @@ async def _run_discovery_archived(url: str, corpus_mode: bool = False) -> tuple[
     from discovery_agent.test_agent import audit as _discovery_audit
     from memory.firestore_archive import read_audit
 
-    ao = await _discovery_audit(url, corpus_mode=corpus_mode)  # AuditOutput + AAA-56 + write_audit
+    # AAA-31 S2: the CLIENT audit (corpus_mode=False) adopts the dispatcher's
+    # forced id so job_id == archive_id. Competitors (corpus_mode=True) never do.
+    forced_id = _consume_client_audit_id() if not corpus_mode else None
+    ao = await _discovery_audit(url, corpus_mode=corpus_mode,
+                                audit_id=forced_id)  # AuditOutput + AAA-56 + write_audit
     audit_id = ao.get("audit_id") or ""
     # summary_translations lives on the archived doc (source of truth);
     # "en" is the byte-identity copy of summary_markdown (S3 Issue B2).

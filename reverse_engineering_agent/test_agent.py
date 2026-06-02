@@ -33,7 +33,14 @@ OUT_DIR.mkdir(exist_ok=True)  # at import time, so shell log redirect works
 PER_URL_TIMEOUT = 1500  # 25 min ceiling (4 Discovery audits + SERP + compare)
 
 
-async def run_one(url: str) -> dict:
+async def run_one(url: str, audit_id: str | None = None) -> dict:
+    # AAA-31 S2: when the dispatcher supplies an audit_id (the Cloud Tasks job
+    # id), thread it into the CLIENT archive so job_id == archive_id. The RE
+    # agent calls discovery_agent_tool(role="client") -> _run_discovery_archived,
+    # which consumes this forced id once. None => legacy uuid4 (tests unchanged).
+    from reverse_engineering_agent.tools import set_client_audit_id
+    set_client_audit_id(audit_id)
+
     runner = InMemoryRunner(reverse_engineering_agent, app_name="re")
     session = await runner.session_service.create_session(
         app_name="re", user_id="tester"

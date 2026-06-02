@@ -292,11 +292,17 @@ async def _build_translations(
 
 
 async def write_audit(audit_output: AuditOutput | dict, audit_url: str,
-                      corpus_mode: bool = False) -> str:
-    """Persist a full audit. Returns the generated audit_id (uuid4).
+                      corpus_mode: bool = False,
+                      audit_id: str | None = None) -> str:
+    """Persist a full audit. Returns the archive audit_id.
 
     Write is critical (source of truth): on failure this RAISES after the
     backoff schedule is exhausted — never silent.
+
+    AAA-31 Sub-step 2: when audit_id is provided (the dispatcher's Cloud Tasks
+    job id) it is used as the archive document id so job_id == archive_id;
+    otherwise a uuid4 is minted (the legacy default — keeps existing callers
+    and tests unchanged).
 
     AAA-75: corpus_mode=True (competitor corpus-subset archive) keeps every
     corpus-critical step (industry, EN-canonical summary, embedding) but skips
@@ -307,7 +313,7 @@ async def write_audit(audit_output: AuditOutput | dict, audit_url: str,
         if isinstance(audit_output, BaseModel)
         else dict(audit_output or {})
     )
-    audit_id = str(uuid.uuid4())
+    audit_id = audit_id or str(uuid.uuid4())  # AAA-31 S2: honour caller-supplied id
     now = _now_iso()
 
     sp = ao.get("site_profile") or {}

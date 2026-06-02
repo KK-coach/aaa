@@ -54,7 +54,8 @@ OUT_DIR = Path(__file__).resolve().parent / "test_outputs"
 PER_URL_TIMEOUT = 360  # seconds
 
 
-async def audit(url: str, corpus_mode: bool = False) -> dict:
+async def audit(url: str, corpus_mode: bool = False,
+                audit_id: str | None = None) -> dict:
     """Full client Discovery audit. AAA-75: corpus_mode=True produces a
     corpus-SUBSET entry for competitor archival — runs every KEEP step (crawl/
     site_profile/entities, grounding, KG E-E-A-T, multi-dim, CWV/CrUX, phase2,
@@ -482,7 +483,10 @@ async def audit(url: str, corpus_mode: bool = False) -> dict:
         out.audit_aspect_eval_cost_usd = 0.0
 
     # AAA-61: archive the full audit (source of truth) — critical write.
-    audit_id = await write_audit(out, url, corpus_mode=corpus_mode)
+    # AAA-31 S2: audit_id (the dispatcher job id) is used as the archive key
+    # when supplied so job_id == archive_id; else write_audit mints a uuid4.
+    audit_id = await write_audit(out, url, corpus_mode=corpus_mode,
+                                 audit_id=audit_id)
     print(f"  Audit archived: {audit_id}")
 
     # AAA-64: surface audit_id so callers (RE flow) can wire memory

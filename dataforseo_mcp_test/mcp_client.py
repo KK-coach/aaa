@@ -44,18 +44,25 @@ ENABLED_MODULES = "SERP,AI_OPTIMIZATION,KEYWORDS_DATA"
 
 
 def load_credentials() -> tuple[str, str]:
-    """Read DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD from project-root .env.
+    """Resolve DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD.
 
+    AAA-31 Sub-step 2: env-first. On Cloud Run these are injected from Secret
+    Manager into the process environment; for local dev we fall back to the
+    project-root .env (dotenv_values, never auto-exported into os.environ).
     Never hardcoded; never echoed unmasked.
     """
-    if not ENV_PATH.exists():
-        raise FileNotFoundError(f".env not found at {ENV_PATH}")
-    values = dotenv_values(ENV_PATH)
-    login = values.get("DATAFORSEO_LOGIN")
-    password = values.get("DATAFORSEO_PASSWORD")
+    login = os.environ.get("DATAFORSEO_LOGIN")
+    password = os.environ.get("DATAFORSEO_PASSWORD")
+    if not login or not password:
+        # Local-dev fallback: read .env without polluting os.environ.
+        if ENV_PATH.exists():
+            values = dotenv_values(ENV_PATH)
+            login = login or values.get("DATAFORSEO_LOGIN")
+            password = password or values.get("DATAFORSEO_PASSWORD")
     if not login or not password:
         raise KeyError(
-            "DATAFORSEO_LOGIN and/or DATAFORSEO_PASSWORD missing from .env"
+            "DATAFORSEO_LOGIN and/or DATAFORSEO_PASSWORD missing from both "
+            "the environment and %s" % ENV_PATH
         )
     return login, password
 
