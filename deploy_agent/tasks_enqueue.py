@@ -27,11 +27,14 @@ _INJECTED_CLIENT = None
 def cloud_tasks_location() -> str:
     """Queue region. Default europe-west1 — near Firestore eur3 / RAG
     europe-west3 (FLAGGED: final region follows the worker's Cloud Run region)."""
-    return os.environ.get("CLOUD_TASKS_LOCATION", "europe-west1")
+    return os.environ.get("CLOUD_TASKS_LOCATION", "europe-west3")
 
 
 def worker_url() -> str:
-    return os.environ.get("WORKER_URL", "https://WORKER_URL_PLACEHOLDER.run.app/run")
+    """The worker Cloud Run service BASE url (no path). The task POSTs to
+    <base>/run; the OIDC audience is the base (Cloud Run validates the token
+    audience against the service base url)."""
+    return os.environ.get("WORKER_URL", "https://WORKER_URL_PLACEHOLDER.run.app")
 
 
 def worker_invoker_sa() -> str:
@@ -45,9 +48,12 @@ def _client():
     return tasks_v2.CloudTasksClient()
 
 
-def _build_task(url: str, payload: dict, sa_email: str) -> dict:
+def _build_task(url: str, payload: dict, sa_email: str,
+                audience: str | None = None) -> dict:
     """The Cloud Tasks HTTP-task dict (OIDC). http_method as int (POST=1) so the
-    proto accepts it and mocks need no enum import."""
+    proto accepts it and mocks need no enum import. ``audience`` defaults to the
+    request url; pass the service BASE url when the request url carries a path
+    (Cloud Run validates the OIDC audience against the service base url)."""
     return {
         "http_request": {
             "http_method": HTTP_POST,
@@ -56,7 +62,7 @@ def _build_task(url: str, payload: dict, sa_email: str) -> dict:
             "body": json.dumps(payload).encode("utf-8"),
             "oidc_token": {
                 "service_account_email": sa_email,
-                "audience": url,
+                "audience": audience or url,
             },
         }
     }
@@ -94,11 +100,13 @@ def enqueue_audit_task(audit_id: str, url: str, locale: str, email: str | None,
     project = project or _resolve_project()
     queue_path = cl.queue_path(project, cloud_tasks_location(), QUEUE_NAME)
     payload = {"audit_id": audit_id, "url": url, "locale": locale, "email": email}
-    task = _build_task(worker_url(), payload, worker_invoker_sa())
+    base = worker_url().rstrip("/")
+    target = base + "/run"  # the worker's POST endpoint
+    task = _build_task(target, payload, worker_invoker_sa(), audience=base)
     resp = cl.create_task(parent=queue_path, task=task)
     return {
         "name": getattr(resp, "name", None),
         "queue_path": queue_path,
-        "worker_url": worker_url(),
+        "worker_url": target,
         "payload": payload,
     }
