@@ -32,6 +32,7 @@ queue redelivers. Idempotent per audit_id: a job already 'done' (or in-flight
 from __future__ import annotations
 
 import logging
+import os
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -59,6 +60,47 @@ async def health() -> dict:
     # NOT /healthz — that literal path is intercepted by the Google Frontend on
     # *.run.app and never reaches the container (same as the Playwright service).
     return {"status": "ok"}
+
+
+@app.get("/readyz")
+async def readyz() -> dict:
+    """Value-SAFE deploy readiness probe (auth-only, like every route). Returns
+    ONLY booleans/region strings — NEVER secret values or lengths. Confirms the
+    5 injected secrets are present + non-empty in the worker env, and that the
+    global Gemini client and the europe-west3 RAG corpus resolve from inside the
+    worker (no-spend metadata init: client construct + list_corpora, no generate
+    / no embed)."""
+    expected = ["DATAFORSEO_LOGIN", "DATAFORSEO_PASSWORD", "OPENAI_API_KEY",
+                "GOOGLE_PAGESPEED_API_KEY", "GOOGLE_KG_API_KEY"]
+    # bool(value) is True only when present AND non-empty — no value leaves here.
+    secrets_present = {k: bool(os.environ.get(k)) for k in expected}
+
+    checks: dict = {}
+    # Global Gemini: construct the same client the pipeline uses (no generate call).
+    try:
+        from google import genai
+        from site_profile.gemini_analyzer import LOCATION, _resolve_project
+        loc = os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION
+        genai.Client(vertexai=True, project=_resolve_project(), location=loc)
+        checks["gemini_init"] = True
+        checks["gemini_location"] = loc
+    except Exception as e:  # noqa: BLE001
+        checks["gemini_init"] = False
+        checks["gemini_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+
+    # europe-west3 RAG: init + list corpora (metadata only; never creates/embeds).
+    try:
+        import asyncio as _aio
+        from memory.embedding_layer import RAG_REGION, _rag
+        rag = _rag()
+        await _aio.to_thread(lambda: list(rag.list_corpora()))
+        checks["rag_init"] = True
+        checks["rag_region"] = RAG_REGION
+    except Exception as e:  # noqa: BLE001
+        checks["rag_init"] = False
+        checks["rag_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+
+    return {"secrets_present": secrets_present, "checks": checks}
 
 
 @app.post("/run")
