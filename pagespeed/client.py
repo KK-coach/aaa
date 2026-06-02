@@ -7,6 +7,7 @@ are present. Never raises — failures come back as an error dict.
 
 from __future__ import annotations
 
+import os
 import time
 from pathlib import Path
 from urllib.parse import urlparse
@@ -53,9 +54,13 @@ def _rating(metric: str, value: float | None) -> str | None:
 
 
 def _load_api_key() -> str | None:
-    if not ENV_PATH.exists():
-        return None
-    return dotenv_values(ENV_PATH).get("GOOGLE_PAGESPEED_API_KEY") or None
+    # AAA-31 S3a: env-first. On Cloud Run the key is injected from Secret
+    # Manager (--set-secrets) into the environment; the .env file is the
+    # local-dev fallback. Same pattern as the S2 DataForSEO/OpenAI loaders.
+    key = os.environ.get("GOOGLE_PAGESPEED_API_KEY")
+    if not key and ENV_PATH.exists():
+        key = dotenv_values(ENV_PATH).get("GOOGLE_PAGESPEED_API_KEY")
+    return key or None
 
 
 def _score(categories: dict, key: str) -> int | None:

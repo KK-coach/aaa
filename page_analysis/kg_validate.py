@@ -17,11 +17,14 @@ false-positive authority is costlier than false-negative for E-E-A-T.
 from __future__ import annotations
 
 import logging
+import os
 import re
+from pathlib import Path
 
 import httpx
 from dotenv import dotenv_values
 
+_ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 _LOG = logging.getLogger("aaa56.kg")
 _ENDPOINT = "https://kgsearch.googleapis.com/v1/entities:search"
 _API_VERSION = "kgsearch/v1"
@@ -82,12 +85,17 @@ async def kg_lookup(entity_name: str, expected_types: list[str]) -> dict:
     if not name:
         return _empty("no_match", "empty entity_name")
 
+    # AAA-31 S3a: env-first (Cloud Run injects from Secret Manager via
+    # --set-secrets), .env fallback for local dev. Same pattern as the S2
+    # DataForSEO/OpenAI loaders.
     try:
-        key = dotenv_values(".env").get("GOOGLE_KG_API_KEY")
+        key = os.environ.get("GOOGLE_KG_API_KEY")
+        if not key and _ENV_PATH.exists():
+            key = dotenv_values(_ENV_PATH).get("GOOGLE_KG_API_KEY")
     except Exception as exc:  # noqa: BLE001
         return _empty("no_match", f"key load failed: {exc}")
     if not key:
-        return _empty("no_match", "GOOGLE_KG_API_KEY missing from .env")
+        return _empty("no_match", "GOOGLE_KG_API_KEY missing from environment/.env")
 
     params = [
         ("query", name), ("key", key), ("limit", 10), ("languages", "en"),
