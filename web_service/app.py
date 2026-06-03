@@ -15,6 +15,7 @@ memory.firestore_archive). Runs as the aaa-web SA.
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import uuid
@@ -25,16 +26,16 @@ from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, Response
 from google.cloud import firestore, storage
 
-from deploy_agent.tasks_enqueue import enqueue_audit_task  # lean (no pipeline drag)
-
 DATABASE = os.environ.get("FIRESTORE_DATABASE", "ai-advisor-app")
 COLLECTION = "audits"
 JOBS_COLLECTION = "audit_jobs"
 LEADS_COLLECTION = "leads"
 SCHEMA_VERSION = 1
 
-# Bundled public-suffix snapshot (suffix_list_urls=() => no network at runtime).
-_EXTRACT = tldextract.TLDExtract(suffix_list_urls=())
+# Bundled public-suffix snapshot: suffix_list_urls=() => no network; cache_dir=None
+# => no disk-cache write (the Cloud Run FS is read-only).
+_EXTRACT = tldextract.TLDExtract(suffix_list_urls=(), cache_dir=None)
+QUEUE_NAME = "audit-jobs"
 
 # Free webmail providers (no company match possible) — rejected.
 FREE_PROVIDERS = {
@@ -202,6 +203,36 @@ def _create_job(url: str, locale: str, email: str | None) -> str:
     return aid
 
 
+def _project() -> str:
+    p = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if p:
+        return p
+    import google.auth
+    return google.auth.default()[1]
+
+
+def _enqueue_audit_task(audit_id: str, url: str, locale: str, email: str | None) -> None:
+    """Lean inline equivalent of deploy_agent.tasks_enqueue.enqueue_audit_task
+    (the self-contained web image does not bundle deploy_agent). Creates the
+    worker HTTP task: POST <WORKER_URL>/run with OIDC (SA=WORKER_INVOKER_SA,
+    audience=worker base) on the audit-jobs queue."""
+    from google.cloud import tasks_v2
+    location = os.environ.get("CLOUD_TASKS_LOCATION", "europe-west3")
+    base = (os.environ.get("WORKER_URL", "")).rstrip("/")
+    invoker = os.environ.get("WORKER_INVOKER_SA", "")
+    cl = tasks_v2.CloudTasksClient()
+    queue_path = cl.queue_path(_project(), location, QUEUE_NAME)
+    payload = {"audit_id": audit_id, "url": url, "locale": locale, "email": email}
+    task = {"http_request": {
+        "http_method": tasks_v2.HttpMethod.POST,
+        "url": base + "/run",
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps(payload).encode("utf-8"),
+        "oidc_token": {"service_account_email": invoker, "audience": base},
+    }}
+    cl.create_task(parent=queue_path, task=task)
+
+
 def _enforce_one_per_company() -> bool:
     """config/global.enforce_one_per_company — default False if doc/field absent."""
     try:
@@ -266,7 +297,7 @@ def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Resp
     # (d) dispatch — inline job-record + reused enqueue
     audit_id = _create_job(url_norm, lang, email)
     try:
-        enqueue_audit_task(audit_id, url_norm, lang, email)
+        _enqueue_audit_task(audit_id, url_norm, lang, email)
     except Exception as e:  # noqa: BLE001 — surface as job error, still show friendly page
         try:
             _db().collection(JOBS_COLLECTION).document(audit_id).update(
