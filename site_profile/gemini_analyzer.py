@@ -9,10 +9,13 @@ heuristics-only with reduced confidence instead of crashing.
 from __future__ import annotations
 
 import json
+import logging
 import os
 from pathlib import Path
 
 from dotenv import dotenv_values
+
+logger = logging.getLogger("aaa.gemini")
 
 # AAA-83 S1 — single production-core MODEL constant. Every core call-site
 # (vertex_generate + both ADK agents) reads THIS, never a local literal.
@@ -270,7 +273,14 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _resolve_project() -> str | None:
-    """Project from env, else .env, else the ADC quota project."""
+    """Resolve the Vertex project. Precedence: env -> .env -> local ADC-file
+    quota project -> google.auth.default() (metadata server / ambient ADC).
+
+    AAA-31 S3d-fix: the final google.auth.default() fallback makes Gemini work
+    on any GCP runtime (Cloud Run / GCE / Agent Engine) WITHOUT a
+    GOOGLE_CLOUD_PROJECT env, since the metadata server provides the project.
+    Returns None (caller degrades gracefully) only if every source misses.
+    """
     env = dotenv_values(PROJECT_ROOT / ".env")
     proj = (
         os.environ.get("GOOGLE_CLOUD_PROJECT")
@@ -287,9 +297,22 @@ def _resolve_project() -> str | None:
         ))
     if adc.exists():
         try:
-            return json.loads(adc.read_text()).get("quota_project_id")
+            proj = json.loads(adc.read_text()).get("quota_project_id")
         except (ValueError, OSError):
-            return None
+            proj = None
+    if proj:
+        return proj
+    # Final fallback: metadata server / ambient ADC project.
+    try:
+        import google.auth
+        _, adc_proj = google.auth.default()
+        if adc_proj:
+            return adc_proj
+    except Exception as exc:  # noqa: BLE001 — stay graceful, just log the miss
+        logger.warning("metadata/ADC project fallback miss: %s", exc)
+    logger.warning(
+        "_resolve_project: no project from env/.env/ADC-file/metadata"
+    )
     return None
 
 

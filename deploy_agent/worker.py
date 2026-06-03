@@ -76,16 +76,17 @@ async def readyz() -> dict:
     secrets_present = {k: bool(os.environ.get(k)) for k in expected}
 
     checks: dict = {}
-    # Global Gemini: construct the same client the pipeline uses (no generate call).
+    # Gemini: exercise the REAL gemini_analyzer gate (_resolve_project), NOT
+    # genai.Client directly. The S3d bug was _resolve_project() -> None on Cloud
+    # Run; genai.Client(project=None) auto-resolves from metadata and masked it.
+    # Bool only, no project value leaves here.
     try:
-        from google import genai
         from site_profile.gemini_analyzer import LOCATION, _resolve_project
-        loc = os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION
-        genai.Client(vertexai=True, project=_resolve_project(), location=loc)
-        checks["gemini_init"] = True
-        checks["gemini_location"] = loc
+        proj = _resolve_project()
+        checks["gemini_project_resolved"] = bool(proj)
+        checks["gemini_location"] = os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION
     except Exception as e:  # noqa: BLE001
-        checks["gemini_init"] = False
+        checks["gemini_project_resolved"] = False
         checks["gemini_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
 
     # europe-west3 RAG: init + list corpora (metadata only; never creates/embeds).
