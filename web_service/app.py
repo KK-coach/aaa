@@ -92,7 +92,8 @@ STR = {
         "err_mismatch": "Your email domain must match the website you're auditing (e.g. you@yourcompany.com for yourcompany.com).",
         "err_quota": "This company has already requested an audit. Please contact us if you need another.",
         "ok_title": "Audit started",
-        "ok_msg": "Thanks! Your audit is running. The report will arrive by email when it's ready (usually ~20 minutes).",
+        "ok_msg": "Thanks! Your report is being generated (~15-20 minutes). It will be available here:",
+        "ok_bookmark": "Bookmark this page and revisit the link — your report will appear automatically when it's ready.",
     },
     "hu": {
         "title": "Ingyenes SEO / AI-láthatósági audit",
@@ -106,7 +107,8 @@ STR = {
         "err_mismatch": "Az e-mail domainjének egyeznie kell az auditált weboldaléval (pl. on@oncege.hu az oncege.hu-hoz).",
         "err_quota": "Ehhez a céghez már indult audit. Ha újabbra van szüksége, vegye fel velünk a kapcsolatot.",
         "ok_title": "Az audit elindult",
-        "ok_msg": "Köszönjük! Az audit fut. A jelentést e-mailben küldjük, amint elkészül (általában ~20 perc).",
+        "ok_msg": "Köszönjük! A jelentése készül (~15-20 perc). Itt lesz elérhető:",
+        "ok_bookmark": "Mentse el ezt az oldalt, és térjen vissza a linkre — a jelentés automatikusan megjelenik, amint elkészül.",
     },
 }
 
@@ -170,10 +172,22 @@ def _form_page(lang: str, err: str = "", url: str = "", email: str = "", status:
     return HTMLResponse(_SHELL % (lang, _esc(t["title"]), body), status_code=status)
 
 
-def _confirm_page(lang: str) -> HTMLResponse:
+def _confirm_page(lang: str, report_link: str) -> HTMLResponse:
     t = STR[lang]
-    body = "<h1>%s</h1><p class=\"ok\">%s</p>" % (_esc(t["ok_title"]), _esc(t["ok_msg"]))
+    body = (
+        "<h1>%s</h1><p class=\"ok\">%s</p>"
+        "<p><a href=\"%s\">%s</a></p>"
+        "<p class=\"ok\">%s</p>" % (
+            _esc(t["ok_title"]), _esc(t["ok_msg"]),
+            _esc(report_link), _esc(report_link), _esc(t["ok_bookmark"]))
+    )
     return HTMLResponse(_SHELL % (lang, _esc(t["ok_title"]), body), status_code=200)
+
+
+def _base_url(request: Request) -> str:
+    """Absolute origin for building the bookmarkable report link. PUBLIC_BASE_URL
+    env wins (deterministic behind Cloud Run's proxy); else the request origin."""
+    return os.environ.get("PUBLIC_BASE_URL") or str(request.base_url).rstrip("/")
 
 
 def _msg_page(title: str, message: str, status: int) -> HTMLResponse:
@@ -315,8 +329,9 @@ def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Resp
     except Exception:  # noqa: BLE001 — lead capture is non-fatal to the dispatch
         pass
 
-    # (f) confirmation
-    return _confirm_page(lang)
+    # (f) confirmation — surface the bookmarkable report link (email is AAA-149).
+    report_link = "%s/report/%s?lang=%s" % (_base_url(request), audit_id, lang)
+    return _confirm_page(lang, report_link)
 
 
 @app.get("/report/{audit_id}", response_class=HTMLResponse)
