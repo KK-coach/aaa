@@ -111,12 +111,26 @@ async def run_one(url: str, audit_id: str | None = None) -> dict:
     # Skip-finding: attach_customer_summary never raises; failure -> _error in
     # the status string + a persisted _customer_summary_failed flag, audit intact.
     customer_summary_status = "skipped (no audit_id or re_persist not ok)"
+    cs = None
     if audit_id_for_re and re_persist_status == "ok":
         from memory.firestore_archive import attach_customer_summary
         cs = await attach_customer_summary(audit_id_for_re)
         customer_summary_status = (
             f"ok (cost=${cs.get('cost', 0.0):.5f})" if cs.get("ok")
             else f"skip-finding: {cs.get('_error')}"
+        )
+
+    # AAA-145 ship — render the customer-facing HTML report(s) to GCS + write the
+    # customer_report_html_uri reference. Runs only after the summary translations
+    # are attached (they are the render source). Skip-finding: never raises; the
+    # HTML is regenerable from the archived audit_output (archive-first).
+    customer_report_html_status = "skipped (no summary attached)"
+    if audit_id_for_re and isinstance(cs, dict) and cs.get("ok"):
+        from memory.firestore_archive import attach_customer_report_html
+        ch = await attach_customer_report_html(audit_id_for_re)
+        customer_report_html_status = (
+            "ok (%d objs)" % len(ch.get("objects") or {}) if ch.get("ok")
+            else "skip-finding: %s" % ch.get("_error")
         )
 
     audits = st.get("audits") or {}
@@ -190,6 +204,7 @@ async def run_one(url: str, audit_id: str | None = None) -> dict:
             "re_persist_status": re_persist_status,
             "re_persist_audit_id": audit_id_for_re,
             "customer_summary_status": customer_summary_status,
+            "customer_report_html_status": customer_report_html_status,
             "serp_enforcement": serp_enforcement,
         },
         summary_markdown=merged,

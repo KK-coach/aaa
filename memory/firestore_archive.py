@@ -627,6 +627,88 @@ async def attach_customer_summary(audit_id: str) -> dict:
         return {"_error": "%s: %s" % (type(e).__name__, e)}
 
 
+_DEFAULT_REPORTS_BUCKET = "aaa-customer-reports-664356368213"
+
+
+def _render_upload_all(ao: dict, cst: dict, audit_id: str, bucket: str) -> dict:
+    """SYNC: render each available lang to HTML and upload to GCS. Returns the
+    {lang: object_key} map. Raises on render/upload error (caller skip-finds)."""
+    from report.html_render import render_html_report
+    from google.cloud import storage
+
+    available_langs = [l for l in cst.keys() if cst.get(l)]
+    client = storage.Client()
+    b = client.bucket(bucket)
+    objects: dict = {}
+    for lang in available_langs:
+        html, _meta = render_html_report(
+            ao, lang, cst[lang], available_langs=available_langs
+        )
+        key = "reports/%s.%s.html" % (audit_id, lang)
+        b.blob(key).upload_from_string(
+            html, content_type="text/html; charset=utf-8"
+        )
+        objects[lang] = key
+    return objects
+
+
+async def attach_customer_report_html(audit_id: str, bucket: str | None = None) -> dict:
+    """AAA-145 ship — render the customer-facing HTML report(s) from the persisted
+    customer_summary_translations and upload to GCS; attach a REFERENCE field
+    audit_output.customer_report_html_uri (the HTML blob is NOT stored in
+    Firestore — AAA-103 1 MiB watch). One object per available language at
+    reports/{audit_id}.{lang}.html.
+
+    Runs AFTER attach_customer_summary (the translations are the render source).
+    Skip-finding contract (archive-first; the HTML is regenerable from the
+    archived audit_output): ANY error -> {"_error": ...} + a persisted
+    audit_output._customer_report_html_failed flag; NEVER raises (the audit still
+    transitions to done). A later successful render clears the flag."""
+    bucket = bucket or os.environ.get("CUSTOMER_REPORTS_BUCKET") or _DEFAULT_REPORTS_BUCKET
+    try:
+        existing = await read_audit(audit_id)
+        if existing is None:
+            return {"_error": "audit not found"}
+        ao = existing.get("audit_output") or {}
+        cst = ao.get("customer_summary_translations") or {}
+        if not cst:
+            return {"_error": "no customer_summary_translations (nothing to render)"}
+
+        objects = await asyncio.to_thread(_render_upload_all, ao, cst, audit_id, bucket)
+        if not objects:
+            return {"_error": "no non-empty language content to render"}
+
+        now = _now_iso()
+        default_lang = "en" if "en" in objects else next(iter(objects))
+        uri = {
+            "bucket": bucket,
+            "objects": objects,
+            "default_lang": default_lang,
+            "rendered_at": now,
+        }
+        ref = _db().collection(_COLLECTION).document(audit_id)
+        await asyncio.to_thread(ref.update, {
+            "audit_output.customer_report_html_uri": uri,
+            "audit_output._customer_report_html_failed": firestore.DELETE_FIELD,
+            "updated_at": now,
+        })
+        logger.info("customer_report_html attached: %s (%d objs, bucket=%s)",
+                    audit_id, len(objects), bucket)
+        return {"ok": True, "bucket": bucket, "objects": objects, "default_lang": default_lang}
+    except Exception as e:  # noqa: BLE001 — skip-finding (never break the audit)
+        logger.warning("attach_customer_report_html(%s) failed: %s: %s",
+                       audit_id, type(e).__name__, e)
+        try:
+            await asyncio.to_thread(
+                _db().collection(_COLLECTION).document(audit_id).update,
+                {"audit_output._customer_report_html_failed": "%s: %s" % (type(e).__name__, e),
+                 "updated_at": _now_iso()},
+            )
+        except Exception:  # noqa: BLE001 — best-effort flag; the audit continues
+            pass
+        return {"_error": "%s: %s" % (type(e).__name__, e)}
+
+
 async def update_validation(audit_id: str, validation: dict) -> None:
     """Attach/replace human validation on an archived audit (AAA-67).
 
