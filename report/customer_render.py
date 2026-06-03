@@ -542,9 +542,14 @@ def adat_s85(ao):
     L.append("Forms: %s" % _nd(fq.get("form_count")))
     L.append("Input fields: %s in the rendered main view; %s in full HTML (incl. hidden fields)" % (
         _nd(fo.get("input_count")), _nd(fq.get("input_count"))))
-    L.append("Label coverage: %s" % (("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA))
-    L.append("Input-type distribution: %s" % _nd(fq.get("input_type_distribution")))
-    L.append("Submission: input[type=submit] present (standard); button[type=submit] count: %s" % _nd(fq.get("submit_button_count")))
+    # AAA-151 S3: gate form-attribute facts (label coverage / input types /
+    # submission) on a real form; with 0 inputs they describe a non-existent form.
+    if (fo.get("input_count") or 0) > 0:
+        L.append("Label coverage: %s" % (("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA))
+        L.append("Input-type distribution: %s" % _nd(fq.get("input_type_distribution")))
+        L.append("Submission: input[type=submit] present (standard); button[type=submit] count: %s" % _nd(fq.get("submit_button_count")))
+    else:
+        L.append("No form or input fields on the page (label coverage / input types / submission mechanism not applicable).")
     L.append("Elements with ARIA: %s | total interactive: %s" % (_nd(ar.get("with_aria_count")), _nd(ar.get("interactive_count"))))
     L.append("(No competitor data is provided for this section.)")
     return "\n".join(L)
@@ -584,9 +589,14 @@ def adat_s9(ao):
     L.append("- Fold-line position and exact CTA placement: %s" % NO_DATA)
     L.append("- Holistic context observation: %s" % _nd((atf.get("structured_finding") or atf.get("justification"))))
     L.append("FORMS (conversion lens, NOT a technical fix):")
-    L.append("- Forms: 2 | visible fields: %s | submission: present (standard)" % _nd(fo.get("input_count")))
-    L.append("- Field-label coverage (label, NOT placeholder) as a completion-friction signal: %s" % (
-        ("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA))
+    # AAA-151 S3: gate on a real form (input_count > 0). The previous hardcoded
+    # "Forms: 2" asserted a phantom form regardless of measurement.
+    if (fo.get("input_count") or 0) > 0:
+        L.append("- Conversion form inputs: %s visible fields | submission: present (standard)" % _nd(fo.get("input_count")))
+        L.append("- Field-label coverage (label, NOT placeholder) as a completion-friction signal: %s" % (
+            ("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA))
+    else:
+        L.append("- No form or input fields on the page; do NOT reference form fields, label coverage, or input attributes.")
     return "\n".join(L)
 
 
@@ -638,9 +648,16 @@ def adat_s11(ao):
         L.append("  - [%s] %s" % (_nd(p.get("severity")), _nd(p.get("finding"))))
     L.append("KEY STRUCTURAL FINDINGS (separate topics):")
     L.append("  - Heading hierarchy: organize same-level headings under H2 main topics (zone: %s)" % _nd(ss.get("headings_by_zone")))
-    L.append("  - Conversion form: %s visible fields, label coverage %s (friction)" % (
-        _nd(fo.get("input_count")), (("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA)))
-    L.append("  - Mobile field type: type=tel %s" % ("present" if has_tel else "MISSING"))
+    # AAA-151 S3: only assert form/field-attribute facts when a form actually
+    # exists (input_count > 0). With 0 inputs, "type=tel MISSING" is a fact about
+    # a non-existent field -> the LLM fabricates a phone field. Gate it.
+    if (fo.get("input_count") or 0) > 0:
+        L.append("  - Conversion form: %s visible fields, label coverage %s (friction)" % (
+            _nd(fo.get("input_count")), (("%.1f%%" % (lc * 100)) if isinstance(lc, (int, float)) else NO_DATA)))
+        L.append("  - Mobile field type: type=tel %s" % ("present" if has_tel else "MISSING"))
+    else:
+        L.append("  - Conversion form: none on the page (no form/input fields measured; do NOT "
+                 "recommend form-field, label, or type=tel changes)")
     L.append("  - Semantic HTML / zones: all headings in the main content zone, no structural noise")
     L.append("MEASURED STRENGTHS: indexed=%s, HTTPS=%s, clean canonical=%s, CrUX LCP=%s / CLS=%s" % (
         _nd(idx.get("indexed")), _nd(tech.get("https")), _nd(corrected_canonical(ao)),
