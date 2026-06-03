@@ -1,28 +1,58 @@
 # -*- coding: utf-8 -*-
-"""AAA-97 public serving service — GET /report/{audit_id}?lang=<lang>.
+"""AAA-97 public serving service.
 
-Lean by design: reads Firestore + GCS directly (no audit-pipeline imports), so
-the public image stays small and cold-starts fast. Runs as the aaa-web SA
-(bucket-scoped storage.objectViewer + datastore.user). The bucket stays
-non-public — bytes are fetched by the service SA and streamed to the client.
+Routes:
+  GET  /                     locale-aware audit input form (url + email)
+  POST /submit               validate email + dispatch + lead capture (+ quota flag)
+  GET  /report/{audit_id}    serve the rendered customer report from GCS
+  GET  /health
 
-Endpoints run as sync `def` so FastAPI threadpools the blocking Firestore/GCS
-SDK calls (no event-loop blocking).
+Lean by design: reads/writes Firestore + GCS directly and reuses ONLY the lean
+deploy_agent.tasks_enqueue.enqueue_audit_task (job-record creation is inlined to
+avoid importing deploy_agent.job_state, which drags the heavy audit pipeline via
+memory.firestore_archive). Runs as the aaa-web SA.
 """
 
 from __future__ import annotations
 
 import os
+import re
+import uuid
+from datetime import datetime, timezone
 
-from fastapi import FastAPI
+import tldextract
+from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, Response
 from google.cloud import firestore, storage
 
+from deploy_agent.tasks_enqueue import enqueue_audit_task  # lean (no pipeline drag)
+
 DATABASE = os.environ.get("FIRESTORE_DATABASE", "ai-advisor-app")
 COLLECTION = "audits"
+JOBS_COLLECTION = "audit_jobs"
+LEADS_COLLECTION = "leads"
+SCHEMA_VERSION = 1
 
-app = FastAPI(title="aaa-web", version="1")
+# Bundled public-suffix snapshot (suffix_list_urls=() => no network at runtime).
+_EXTRACT = tldextract.TLDExtract(suffix_list_urls=())
 
+# Free webmail providers (no company match possible) — rejected.
+FREE_PROVIDERS = {
+    "gmail.com", "googlemail.com", "freemail.hu", "citromail.hu", "yahoo.com",
+    "yahoo.co.uk", "outlook.com", "hotmail.com", "live.com", "msn.com",
+    "protonmail.com", "proton.me", "indamail.hu", "vipmail.hu", "icloud.com",
+    "aol.com", "gmx.com", "gmx.net", "mail.com", "zoho.com", "yandex.com",
+}
+# Common disposable/throwaway providers (bundled minimal list) — rejected.
+DISPOSABLE = {
+    "mailinator.com", "guerrillamail.com", "10minutemail.com", "temp-mail.org",
+    "tempmail.com", "throwawaymail.com", "yopmail.com", "getnada.com",
+    "trashmail.com", "sharklasers.com", "dispostable.com", "maildrop.cc",
+    "fakeinbox.com", "mintemail.com", "mohmal.com", "spamgourmet.com",
+    "tempinbox.com", "emailondeck.com", "tempmailo.com", "minuteinbox.com",
+}
+
+app = FastAPI(title="aaa-web", version="2")
 _fs = None
 _gcs = None
 
@@ -41,63 +71,249 @@ def _storage() -> storage.Client:
     return _gcs
 
 
-def _page(title: str, message: str, status: int) -> HTMLResponse:
-    """Minimal, self-contained friendly page (no stack trace)."""
-    html = (
-        "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-        "<title>%s</title><style>"
-        "body{font:16px/1.5 system-ui,Segoe UI,Arial,sans-serif;background:#f6f8fc;"
-        "color:#222;margin:0;display:flex;min-height:100vh;align-items:center;"
-        "justify-content:center}.box{background:#fff;border:1px solid #e3e8f0;"
-        "border-radius:12px;padding:36px 40px;max-width:420px;text-align:center;"
-        "box-shadow:0 1px 3px rgba(0,0,0,.06)}h1{font-size:20px;margin:0 0 8px}"
-        "p{color:#555;margin:0}</style></head><body><div class=\"box\">"
-        "<h1>%s</h1><p>%s</p></div></body></html>" % (title, title, message)
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+# --------------------------------------------------------------------------
+# i18n string table (mirrors the report-chrome minimal style)
+# --------------------------------------------------------------------------
+STR = {
+    "en": {
+        "title": "Free SEO / AI-Visibility Audit",
+        "intro": "Get a free audit of how your website performs in Google and AI search.",
+        "url_label": "Your website URL",
+        "email_label": "Your work email (must match the website domain)",
+        "submit": "Start my audit",
+        "err_email": "Please enter a valid email address.",
+        "err_url": "Please enter a valid website URL.",
+        "err_free": "Please use your company email — free webmail (Gmail, Outlook, …) and disposable addresses aren't accepted.",
+        "err_mismatch": "Your email domain must match the website you're auditing (e.g. you@yourcompany.com for yourcompany.com).",
+        "err_quota": "This company has already requested an audit. Please contact us if you need another.",
+        "ok_title": "Audit started",
+        "ok_msg": "Thanks! Your audit is running. The report will arrive by email when it's ready (usually ~20 minutes).",
+    },
+    "hu": {
+        "title": "Ingyenes SEO / AI-láthatósági audit",
+        "intro": "Kérjen ingyenes elemzést arról, hogyan teljesít weboldala a Google és az AI-keresőkben.",
+        "url_label": "Az Ön weboldalának URL-je",
+        "email_label": "Céges e-mail címe (egyeznie kell a weboldal domainjével)",
+        "submit": "Audit indítása",
+        "err_email": "Kérjük, adjon meg egy érvényes e-mail címet.",
+        "err_url": "Kérjük, adjon meg egy érvényes weboldal URL-t.",
+        "err_free": "Kérjük, céges e-mail címet használjon — ingyenes (Gmail, Outlook, …) és eldobható címeket nem fogadunk el.",
+        "err_mismatch": "Az e-mail domainjének egyeznie kell az auditált weboldaléval (pl. on@oncege.hu az oncege.hu-hoz).",
+        "err_quota": "Ehhez a céghez már indult audit. Ha újabbra van szüksége, vegye fel velünk a kapcsolatot.",
+        "ok_title": "Az audit elindult",
+        "ok_msg": "Köszönjük! Az audit fut. A jelentést e-mailben küldjük, amint elkészül (általában ~20 perc).",
+    },
+}
+
+
+def _pick_locale(accept_language: str | None) -> str:
+    """hu if the Accept-Language is hu-leaning, else en (en default)."""
+    al = (accept_language or "").lower()
+    return "hu" if "hu" in al else "en"
+
+
+def _etld1(s: str) -> str:
+    """eTLD+1 (registrable domain) of a URL or bare domain, lowercased; '' if none."""
+    try:
+        return (_EXTRACT(s or "").registered_domain or "").lower()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _normalize_url(url: str) -> str:
+    u = (url or "").strip()
+    if u and not re.match(r"^https?://", u, re.I):
+        u = "https://" + u
+    return u
+
+
+_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+# --------------------------------------------------------------------------
+# pages
+# --------------------------------------------------------------------------
+_SHELL = (
+    "<!doctype html><html lang=\"%s\"><head><meta charset=\"utf-8\">"
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+    "<title>%s</title><style>"
+    "body{font:16px/1.5 system-ui,Segoe UI,Arial,sans-serif;background:#f6f8fc;color:#1f2733;"
+    "margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}"
+    ".box{background:#fff;border:1px solid #e3e8f0;border-radius:14px;padding:34px 38px;max-width:480px;"
+    "width:100%%;box-shadow:0 1px 3px rgba(0,0,0,.06)}h1{font-size:22px;margin:0 0 6px}"
+    "p.intro{color:#566;margin:0 0 22px}label{display:block;font-size:14px;font-weight:600;margin:14px 0 4px}"
+    "input{width:100%%;box-sizing:border-box;padding:11px 12px;border:1px solid #cdd6e4;border-radius:8px;font:inherit}"
+    "button{margin-top:20px;width:100%%;padding:12px;border:0;border-radius:8px;background:#2c6cf0;color:#fff;"
+    "font:inherit;font-weight:600;cursor:pointer}button:hover{background:#1f5be0}"
+    ".err{background:#fdecec;border:1px solid #f5c2c2;color:#a12;padding:10px 12px;border-radius:8px;margin:0 0 8px;font-size:14px}"
+    ".ok{color:#566}</style></head><body><div class=\"box\">%s</div></body></html>"
+)
+
+
+def _form_page(lang: str, err: str = "", url: str = "", email: str = "", status: int = 200) -> HTMLResponse:
+    t = STR[lang]
+    err_html = ('<div class="err">%s</div>' % _esc(err)) if err else ""
+    body = (
+        "<h1>%s</h1><p class=\"intro\">%s</p>%s"
+        "<form method=\"post\" action=\"/submit\">"
+        "<label>%s</label><input name=\"url\" type=\"text\" value=\"%s\" placeholder=\"https://...\" required>"
+        "<label>%s</label><input name=\"email\" type=\"email\" value=\"%s\" required>"
+        "<button type=\"submit\">%s</button></form>" % (
+            _esc(t["title"]), _esc(t["intro"]), err_html, _esc(t["url_label"]),
+            _esc(url), _esc(t["email_label"]), _esc(email), _esc(t["submit"]))
     )
-    return HTMLResponse(content=html, status_code=status)
+    return HTMLResponse(_SHELL % (lang, _esc(t["title"]), body), status_code=status)
 
 
+def _confirm_page(lang: str) -> HTMLResponse:
+    t = STR[lang]
+    body = "<h1>%s</h1><p class=\"ok\">%s</p>" % (_esc(t["ok_title"]), _esc(t["ok_msg"]))
+    return HTMLResponse(_SHELL % (lang, _esc(t["ok_title"]), body), status_code=200)
+
+
+def _msg_page(title: str, message: str, status: int) -> HTMLResponse:
+    body = "<h1>%s</h1><p class=\"ok\">%s</p>" % (_esc(title), _esc(message))
+    return HTMLResponse(_SHELL % ("en", _esc(title), body), status_code=status)
+
+
+def _esc(x) -> str:
+    import html
+    return html.escape("" if x is None else str(x))
+
+
+# --------------------------------------------------------------------------
+# lean dispatch helpers (inlined create_job; reused enqueue_audit_task)
+# --------------------------------------------------------------------------
+def _create_job(url: str, locale: str, email: str | None) -> str:
+    """Lean inline equivalent of deploy_agent.job_state.create_job (same schema),
+    avoiding the heavy firestore_archive import in this public image."""
+    aid = str(uuid.uuid4())
+    now = _now()
+    _db().collection(JOBS_COLLECTION).document(aid).set({
+        "audit_id": aid, "url": url, "status": "queued", "locale": locale,
+        "requester_email": email, "report_uri": None, "submitted_at": now,
+        "started_at": None, "finished_at": None, "error": None,
+        "schema_version": SCHEMA_VERSION,
+    })
+    return aid
+
+
+def _enforce_one_per_company() -> bool:
+    """config/global.enforce_one_per_company — default False if doc/field absent."""
+    try:
+        snap = _db().collection("config").document("global").get()
+        return bool((snap.to_dict() or {}).get("enforce_one_per_company")) if snap.exists else False
+    except Exception:  # noqa: BLE001 — fail open (do not block on config read error)
+        return False
+
+
+def _company_exists(etld1: str) -> bool:
+    return _db().collection(LEADS_COLLECTION).document(etld1).get().exists
+
+
+def _capture_lead(etld1: str, entry: dict) -> None:
+    """Append the submission to leads/{etld1}.audits[] (create doc if absent;
+    keep company_domain + first_seen stable)."""
+    ref = _db().collection(LEADS_COLLECTION).document(etld1)
+    snap = ref.get()
+    if snap.exists:
+        ref.update({"audits": firestore.ArrayUnion([entry])})
+    else:
+        ref.set({"company_domain": etld1, "first_seen": entry.get("submitted_at"),
+                 "audits": [entry]})
+
+
+# --------------------------------------------------------------------------
+# routes
+# --------------------------------------------------------------------------
 @app.get("/health")
 def health() -> dict:
-    # NOT /healthz (that literal path is swallowed by the GFE on *.run.app).
     return {"status": "ok"}
+
+
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request) -> Response:
+    return _form_page(_pick_locale(request.headers.get("accept-language")))
+
+
+@app.post("/submit", response_class=HTMLResponse)
+def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Response:
+    lang = _pick_locale(request.headers.get("accept-language"))
+    t = STR[lang]
+    url_raw, email = (url or "").strip(), (email or "").strip().lower()
+
+    # (b) validation
+    if not _EMAIL_RE.match(email):
+        return _form_page(lang, t["err_email"], url_raw, email, status=400)
+    url_norm = _normalize_url(url_raw)
+    url_etld1 = _etld1(url_norm)
+    if not url_etld1:
+        return _form_page(lang, t["err_url"], url_raw, email, status=400)
+    email_domain = email.rsplit("@", 1)[-1]
+    if email_domain in FREE_PROVIDERS or email_domain in DISPOSABLE:
+        return _form_page(lang, t["err_free"], url_raw, email, status=400)
+    if _etld1(email_domain) != url_etld1:
+        return _form_page(lang, t["err_mismatch"], url_raw, email, status=400)
+
+    # (c) quota check (flag-gated; default OFF)
+    if _enforce_one_per_company() and _company_exists(url_etld1):
+        return _form_page(lang, t["err_quota"], url_raw, email, status=409)
+
+    # (d) dispatch — inline job-record + reused enqueue
+    audit_id = _create_job(url_norm, lang, email)
+    try:
+        enqueue_audit_task(audit_id, url_norm, lang, email)
+    except Exception as e:  # noqa: BLE001 — surface as job error, still show friendly page
+        try:
+            _db().collection(JOBS_COLLECTION).document(audit_id).update(
+                {"status": "error", "error": "enqueue failed: %s: %s" % (type(e).__name__, e)})
+        except Exception:  # noqa: BLE001
+            pass
+
+    # (e) lead capture
+    try:
+        _capture_lead(url_etld1, {
+            "audit_id": audit_id, "url": url_norm, "email": email, "lang": lang,
+            "browser_locale": request.headers.get("accept-language") or "",
+            "user_agent": request.headers.get("user-agent") or "", "submitted_at": _now(),
+        })
+    except Exception:  # noqa: BLE001 — lead capture is non-fatal to the dispatch
+        pass
+
+    # (f) confirmation
+    return _confirm_page(lang)
 
 
 @app.get("/report/{audit_id}", response_class=HTMLResponse)
 def report(audit_id: str, lang: str = "") -> Response:
-    # 1. Firestore lookup (blocking; threadpooled by FastAPI).
     try:
         snap = _db().collection(COLLECTION).document(audit_id).get()
-    except Exception:  # noqa: BLE001 — never leak a stack trace
-        return _page("Something went wrong",
-                     "We could not load this report right now. Please try again later.",
-                     503)
+    except Exception:  # noqa: BLE001
+        return _msg_page("Something went wrong",
+                         "We could not load this report right now. Please try again later.", 503)
     if not snap.exists:
-        return _page("Report not found",
-                     "We couldn't find a report for this link. Please check the URL.", 404)
-
+        return _msg_page("Report not found",
+                         "We couldn't find a report for this link. Please check the URL.", 404)
     ao = (snap.to_dict() or {}).get("audit_output") or {}
     uri = ao.get("customer_report_html_uri")
-    # Availability gate: uri present AND not flagged failed.
     if ao.get("_customer_report_html_failed") is not None or not isinstance(uri, dict):
-        return _page("Report not available yet",
-                     "Your report is still being prepared. Please check back shortly.", 200)
-
+        return _msg_page("Report not available yet",
+                         "Your report is still being prepared. Please check back shortly.", 200)
     objects = uri.get("objects") or {}
     chosen = lang if lang in objects else uri.get("default_lang")
     key = objects.get(chosen) if chosen else None
     if not key:
-        return _page("Report not available yet",
-                     "Your report is still being prepared. Please check back shortly.", 200)
-
-    # 2. Fetch the rendered HTML as the service SA (bucket stays non-public).
+        return _msg_page("Report not available yet",
+                         "Your report is still being prepared. Please check back shortly.", 200)
     try:
         data = _storage().bucket(uri.get("bucket")).blob(key).download_as_bytes()
     except Exception:  # noqa: BLE001
-        return _page("Something went wrong",
-                     "We could not load this report right now. Please try again later.", 503)
-
+        return _msg_page("Something went wrong",
+                         "We could not load this report right now. Please try again later.", 503)
     return Response(content=data, media_type="text/html; charset=utf-8")
 
 
