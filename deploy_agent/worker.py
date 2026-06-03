@@ -63,7 +63,7 @@ async def health() -> dict:
 
 
 @app.get("/readyz")
-async def readyz() -> dict:
+async def readyz(probe_bucket: str = "") -> dict:
     """Value-SAFE deploy readiness probe (auth-only, like every route). Returns
     ONLY booleans/region strings — NEVER secret values or lengths. Confirms the
     5 injected secrets are present + non-empty in the worker env, and that the
@@ -101,7 +101,36 @@ async def readyz() -> dict:
         checks["rag_init"] = False
         checks["rag_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
 
+    # AAA-145: HTML-renderer deps present in the worker image (render runs here).
+    try:
+        import markdown_it, mdit_py_plugins, nh3  # noqa: F401
+        checks["render_deps_importable"] = True
+    except Exception as e:  # noqa: BLE001
+        checks["render_deps_importable"] = False
+        checks["render_deps_error"] = "%s: %s" % (type(e).__name__, str(e)[:120])
+
+    # AAA-145 one-shot GCS write probe (only when ?probe_bucket=<name> is passed,
+    # so normal readiness polls have no side effect). Uses the worker's ambient
+    # credentials (= the aaa-worker runtime SA) to write + delete a tiny object.
+    if probe_bucket:
+        try:
+            import uuid
+            from google.cloud import storage
+            cl = storage.Client()
+            blob = cl.bucket(probe_bucket).blob("_readyz_probe/%s.txt" % uuid.uuid4().hex)
+            await _aio_to_thread(blob.upload_from_string, "ok")
+            await _aio_to_thread(blob.delete)
+            checks["bucket_write_ok"] = True
+        except Exception as e:  # noqa: BLE001
+            checks["bucket_write_ok"] = False
+            checks["bucket_write_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+
     return {"secrets_present": secrets_present, "checks": checks}
+
+
+async def _aio_to_thread(fn, *args):
+    import asyncio
+    return await asyncio.to_thread(fn, *args)
 
 
 @app.post("/run")
