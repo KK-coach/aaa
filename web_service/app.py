@@ -190,9 +190,35 @@ def _base_url(request: Request) -> str:
     return os.environ.get("PUBLIC_BASE_URL") or str(request.base_url).rstrip("/")
 
 
-def _msg_page(title: str, message: str, status: int) -> HTMLResponse:
+def _msg_page(title: str, message: str, status: int, lang: str = "en") -> HTMLResponse:
     body = "<h1>%s</h1><p class=\"ok\">%s</p>" % (_esc(title), _esc(message))
-    return HTMLResponse(_SHELL % ("en", _esc(title), body), status_code=status)
+    return HTMLResponse(_SHELL % (lang, _esc(title), body), status_code=status)
+
+
+# Localized /report status pages (pending / not-found / error).
+REP = {
+    "en": {
+        "pending_t": "Report not available yet",
+        "pending_m": "Your report is still being prepared (~15-20 minutes). Please check back shortly.",
+        "notfound_t": "Report not found",
+        "notfound_m": "We couldn't find a report for this link. Please check the URL.",
+        "error_t": "Something went wrong",
+        "error_m": "We could not load this report right now. Please try again later.",
+    },
+    "hu": {
+        "pending_t": "A jelentés még készül",
+        "pending_m": "A jelentése még készül (~15-20 perc). Kérjük, nézzen vissza hamarosan.",
+        "notfound_t": "A jelentés nem található",
+        "notfound_m": "Ehhez a linkhez nem találtunk jelentést. Kérjük, ellenőrizze az URL-t.",
+        "error_t": "Hiba történt",
+        "error_m": "A jelentést most nem tudtuk betölteni. Kérjük, próbálja újra később.",
+    },
+}
+
+
+def _status_page(lang: str, kind: str, status: int) -> HTMLResponse:
+    r = REP["hu"] if lang == "hu" else REP["en"]
+    return _msg_page(r[kind + "_t"], r[kind + "_m"], status, lang="hu" if lang == "hu" else "en")
 
 
 def _esc(x) -> str:
@@ -339,27 +365,31 @@ def report(audit_id: str, lang: str = "") -> Response:
     try:
         snap = _db().collection(COLLECTION).document(audit_id).get()
     except Exception:  # noqa: BLE001
-        return _msg_page("Something went wrong",
-                         "We could not load this report right now. Please try again later.", 503)
+        return _status_page(lang, "error", 503)
     if not snap.exists:
-        return _msg_page("Report not found",
-                         "We couldn't find a report for this link. Please check the URL.", 404)
+        # The archived audit doc is written partway through the ~20-min run. If
+        # it's not there yet, fall back to the job-state: a known job (queued/
+        # running) -> friendly "still being prepared"; truly unknown -> 404.
+        try:
+            job = _db().collection(JOBS_COLLECTION).document(audit_id).get()
+        except Exception:  # noqa: BLE001
+            return _status_page(lang, "error", 503)
+        if job.exists:
+            return _status_page(lang, "pending", 200)
+        return _status_page(lang, "notfound", 404)
     ao = (snap.to_dict() or {}).get("audit_output") or {}
     uri = ao.get("customer_report_html_uri")
     if ao.get("_customer_report_html_failed") is not None or not isinstance(uri, dict):
-        return _msg_page("Report not available yet",
-                         "Your report is still being prepared. Please check back shortly.", 200)
+        return _status_page(lang, "pending", 200)
     objects = uri.get("objects") or {}
     chosen = lang if lang in objects else uri.get("default_lang")
     key = objects.get(chosen) if chosen else None
     if not key:
-        return _msg_page("Report not available yet",
-                         "Your report is still being prepared. Please check back shortly.", 200)
+        return _status_page(lang, "pending", 200)
     try:
         data = _storage().bucket(uri.get("bucket")).blob(key).download_as_bytes()
     except Exception:  # noqa: BLE001
-        return _msg_page("Something went wrong",
-                         "We could not load this report right now. Please try again later.", 503)
+        return _status_page(lang, "error", 503)
     return Response(content=data, media_type="text/html; charset=utf-8")
 
 
