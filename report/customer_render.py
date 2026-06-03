@@ -260,6 +260,11 @@ def corrected_canonical(ao):
     idx = ao.get("indexing") or {}
     ivars = [v for v in (idx.get("variants") or []) if v.get("indexed") is True]
     can, _mismatch = _select_canonical(ivars, idx.get("rel_canonical"))
+    # AAA-151: never imply "canonical missing" when the page actually declares
+    # one. If no indexed variant resolved a canonical, fall back to the crawled
+    # rel=canonical value (indexing.rel_canonical, else crawl.technical.canonical).
+    if not can:
+        can = idx.get("rel_canonical") or _g(ao, "crawl", "technical", "canonical", "value")
     return can
 
 
@@ -592,6 +597,13 @@ def adat_s10(ao):
     L = []
     L.append("Indexed: %s" % _nd(idx.get("indexed")))
     L.append("Canonical URL (corrected value): %s" % _nd(corrected_canonical(ao)))
+    # AAA-151: explicit, mismatch-gated canonical status so the narrative does
+    # NOT report a "canonical missing/discrepancy" off a null. Only a real
+    # canonical_mismatch == True is a discrepancy; a present self-canonical with
+    # mismatch False/None is clean.
+    _can_present = bool(_g(ao, "crawl", "technical", "canonical", "present"))
+    L.append("Canonical tag present on page: %s; canonical/indexing discrepancy: %s" % (
+        _nd(_can_present), "yes" if idx.get("canonical_mismatch") is True else "no"))
     L.append("HTTPS: %s" % _nd(tech.get("https")))
     L.append("Redirect chain (client-side, no competitor data): %s" % _nd(tech.get("redirect_chain")))
     L.append("PageSpeed: mobile=%s, desktop=%s" % (

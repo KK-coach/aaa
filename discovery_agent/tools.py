@@ -502,11 +502,24 @@ async def check_indexing_status_tool(url: str, tool_context: ToolContext) -> dic
 
     audited_key = _exact_key(url)
 
+    # AAA-151: also query the redirect-resolved / canonical URL. Google indexes
+    # the canonical of a redirecting request URL (e.g. /hu/ 301-> /hu/index-hu/),
+    # so the 4 request-URL variants alone miss it. Append the canonical target
+    # (rel_canonical, else the crawl's resolved final URL) when it is distinct
+    # from the 4 variants. For non-redirect / self-canonical URLs it dedupes to
+    # an existing variant -> NO extra query, NO behaviour change.
+    query_urls = list(_url_variants(url))
+    canonical_target = rel_canonical or crawl_final
+    if canonical_target and _exact_key(canonical_target) not in {
+        _exact_key(x) for x in query_urls
+    }:
+        query_urls.append(canonical_target)
+
     variants_out: list[dict] = []
     any_error = None
     total_cost = 0.0
 
-    for v in _url_variants(url):
+    for v in query_urls:
         # --- redirect/final resolution ---
         if _exact_key(v) == audited_key:
             # REUSE state["crawl"] for the audited variant — 0 extra fetch.
@@ -531,9 +544,17 @@ async def check_indexing_status_tool(url: str, tool_context: ToolContext) -> dic
             org = serp.get("organic_results") or []
             first = org[0] if org else None
             first_url = first.get("url") if first else None
+            # AAA-151: a variant is indexed if SERP result #1 normalize-equals
+            # the queried URL OR its resolved final_url OR rel_canonical (the
+            # URL Google actually indexed for a redirecting request URL). For a
+            # non-redirect self-canonical URL the accept set collapses to {v},
+            # so this is identical to the previous exact-match behaviour.
+            accept = {
+                _normalize_url_for_match(x)
+                for x in (v, final_url, rel_canonical) if x
+            }
             indexed_v = bool(
-                first_url
-                and _normalize_url_for_match(first_url) == _normalize_url_for_match(v)
+                first_url and _normalize_url_for_match(first_url) in accept
             )
             position = first.get("position") if (first and indexed_v) else None
 

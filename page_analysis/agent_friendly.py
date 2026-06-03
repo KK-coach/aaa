@@ -24,9 +24,39 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+# AAA-151: cookie-consent / CMP container signals. Inputs inside such a
+# container (e.g. the consent banner's accept/analytics/marketing checkboxes)
+# are NOT a real form and must be excluded from form measurement.
+_CMP_RE = re.compile(
+    r"cookie|consent|cmp|gdpr|cookiebot|onetrust|usercentrics|didomi|"
+    r"iubenda|termly|borlabs|cookie-law",
+    re.I,
+)
+
+
+def _in_cmp_container(node) -> bool:
+    """True if `node` or any ancestor is a cookie-consent / CMP container
+    (id/class CMP signal, [data-cookieconsent], or a consent role=dialog).
+    Real lead/contact forms never live inside a consent container, so this
+    removes the phantom form without dropping genuine forms."""
+    cur = node
+    while cur is not None:
+        attrs = getattr(cur, "attributes", None) or {}
+        if _CMP_RE.search("%s %s" % (attrs.get("id") or "", attrs.get("class") or "")):
+            return True
+        if "data-cookieconsent" in attrs:
+            return True
+        if (attrs.get("role") or "").lower() == "dialog" and _CMP_RE.search(
+            "%s %s" % (attrs.get("aria-label") or "", attrs.get("aria-labelledby") or "")
+        ):
+            return True
+        cur = cur.parent
+    return False
 
 _LANDMARKS = ("nav", "main", "article", "aside", "header", "footer")
 _ACTION_TYPE_ALLOWLIST = {
@@ -129,6 +159,7 @@ def measure_agent_friendliness(raw_html: str) -> dict:
         inputs = [
             i for i in p.css("input")
             if (i.attributes.get("type") or "").lower() != "hidden"
+            and not _in_cmp_container(i)  # AAA-151: drop cookie-consent/CMP inputs
         ]
         n = len(inputs)
         label_for = {

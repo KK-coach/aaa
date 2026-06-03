@@ -40,6 +40,8 @@ from urllib.parse import urlparse
 
 from selectolax.parser import HTMLParser
 
+from page_analysis.agent_friendly import _in_cmp_container  # AAA-151: CMP filter
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -345,8 +347,10 @@ def measure_semantic_structure(
         }
 
         # ----- 9) form_quality_extended ---------------------------------
-        form_nodes = nodes_by_tag.get("form", [])
-        input_nodes = nodes_by_tag.get("input", [])
+        # AAA-151: exclude cookie-consent / CMP containers (their checkboxes are
+        # not a real form). Mirrors page_analysis.agent_friendly._fm.
+        form_nodes = [f for f in nodes_by_tag.get("form", []) if not _in_cmp_container(f)]
+        input_nodes = [i for i in nodes_by_tag.get("input", []) if not _in_cmp_container(i)]
         button_nodes = nodes_by_tag.get("button", [])
         input_type_distribution = Counter(
             ((i.attributes or {}).get("type") or "text").lower()
