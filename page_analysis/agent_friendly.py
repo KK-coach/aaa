@@ -196,12 +196,19 @@ def measure_agent_friendliness(raw_html: str) -> dict:
     # (6) ARIA on text-bearing interactive (Sub-step 0 refinement)
     def _aria() -> None:
         interactive: list[Any] = []
+        # AAA-151 S4: exclude cookie-consent/CMP elements (mirror the _fm form
+        # fix). On kk.coach the banner inflated interactive by 9 and was the sole
+        # "ARIA" element (its 'Cookie settings' button) — a miscount.
         for b in p.css("button"):
-            interactive.append(b)
+            if not _in_cmp_container(b):
+                interactive.append(b)
         for i in p.css("input"):
-            if (i.attributes.get("type") or "").lower() != "hidden":
+            if (i.attributes.get("type") or "").lower() != "hidden" \
+                    and not _in_cmp_container(i):
                 interactive.append(i)
         for a in p.css("a[href]"):
+            if _in_cmp_container(a):
+                continue
             txt = (a.text(deep=True) or "").strip()
             has_aria = any(
                 a.attributes.get(k)

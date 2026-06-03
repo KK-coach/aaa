@@ -27,7 +27,8 @@ AUDIENCE = (
     "The reader is a marketing leader or company executive, NOT an SEO specialist; "
     "they must be able to hand this off as a task to a developer/agency. Write "
     "clearly, in business language. Explain any technical term in a few words on "
-    "first use."
+    "first use. The audited site belongs to the reader (the owner). Address the "
+    "reader in the second person; never refer to the audited site as 'we'/'our'."
 )
 
 # Single source of the grounding contract — appended to every FELADAT variant.
@@ -44,7 +45,24 @@ GROUNDING_RULES = (
     "measured data, frame it conditionally and never contradict a measured fact.\n"
     "- Do not use internal data-field or measurement jargon in the customer-facing "
     "text (e.g. \"gap data\", \"schema-gap data\", raw field names).\n"
-    "- No internal references: ticket IDs, tool names, section numbers."
+    "- No internal references: ticket IDs, tool names, section numbers.\n"
+    "- Emit an action only for a measured gap or weakness. If a dimension is "
+    "adequate or strong, acknowledge it in one phrase and move on — never invent "
+    "a task to 'maintain', 'preserve', 'keep', or 'monitor' something already fine.\n"
+    "- More is not automatically better. Do not recommend increasing a quantity "
+    "(word count, number of links, etc.) unless a measured deficiency justifies "
+    "it; if the measured value is adequate or already exceeds the competitor, do "
+    "not recommend increasing it.\n"
+    "- Judge every finding against the page's type and purpose. Do not treat the "
+    "absence of an element that isn't expected for this page type as a gap (e.g. "
+    "breadcrumb or an aside landmark on a homepage; a contact form on a page whose "
+    "job isn't lead capture).\n"
+    "- Do not assert or recommend changes to an element unless its presence is "
+    "confirmed in the data (e.g. never recommend a form/field attribute when no "
+    "form is reported).\n"
+    "- Never quote raw internal strings verbatim — search/fan-out query fragments, "
+    "variant strings, or raw field identifiers (e.g. target_cited, "
+    "entity_richness). Express the point in natural business language."
 )
 
 # Schema-only guard (UNCHANGED behaviour — applied to schema-bearing sections).
@@ -91,7 +109,9 @@ TRANSLATION_PASS = (
     "audit-report section into natural, fluent Hungarian for a marketing/executive "
     "reader. STRICT rules: preserve every number, fact, schema-type name, and URL "
     "EXACTLY. Preserve all 'no data'/conditional framing. Do NOT add, remove, or "
-    "reinterpret any finding. Keep the markdown structure. Output only the Hungarian "
+    "reinterpret any finding. Keep the markdown structure. Render second person as "
+    "formal Hungarian 'Ön/Önök' throughout; never first-person plural ('mi', "
+    "'oldalunk') or informal 'te'. Output only the Hungarian "
     "translation.\n\n--- SECTION TO TRANSLATE ---\n{section}"
 )
 
@@ -308,6 +328,10 @@ def adat_s2(ao):
     L = []
     L.append("Brand: %s" % _nd(_g(ao, "site_profile", "brand")))
     L.append("Business model: %s" % _nd(ao.get("business_model")))
+    # AAA-152: page language (omit the line entirely if neither field is set).
+    _lang = _g(ao, "site_profile", "language") or ao.get("audit_language")
+    if _lang:
+        L.append("Page language: %s" % _lang)
     L.append("Page type (v3 absent -> fallback): %s | page-intent: %s" % (
         _nd(page_type_fallback(ao)), _nd(ao.get("page_type_parent_intent_group"))))
     L.append("IMPORTANT: the targeted KEYWORD intent is separate from page-intent: %s/%s" % (
@@ -686,7 +710,7 @@ class Section:
 
 _D = {
  "§1": "Opening section of the report: the executive should grasp the main message in ~20 seconds — why the site is not visible organically and in AI search, and the 2-3 biggest reasons. This is a framing lead-in, not a deep analysis.",
- "§2": "Search engines and AI identify from the content who you are (brand), what business, who it serves, and on what topic. IMPORTANT: the page's own search intent (page-intent) and the targeted keyword's intent are two different things — do not conflate them.",
+ "§2": "Search engines and AI identify from the content who you are (brand), what business, who it serves, and on what topic. IMPORTANT: the page's own search intent (page-intent) and the targeted keyword's intent are two different things — do not conflate them. If the page-intent is navigational while the targeted keyword is transactional, frame the mismatch explicitly as the actionable insight (the homepage isn't optimized to capture that transactional search) — don't merely label the page 'navigational'. If a language variant is identified, name it precisely (e.g. 'the Hungarian-language homepage'), not just 'the homepage'.",
  "§3": "A page surfaces if you target a good keyword, with the right TYPE of page, AND enough content depth for Google to actually rank it. Two gates: (1) type fit, (2) does it deserve to rank. Hub: only press the hub frame for a true collection page.",
  "§4": "Who competes with you for the same searches, and who we benchmark against in detail. Show the driver keyword first. The primary competitor named in the data is the consistent anchor; the others are landscape context. Do not conflate the selected list with the measured list. Use ONLY competitor names that appear in the provided data.",
  "§5": "The 'you vs. the market leader' overview across the measurable dimensions — where and by how much you lag, and the priority. A comparison table is allowed. Anchor = the primary competitor named in the data.",
