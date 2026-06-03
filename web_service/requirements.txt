@@ -1,0 +1,5 @@
+# AAA-97 public serving service — lean deps (no audit-pipeline stack).
+fastapi>=0.110
+uvicorn[standard]>=0.29
+google-cloud-firestore>=2.16
+google-cloud-storage>=2.16
