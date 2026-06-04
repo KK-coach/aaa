@@ -462,6 +462,17 @@ async def audit(url: str, corpus_mode: bool = False,
             "_error": f"{type(e).__name__}: {e}"
         }
 
+    # AAA-158 Sub-step 1 — deterministic ($0) title + meta-description SERP
+    # measurement (pixel length + truncation + quality signals). Pure-Python,
+    # no LLM/network. Runs late so crawl.meta, headings.h1, brand_context AND
+    # target_keywords are all populated in `out` (part-2 quality signals gate
+    # on those inputs and skip cleanly when absent). Skip-finding: never raises.
+    try:
+        from page_analysis.title_meta import measure_title_meta
+        out.title_meta_measurements = measure_title_meta(out.model_dump())
+    except Exception as e:  # noqa: BLE001 — never fail the audit on this measurement
+        out.title_meta_measurements = {"_error": f"{type(e).__name__}: {e}"}
+
     # AAA-124 Sub-step 1 (Option E) — per-aspect page evaluation. ONE Gemini
     # 3.5 Flash holistic (V3) call producing 7 per-aspect findings. MUST run
     # AFTER multi_dim_classify (needs page_type/business_model/audience for

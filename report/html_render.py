@@ -114,6 +114,23 @@ STRINGS = {
         "yes": "yes", "no": "no",
         "sev_high": "high", "sev_medium": "medium", "sev_low": "low",
         "crux_fast": "FAST", "crux_average": "AVERAGE", "crux_slow": "SLOW",
+        # AAA-158 — SERP-snippet health (deterministic display):
+        "snippet_health": "Search-snippet health",
+        "snippet_note": "Measured pixel width vs Google's search-result limits — factual, not a score.",
+        "tm_title": "Title",
+        "tm_desc": "Meta description",
+        "tm_desktop": "desktop",
+        "tm_mobile": "mobile",
+        "tm_chars": "{n} chars",
+        "tm_px": "≈{px}px / {limit}px",
+        "tm_ok": "fits",
+        "tm_borderline": "near limit",
+        "tm_truncated": "truncated",
+        "tm_missing_title": "No title set",
+        "tm_no_desc": "No meta description",
+        "tm_dup_h1": "Title duplicates the H1",
+        "tm_brand_missing": "Brand not in title",
+        "tm_kw_missing": "Target keyword not in title",
     },
     # Sub-step 3 — HU now fully populated (DE/ES remain stubs → EN fallback).
     "hu": {
@@ -147,6 +164,23 @@ STRINGS = {
         "yes": "igen", "no": "nem",
         "sev_high": "magas", "sev_medium": "közepes", "sev_low": "alacsony",
         "crux_fast": "gyors", "crux_average": "közepes", "crux_slow": "lassú",
+        # AAA-158 — SERP-snippet health (deterministic display):
+        "snippet_health": "Találati kódrészlet állapota",
+        "snippet_note": "Mért képpont-szélesség a Google találati limitjeihez mérve — tényszerű, nem pontszám.",
+        "tm_title": "Cím",
+        "tm_desc": "Meta leírás",
+        "tm_desktop": "asztali",
+        "tm_mobile": "mobil",
+        "tm_chars": "{n} karakter",
+        "tm_px": "≈{px}px / {limit}px",
+        "tm_ok": "befér",
+        "tm_borderline": "limit közelében",
+        "tm_truncated": "levágva",
+        "tm_missing_title": "Nincs beállított cím",
+        "tm_no_desc": "Nincs meta leírás",
+        "tm_dup_h1": "A cím megegyezik a H1-gyel",
+        "tm_brand_missing": "A márkanév nincs a címben",
+        "tm_kw_missing": "A kulcsszó nincs a címben",
     },
     "de": {"lang_name": "Deutsch"},
     "es": {"lang_name": "Español"},
@@ -337,6 +371,83 @@ def _priority_tags(ao, lang):
     return '<div class="badges">%s</div>' % "".join(chips)
 
 
+def _title_meta_block(ao, lang):
+    """§9 — deterministic SERP-snippet health: title + meta-description pixel
+    width vs Google's limits (exact figures from title_meta_measurements; NEVER
+    recomputed by the LLM) + the gated quality-signal flags. AAA-158."""
+    tm = ao.get("title_meta_measurements") or {}
+    if not tm or tm.get("_error"):
+        return ""
+    _VCLS = {"ok": "ok", "borderline": "warn", "truncated": "bad"}
+    _VKEY = {"ok": "tm_ok", "borderline": "tm_borderline", "truncated": "tm_truncated"}
+
+    def _badge(cls, label):
+        return '<span class="badge %s">%s</span>' % (cls, _esc(label))
+
+    rows = []
+    # --- Title row ---
+    t = tm.get("title") or {}
+    if t.get("present") and t.get("verdict"):
+        v = t["verdict"]
+        meta_txt = "%s · %s" % (
+            S(lang, "tm_chars", n=t.get("char_count")),
+            S(lang, "tm_px", px=t.get("pixel_width"), limit=t.get("limit_px")))
+        rows.append(
+            '<div class="dim"><div class="dim-label">%s</div>'
+            '<div class="badges">%s <span class="muted">%s</span></div></div>' % (
+                _esc(S(lang, "tm_title")),
+                _badge(_VCLS.get(v, "muted"), S(lang, _VKEY.get(v, "tm_ok"))),
+                _esc(meta_txt)))
+    elif t.get("finding"):
+        rows.append('<div class="dim"><div class="dim-label">%s</div>'
+                    '<div class="badges">%s</div></div>' % (
+                        _esc(S(lang, "tm_title")),
+                        _badge("bad", S(lang, "tm_missing_title"))))
+    # --- Description row (desktop + mobile) ---
+    d = tm.get("description") or {}
+    if d.get("present"):
+        dv = (d.get("desktop") or {}).get("verdict")
+        mv = (d.get("mobile") or {}).get("verdict")
+        b = []
+        if dv:
+            b.append("%s&nbsp;%s" % (_esc(S(lang, "tm_desktop")),
+                                     _badge(_VCLS.get(dv, "muted"), S(lang, _VKEY.get(dv, "tm_ok")))))
+        if mv:
+            b.append("%s&nbsp;%s" % (_esc(S(lang, "tm_mobile")),
+                                     _badge(_VCLS.get(mv, "muted"), S(lang, _VKEY.get(mv, "tm_ok")))))
+        meta_txt = "%s · %s" % (
+            S(lang, "tm_chars", n=d.get("char_count")),
+            S(lang, "tm_px", px=d.get("pixel_width"), limit=(d.get("desktop") or {}).get("limit_px")))
+        rows.append(
+            '<div class="dim"><div class="dim-label">%s</div>'
+            '<div class="badges">%s <span class="muted">%s</span></div></div>' % (
+                _esc(S(lang, "tm_desc")), " ".join(b), _esc(meta_txt)))
+    elif d.get("finding"):
+        rows.append('<div class="dim"><div class="dim-label">%s</div>'
+                    '<div class="badges">%s</div></div>' % (
+                        _esc(S(lang, "tm_desc")),
+                        _badge("warn", S(lang, "tm_no_desc"))))
+    # --- Quality-signal flags (only surface the negatives worth showing) ---
+    q = tm.get("quality_signals") or {}
+    flags = []
+    dup = q.get("title_h1_duplication") or {}
+    if dup.get("available") and dup.get("exact_duplicate"):
+        flags.append(_badge("warn", S(lang, "tm_dup_h1")))
+    bri = q.get("brand_in_title") or {}
+    if bri.get("available") and bri.get("present") is False:
+        flags.append(_badge("warn", S(lang, "tm_brand_missing")))
+    kt = q.get("keyword_in_title") or {}
+    if kt.get("available") and kt.get("present") is False:
+        flags.append(_badge("warn", S(lang, "tm_kw_missing")))
+    if flags:
+        rows.append('<div class="badges">%s</div>' % " ".join(flags))
+
+    if not rows:
+        return ""
+    return ('<div class="comparison"><h3>%s</h3><p class="note">%s</p>%s</div>' % (
+        _esc(S(lang, "snippet_health")), _esc(S(lang, "snippet_note")), "".join(rows)))
+
+
 def _anchor_chip(ao, lang):
     a = anchor_name(ao)
     if not a:
@@ -500,6 +611,7 @@ _ENRICH = {
     "§4": _anchor_chip,
     "§5": _comparison_block,
     "§6": _citation_chips,
+    "§9": _title_meta_block,  # AAA-158 — SERP-snippet health
     "§10": _tech_badges,
     "§11": _priority_tags,
 }

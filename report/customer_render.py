@@ -601,6 +601,53 @@ def adat_s86(ao):
     return "\n".join(L)
 
 
+# AAA-158: phrasing-only SERP-snippet summary for the §9 DATA block. Returns a
+# qualitative verdict the narrative may PHRASE; the exact px/char figures live in
+# the deterministic display (html_render._title_meta_block), never recomputed here.
+_TM_VERDICT_PHRASE = {
+    "ok": "fits within Google's search-result limit",
+    "borderline": "is close to Google's search-result cut-off",
+    "truncated": "exceeds Google's search-result limit and will be cut off",
+}
+
+
+def _tm_data_lines(ao):
+    tm = ao.get("title_meta_measurements") or {}
+    if not tm or tm.get("_error"):
+        return []
+    out = []
+    t = tm.get("title") or {}
+    if t.get("present") and t.get("verdict"):
+        out.append("- Search-result title length: %s (qualitative — do not state pixels)." %
+                   _TM_VERDICT_PHRASE.get(t["verdict"], t["verdict"]))
+    elif t.get("finding"):
+        out.append("- Search-result title: the page has no <title> (missing title).")
+    d = tm.get("description") or {}
+    if d.get("present"):
+        dv = (d.get("desktop") or {}).get("verdict")
+        mv = (d.get("mobile") or {}).get("verdict")
+        if dv:
+            out.append("- Meta-description length on desktop: %s." %
+                       _TM_VERDICT_PHRASE.get(dv, dv))
+        if mv and mv != dv:
+            out.append("- Meta-description length on mobile (narrower): %s." %
+                       _TM_VERDICT_PHRASE.get(mv, mv))
+    elif d.get("finding"):
+        out.append("- Meta description: none is set on the page (no meta description).")
+    q = tm.get("quality_signals") or {}
+    dup = q.get("title_h1_duplication") or {}
+    if dup.get("available") and dup.get("exact_duplicate"):
+        out.append("- The title and the main on-page heading (H1) are identical "
+                   "(a missed chance to widen keyword/message coverage).")
+    bri = q.get("brand_in_title") or {}
+    if bri.get("available") and bri.get("present") is False:
+        out.append("- The brand name does not appear in the search-result title.")
+    kt = q.get("keyword_in_title") or {}
+    if kt.get("available") and kt.get("present") is False:
+        out.append("- The primary target keyword is not present in the title.")
+    return out
+
+
 def adat_s9(ao):
     cr = ao.get("crawl") or {}; meta = cr.get("meta") or {}
     ss = _ss(ao); ht = ss.get("heading_tree") or []
@@ -612,6 +659,11 @@ def adat_s9(ao):
     L.append("ABOVE-THE-FOLD indirect signals (exact fold-line NOT measured):")
     L.append("- Title: %s" % _nd(_g(meta, "title", "text")))
     L.append("- Meta description: %s" % _nd(_g(meta, "description", "text")))
+    # AAA-158: deterministic SERP-snippet measurement (pixel-width vs Google's
+    # SERP limits). PHRASE qualitatively — do NOT recompute or restate the raw
+    # pixel numbers; the exact figures are shown separately in the report.
+    for _ln in _tm_data_lines(ao):
+        L.append(_ln)
     L.append("- Main heading (H1): %s (total %s H1)" % ((h1s[0] if h1s else NO_DATA), (len(h1s) if h1s else NO_DATA)))
     L.append("- Hero image: NO dedicated hero-image measurement; only aggregate image data: total=%s, with alt=%s, alt coverage=%s%%" % (
         _nd(img.get("total_count")), _nd(img.get("with_alt")), _nd(img.get("alt_coverage_percent"))))

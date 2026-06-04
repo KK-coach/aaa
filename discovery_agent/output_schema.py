@@ -305,6 +305,14 @@ class AuditOutput(BaseModel):
     aaa124_aspect_evaluations: dict | None = None
     audit_aspect_eval_cost_usd: float | None = None
 
+    # AAA-158 Sub-step 1 — deterministic ($0) title + meta-description SERP
+    # measurement: pixel length + truncation verdict (title 600px; desc 920px
+    # desktop / 680px mobile) via a pure-Python Arial advance-width LUT
+    # (WIDTH_TABLE_VERSION stamp), plus gated quality signals (title↔H1 dup,
+    # brand-in-title, keyword presence). No LLM, no new dependency. Forward-only:
+    # legacy + crawl-failed audits keep None / carry an _error skip-finding.
+    title_meta_measurements: dict | None = None
+
     # AAA-108 — Reverse-engineering workflow output. Populated ONLY when the
     # RE workflow ran end-to-end (client + SERP × 2 + competitors +
     # comparison) and the RE persistence step (post-workflow dotted-path
