@@ -776,9 +776,8 @@ def render_section_12(audit_output):
 # ---------------------------------------------------------------------------
 
 def _make_client(project=None, location="global"):
-    from google import genai
-    from site_profile.gemini_analyzer import _resolve_project
-    return genai.Client(vertexai=True, project=project or _resolve_project(), location=location)
+    from site_profile.gemini_analyzer import make_genai_client  # AAA-155 (retry)
+    return make_genai_client(project=project, location=location)
 
 
 def _gen(client, contents, model):

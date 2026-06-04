@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import os
 
-from site_profile.gemini_analyzer import MODEL, _resolve_project
+from site_profile.gemini_analyzer import MODEL, _RETRY, _resolve_project
 
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 _proj = _resolve_project()
@@ -31,6 +31,7 @@ assert os.environ.get("GOOGLE_CLOUD_LOCATION") == "global", (
 )
 
 from google.adk.agents import Agent  # noqa: E402
+from google.adk.models.google_llm import Gemini  # noqa: E402 (AAA-155 retry)
 
 from reverse_engineering_agent.tools import ALL_TOOLS  # noqa: E402
 
@@ -124,7 +125,9 @@ Start the final summary with: `## Reverse-engineering report for <client_url>`
 
 reverse_engineering_agent = Agent(
     name="reverse_engineering_agent",
-    model=MODEL,  # AAA-83 S1: central constant (= "gemini-3-flash-preview")
+    # AAA-155: retry-configured model object (429/502/503/504 transient retry);
+    # endpoint/region unchanged (global, via the env set above).
+    model=Gemini(model=MODEL, retry_options=_RETRY),
     description="Compares a client URL against top 3 competitors for a keyword",
     instruction=REVERSE_ENGINEERING_SYSTEM_PROMPT,
     tools=ALL_TOOLS,

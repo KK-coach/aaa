@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 
 from dotenv import dotenv_values
+from google import genai
+from google.genai import types
 
 logger = logging.getLogger("aaa.gemini")
 
@@ -21,6 +23,30 @@ logger = logging.getLogger("aaa.gemini")
 # (vertex_generate + both ADK agents) reads THIS, never a local literal.
 MODEL = "gemini-3-flash-preview"   # single source of truth - Gemini 3 only
 LOCATION = "global"                # gemini-3-flash-preview: global endpoint
+
+# AAA-155 — native google-genai transient-retry config, shared across all three
+# Gemini boundaries (vertex_generate, the ~7 direct genai.Client sites, and the
+# ADK agents). Retries ONLY the transient class (429 rate-limit, 502/503/504);
+# terminal 4xx (400/401/403/404) and 500 are NOT retried (500 excluded by design
+# — see ticket). Exponential backoff + jitter, applied by the SDK itself.
+_RETRY = types.HttpRetryOptions(
+    attempts=5, initial_delay=1.0, max_delay=30.0, exp_base=2.0, jitter=0.3,
+    http_status_codes=[429, 502, 503, 504],
+)
+
+
+def make_genai_client(*, project=None, location=None, vertexai=True):
+    """Shared google-genai client with native transient retry (AAA-155).
+
+    Preserves the existing endpoint/region (vertexai + the 'global' location for
+    gemini-3-flash-preview); only ADDS http_options.retry_options. Do NOT set
+    base_url here — the client derives the endpoint from vertexai+location."""
+    return genai.Client(
+        vertexai=vertexai,
+        project=project or _resolve_project(),
+        location=location or os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION,
+        http_options=types.HttpOptions(retry_options=_RETRY),
+    )
 
 # AAA-83 S1 — central model-aware pricing table (single source of truth).
 # Official Vertex AI rates, USD per 1M tokens (input, output). Thinking tokens
@@ -116,23 +142,15 @@ async def vertex_generate(
 
     Returns (text, model_version, error).
     """
-    import asyncio
-
-    try:
-        from google import genai
-        from google.genai import types
-    except ImportError as exc:
-        return None, None, f"google-genai not installed: {exc}"
-
     project = _resolve_project()
     if not project:
         return None, None, "no Vertex project (run gcloud ADC login)"
 
     location = os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION
     try:
-        client = genai.Client(
-            vertexai=True, project=project, location=location
-        )
+        # AAA-155: shared client carries native transient retry (429/502/503/504,
+        # exp backoff + jitter). Replaces the old hand-rolled 503-only loop below.
+        client = make_genai_client(project=project, location=location)
     except Exception as exc:  # noqa: BLE001
         return None, None, f"client init ({MODEL}@{location}): {exc}"
 
@@ -154,35 +172,27 @@ async def vertex_generate(
     if response_schema is not None:
         _cfg_kw["response_schema"] = response_schema
     cfg = types.GenerateContentConfig(**_cfg_kw)
-    delay = 2.0
-    last_err = "unknown error"
-    for attempt in range(3):
-        try:
-            resp = await client.aio.models.generate_content(
-                model=MODEL, contents=prompt, config=cfg
-            )
-            um = getattr(resp, "usage_metadata", None)
-            if um is not None:
-                _USAGE["prompt"] += getattr(um, "prompt_token_count", 0) or 0
-                _USAGE["candidates"] += (
-                    getattr(um, "candidates_token_count", 0) or 0
-                )
-                _USAGE["thoughts"] += (
-                    getattr(um, "thoughts_token_count", 0) or 0
-                )
-                _USAGE["total"] += getattr(um, "total_token_count", 0) or 0
-                _USAGE["calls"] += 1
-                _USAGE["cost"] += compute_usage_cost_usd(um)
-            return resp.text, getattr(resp, "model_version", MODEL), None
-        except Exception as exc:  # noqa: BLE001
-            msg = str(exc)
-            last_err = f"{type(exc).__name__}@{MODEL}: {msg[:200]}"
-            if "503" in msg and attempt < 2:
-                await asyncio.sleep(delay)
-                delay *= 2
-                continue
-            break  # non-retryable, or retries exhausted -> bubble up
-    return None, None, last_err
+    # AAA-155: transient retry (429/502/503/504, exp backoff + jitter) is now
+    # handled inside the SDK client (make_genai_client). A single call here;
+    # the SDK replays transient failures and surfaces one final response/error.
+    # Terminal errors (other 4xx, schema) return via the _error skip-finding path.
+    try:
+        resp = await client.aio.models.generate_content(
+            model=MODEL, contents=prompt, config=cfg
+        )
+        um = getattr(resp, "usage_metadata", None)
+        if um is not None:
+            # Cost is counted ONCE, only on the final success — SDK-internal
+            # retries do not double-count (they surface as one returned resp).
+            _USAGE["prompt"] += getattr(um, "prompt_token_count", 0) or 0
+            _USAGE["candidates"] += getattr(um, "candidates_token_count", 0) or 0
+            _USAGE["thoughts"] += getattr(um, "thoughts_token_count", 0) or 0
+            _USAGE["total"] += getattr(um, "total_token_count", 0) or 0
+            _USAGE["calls"] += 1
+            _USAGE["cost"] += compute_usage_cost_usd(um)
+        return resp.text, getattr(resp, "model_version", MODEL), None
+    except Exception as exc:  # noqa: BLE001 — terminal (transient already retried by SDK)
+        return None, None, f"{type(exc).__name__}@{MODEL}: {str(exc)[:200]}"
 
 
 _PROMPT = """\

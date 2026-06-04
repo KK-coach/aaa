@@ -19,7 +19,7 @@ import os
 # Mirror the RE/Discovery import-time contract: gemini-3-flash-preview is
 # 'global'-only. Set BEFORE importing the ADK Agent.
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
-from site_profile.gemini_analyzer import MODEL, _resolve_project  # noqa: E402
+from site_profile.gemini_analyzer import MODEL, _RETRY, _resolve_project  # noqa: E402
 
 _proj = _resolve_project()
 if _proj and not os.environ.get("GOOGLE_CLOUD_PROJECT"):
@@ -29,6 +29,7 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 import asyncio  # noqa: E402
 
 from google.adk.agents import Agent  # noqa: E402
+from google.adk.models.google_llm import Gemini  # noqa: E402 (AAA-155 retry)
 from google.adk.tools import FunctionTool  # noqa: E402
 
 from deploy_agent.job_state import create_job, get_job
@@ -172,7 +173,7 @@ ANSWERING ABOUT A REPORT:
 
 dispatcher_agent = Agent(
     name="audit_dispatcher",
-    model=MODEL,  # gemini-3-flash-preview (central constant)
+    model=Gemini(model=MODEL, retry_options=_RETRY),  # AAA-155 transient retry
     instruction=_INSTRUCTION,
     tools=[
         FunctionTool(start_audit),

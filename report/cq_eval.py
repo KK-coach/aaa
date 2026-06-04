@@ -77,9 +77,8 @@ _client = None
 def _get_client():
     global _client
     if _client is None:
-        from google import genai
-        _client = genai.Client(vertexai=True, project=_resolve_project(),
-                               location=LOCATION)
+        from site_profile.gemini_analyzer import make_genai_client  # AAA-155
+        _client = make_genai_client(location=LOCATION)
     return _client
 
 

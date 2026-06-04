@@ -49,13 +49,12 @@ _client = None
 def _get_client():
     global _client
     if _client is None:
-        # Local import keeps module import-light and matches gemini_analyzer.
-        from google import genai
+        from site_profile.gemini_analyzer import make_genai_client  # AAA-155
 
         project = _resolve_project()
         # AAA-62 hard-set guarantees global, but be explicit + tolerant.
         location = os.environ.get("GOOGLE_CLOUD_LOCATION") or LOCATION
-        _client = genai.Client(vertexai=True, project=project, location=location)
+        _client = make_genai_client(project=project, location=location)
     return _client
 
 

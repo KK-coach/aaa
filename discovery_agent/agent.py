@@ -6,7 +6,7 @@ import os
 
 # Configure Vertex AI for ADK BEFORE the Agent is constructed. The project
 # isn't in .env, so reuse site_profile's resolver (env -> .env -> ADC).
-from site_profile.gemini_analyzer import MODEL, _resolve_project
+from site_profile.gemini_analyzer import MODEL, _RETRY, _resolve_project
 
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 _proj = _resolve_project()
@@ -22,6 +22,7 @@ assert os.environ.get("GOOGLE_CLOUD_LOCATION") == "global", (
 )
 
 from google.adk.agents import Agent  # noqa: E402
+from google.adk.models.google_llm import Gemini  # noqa: E402 (AAA-155 retry)
 
 from discovery_agent.tools import ALL_TOOLS  # noqa: E402
 
@@ -130,7 +131,10 @@ content gaps, etc.
 
 discovery_agent = Agent(
     name="discovery_agent",
-    model=MODEL,  # AAA-83 S1: central constant (= "gemini-3-flash-preview")
+    # AAA-155: retry-configured model object (429/502/503/504 transient retry).
+    # endpoint/region unchanged — Gemini reads GOOGLE_GENAI_USE_VERTEXAI +
+    # GOOGLE_CLOUD_LOCATION=global (set above) exactly as the bare-string path did.
+    model=Gemini(model=MODEL, retry_options=_RETRY),
     description="Analyzes a single URL for SEO/GEO/AEO audit dimensions",
     instruction=DISCOVERY_AGENT_SYSTEM_PROMPT,
     tools=ALL_TOOLS,
