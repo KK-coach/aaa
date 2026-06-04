@@ -208,6 +208,24 @@ SECTION_TITLES = {
 }
 
 
+# AAA-161 RG1-S5a: localized display titles for the consolidated §1–6 report
+# (kept SEPARATE from SECTION_TITLES, whose §1–6 keys mean the OLD 17-section
+# report). The consolidated render emits `## §1..§6` with EN titles; the parser
+# reads the §id, the HTML shows these localized titles.
+CONSOLIDATED_SECTION_TITLES = {
+    "en": {
+        "§1": "Where you stand", "§2": "Is anything wrong?",
+        "§3": "The competitive facts", "§4": "How you compare",
+        "§5": "AI visibility", "§6": "Technical health + your priorities",
+    },
+    "hu": {
+        "§1": "Hol tart most", "§2": "Van-e probléma?",
+        "§3": "A versenytársak tényei", "§4": "Hogyan teljesít az összevetésben",
+        "§5": "AI-láthatóság", "§6": "Technikai állapot és prioritások",
+    },
+}
+
+
 def S(lang, key, **fmt):
     s = STRINGS.get(lang, {}).get(key) or STRINGS["en"][key]
     return s.format(**fmt) if fmt else s
@@ -615,6 +633,57 @@ _ENRICH = {
     "§10": _tech_badges,
     "§11": _priority_tags,
 }
+
+
+def render_html_consolidated(markdown_doc, lang, *, brand="", url="",
+                             available_langs=None):
+    """AAA-161 RG1-S5a — render the CONSOLIDATED §1–6 report (one self-contained
+    HTML page) from its localized markdown doc. Reuses the shared chrome
+    (CSS/JS/shell/split_sections/md_to_html) but with the 6-section title map and
+    NO audit_output enrichments — the consolidated render's prose is
+    self-contained (the bars/chips/badges of the old per-section report are
+    intentionally omitted here; re-mapping them to fact_base is a later polish).
+    Returns (html_str, meta). Raises on parser-contract break."""
+    sections = split_sections(markdown_doc)
+    titles = CONSOLIDATED_SECTION_TITLES.get(lang) or CONSOLIDATED_SECTION_TITLES["en"]
+
+    def _toc_label(s):
+        t = titles.get(s["id"]) or s["title"]
+        return ("%s — %s" % (s["id"], t)) if t else s["id"]
+    toc = "".join('<a href="#%s">%s</a>' % (slug(s["id"]), _esc(_toc_label(s)))
+                  for s in sections)
+    body_parts = []
+    for s in sections:
+        sid = s["id"]
+        hero = " hero" if sid == "§1" else ""
+        disp_title = titles.get(sid) or s["title"]
+        head = "%s — %s" % (_esc(sid), _esc(disp_title))
+        body_parts.append(
+            '<section id="%s" class="sec%s"><h2>%s</h2>%s</section>' % (
+                slug(sid), hero, head, md_to_html(s["body"])))
+
+    others = [l for l in (available_langs or []) if l != lang]
+    toggle = ""
+    if others:
+        toggle = '<div class="langs">%s</div>' % "".join(
+            '<a class="lang" href="?lang=%s">%s</a>' % (_esc(l), _esc(S(l, "lang_name")))
+            for l in others)
+    title = "%s — %s" % (S(lang, "report_title"), brand) if brand else S(lang, "report_title")
+    page = (
+        "<!doctype html><html lang=\"%s\"><head><meta charset=\"utf-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+        "<title>%s</title><style>%s</style></head><body><div class=\"wrap\">"
+        "<header class=\"rpt\"><h1>%s</h1><p class=\"sub\">%s</p>%s</header>"
+        "<nav class=\"toc\"><strong>%s</strong>%s</nav>"
+        "<main>%s</main>"
+        "<footer class=\"rpt\">%s</footer>"
+        "</div><script>window.__RPT_I18N=%s;</script><script>%s</script>"
+        "</body></html>" % (
+            _esc(lang), _esc(title), _CSS, _esc(title), _esc(url or brand), toggle,
+            _esc(S(lang, "contents")), toc, "".join(body_parts),
+            _esc(S(lang, "report_title")), _i18n_js(lang), _JS))
+    return page, {"sections": len(sections), "lang": lang, "toggle_to": others,
+                  "bytes": len(page.encode("utf-8"))}
 
 
 def render_html_report(audit_output, lang, markdown_doc, available_langs=None):

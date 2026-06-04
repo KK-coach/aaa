@@ -316,6 +316,85 @@ def estimate_tokens(text: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Bilingual HU pass (AAA-130 EN-canonical → HU). One call over the whole doc.
+# ---------------------------------------------------------------------------
+TRANSLATION_PASS_CONSOLIDATED = (
+    "You are a professional EN->HU business translator. Translate the following "
+    "SEO / AI-visibility audit report into natural, fluent Hungarian for a "
+    "marketing/executive reader.\n"
+    "STRICT — preserve meaning EXACTLY, do not soften or drop anything:\n"
+    "- Keep every `## §<n> — <title>` header line VERBATIM (do NOT translate or "
+    "alter the header lines — the report parser depends on them); translate only "
+    "the body prose under each header.\n"
+    "- Preserve every number, score, percentage, URL, and schema-type name "
+    "(SoftwareApplication, Offer, Person, Service, FAQPage, HowTo, ...) EXACTLY.\n"
+    "- Preserve the ADDITIVE framing of any dedicated-page recommendation: it is "
+    "an additive option; the homepage stays the brand page; never imply the "
+    "homepage should be repositioned, and make no claim about an unmeasured page.\n"
+    "- Preserve every OFF-PAGE HEDGE (off-page/backlink factors not measured; "
+    "conditional wording) — do NOT turn a conditional into a definite cause.\n"
+    "- Keep structured-data / schema points framed as hygiene / machine-"
+    "readability enhancements, never as ranking blockers.\n"
+    "- Do NOT introduce any internal code, field name, or taxonomy label.\n"
+    "- Second person as formal Hungarian 'Ön/Önök'; never 'mi/oldalunk' or "
+    "informal 'te'.\n"
+    "Output ONLY the Hungarian markdown.\n\n--- REPORT TO TRANSLATE ---\n{doc}"
+)
+
+
+def translate_to_hu(en_markdown: str, *, client=None, project=None,
+                    location="global", model=RENDER_MODEL) -> dict:
+    """One EN->HU pass over the whole consolidated doc. Skip-finding on error."""
+    from google.genai import types
+    from report.customer_render import _make_client
+    from site_profile.gemini_analyzer import compute_call_cost_usd
+
+    cl = client or _make_client(project=project, location=location)
+    try:
+        cfg = types.GenerateContentConfig(
+            temperature=0.3,
+            thinking_config=types.ThinkingConfig(thinking_level="LOW"))
+        r = cl.models.generate_content(
+            model=model,
+            contents=TRANSLATION_PASS_CONSOLIDATED.format(doc=en_markdown),
+            config=cfg)
+        um = r.usage_metadata
+        itok = getattr(um, "prompt_token_count", 0) or 0
+        otok = ((getattr(um, "candidates_token_count", 0) or 0)
+                + (getattr(um, "thoughts_token_count", 0) or 0))
+        cost = round(compute_call_cost_usd(model, itok, otok), 6)
+        return {"markdown": (r.text or "").strip(),
+                "cost_usd": cost, "input_tokens": itok, "output_tokens": otok,
+                "_error": None}
+    except Exception as e:  # noqa: BLE001 — skip-finding
+        return {"markdown": None, "cost_usd": 0.0,
+                "_error": "%s: %s" % (type(e).__name__, e)}
+
+
+def render_bilingual(fact_base: dict, decisions: dict, *, client=None,
+                     project=None, location="global", model=RENDER_MODEL) -> dict:
+    """EN consolidated render + HU translation pass → {en, hu, cost_usd, _meta}.
+    One client reused across both calls. Skip-finding: a failed pass yields None
+    for that language with the error preserved; EN cost still counts."""
+    cl = client
+    if cl is None:
+        from report.customer_render import _make_client
+        cl = _make_client(project=project, location=location)
+    en = render_consolidated(fact_base, decisions, client=cl, model=model)
+    en_md = en.get("markdown")
+    en_cost = (en["_meta"] or {}).get("cost_usd", 0.0)
+    hu = (translate_to_hu(en_md, client=cl, model=model)
+          if en_md else {"markdown": None, "cost_usd": 0.0,
+                         "_error": "EN render failed; HU skipped"})
+    total = round((en_cost or 0.0) + (hu.get("cost_usd") or 0.0), 6)
+    return {"en": en_md, "hu": hu.get("markdown"), "cost_usd": total,
+            "_meta": {"render_version": RENDER_VERSION,
+                      "en_meta": en["_meta"], "hu_error": hu.get("_error"),
+                      "en_cost_usd": en_cost, "hu_cost_usd": hu.get("cost_usd"),
+                      "total_cost_usd": total}}
+
+
+# ---------------------------------------------------------------------------
 # Live call (STEP B only — do NOT run before dry-run review)
 # ---------------------------------------------------------------------------
 def render_consolidated(fact_base: dict, decisions: dict, *, client=None,

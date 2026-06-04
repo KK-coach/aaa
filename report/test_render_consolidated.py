@@ -82,6 +82,37 @@ def test_competitors_count_schema_only(tx):
         assert "entity_lists" not in c
 
 
+_SIX_SECTION_MD = (
+    "## §1 — Where you stand\n\nYou are a B2B SaaS brand.\n\n"
+    "## §2 — Is anything wrong?\n\nYour targeting is sound.\n\n"
+    "## §3 — The competitive facts\n\nThe anchor is Avalara at position 1.\n\n"
+    "## §4 — How you compare\n\nYou trail on content depth.\n\n"
+    "## §5 — AI visibility\n\nNot cited; off-page not measured.\n\n"
+    "## §6 — Technical health + your priorities\n\nIndexed and on HTTPS.\n")
+
+
+def test_html_consolidated_six_sections_en():
+    from report.html_render import (
+        render_html_consolidated, CONSOLIDATED_SECTION_TITLES)
+    html, meta = render_html_consolidated(
+        _SIX_SECTION_MD, "en", brand="Taxually", url="https://taxually.com",
+        available_langs=["en", "hu"])
+    assert meta["sections"] == 6
+    assert html.count('<section id="s') == 6
+    assert 'id="s1" class="sec hero"' in html               # hero on §1
+    for t in CONSOLIDATED_SECTION_TITLES["en"].values():
+        assert t in html                                     # all display titles
+    assert "## §" not in html                                # markdown rendered
+
+
+def test_html_consolidated_hu_titles_and_toggle():
+    from report.html_render import render_html_consolidated
+    html, meta = render_html_consolidated(
+        _SIX_SECTION_MD, "hu", brand="Taxually", available_langs=["en", "hu"])
+    assert "Hol tart most" in html and "Technikai állapot és prioritások" in html
+    assert "?lang=en" in html                                # toggle to EN
+
+
 def test_prompt_assembles_and_has_rules(tx):
     fb, dec = tx
     p = assemble_render_prompt(fb, dec)
