@@ -232,8 +232,13 @@ def dim_label(key, lang="en"):
     if k.startswith("schema"):
         return "Strukturált adatok (séma)" if hu else "Structured data (schema)"
     if k.startswith("entity_richness"):
-        raw = k.replace("entity_richness_", "") or ("entitások" if hu else "entities")
-        suf = _ENT_SUFFIX.get(lang, {}).get(raw, raw)
+        # AAA-153 S1: only show the (suffix) parenthetical for a RECOGNIZED
+        # suffix; the bare key (or an unrecognized one) returns the clean label
+        # — never leak the raw key, e.g. "(entity_richness)".
+        suffix = k[len("entity_richness"):].lstrip("_")
+        suf = _ENT_SUFFIX.get(lang, {}).get(suffix)
+        if not suf:
+            return "Entitás-gazdagság" if hu else "Entity richness"
         return ("Entitás-gazdagság (%s)" if hu else "Entity richness (%s)") % suf
     if k == "performance_desktop":
         return "Asztali sebesség (PageSpeed)" if hu else "Desktop speed (PageSpeed)"
@@ -241,7 +246,9 @@ def dim_label(key, lang="en"):
         return "Mobil sebesség (PageSpeed)" if hu else "Mobile speed (PageSpeed)"
     if k == "ai_visibility":
         return "AI-láthatóság" if hu else "AI visibility"
-    if k == "accessibility_alt_text":
+    if k in ("accessibility_alt_text", "alt_text_coverage", "alt_coverage"):
+        # AAA-153 S1 (item 5a): alt_text_coverage is the live dimension key; it
+        # was hitting the title-case fallback -> untranslated "Alt Text Coverage".
         return "Alt-szöveg lefedettség" if hu else "Alt-text coverage"
     return (key or "").replace("_", " ").title()  # EN-style fallback for unknown keys
 

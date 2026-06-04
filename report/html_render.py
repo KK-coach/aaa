@@ -517,8 +517,13 @@ def render_html_report(audit_output, lang, markdown_doc, available_langs=None):
     brand = _g(audit_output, "site_profile", "brand") or ""
     url = audit_output.get("url") or (audit_output.get("crawl") or {}).get("url") or ""
 
+    # AAA-153 S1: ToC label = "§id — <localized title>" (mirrors the heading at
+    # line ~538). Graceful fallback to the bare §-id if no title is available.
+    def _toc_label(s):
+        title = SECTION_TITLES.get(lang, {}).get(s["id"]) or s["title"]
+        return ("%s — %s" % (s["id"], title)) if title else s["id"]
     toc = "".join(
-        '<a href="#%s">%s</a>' % (slug(s["id"]), _esc(s["id"])) for s in sections)
+        '<a href="#%s">%s</a>' % (slug(s["id"]), _esc(_toc_label(s))) for s in sections)
     body_parts = []
     for s in sections:
         sid = s["id"]
