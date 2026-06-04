@@ -27,15 +27,15 @@ Five decision fields (S2 spec):
                              diagnosis builds on (NOT prose). offpage_unmeasured
                              flag so S3 hedges; not_measured excluded.
 
-Why this also reads ``audit_output``: anchor needs competitor→SERP-position over
-BOTH serp_branded AND serp_category (S1 fact_base mapped only serp_branded), and
-target_stance needs ``serp_fit_analysis[0].serp_type_distribution`` (AAA-118),
-which S1 did not surface. fact_base stays the primary fact source; audit_output
-supplies only these SERP-fit lookups (documented, no provenance bypass).
+AAA-161 S2.1: this pass now reads EXCLUSIVELY from the fact_base — never from
+raw audit_output. The SERP-fit context decide previously read raw (competitor
+SERP positions, competitor intent, serp_type_distribution, serp_top10,
+target_type/fit/keyword_recommendation_trigger) was promoted to
+fact_base.competition (serp_fit / serp_top10 / competitors[].serp_position /
+competitors[].intent) in fact_base_v2. The decide pass is a single-source-of-
+truth consumer of (fact_base, decisions only).
 """
 from __future__ import annotations
-
-import re
 
 from report.fact_base import MEASURED, ABSENT, NOT_MEASURED
 
@@ -56,13 +56,6 @@ _SERVICE_MODELS = {"consultancy", "b2b_service", "b2c_service", "agency", "servi
 _SAAS_MODELS = {"b2b_saas", "b2c_saas", "saas"}
 
 
-def _reg(url: str) -> str:
-    """Registrable-ish host (strip scheme + leading www)."""
-    m = re.search(r"https?://([^/]+)", url or "")
-    h = (m.group(1).lower() if m else "")
-    return h[4:] if h.startswith("www.") else h
-
-
 def _prov(fact) -> str:
     return (fact or {}).get("provenance")
 
@@ -74,41 +67,22 @@ def _val(fact):
 # ---------------------------------------------------------------------------
 # (1) anchor
 # ---------------------------------------------------------------------------
-def _serp_position_map(audit_output: dict) -> dict:
-    """regdomain → best (lowest) SERP position across serp_branded + serp_category."""
-    rf = (audit_output or {}).get("re_findings") or {}
-    pos = {}
-    for serp in ("serp_branded", "serp_category"):
-        for o in ((rf.get(serp) or {}).get("organic_results") or []):
-            r, p = _reg(o.get("url")), o.get("position")
-            if r and p is not None and (r not in pos or p < pos[r]):
-                pos[r] = p
-    return pos
-
-
-def decide_anchor(fact_base: dict, audit_output: dict) -> dict:
+def decide_anchor(fact_base: dict) -> dict:
     comps = fact_base["competition"]["competitors"]
     ok = [c for c in comps if _val(c["discovery_status"]) == "ok"]
     if not ok:
         return {"value": None, "provenance": ABSENT,
                 "selection_basis": "no_real_competitor",
                 "source": "re_findings.competitor_audits"}
-    posmap = _serp_position_map(audit_output)
     target_intent = _val(fact_base["target"]["intent"])
 
     def keyed(c):
-        url = _val(c["url"])
-        sp = posmap.get(_reg(url))
-        # intent proximity (business-model tie-break proxy): same intent ranks higher
-        c_intent = None
-        for rc in ((audit_output.get("re_findings") or {}).get("comparison", {})
-                   .get("_raw_dimensions", {}).get("competitors") or []):
-            if rc.get("url") == url:
-                c_intent = rc.get("intent")
+        sp = _val(c["serp_position"])              # fact_base (v2)
+        c_intent = _val(c["intent"])               # fact_base (v2)
         intent_match = 1 if (c_intent and c_intent == target_intent) else 0
         return sp, intent_match, _val(c["content_words"]) or 0
 
-    ranked_by_serp = [c for c in ok if posmap.get(_reg(_val(c["url"]))) is not None]
+    ranked_by_serp = [c for c in ok if _val(c["serp_position"]) is not None]
     if ranked_by_serp:
         # best SERP position; tie-break: intent match, then content_words
         best = min(ranked_by_serp,
@@ -118,13 +92,12 @@ def decide_anchor(fact_base: dict, audit_output: dict) -> dict:
         # no ok competitor appears in the captured SERP → fallback
         best = max(ok, key=lambda c: (keyed(c)[1], keyed(c)[2]))
         basis = "fallback_intent_then_content"
-    sp = posmap.get(_reg(_val(best["url"])))
     return {
         "value": {"url": _val(best["url"]), "brand": _val(best["brand"]),
-                  "serp_position": sp},
+                  "serp_position": _val(best["serp_position"])},
         "provenance": MEASURED,
         "selection_basis": basis,
-        "source": _val(best["url"]) and "re_findings.serp_*.organic_results + competitor_audits",
+        "source": "competition.competitors[].serp_position + discovery_status",
     }
 
 
@@ -142,15 +115,15 @@ _DEDICATED_TYPES = {
 _DOMINANCE = 0.5
 
 
-def decide_target_stance(fact_base: dict, audit_output: dict) -> dict:
+def decide_target_stance(fact_base: dict) -> dict:
     page_type = _val(fact_base["classification"]["page_type"])
     intent_group = _val(fact_base["classification"]["page_type_intent_group"])
     kw_intent = _val(fact_base["target"]["intent"])
-    sfa = ((audit_output or {}).get("serp_fit_analysis") or [{}])[0] or {}
-    dist = sfa.get("serp_type_distribution") or {}
-    target_type = sfa.get("target_type")
-    fit = sfa.get("target_type_fit")
-    kw_rec_trigger = sfa.get("keyword_recommendation_trigger")
+    sf = fact_base["competition"]["serp_fit"]           # fact_base (v2)
+    dist = _val(sf["serp_type_distribution"]) or {}
+    target_type = _val(sf["target_type"])
+    fit = _val(sf["target_type_fit"])
+    kw_rec_trigger = _val(sf["keyword_recommendation_trigger"])
 
     if not dist:
         return {"verdict": None, "provenance": NOT_MEASURED,
@@ -200,7 +173,7 @@ def decide_target_stance(fact_base: dict, audit_output: dict) -> dict:
         "target_type": target_type,
         "target_type_fit": fit,
         "honesty_note": honesty_note,
-        "evidence": ["serp_fit_analysis[0].serp_type_distribution",
+        "evidence": ["competition.serp_fit.serp_type_distribution",
                      "classification.page_type", "target.intent"],
     }
 
@@ -242,7 +215,7 @@ def _finding(text, sev, category, evidence, conditional=False, recommendation=No
             "recommendation": recommendation}
 
 
-def decide_ranked_findings(fact_base: dict, audit_output: dict) -> list:
+def decide_ranked_findings(fact_base: dict) -> list:
     fnds = []
     fb = fact_base
     # --- (a) competitive patterns ---
@@ -416,17 +389,16 @@ def decide_diagnosis_inputs(fact_base: dict, ranked_findings: list) -> dict:
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
-def build_decisions(fact_base: dict, audit_output: dict | None = None) -> dict:
-    """Pure: fact_base (+ raw audit_output for SERP-fit lookups) → decisions
-    scaffold. Deterministic, $0, no LLM."""
-    ao = audit_output or {}
-    ranked = decide_ranked_findings(fact_base, ao)
+def build_decisions(fact_base: dict) -> dict:
+    """Pure: fact_base → decisions scaffold. Reads ONLY the fact_base (single
+    source of truth). Deterministic, $0, no LLM."""
+    ranked = decide_ranked_findings(fact_base)
     return {
         "meta": {"schema_version": DECISIONS_VERSION,
                  "audit_id": fact_base["meta"].get("audit_id"),
                  "url": fact_base["meta"].get("url")},
-        "anchor": decide_anchor(fact_base, ao),
-        "target_stance": decide_target_stance(fact_base, ao),
+        "anchor": decide_anchor(fact_base),
+        "target_stance": decide_target_stance(fact_base),
         "ranked_findings": ranked,
         "recommendation_guards": decide_recommendation_guards(fact_base),
         "diagnosis_inputs": decide_diagnosis_inputs(fact_base, ranked),

@@ -23,13 +23,13 @@ def _load(name):
 @pytest.fixture(scope="module")
 def tx():
     ao = _load("taxually_013a2853.json")
-    return build_decisions(build_fact_base(ao), ao)
+    return build_decisions(build_fact_base(ao))
 
 
 @pytest.fixture(scope="module")
 def kk():
     ao = _load("kkcoach_67762118.json")
-    return build_decisions(build_fact_base(ao), ao)
+    return build_decisions(build_fact_base(ao))
 
 
 def test_version(tx):
@@ -57,7 +57,7 @@ def test_kkcoach_anchor_is_top_serp_real_competitor(kk):
 
 def test_anchor_absent_when_no_real_competitor():
     fb = {"competition": {"competitors": []}, "target": {"intent": {"value": None}}}
-    a = decide_anchor(fb, {})
+    a = decide_anchor(fb)
     assert a["provenance"] == ABSENT and a["selection_basis"] == "no_real_competitor"
 
 

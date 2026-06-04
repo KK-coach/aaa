@@ -154,6 +154,33 @@ def test_r_client_cited_rules():
     assert r_client_cited({}, "c")["provenance"] == NOT_MEASURED
 
 
+# --- fact_base_v2: promoted SERP-fit context (AAA-161 S2.1) ----------------
+def test_v2_competitor_serp_position_promoted(taxually):
+    """Each competitor carries a serp_position fact (was a decide.py raw read)."""
+    for c in taxually["competition"]["competitors"]:
+        assert "serp_position" in c and "intent" in c
+    # anchor Avalara is SERP #1 (measured)
+    av = next(c for c in taxually["competition"]["competitors"]
+              if "avalara" in (c["url"]["value"] or ""))
+    assert av["serp_position"]["value"] == 1 and av["serp_position"]["provenance"] == MEASURED
+
+
+def test_v2_serp_fit_and_top10_promoted(taxually, kkcoach):
+    sf = taxually["competition"]["serp_fit"]
+    assert sf["serp_type_distribution"]["provenance"] == MEASURED
+    assert isinstance(sf["serp_type_distribution"]["value"], dict)
+    assert sf["target_type"]["value"] == "business_homepage"
+    # serp_top10 carries classified per-URL page_type
+    t10 = kkcoach["competition"]["serp_top10"]
+    assert t10["provenance"] == MEASURED
+    first = t10["value"][0]
+    assert {"position", "url", "title", "page_type"} <= set(first.keys())
+
+
+def test_v2_schema_version(taxually):
+    assert taxually["meta"]["schema_version"] == "fact_base_v2"
+
+
 def test_r_ranking_found_flag_disambiguates_none_position():
     ao = {"re_findings": {"client_ranking_status": {"branded": {
         "position": None, "found_in_top_10": False, "ranking_severity": "outside_top_10"}}}}

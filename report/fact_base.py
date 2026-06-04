@@ -58,9 +58,37 @@ is derived from re_findings.competitor_audits (``"ok"`` vs error string).
 """
 from __future__ import annotations
 
+import re
 from typing import Any
 
-SCHEMA_VERSION = "fact_base_v1"
+_RE_HOST = re.compile(r"https?://([^/]+)")
+
+
+def _reg(url: str) -> str:
+    """Registrable-ish host (strip scheme + leading www) for SERP/URL matching."""
+    m = _RE_HOST.search(url or "")
+    h = (m.group(1).lower() if m else "")
+    return h[4:] if h.startswith("www.") else h
+
+
+def _serp_position_map(ao: dict):
+    """regdomain → best (lowest) SERP position across serp_branded + serp_category.
+    Returns (map, serp_present). serp_present True iff either SERP carried
+    organic_results — lets us tell 'not in SERP' (absent) from 'no SERP'
+    (not_measured)."""
+    rf = (ao or {}).get("re_findings") or {}
+    pos, present = {}, False
+    for serp in ("serp_branded", "serp_category"):
+        org = (rf.get(serp) or {}).get("organic_results")
+        if isinstance(org, list):
+            present = present or len(org) > 0
+            for o in org:
+                r, p = _reg(o.get("url")), o.get("position")
+                if r and p is not None and (r not in pos or p < pos[r]):
+                    pos[r] = p
+    return pos, present
+
+SCHEMA_VERSION = "fact_base_v2"  # v2: SERP-fit context promoted to competition
 
 # Provenance enum
 MEASURED = "measured"
@@ -351,6 +379,7 @@ def _map_competition(ao) -> dict:
     raw, _ = _dig(ao, "re_findings", "comparison", "_raw_dimensions")
     raw = raw if isinstance(raw, dict) else {}
     audits = rf.get("competitor_audits") or {}
+    posmap, serp_present = _serp_position_map(ao)
 
     competitors = []
     raw_comps = raw.get("competitors") if isinstance(raw.get("competitors"), list) else []
@@ -361,6 +390,15 @@ def _map_competition(ao) -> dict:
         url = c.get("url")
         status = audits.get(url, "")
         ok = isinstance(status, str) and status.strip().lower() == "ok"
+        # SERP position (both SERPs): present-in-SERP → measured; SERP captured
+        # but competitor not in it → absent; no SERP captured → not_measured.
+        sp_pos = posmap.get(_reg(url)) if url else None
+        if not serp_present:
+            sp_prov = NOT_MEASURED
+        elif sp_pos is not None:
+            sp_prov = MEASURED
+        else:
+            sp_prov = ABSENT
         # First successfully-discovered competitor is treated as the anchor
         # (mirrors comparison's competitor_best=highest-content choice well enough
         # for the fact_base; the decide pass may refine).
@@ -392,7 +430,58 @@ def _map_competition(ao) -> dict:
             "perf_desktop": _fact(c.get("perf_desktop"),
                                   MEASURED if c.get("perf_desktop") is not None else NOT_MEASURED,
                                   sp + ".perf_desktop"),
+            # AAA-161 S2.1: promoted from decide.py raw reads.
+            "intent": _fact(c.get("intent"),
+                            MEASURED if c.get("intent") else (NOT_MEASURED if not ok else ABSENT),
+                            sp + ".intent"),
+            "serp_position": _fact(sp_pos, sp_prov,
+                                   "re_findings.serp_branded/serp_category.organic_results[url=%s]" % url),
         })
+
+    # --- AAA-161 S2.1: SERP-fit context promoted from decide.py raw reads ---
+    sfa_list, _ = _dig(ao, "serp_fit_analysis")
+    sfa = sfa_list[0] if isinstance(sfa_list, list) and sfa_list and isinstance(sfa_list[0], dict) else None
+    sfa_err = _has_error(sfa) if sfa is not None else True
+    SFA_SRC = "serp_fit_analysis[0]"
+
+    def _sfa_scalar(key, none_is_absent=False):
+        if sfa is None:
+            return _fact(None, NOT_MEASURED, f"{SFA_SRC}.{key}")
+        if sfa_err:
+            return _fact(sfa.get(key), NOT_MEASURED, f"{SFA_SRC}.{key}")
+        v = sfa.get(key)
+        if v is None:
+            return _fact(None, ABSENT if none_is_absent else NOT_MEASURED, f"{SFA_SRC}.{key}")
+        return _fact(v, MEASURED, f"{SFA_SRC}.{key}")
+
+    # serp_type_distribution (full bucket distribution)
+    dist = sfa.get("serp_type_distribution") if sfa else None
+    if sfa is None or sfa_err or dist is None:
+        dist_fact = _fact(dist, NOT_MEASURED, f"{SFA_SRC}.serp_type_distribution")
+    elif isinstance(dist, dict) and len(dist) == 0:
+        dist_fact = _fact(dist, ABSENT, f"{SFA_SRC}.serp_type_distribution")
+    else:
+        dist_fact = _fact(dist, MEASURED, f"{SFA_SRC}.serp_type_distribution")
+
+    # serp_top10 — classified per-URL list {position, url, title, page_type}
+    t10_raw = sfa.get("serp_top10_classifications") if sfa else None
+    if isinstance(t10_raw, list) and t10_raw:
+        t10 = [{"position": e.get("position"), "url": e.get("url"),
+                "title": e.get("title"), "page_type": e.get("serp_type")}
+               for e in t10_raw if isinstance(e, dict)]
+        t10_fact = _fact(t10, MEASURED, f"{SFA_SRC}.serp_top10_classifications")
+    elif isinstance(t10_raw, list):
+        t10_fact = _fact([], ABSENT, f"{SFA_SRC}.serp_top10_classifications")
+    else:
+        t10_fact = _fact(None, NOT_MEASURED, f"{SFA_SRC}.serp_top10_classifications")
+
+    serp_fit = {
+        "keyword": _sfa_scalar("keyword"),
+        "target_type": _sfa_scalar("target_type"),
+        "target_type_fit": _sfa_scalar("target_type_fit"),
+        "keyword_recommendation_trigger": _sfa_scalar("keyword_recommendation_trigger"),
+        "serp_type_distribution": dist_fact,
+    }
 
     return {
         "primary_keyword_serp": {
@@ -405,6 +494,8 @@ def _map_competition(ao) -> dict:
         "dimension_table": r_scalar(ao, "re_findings", "comparison", "dimension_table"),
         "patterns": r_list(ao, "re_findings", "comparison", "patterns",
                            error_subtree=comp),
+        "serp_fit": serp_fit,          # AAA-161 S2.1 (target_stance inputs)
+        "serp_top10": t10_fact,        # AAA-161 S2.1 (classified SERP, render presentation)
     }
 
 
