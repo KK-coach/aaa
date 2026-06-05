@@ -313,6 +313,16 @@ class AuditOutput(BaseModel):
     # legacy + crawl-failed audits keep None / carry an _error skip-finding.
     title_meta_measurements: dict | None = None
 
+    # AAA-170 Sub-step 1 — client E-E-A-T score. ONE gemini-3.5-flash call rating
+    # the CLIENT page on the 4 E-E-A-T dimensions (Experience/Expertise/
+    # Authoritativeness/Trustworthiness, 0-10 each + total_0_40 + per-dim
+    # justification + verdict), grounded on eeat_signals/KG/phase2/aspect_evals.
+    # client populated (grounding_confidence="full_content"); competitors=[]
+    # (forward-compat, RG4 deferred). Cost SEPARATE (audit_eeat_score_cost_usd).
+    # Forward-only: legacy + failed audits keep None / carry _meta.error.
+    eeat_score: dict | None = None
+    audit_eeat_score_cost_usd: float | None = None
+
     # AAA-108 — Reverse-engineering workflow output. Populated ONLY when the
     # RE workflow ran end-to-end (client + SERP × 2 + competitors +
     # comparison) and the RE persistence step (post-workflow dotted-path

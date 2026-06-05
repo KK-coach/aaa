@@ -1,0 +1,284 @@
+"""AAA-170 Sub-step 1 — client E-E-A-T scorer (production callable).
+
+ONE gemini-3.5-flash call per audit scoring the CLIENT page on the four Google
+December-2025 E-E-A-T dimensions (Experience / Expertise / Authoritativeness /
+Trustworthiness), each integer 0-10, plus total_0_40, per-dimension justification
+and a 1-sentence verdict. Validated in AAA-170 Sub-step 0 (run-to-run stable, no
+dim drift >2; client cost ~$0.006-0.024 depending on excerpt size).
+
+GROUNDING (preventive, AAA-124 pattern): the prompt embeds a deterministic
+ground-truth block built from already-measured signals — AAA-56 eeat_signals,
+KG/entity people, AAA-123 phase2_html_measurements, AAA-124 aspect_evaluations —
+plus module-derived on-page facts (security-cert keyword presence, placeholder /
+unfinished-content detection, customer-count claim, schema-type sophistication).
+The model scores ONLY the on-page E-E-A-T signals; it must not contradict the
+ground-truth.
+
+HARD GUARD (Krisztián decision, carried from Sub-step 0): justifications and the
+verdict are DESCRIPTIVE / DIAGNOSTIC / RELATIVE (what is present vs missing, what
+to improve). It is FORBIDDEN to claim or imply that the score predicts Google
+ranking / SERP position / AI-citation likelihood, or to reference any SERP
+correlation. This is an on-page diagnostic only.
+
+CLIENT-ONLY: competitor E-E-A-T scoring is deferred (RG4) — competitor page prose
+is not persisted (only the 16-field summary), so this module scores the client
+exclusively. The persisted object carries competitors=[] for forward-compat.
+
+Cost is tracked SEPARATELY (audit_eeat_score_cost_usd, AAA-53 separation) — never
+folded into audit_cost_usd.
+
+Skip-finding: ANY failure (Gemini error, parse fail, schema/range validation) →
+the result dict carries _meta._error and the audit continues. Never raises.
+"""
+from __future__ import annotations
+
+import json
+import logging
+import re
+import time
+
+from pydantic import BaseModel, Field, ValidationError
+
+from site_profile.gemini_analyzer import compute_call_cost_usd
+
+logger = logging.getLogger(__name__)
+
+MODEL = "gemini-3.5-flash"
+LOCATION = "global"
+RUBRIC_VERSION = "eeat_v1"
+TEMPERATURE = 0.2
+THINKING_LEVEL = "LOW"
+
+DIMS = ("experience", "expertise", "authoritativeness", "trustworthiness")
+
+_CERT_RE = re.compile(
+    r"\b(SOC ?2|ISO ?27001|ISO ?9001|GDPR|HIPAA|PCI[- ]?DSS|"
+    r"certified|certification)\b", re.I)
+_PLACEHOLDER_RE = re.compile(r"lorem ipsum|dolor sit amet", re.I)
+_CUSTOMER_RE = re.compile(
+    r"\b\d[\d,\.]*\+?\s*(companies|customers|businesses|clients|users)\b", re.I)
+
+
+# ---------------------------------------------------------------------------
+# Pydantic contract (enforces integer 0-10 per dim → off-range = ValidationError)
+# ---------------------------------------------------------------------------
+class _Justifications(BaseModel):
+    experience: str
+    expertise: str
+    authoritativeness: str
+    trustworthiness: str
+
+
+class EEATScore(BaseModel):
+    experience: int = Field(ge=0, le=10)
+    expertise: int = Field(ge=0, le=10)
+    authoritativeness: int = Field(ge=0, le=10)
+    trustworthiness: int = Field(ge=0, le=10)
+    justifications: _Justifications
+    verdict: str
+
+
+def _gemini_schema() -> dict:
+    s = {"type": "STRING"}
+    return {
+        "type": "OBJECT",
+        "properties": {
+            "experience": {"type": "INTEGER"},
+            "expertise": {"type": "INTEGER"},
+            "authoritativeness": {"type": "INTEGER"},
+            "trustworthiness": {"type": "INTEGER"},
+            "justifications": {
+                "type": "OBJECT",
+                "properties": {d: s for d in DIMS},
+                "required": list(DIMS),
+            },
+            "verdict": {"type": "STRING"},
+        },
+        "required": ["experience", "expertise", "authoritativeness",
+                     "trustworthiness", "justifications", "verdict"],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Deterministic grounding signals (module-derived from audit_output; no fetch)
+# ---------------------------------------------------------------------------
+def _main_text(ao: dict) -> str:
+    cr = ao.get("crawl") or {}
+    mc = (cr.get("main_content") or {}).get("text") or ""
+    return mc or ((cr.get("content") or {}).get("visible_text") or "")
+
+
+def _derive_signals(ao: dict) -> dict:
+    cr = ao.get("crawl") or {}
+    ee = ao.get("eeat_signals") or {}
+    ent = ao.get("entities") or {}
+    text = _main_text(ao)
+    schema_types = (cr.get("schema_markup") or {}).get("schema_types_detected") or []
+    schema_l = {str(t).lower() for t in schema_types}
+    cust = _CUSTOMER_RE.search(text or "")
+    return {
+        "named_people": ee.get("named_people") or [],
+        "entity_people": ent.get("people") or [],
+        "entity_organizations": ent.get("organizations") or [],
+        "social_proof_links": ee.get("social_proof_links") or [],
+        "schema_types": schema_types,
+        "has_softwareapplication": "softwareapplication" in schema_l,
+        "has_offer": "offer" in schema_l,
+        "has_person_schema": "person" in schema_l,
+        "cert_keyword_present": bool(_CERT_RE.search(text or "")),
+        "placeholder_count": len(_PLACEHOLDER_RE.findall(text or "")),
+        "customer_count_claim": cust.group(0).strip() if cust else None,
+        "main_content_words": (cr.get("main_content") or {}).get("words"),
+    }
+
+
+def _ground_truth_block(ao: dict, sig: dict) -> str:
+    p2 = (ao.get("phase2_html_measurements") or {}).get("semantic_structure") or {}
+    spm = p2.get("schema_pagetype_match") or {}
+    ae = ao.get("aaa124_aspect_evaluations") or {}
+    schema_find = str((ae.get("schema_entity") or {}).get("structured_finding") or "")[:280]
+    named_author = bool(sig["named_people"] or sig["entity_people"])
+    return "\n".join([
+        "GROUND-TRUTH (deterministic measurements — AUTHORITATIVE; never contradict, never invent a signal not listed):",
+        f"  Named author/people on page: {'YES ' + str((sig['named_people'] or sig['entity_people'])[:5]) if named_author else 'NONE (no named author; none KG-recognized)'}.",
+        f"  Security/compliance certification keyword on page: {'PRESENT' if sig['cert_keyword_present'] else 'NONE detected (no SOC2/ISO/GDPR/PCI/HIPAA)'}.",
+        f"  Customer-proof claim: {sig['customer_count_claim'] or 'none detected'}; named organisations on page: {sig['entity_organizations'][:8] or 'none'}.",
+        f"  Structured data: {len(sig['schema_types'])} schema types {sig['schema_types']}; SoftwareApplication={sig['has_softwareapplication']}, Offer={sig['has_offer']}, Person/author-schema={sig['has_person_schema']}.",
+        f"  Schema-vs-page-type match (AAA-123): match={spm.get('match')}, matched_types={spm.get('matched_types')}.",
+        f"  CONTENT-QUALITY FLAG: {sig['placeholder_count']}x placeholder/unfinished ('lorem ipsum') string(s) detected in the page content (machine-readable; may be CSS-hidden). >0 is an unfinished-content / trust-quality negative.",
+        f"  main_content length: {sig['main_content_words']} words; social-proof links present: {len(sig['social_proof_links'])}.",
+        f"  AAA-124 schema/entity finding: \"{schema_find}\"",
+    ])
+
+
+def _build_prompt(ao: dict, sig: dict) -> str:
+    sp = ao.get("site_profile") or {}
+    brand = sp.get("brand_name") or sp.get("brand") or "(unknown)"
+    text = _main_text(ao)
+    excerpt = text[:2800]
+    gt = _ground_truth_block(ao, sig)
+    return f"""\
+You are a Google E-E-A-T diagnostic evaluator (December-2025 framework; E-E-A-T
+applies to competitive commercial queries). Score ONE webpage (the CLIENT) on the
+four E-E-A-T dimensions, each an INTEGER 0-10, grounded ONLY in the GROUND-TRUTH
+block and the content excerpt below. The ground-truth measurements are
+AUTHORITATIVE — never contradict them, and never invent a signal not listed.
+
+PAGE CONTEXT:
+  url: {ao.get('url')}
+  brand: {brand}
+  page_type: {ao.get('page_type')}   business_model: {ao.get('business_model')}
+  audience: {ao.get('audience_relationship_primary')}   topic_domain: {ao.get('topic_domain')}
+
+{gt}
+
+MAIN CONTENT EXCERPT (first 2800 chars):
+{excerpt}
+
+DIMENSIONS (score each 0-10):
+  - experience: first-hand/operational proof — named customers, case studies, usage scale, product depth.
+  - expertise: tax/subject-matter depth & specificity; presence of a named, accountable author.
+  - authoritativeness: named entities / ecosystem breadth, structured-data sophistication (e.g. SoftwareApplication/Offer), brand/market signals on the page.
+  - trustworthiness: security/compliance certifications, transparency, NO placeholder/unfinished content, no overclaiming.
+
+For each dimension write a 1-2 sentence justification, and one overall 1-sentence
+verdict. Name the SPECIFIC signal each score rests on (e.g. "no SOC2/ISO cert
+detected", "no named author", "{sig['placeholder_count']}x placeholder string present",
+"SoftwareApplication schema {'present' if sig['has_softwareapplication'] else 'absent'}").
+
+HARD RULES (mandatory):
+  - Justifications and the verdict must be DESCRIPTIVE / DIAGNOSTIC / RELATIVE:
+    what is present vs missing on THIS page, and what to improve.
+  - ABSOLUTELY FORBIDDEN: any claim or hint that this score predicts Google
+    ranking, SERP position, or AI-citation likelihood; any reference to search
+    position or to a correlation with rankings. This is an on-page diagnostic
+    ONLY. No ranking-prediction language whatsoever.
+
+Return ONLY structured JSON matching the required schema.
+"""
+
+
+_client = None
+
+
+def _get_client():
+    global _client
+    if _client is None:
+        from site_profile.gemini_analyzer import make_genai_client
+        _client = make_genai_client(location=LOCATION)
+    return _client
+
+
+def score_eeat(audit_output: dict) -> tuple[dict | None, float]:
+    """Score the CLIENT page on the 4 E-E-A-T dimensions. Returns
+    (eeat_score_dict, cost_usd). Skip-finding: any failure → a dict carrying
+    _meta._error and cost 0.0; never raises.
+
+    Shape:
+      {rubric_version, client:{experience,expertise,authoritativeness,
+        trustworthiness,total_0_40,justifications,verdict,grounding_confidence},
+       competitors:[], _meta:{model_id,temperature,thinking_level,input_tokens,
+        output_tokens,latency_s,cost_usd,error}}
+    """
+    from google.genai import types
+
+    t0 = time.perf_counter()
+    try:
+        sig = _derive_signals(audit_output)
+        prompt = _build_prompt(audit_output, sig)
+        resp = _get_client().models.generate_content(
+            model=MODEL, contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=TEMPERATURE,
+                response_mime_type="application/json",
+                response_schema=_gemini_schema(),
+                thinking_config=types.ThinkingConfig(thinking_level=THINKING_LEVEL),
+            ),
+        )
+        latency = round(time.perf_counter() - t0, 3)
+        um = resp.usage_metadata
+        in_tok = getattr(um, "prompt_token_count", 0) or 0
+        out_tok = ((getattr(um, "candidates_token_count", 0) or 0)
+                   + (getattr(um, "thoughts_token_count", 0) or 0))
+        cost = round(compute_call_cost_usd(MODEL, in_tok, out_tok), 8)
+
+        parsed = json.loads(resp.text)
+        validated = EEATScore(**parsed)  # enforces int 0-10 per dim
+        v = validated.model_dump()
+        total = (v["experience"] + v["expertise"]
+                 + v["authoritativeness"] + v["trustworthiness"])  # deterministic
+        client = {
+            "experience": v["experience"], "expertise": v["expertise"],
+            "authoritativeness": v["authoritativeness"],
+            "trustworthiness": v["trustworthiness"],
+            "total_0_40": total,
+            "justifications": v["justifications"],
+            "verdict": v["verdict"],
+            "grounding_confidence": "full_content",
+        }
+        logger.info("score_eeat: total %d/40, $%.6f, %.1fs", total, cost, latency)
+        return {
+            "rubric_version": RUBRIC_VERSION,
+            "client": client,
+            "competitors": [],  # forward-compat (RG4 deferred)
+            "_meta": {"model_id": MODEL, "temperature": TEMPERATURE,
+                      "thinking_level": THINKING_LEVEL, "input_tokens": in_tok,
+                      "output_tokens": out_tok, "latency_s": latency,
+                      "cost_usd": cost, "error": None},
+        }, cost
+    except (ValidationError, json.JSONDecodeError) as e:
+        logger.warning("score_eeat: schema/parse fail: %s: %s", type(e).__name__, e)
+        return _skip(t0, f"{type(e).__name__}: {e}"), 0.0
+    except Exception as e:  # noqa: BLE001 — never fail the audit
+        logger.warning("score_eeat: call failed: %s: %s", type(e).__name__, e)
+        return _skip(t0, f"{type(e).__name__}: {e}"), 0.0
+
+
+def _skip(t0: float, err: str) -> dict:
+    return {
+        "rubric_version": RUBRIC_VERSION,
+        "client": None,
+        "competitors": [],
+        "_meta": {"model_id": MODEL, "latency_s": round(time.perf_counter() - t0, 3),
+                  "cost_usd": 0.0, "error": err},
+    }

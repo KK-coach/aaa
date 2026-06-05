@@ -493,6 +493,24 @@ async def audit(url: str, corpus_mode: bool = False,
         out.aaa124_aspect_evaluations = {"_meta": {"error": f"{type(e).__name__}: {e}"}}
         out.audit_aspect_eval_cost_usd = 0.0
 
+    # AAA-170 Sub-step 1 — client E-E-A-T scorer. ONE gemini-3.5-flash call
+    # scoring the CLIENT page on the 4 E-E-A-T dimensions, grounded on the
+    # already-measured eeat_signals (AAA-56) + KG/entities + phase2 (AAA-123) +
+    # aspect_evaluations (AAA-124). MUST run AFTER aspect eval (consumes its
+    # schema_entity finding) and BEFORE write_audit. CLIENT-ONLY (competitors
+    # deferred → RG4). Cost SEPARATE (audit_eeat_score_cost_usd, AAA-53).
+    # Skip-finding: score_eeat never raises — _error in _meta, audit continues.
+    try:
+        from page_analysis.eeat_score import score_eeat
+        _eeat, _eeat_cost = score_eeat(out.model_dump())
+        out.eeat_score = _eeat
+        out.audit_eeat_score_cost_usd = _eeat_cost
+    except Exception as e:  # noqa: BLE001 — belt-and-suspenders; score_eeat is
+        # already skip-finding
+        out.eeat_score = {"client": None, "competitors": [],
+                          "_meta": {"error": f"{type(e).__name__}: {e}"}}
+        out.audit_eeat_score_cost_usd = 0.0
+
     # AAA-61: archive the full audit (source of truth) — critical write.
     # AAA-31 S2: audit_id (the dispatcher job id) is used as the archive key
     # when supplied so job_id == archive_id; else write_audit mints a uuid4.
