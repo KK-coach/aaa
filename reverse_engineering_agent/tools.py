@@ -859,10 +859,11 @@ async def compare_audits_tool(tool_context: ToolContext) -> dict:
 # 6. AAA-108: persist RE findings to the client's archived audit doc
 # --------------------------------------------------------------------------
 def _build_competitor_audits_map(state: dict) -> dict:
-    """Map intended category competitors -> per-URL status.
+    """Map the actually-audited competitor set -> per-URL status.
 
     Sources:
-      - state["category_competitors"]: the top-3 intended deep-audit set
+      - state["competitor_urls"]: the deep-audit set (AAA-167 S1: the AAA-114
+        v2 genuine-competitor verdict, NOT the legacy category_competitors).
       - state["audits"]: dict url -> audit (presence indicates the
         Discovery tool ran on that URL); within each audit,
         audit["crawl"]["error"] surfaces a Discovery-side failure.
@@ -874,7 +875,9 @@ def _build_competitor_audits_map(state: dict) -> dict:
                               exists (the agent never called the tool, or
                               the workflow aborted before this competitor)
     """
-    intended = state.get("category_competitors") or []
+    # AAA-167 S1 fix: key on the actually-audited set (competitor_urls) so the
+    # status map matches the v2 deep-audit set, not the legacy first-3.
+    intended = state.get("competitor_urls") or []
     audits = state.get("audits") or {}
     result: dict = {}
     for url in intended:
