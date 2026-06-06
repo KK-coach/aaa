@@ -689,6 +689,10 @@ async def dataforseo_serp_query_tool(
         tool_context.state["audit_no_comparable_competitors_found"] = (
             stage2["no_comparable_competitors_found"]
         )
+        # AAA-167 S1: business-peer presence (A vs B disambiguation downstream).
+        tool_context.state["competitor_business_peer_count"] = (
+            stage2.get("business_peer_count")
+        )
     except Exception as e:  # noqa: BLE001 — Stage 1 is non-critical
         # Stage 1 failure must not break the RE workflow. Leave state empty.
         tool_context.state["serp_fit_analysis"] = []
@@ -748,23 +752,68 @@ async def select_competitor_urls_tool(
         client_url, category.get("organic_urls", []) or []
     )
 
+    # Branded/category lists stay as REPORTED context ("who ranks") — the full
+    # SERP top-10 is preserved elsewhere as serp_fit_analysis.
     tool_context.state["branded_competitors"] = sel_b["competitor_urls"]
     tool_context.state["category_competitors"] = sel_c["competitor_urls"]
     tool_context.state["client_ranking_status_branded"] = rank_b
     tool_context.state["client_ranking_status_category"] = rank_c
-    # Deep-audit the CATEGORY competitors (the actionable ones).
-    tool_context.state["competitor_urls"] = sel_c["competitor_urls"]
+
+    # AAA-167 S1: the DEEP-AUDIT set now comes from the AAA-114 v2 verdict
+    # (genuine business-type competitors only, Hard-C filtered + soft-ranked),
+    # NOT the unfiltered legacy first-3. NO fallback: if v2 yields <3 we audit
+    # only those; if it yields 0 we audit none and emit a structured status.
+    from reverse_engineering_agent.competitor_filter import _BUSINESS_TYPES
+    v2 = tool_context.state.get("selected_competitors_v2") or []
+    v2_selected = sorted(
+        [e for e in v2 if e.get("selected") and e.get("url")],
+        key=lambda e: e.get("selection_rank") or 99)
+    audit_urls = [e["url"] for e in v2_selected][:3]
+    biz_peer_count = tool_context.state.get("competitor_business_peer_count")
+    if biz_peer_count is None:
+        biz_peer_count = sum(1 for e in v2 if e.get("serp_type") in _BUSINESS_TYPES)
+
+    if audit_urls:
+        comp_status, comp_reason = "ok", None
+    elif not v2:
+        comp_status = "comparator_unavailable"
+        comp_reason = ("SERP classification did not run; no competitor "
+                       "comparability verdict available.")
+    elif biz_peer_count == 0:
+        # (A) no comparable business-type peer in the SERP at all -> the keyword
+        # is likely mistargeted for this page. Only the comparison branch stops.
+        comp_status = "no_comparable_competitors"
+        comp_reason = ("No comparable business-type competitor appeared in the "
+                       "SERP top-10 for the target keyword; the keyword is likely "
+                       "mistargeted for this page. Competitor comparison skipped; "
+                       "all other audit sections run normally.")
+    else:
+        # (B) business peers present but none met the comparability/relevance
+        # threshold -> NOT a keyword mismatch; proceed with 0 comparisons.
+        below = [e.get("url") for e in v2
+                 if e.get("serp_type") in _BUSINESS_TYPES and not e.get("hard_filter_pass")]
+        comp_status = "business_peers_below_threshold"
+        comp_reason = ("%d business-type peer(s) present but none met the "
+                       "comparability/relevance threshold; proceeding with no "
+                       "competitor comparison (NOT a keyword mismatch). URLs: %s"
+                       % (biz_peer_count, below))
+    tool_context.state["competitor_urls"] = audit_urls
+    tool_context.state["competitor_comparison_status"] = comp_status
+    tool_context.state["competitor_comparison_reason"] = comp_reason
 
     return {
         "serps_identical": identical,
         "branded_competitors": sel_b["competitor_urls"],
         "category_competitors": sel_c["competitor_urls"],
-        "deep_audit_set": "category" if not identical else "shared",
+        "deep_audit_set": "v2_genuine_competitors",  # AAA-167 S1
+        "deep_audit_urls": audit_urls,
+        "competitor_comparison_status": comp_status,
         "client_rank_branded": rank_b["ranking_severity"],
         "client_pos_branded": rank_b["position"],
         "client_rank_category": rank_c["ranking_severity"],
         "client_pos_category": rank_c["position"],
-        "category_fewer_than_3": sel_c["fewer_than_3"],
+        "v2_selected_count": len(audit_urls),
+        "business_peer_count": biz_peer_count,
     }
 
 
@@ -972,6 +1021,12 @@ def _assemble_re_findings(state: dict) -> dict:
         # selected. Makes a skipped/empty SERP visible instead of silent success.
         "no_competitors_reason": _classify_no_competitors_reason(
             state, serp_b, serp_c, serps_identical),
+        # AAA-167 S1 — refined competitor-comparison verdict from the v2 path:
+        # ok / no_comparable_competitors (A: keyword likely mistargeted) /
+        # business_peers_below_threshold (B: NOT a keyword mismatch) /
+        # comparator_unavailable. Drives the comparison-branch skip + finding.
+        "competitor_comparison_status": state.get("competitor_comparison_status"),
+        "competitor_comparison_reason": state.get("competitor_comparison_reason"),
     }
 
 

@@ -376,7 +376,15 @@ def filter_and_rank_competitors(
         entry["selected"] = True
         entry["selection_rank"] = rank
 
+    # AAA-167 S1: count comparable business-type peers PRESENT in the SERP
+    # (regardless of relevance/pass). Lets the caller distinguish
+    # (A) no business peer at all -> keyword likely mistargeted, from
+    # (B) business peers present but none qualified -> NOT a keyword mismatch.
+    business_peer_count = sum(
+        1 for e in deduped if e.get("serp_type") in _BUSINESS_TYPES)
+
     return {
         "selected_competitors_v2": deduped,
         "no_comparable_competitors_found": (len(passers) == 0),
+        "business_peer_count": business_peer_count,
     }

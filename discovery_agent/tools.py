@@ -13,9 +13,15 @@ entities, pagespeed, indexing, _cost, _tools.
 from __future__ import annotations
 
 import asyncio
+import logging
 import re
 
 from google.adk.tools import FunctionTool, ToolContext
+
+# AAA-167 S1: module logger. Was referenced (e.g. the indexing-HEAD-failed
+# branch ~L466) without being defined → NameError that killed a URL's Discovery
+# (notably competitor corpus runs, e.g. Wikipedia). Define it once here.
+logger = logging.getLogger(__name__)
 
 from crawler import crawl_html
 from crawler.crawler import parse_rendered_html
