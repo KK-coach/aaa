@@ -236,13 +236,20 @@ def score_eeat(audit_output: dict, anchor_keyword: str | None = None) -> tuple[d
     t0 = time.perf_counter()
     try:
         sig = _derive_signals(audit_output)
-        # AAA-172: query-anchored. anchor_keyword (the shared SERP/audit anchor,
-        # e.g. the client's primary_keyword) overrides the page's own keyword so
-        # client + competitors are all judged for the SAME query. Falls back to
-        # this page's own primary_keyword when no override is supplied (client path).
-        anchor = (anchor_keyword
-                  or (audit_output.get("target_keywords") or {}).get("primary_keyword")
-                  or "").strip()
+        # AAA-172 (+fix): query-anchored. The anchor is the SERP INPUT keyword =
+        # the DESCRIPTIVE CATEGORY query the audit/SERP ran on (target_keywords.
+        # category_keyword), NOT the drift-prone derived primary_keyword. An
+        # explicit anchor_keyword (threaded from the client for competitors)
+        # overrides; the client path falls back to its OWN category_keyword.
+        # NEVER falls back to primary_keyword (per AAA-172 fix). Missing ->
+        # anchor unavailable (no primary fallback), flagged in _meta.
+        tk = audit_output.get("target_keywords") or {}
+        if anchor_keyword:
+            anchor, anchor_source = anchor_keyword.strip(), "explicit_category_keyword"
+        elif (tk.get("category_keyword") or "").strip():
+            anchor, anchor_source = tk["category_keyword"].strip(), "category_keyword"
+        else:
+            anchor, anchor_source = "", "unavailable"
         prompt = _build_prompt(audit_output, sig, anchor)
         resp = _get_client().models.generate_content(
             model=MODEL, contents=prompt,
@@ -280,7 +287,7 @@ def score_eeat(audit_output: dict, anchor_keyword: str | None = None) -> tuple[d
             "client": client,
             "competitors": [],  # forward-compat (RG4 deferred)
             "_meta": {"model_id": MODEL, "temperature": TEMPERATURE,
-                      "thinking_level": THINKING_LEVEL, "anchor_keyword": anchor, "input_tokens": in_tok,
+                      "thinking_level": THINKING_LEVEL, "anchor_keyword": anchor, "anchor_source": anchor_source, "input_tokens": in_tok,
                       "output_tokens": out_tok, "latency_s": latency,
                       "cost_usd": cost, "error": None},
         }, cost

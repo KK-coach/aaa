@@ -298,10 +298,13 @@ async def audit_all_competitors_tool(tool_context: ToolContext) -> dict:
     target_country = (
         (client_audit.get("site_profile") or {}).get("location") or ""
     )
-    # AAA-172: shared query anchor — every competitor's E-E-A-T is scored against
-    # the CLIENT's anchor keyword (the SERP/audit keyword), NOT the competitor's
-    # own derived keyword, so client + competitors share one common-query basis.
-    client_anchor_kw = (client_audit.get("keywords") or {}).get("primary_keyword")
+    # AAA-172 (+fix): shared query anchor = the CLIENT's SERP INPUT keyword =
+    # the descriptive category query the audit/SERP ran on (category_keyword),
+    # NOT the drift-prone derived primary_keyword. Threaded into every
+    # competitor's score_eeat so client + competitors share one common-query
+    # basis. NO primary_keyword fallback (per AAA-172 fix).
+    client_kw = client_audit.get("keywords") or {}
+    client_anchor_kw = client_kw.get("category_keyword")
 
     # AAA-75 Sub-step 3: each competitor is now ARCHIVED at corpus-subset
     # quality via audit(corpus_mode=True) (KEEP enrichments + EN-canonical +
