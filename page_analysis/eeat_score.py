@@ -151,18 +151,24 @@ def _ground_truth_block(ao: dict, sig: dict) -> str:
     ])
 
 
-def _build_prompt(ao: dict, sig: dict) -> str:
+def _build_prompt(ao: dict, sig: dict, anchor_keyword: str) -> str:
     sp = ao.get("site_profile") or {}
     brand = sp.get("brand_name") or sp.get("brand") or "(unknown)"
     text = _main_text(ao)
     excerpt = text[:2800]
     gt = _ground_truth_block(ao, sig)
+    anchor = anchor_keyword or "(no target query supplied)"
     return f"""\
 You are a Google E-E-A-T diagnostic evaluator (December-2025 framework; E-E-A-T
-applies to competitive commercial queries). Score ONE webpage (the CLIENT) on the
-four E-E-A-T dimensions, each an INTEGER 0-10, grounded ONLY in the GROUND-TRUTH
-block and the content excerpt below. The ground-truth measurements are
+applies to competitive commercial queries). Score ONE webpage on the four E-E-A-T
+dimensions, each an INTEGER 0-10, **relative to the TARGET SEARCH QUERY below** —
+i.e. how strong is this page's E-E-A-T FOR THIS QUERY'S TOPIC — grounded ONLY in
+the GROUND-TRUTH block and the content excerpt. The ground-truth measurements are
 AUTHORITATIVE — never contradict them, and never invent a signal not listed.
+
+TARGET SEARCH QUERY (the relevance anchor — judge every dimension against THIS
+query's topic, NOT the page's generic credibility):
+  "{anchor}"
 
 PAGE CONTEXT:
   url: {ao.get('url')}
@@ -175,11 +181,15 @@ PAGE CONTEXT:
 MAIN CONTENT EXCERPT (first 2800 chars):
 {excerpt}
 
-DIMENSIONS (score each 0-10):
-  - experience: first-hand/operational proof — named customers, case studies, usage scale, product depth.
-  - expertise: tax/subject-matter depth & specificity; presence of a named, accountable author.
-  - authoritativeness: named entities / ecosystem breadth, structured-data sophistication (e.g. SoftwareApplication/Offer), brand/market signals on the page.
+DIMENSIONS (score each 0-10, judged FOR THE TARGET QUERY'S TOPIC above):
+  - experience: first-hand/operational proof RELEVANT TO the query topic — named customers, case studies, usage scale, product depth on that topic.
+  - expertise: subject-matter / topical depth & specificity ON the query topic; presence of a named, accountable author with relevant credentials.
+  - authoritativeness: named entities / ecosystem breadth and structured-data sophistication relevant to the query topic (e.g. SoftwareApplication/Offer); brand/market signals on the page.
   - trustworthiness: security/compliance certifications, transparency, NO placeholder/unfinished content, no overclaiming.
+
+If the page's content is largely OFF-TOPIC for the target query, the topic-relevant
+dimensions (experience/expertise/authoritativeness) should score LOWER even if the
+page is otherwise polished — this is a query-relative judgment, not generic page quality.
 
 For each dimension write a 1-2 sentence justification, and one overall 1-sentence
 verdict. Name the SPECIFIC signal each score rests on (e.g. "no SOC2/ISO cert
@@ -187,12 +197,13 @@ detected", "no named author", "{sig['placeholder_count']}x placeholder string pr
 "SoftwareApplication schema {'present' if sig['has_softwareapplication'] else 'absent'}").
 
 HARD RULES (mandatory):
+  - Score is "E-E-A-T strength for the target query's topic", NOT a generic page
+    score and NOT a ranking prediction.
   - Justifications and the verdict must be DESCRIPTIVE / DIAGNOSTIC / RELATIVE:
-    what is present vs missing on THIS page, and what to improve.
+    what is present vs missing on THIS page for THIS query, and what to improve.
   - ABSOLUTELY FORBIDDEN: any claim or hint that this score predicts Google
     ranking, SERP position, or AI-citation likelihood; any reference to search
-    position or to a correlation with rankings. This is an on-page diagnostic
-    ONLY. No ranking-prediction language whatsoever.
+    position or to a correlation with rankings. No ranking-prediction language.
 
 Return ONLY structured JSON matching the required schema.
 """
@@ -209,7 +220,7 @@ def _get_client():
     return _client
 
 
-def score_eeat(audit_output: dict) -> tuple[dict | None, float]:
+def score_eeat(audit_output: dict, anchor_keyword: str | None = None) -> tuple[dict | None, float]:
     """Score the CLIENT page on the 4 E-E-A-T dimensions. Returns
     (eeat_score_dict, cost_usd). Skip-finding: any failure → a dict carrying
     _meta._error and cost 0.0; never raises.
@@ -225,7 +236,14 @@ def score_eeat(audit_output: dict) -> tuple[dict | None, float]:
     t0 = time.perf_counter()
     try:
         sig = _derive_signals(audit_output)
-        prompt = _build_prompt(audit_output, sig)
+        # AAA-172: query-anchored. anchor_keyword (the shared SERP/audit anchor,
+        # e.g. the client's primary_keyword) overrides the page's own keyword so
+        # client + competitors are all judged for the SAME query. Falls back to
+        # this page's own primary_keyword when no override is supplied (client path).
+        anchor = (anchor_keyword
+                  or (audit_output.get("target_keywords") or {}).get("primary_keyword")
+                  or "").strip()
+        prompt = _build_prompt(audit_output, sig, anchor)
         resp = _get_client().models.generate_content(
             model=MODEL, contents=prompt,
             config=types.GenerateContentConfig(
@@ -262,7 +280,7 @@ def score_eeat(audit_output: dict) -> tuple[dict | None, float]:
             "client": client,
             "competitors": [],  # forward-compat (RG4 deferred)
             "_meta": {"model_id": MODEL, "temperature": TEMPERATURE,
-                      "thinking_level": THINKING_LEVEL, "input_tokens": in_tok,
+                      "thinking_level": THINKING_LEVEL, "anchor_keyword": anchor, "input_tokens": in_tok,
                       "output_tokens": out_tok, "latency_s": latency,
                       "cost_usd": cost, "error": None},
         }, cost

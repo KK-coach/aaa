@@ -140,7 +140,8 @@ async def _run_discovery(url: str, target_country: str) -> dict:
     }
 
 
-async def _run_discovery_archived(url: str, corpus_mode: bool = False) -> tuple[dict, str, str]:
+async def _run_discovery_archived(url: str, corpus_mode: bool = False,
+                                  eeat_anchor_keyword: str | None = None) -> tuple[dict, str, str]:
     """AAA-64 Sub-step 2: run the FULL Discovery audit through the standalone
     harness so AAA-56 E-E-A-T injection + AAA-61 archive (write_audit) +
     translation all run. Returns (re_audit_dict, audit_id, summary_en).
@@ -159,7 +160,8 @@ async def _run_discovery_archived(url: str, corpus_mode: bool = False) -> tuple[
     # forced id so job_id == archive_id. Competitors (corpus_mode=True) never do.
     forced_id = _consume_client_audit_id() if not corpus_mode else None
     ao = await _discovery_audit(url, corpus_mode=corpus_mode,
-                                audit_id=forced_id)  # AuditOutput + AAA-56 + write_audit
+                                audit_id=forced_id,
+                                eeat_anchor_keyword=eeat_anchor_keyword)  # AuditOutput + AAA-56 + write_audit
     audit_id = ao.get("audit_id") or ""
     # summary_translations lives on the archived doc (source of truth);
     # "en" is the byte-identity copy of summary_markdown (S3 Issue B2).
@@ -296,13 +298,18 @@ async def audit_all_competitors_tool(tool_context: ToolContext) -> dict:
     target_country = (
         (client_audit.get("site_profile") or {}).get("location") or ""
     )
+    # AAA-172: shared query anchor — every competitor's E-E-A-T is scored against
+    # the CLIENT's anchor keyword (the SERP/audit keyword), NOT the competitor's
+    # own derived keyword, so client + competitors share one common-query basis.
+    client_anchor_kw = (client_audit.get("keywords") or {}).get("primary_keyword")
 
     # AAA-75 Sub-step 3: each competitor is now ARCHIVED at corpus-subset
     # quality via audit(corpus_mode=True) (KEEP enrichments + EN-canonical +
     # embedding; DROP client-strategy steps + HU). Parallel — each gets its own
     # InMemoryRunner + session, gather is safe; per-call exceptions captured.
     async def _run_competitor_corpus(u: str) -> dict:
-        re_audit, aid, _ = await _run_discovery_archived(u, corpus_mode=True)
+        re_audit, aid, _ = await _run_discovery_archived(
+            u, corpus_mode=True, eeat_anchor_keyword=client_anchor_kw)  # AAA-172
         re_audit["audit_id"] = aid
         return re_audit
 
@@ -908,6 +915,9 @@ async def _read_competitor_eeat(state: dict) -> list:
             "trustworthiness": c.get("trustworthiness"),
             "total_0_40": c.get("total_0_40"),
             "grounding_confidence": c.get("grounding_confidence") or "full_content",
+            # AAA-172: the query the competitor was scored against (should equal
+            # the client's anchor keyword — common-query basis for §2).
+            "anchor_keyword": (es.get("_meta") or {}).get("anchor_keyword"),
             "_error": None,
         }
 

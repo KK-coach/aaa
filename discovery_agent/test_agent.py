@@ -55,7 +55,8 @@ PER_URL_TIMEOUT = 360  # seconds
 
 
 async def audit(url: str, corpus_mode: bool = False,
-                audit_id: str | None = None) -> dict:
+                audit_id: str | None = None,
+                eeat_anchor_keyword: str | None = None) -> dict:
     """Full client Discovery audit. AAA-75: corpus_mode=True produces a
     corpus-SUBSET entry for competitor archival — runs every KEEP step (crawl/
     site_profile/entities, grounding, KG E-E-A-T, multi-dim, CWV/CrUX, phase2,
@@ -502,7 +503,12 @@ async def audit(url: str, corpus_mode: bool = False,
     # Skip-finding: score_eeat never raises — _error in _meta, audit continues.
     try:
         from page_analysis.eeat_score import score_eeat
-        _eeat, _eeat_cost = score_eeat(out.model_dump())
+        # AAA-172: query-anchored. For a competitor (corpus_mode), the RE workflow
+        # threads in the CLIENT's anchor keyword so client + competitors score on
+        # the SAME query. For the client (eeat_anchor_keyword=None), score_eeat
+        # falls back to the client's own primary_keyword (which IS the anchor).
+        _eeat, _eeat_cost = score_eeat(out.model_dump(),
+                                       anchor_keyword=eeat_anchor_keyword)
         out.eeat_score = _eeat
         out.audit_eeat_score_cost_usd = _eeat_cost
     except Exception as e:  # noqa: BLE001 — belt-and-suspenders; score_eeat is
