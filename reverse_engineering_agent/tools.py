@@ -41,8 +41,11 @@ step 1, but re_findings stays None and downstream UIs see no RE data).
 from __future__ import annotations
 
 import asyncio
+import logging
 from types import SimpleNamespace
 from urllib.parse import urlparse
+
+logger = logging.getLogger(__name__)  # AAA-170 competitor-extension
 
 from google.adk.tools import FunctionTool, ToolContext
 from google.genai import types as genai_types
@@ -858,6 +861,61 @@ async def compare_audits_tool(tool_context: ToolContext) -> dict:
 # --------------------------------------------------------------------------
 # 6. AAA-108: persist RE findings to the client's archived audit doc
 # --------------------------------------------------------------------------
+def _build_competitor_audit_ids(state: dict) -> dict:
+    """AAA-170 competitor-extension — {competitor_url: audit_id} for the audited
+    set, from state["audits"] (each entry carries its corpus-doc audit_id).
+    Deterministic linkage for the eeat read-back (no URL lookup)."""
+    audits = state.get("audits") or {}
+    out: dict = {}
+    for url in (state.get("competitor_urls") or []):
+        aid = (audits.get(url) or {}).get("audit_id")
+        if aid:
+            out[url] = aid
+    return out
+
+
+async def _read_competitor_eeat(state: dict) -> list:
+    """AAA-170 competitor-extension — PURE read-back ($0, reads only, NO re-score)
+    of each audited competitor's own full_content eeat_score from its corpus doc
+    (by audit_id). Missing/errored eeat_score -> grounding_confidence='unavailable'
+    + _error (no re-score). Returns a list shaped forward-compatibly with the
+    client eeat_score competitors[] contract."""
+    from memory.firestore_archive import read_audit
+    ids = _build_competitor_audit_ids(state)
+    audits = state.get("audits") or {}
+
+    async def _one(url: str, aid: str) -> dict:
+        state_brand = ((audits.get(url) or {}).get("site_profile") or {}).get("brand")
+        try:
+            doc = await read_audit(aid)
+        except Exception as e:  # noqa: BLE001 — never break persist on a read
+            return {"url": url, "brand": state_brand, "audit_id": aid,
+                    "grounding_confidence": "unavailable",
+                    "_error": "read failed: %s: %s" % (type(e).__name__, e)}
+        cao = (doc or {}).get("audit_output") or {}
+        brand = state_brand or (cao.get("site_profile") or {}).get("brand")
+        es = cao.get("eeat_score") or {}
+        c = es.get("client")
+        if not c or (es.get("_meta") or {}).get("error"):
+            return {"url": url, "brand": brand, "audit_id": aid,
+                    "grounding_confidence": "unavailable",
+                    "_error": ((es.get("_meta") or {}).get("error")
+                               or "no eeat_score in competitor corpus doc")}
+        return {
+            "url": url, "brand": brand, "audit_id": aid,
+            "experience": c.get("experience"), "expertise": c.get("expertise"),
+            "authoritativeness": c.get("authoritativeness"),
+            "trustworthiness": c.get("trustworthiness"),
+            "total_0_40": c.get("total_0_40"),
+            "grounding_confidence": c.get("grounding_confidence") or "full_content",
+            "_error": None,
+        }
+
+    if not ids:
+        return []
+    return list(await asyncio.gather(*(_one(u, a) for u, a in ids.items())))
+
+
 def _build_competitor_audits_map(state: dict) -> dict:
     """Map the actually-audited competitor set -> per-URL status.
 
@@ -1011,6 +1069,10 @@ def _assemble_re_findings(state: dict) -> dict:
             "category": state.get("client_ranking_status_category"),
         },
         "competitor_audits": _build_competitor_audits_map(state),
+        # AAA-170 competitor-extension — deterministic url->audit_id linkage so
+        # the client persist can read back each competitor's own eeat_score from
+        # its corpus doc by id (no URL lookup).
+        "competitor_audit_ids": _build_competitor_audit_ids(state),
         "comparison": state.get("comparison"),
         "memory_retrieval": {
             "results": memory_retrieval.get("results") or [],
@@ -1118,6 +1180,18 @@ async def persist_re_findings(audit_id: str, state: dict) -> dict:
         "audit_output.re_findings": re_findings,
         "updated_at": _now_iso(),
     }
+    # AAA-170 competitor-extension — read back each audited competitor's own
+    # full_content eeat_score from its corpus doc and surface into the CLIENT
+    # doc's eeat_score.competitors[]. Pure read ($0); dotted-path update merges
+    # into the existing eeat_score map (client + _meta preserved). The
+    # "CLIENT-ONLY" framing of AAA-170 S1 is explicitly superseded here.
+    try:
+        competitors_eeat = await _read_competitor_eeat(state)
+        patch["audit_output.eeat_score.competitors"] = competitors_eeat
+    except Exception as e:  # noqa: BLE001 — never break re_findings persist
+        patch["audit_output.eeat_score.competitors"] = []
+        logger.warning("competitor eeat read-back failed: %s: %s",
+                       type(e).__name__, e)
     ref = _db().collection(_COLLECTION).document(audit_id)
     await asyncio.to_thread(ref.update, patch)
     return re_findings
