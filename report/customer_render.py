@@ -104,6 +104,43 @@ FELADAT_11 = (
     + GROUNDING_RULES
 )
 
+# AAA-170 S2 — E-E-A-T section. HARD GUARD (Krisztián decision): the section is
+# DESCRIPTIVE / DIAGNOSTIC / RELATIVE only — it must NEVER claim or imply that the
+# score predicts Google ranking / SERP position / AI-citation, nor reference any
+# ranking correlation. On-page content-trust diagnostic only.
+EEAT_HARD_GUARD = (
+    "E-E-A-T HARD GUARD — absolutely mandatory:\n"
+    "- This is an ON-PAGE content-trust diagnostic ONLY. NEVER state or imply that "
+    "the score, or any fix, will improve Google ranking / search position / "
+    "AI-citation likelihood. Do NOT reference rankings, SERP positions, or any "
+    "correlation with search results. Frame everything as content credibility / "
+    "best-practice, not as a ranking lever.\n"
+    "- Do NOT compare to competitors here and do NOT include any competitor table.\n"
+    "- Treat the numeric scores as an INDICATIVE single-run diagnostic; present the "
+    "overall standing as a band (weak / adequate / strong), not a precise headline "
+    "number."
+)
+
+FELADAT_EEAT = (
+    "1. One plain-language sentence introducing E-E-A-T: Google's content-quality "
+    "framework — Experience, Expertise, Authoritativeness, Trustworthiness — the "
+    "signals that show your content is credible and trustworthy. Explain it simply "
+    "(the reader may not know the term).\n"
+    "2. Walk through the four dimensions with their scores, saying in plain business "
+    "language what is PRESENT and what is MISSING for each (use the provided "
+    "per-dimension notes; rephrase any technical wording into plain language).\n"
+    "3. State the overall standing as an indicative band (e.g. 'currently weak / "
+    "adequate / strong overall'); you MAY mention the /40 once as a secondary "
+    "detail, never as the headline.\n"
+    "4. Give the diagnostic verdict in one or two sentences.\n"
+    "5. THE MAIN VALUE — a concrete, prioritized FIX LIST: the specific, actionable "
+    "items to strengthen E-E-A-T, supported by the provided data (e.g. remove any "
+    "unfinished placeholder text, add security/compliance certifications, add a "
+    "named author with credentials, add the relevant structured-data types, add "
+    "named customer case studies). Only items the data supports.\n\n"
+    + EEAT_HARD_GUARD + "\n\n" + GROUNDING_RULES
+)
+
 TRANSLATION_PASS = (
     "You are a professional EN->HU business translator. Translate the following "
     "audit-report section into natural, fluent Hungarian for a marketing/executive "
@@ -683,6 +720,30 @@ def adat_s9(ao):
     return "\n".join(L)
 
 
+def adat_eeat(ao):
+    """AAA-170 S2 — E-E-A-T DATA block from audit_output.eeat_score.client.
+    Returns None (skip-contract) if the score is missing or carried an error —
+    the renderer then drops the section entirely (no empty/placeholder block)."""
+    es = ao.get("eeat_score") or {}
+    c = es.get("client")
+    meta = es.get("_meta") or {}
+    if not c or meta.get("error"):
+        return None
+    j = c.get("justifications") or {}
+    L = ["E-E-A-T diagnostic — on-page content-trust signals (NOT a ranking predictor):",
+         "Per-dimension scores (0-10; single-run indicative diagnostic, treat as bands):"]
+    for key, lab in (("experience", "Experience (first-hand proof: named customers, "
+                      "case studies, usage scale)"),
+                     ("expertise", "Expertise (subject depth + a named, credentialed author)"),
+                     ("authoritativeness", "Authoritativeness (named entities, structured data, market signals)"),
+                     ("trustworthiness", "Trustworthiness (security/compliance certifications, "
+                      "no unfinished/placeholder content, transparency)")):
+        L.append("- %s: %s/10 — %s" % (lab, c.get(key), _nd(j.get(key))))
+    L.append("Overall (indicative band, NOT a headline): %s/40." % _nd(c.get("total_0_40")))
+    L.append("Diagnostic verdict: %s" % _nd(c.get("verdict")))
+    return "\n".join(L)
+
+
 def adat_s10(ao):
     idx = ao.get("indexing") or {}; tech = _g(ao, "crawl", "technical") or {}
     ps = ao.get("pagespeed") or {}
@@ -775,6 +836,7 @@ _D = {
  "§5": "The 'you vs. the market leader' overview across the measurable dimensions — where and by how much you lag, and the priority. A comparison table is allowed. Anchor = the primary competitor named in the data.",
  "§6": "More and more searches end in an AI answer. If you are not cited there as a source, you are invisible. Frame the absence as an opportunity (query-dependent). AI Overview + ChatGPT + fan-out.",
  "§7": "Content depth, coverage, and professional credibility — is it detailed and expert enough. NO numeric score — qualitative analysis plus facts.",
+ "§7.5": "E-E-A-T (Google's content-quality framework: Experience, Expertise, Authoritativeness, Trustworthiness). A diagnostic of the on-page trust/credibility signals with a prioritized fix list. NOT a ranking predictor; no competitor comparison.",
  "§8.1": "The page skeleton must be split into zones: the real content in the main zone; header/nav/footer are structural noise. Logical sections belong in separate blocks.",
  "§8.2": "Headings (H1-H6) form the skeleton. Exactly one H1; a logical hierarchy without level skips; menu items must not be headings; no duplicate or dumped same-level headings.",
  "§8.3": "HTML5 elements aid extraction: lists for enumerations, tables for prices/comparisons/specs, blockquote for quotes, figure/figcaption for images. A process/enumeration without a list/table is a gap.",
@@ -794,6 +856,7 @@ SECTION_REGISTRY = [
     Section("§5", "Comparison with the best", _D["§5"], TASK_STD, True, True, adat_s5),
     Section("§6", "AI visibility", _D["§6"], TASK_STD, False, True, adat_s6),
     Section("§7", "Content quality", _D["§7"], TASK_STD, False, True, adat_s7),
+    Section("§7.5", "E-E-A-T trust signals", _D["§7.5"], FELADAT_EEAT, False, False, adat_eeat),
     Section("§8.1", "Zones / macro-structure", _D["§8.1"], TASK_STD, False, False, adat_s81),
     Section("§8.2", "Heading hierarchy", _D["§8.2"], TASK_STD, False, False, adat_s82),
     Section("§8.3", "Micro-semantics + HTML5", _D["§8.3"], TASK_STD, False, False, adat_s83),
@@ -865,6 +928,10 @@ def render_report(audit_output, *, client=None, project=None, location="global",
     client = client or _make_client(project=project, location=location)
     sections, total = [], 0.0
     for s in SECTION_REGISTRY:
+        # Skip-contract (AAA-170 S2): an assembler returning None means "no signal
+        # for this section" -> drop it entirely (no empty/placeholder block).
+        if s.adat_assembler(audit_output) is None:
+            continue
         res = render_section(s, audit_output, client, model=model)
         if translate:
             hu = translate_to_hu(res["text"], client, model=model)

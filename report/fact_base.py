@@ -88,7 +88,7 @@ def _serp_position_map(ao: dict):
                     pos[r] = p
     return pos, present
 
-SCHEMA_VERSION = "fact_base_v2"  # v2: SERP-fit context promoted to competition
+SCHEMA_VERSION = "fact_base_v3"  # v2: SERP-fit promoted; v3: eeat passthrough (AAA-170 S2)
 
 # Provenance enum
 MEASURED = "measured"
@@ -508,6 +508,12 @@ def build_fact_base(audit_output: dict) -> dict:
     ao = audit_output or {}
     crawl = ao.get("crawl") or {}
     sp = ao.get("site_profile") or {}
+    # AAA-170 S2: client E-E-A-T diagnostic passthrough (composite pre-scored
+    # block, not a measured leaf). None when absent or errored.
+    _es = ao.get("eeat_score") if isinstance(ao.get("eeat_score"), dict) else None
+    _eeat_client = (_es or {}).get("client") if _es else None
+    eeat = _eeat_client if (isinstance(_eeat_client, dict)
+                            and not ((_es or {}).get("_meta") or {}).get("error")) else None
     return {
         "meta": {
             "schema_version": SCHEMA_VERSION,
@@ -522,6 +528,7 @@ def build_fact_base(audit_output: dict) -> dict:
         "ai_visibility": _map_ai_visibility(ao),
         "technical": _map_technical(ao),
         "competition": _map_competition(ao),
+        "eeat": eeat,  # AAA-170 S2 client E-E-A-T passthrough (None if absent/errored)
     }
 
 

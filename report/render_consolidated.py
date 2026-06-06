@@ -216,9 +216,15 @@ def build_render_view(fact_base: dict, decisions: dict) -> dict:
         "diagnosis_inputs": decisions["diagnosis_inputs"],
     }
 
+    # AAA-170 S2: surface the client E-E-A-T diagnostic so the consolidated
+    # renderer is migration-ready (carries it when RG1 is pipeline-wired). Read
+    # from the fact_base (single source of truth, promoted in build_fact_base).
+    # Client-only; competitors intentionally omitted (RG4).
+    eeat = fb.get("eeat")  # client dict {experience..,total_0_40,justifications,verdict} or None
+
     return {"subject": subject, "onpage": onpage, "ai_visibility": ai,
             "technical": technical, "competition": competition,
-            "decisions": decisions_view}
+            "decisions": decisions_view, "eeat": eeat}
 
 
 # ---------------------------------------------------------------------------

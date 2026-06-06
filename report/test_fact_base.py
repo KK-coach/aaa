@@ -37,7 +37,7 @@ def kkcoach():
 def test_top_level_sections(taxually):
     assert set(taxually.keys()) == {
         "meta", "classification", "target", "onpage",
-        "ai_visibility", "technical", "competition"}
+        "ai_visibility", "technical", "competition", "eeat"}
     assert taxually["meta"]["schema_version"] == SCHEMA_VERSION
 
 
@@ -178,7 +178,7 @@ def test_v2_serp_fit_and_top10_promoted(taxually, kkcoach):
 
 
 def test_v2_schema_version(taxually):
-    assert taxually["meta"]["schema_version"] == "fact_base_v2"
+    assert taxually["meta"]["schema_version"] == "fact_base_v3"
 
 
 def test_r_ranking_found_flag_disambiguates_none_position():
