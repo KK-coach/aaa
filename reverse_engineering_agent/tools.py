@@ -1108,6 +1108,80 @@ def _assemble_re_findings(state: dict) -> dict:
     }
 
 
+async def _apply_comparative_eeat(audit_id: str, state: dict, patch: dict) -> None:
+    """AAA-172 S1 — run the comparative query-anchored E-E-A-T scorer and add the
+    result leaves to `patch` (dotted-path). Reads the client doc + each audited
+    competitor doc (by audit_id) for full_content; scores all against the client
+    category_keyword in ONE call.
+
+    Writes (happy path, >=2 genuine competitors):
+      eeat_score.client                -> comparative client score (display source)
+      eeat_score.client_page_intrinsic -> the step-1 per-page score (provenance)
+      eeat_score.competitors           -> comparative competitor scores
+      eeat_score.ranking               -> relative order (client + competitors)
+      eeat_score.scoring_mode/comparative_status/anchor_keyword/rubric_version
+      eeat_score.competitors_excluded  -> sub-threshold pages (url+reason+words)
+      audit_eeat_score_cost_usd        -> existing + comparative cost (AAA-53)
+
+    Fallback (<2 genuine competitors): leaves eeat_score.client untouched
+    (page-intrinsic stays the display source) and records the skip status.
+    """
+    from memory.firestore_archive import read_audit
+    from page_analysis.eeat_score import score_eeat_comparative
+
+    # client doc (already archived at workflow step 1) — full content + anchor +
+    # the existing page-intrinsic score + the running eeat cost.
+    client_doc = await read_audit(audit_id)
+    client_ao = (client_doc or {}).get("audit_output") or {}
+    tk = client_ao.get("target_keywords") or {}
+    anchor = (tk.get("category_keyword") or "").strip()
+    existing_eeat = client_ao.get("eeat_score") or {}
+    page_intrinsic = existing_eeat.get("client")  # may be None
+    prior_cost = float(client_ao.get("audit_eeat_score_cost_usd") or 0.0)
+
+    if not anchor:
+        patch["audit_output.eeat_score.comparative_status"] = \
+            "skipped_no_anchor_keyword"
+        patch["audit_output.eeat_score.scoring_mode"] = "page_intrinsic_fallback"
+        return
+
+    # competitor docs by audit_id (AAA-75 corpus linkage).
+    ids = _build_competitor_audit_ids(state)
+    competitors = []
+    for url, aid in ids.items():
+        cdoc = await read_audit(aid)
+        competitors.append({"url": url, "audit_id": aid,
+                            "audit_output": (cdoc or {}).get("audit_output") or {}})
+
+    result, cost = score_eeat_comparative(client_ao, competitors, anchor)
+    mode = result.get("scoring_mode")
+
+    # common leaves
+    patch["audit_output.eeat_score.scoring_mode"] = mode
+    patch["audit_output.eeat_score.comparative_status"] = result.get("comparative_status")
+    patch["audit_output.eeat_score.anchor_keyword"] = anchor
+    patch["audit_output.eeat_score.rubric_version"] = result.get("rubric_version")
+    patch["audit_output.eeat_score.competitors_excluded"] = \
+        result.get("competitors_excluded") or []
+
+    if mode == "comparative" and result.get("client"):
+        # happy path: comparative client becomes display source; preserve the
+        # page-intrinsic score for provenance.
+        if page_intrinsic is not None:
+            patch["audit_output.eeat_score.client_page_intrinsic"] = page_intrinsic
+        patch["audit_output.eeat_score.client"] = result["client"]
+        patch["audit_output.eeat_score.competitors"] = result.get("competitors") or []
+        patch["audit_output.eeat_score.ranking"] = result.get("ranking") or []
+        patch["audit_output.audit_eeat_score_cost_usd"] = round(prior_cost + cost, 8)
+        logger.info("comparative eeat OK: anchor=%r client=%s/40 cost=$%.6f",
+                    anchor, (result["client"] or {}).get("total_0_40"), cost)
+    else:
+        # fallback / error: keep the page-intrinsic client score as display source.
+        patch["audit_output.eeat_score.competitors"] = []
+        logger.info("comparative eeat fallback (%s): keeping page-intrinsic client",
+                    result.get("comparative_status"))
+
+
 async def persist_re_findings(audit_id: str, state: dict) -> dict:
     """Attach the assembled re_findings sub-tree to an archived audit doc.
 
@@ -1193,17 +1267,22 @@ async def persist_re_findings(audit_id: str, state: dict) -> dict:
         "audit_output.re_findings": re_findings,
         "updated_at": _now_iso(),
     }
-    # AAA-170 competitor-extension — read back each audited competitor's own
-    # full_content eeat_score from its corpus doc and surface into the CLIENT
-    # doc's eeat_score.competitors[]. Pure read ($0); dotted-path update merges
-    # into the existing eeat_score map (client + _meta preserved). The
-    # "CLIENT-ONLY" framing of AAA-170 S1 is explicitly superseded here.
+    # AAA-172 S1 — COMPARATIVE query-anchored E-E-A-T. Supersedes the AAA-170
+    # per-competitor INDEPENDENT read-back for ordering (the rollout-gate showed
+    # per-page-independent ordering is unstable; the single comparative call is
+    # slot-swap stable across shuffled order). ONE gemini call scores the client
+    # + audited competitors against each other on the client's category_keyword
+    # (the SERP query the competitor set was built on). full_content gate =
+    # word-count >= 150 (NOT grounding_confidence, which falsely reads
+    # full_content on blocked/empty pages). <2 genuine competitors -> fallback:
+    # keep the step-1 page-intrinsic client score. Pure reads + 1 call; merged
+    # via dotted-path update so unrelated eeat_score siblings are preserved.
     try:
-        competitors_eeat = await _read_competitor_eeat(state)
-        patch["audit_output.eeat_score.competitors"] = competitors_eeat
+        await _apply_comparative_eeat(audit_id, state, patch)
     except Exception as e:  # noqa: BLE001 — never break re_findings persist
-        patch["audit_output.eeat_score.competitors"] = []
-        logger.warning("competitor eeat read-back failed: %s: %s",
+        patch["audit_output.eeat_score.comparative_status"] = \
+            "error: %s: %s" % (type(e).__name__, e)
+        logger.warning("comparative eeat scoring failed: %s: %s",
                        type(e).__name__, e)
     ref = _db().collection(_COLLECTION).document(audit_id)
     await asyncio.to_thread(ref.update, patch)

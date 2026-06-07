@@ -307,3 +307,251 @@ def _skip(t0: float, err: str) -> dict:
         "_meta": {"model_id": MODEL, "latency_s": round(time.perf_counter() - t0, 3),
                   "cost_usd": 0.0, "error": err},
     }
+
+
+# ===========================================================================
+# AAA-172 S1 — COMPARATIVE (query-anchored, common-keyword-basis) scorer
+# ===========================================================================
+# ONE gemini call scores the client + N competitors against EACH OTHER on the
+# client's category_keyword (the SERP query the competitor set was built on).
+# Validated on the rollout-gate (tax + vercel): produces an ordering-STABLE
+# relative ranking (zero slot-swaps across shuffled order) where the per-page-
+# independent scorer's ordering was unstable. The absolute /40 floats run-to-run
+# (correlated global scale shift) — render relative/banded, not the bare number.
+#
+# Prompt is byte-faithful to the gate-validated corrected comparative probe:
+# NO "(December-2025 framework)" persona tag; PAGE_n headers keyed to the
+# archived URL (not brand); same GROUND-TRUTH block, rubric, HARD GUARD, and
+# dimension definitions as the per-page scorer; vertical-neutral wording.
+RUBRIC_VERSION_COMPARATIVE = "eeat_v2_query_anchored"
+_CONTENT_WORD_MIN = 150  # full_content gate (word-count, NOT grounding_confidence)
+
+
+def _content_words(ao: dict) -> int:
+    """Deterministic full_content gate signal — main_content word count.
+    Reliable where grounding_confidence is NOT (a 403-blocked page can carry
+    grounding_confidence='full_content' with an empty body, AAA-172 gate)."""
+    cr = ao.get("crawl") or {}
+    mc = cr.get("main_content") or {}
+    w = mc.get("words")
+    if isinstance(w, int) and w > 0:
+        return w
+    # fallback: estimate from text length if words not populated
+    txt = mc.get("text") or (cr.get("content") or {}).get("visible_text") or ""
+    return len((txt or "").split())
+
+
+def _comparative_schema() -> dict:
+    return {"type": "OBJECT", "properties": {"evaluations": {"type": "ARRAY", "items": {
+        "type": "OBJECT", "properties": {
+            "page_id": {"type": "STRING"},
+            "experience": {"type": "INTEGER"}, "expertise": {"type": "INTEGER"},
+            "authoritativeness": {"type": "INTEGER"}, "trustworthiness": {"type": "INTEGER"},
+            "justification": {"type": "STRING"}},
+        "required": ["page_id", "experience", "expertise", "authoritativeness",
+                     "trustworthiness", "justification"]}}},
+        "required": ["evaluations"]}
+
+
+def _comparative_page_block(url: str, ao: dict, pid: str) -> str:
+    sig = _derive_signals(ao)
+    txt = _main_text(ao)[:1800]
+    gt = _ground_truth_block(ao, sig)
+    return (f"===== {pid} (url: {url}) =====\n"
+            f"GROUND-TRUTH (deterministic; authoritative, never contradict):\n"
+            f"{gt}\n"
+            f"PAGE CONTENT EXCERPT:\n"
+            f"{txt}\n")
+
+
+def _build_comparative_prompt(pages: list, anchor: str) -> str:
+    """pages = list of (url, audit_output) in display order (client first)."""
+    blocks = [_comparative_page_block(u, ao, f"PAGE_{i}")
+              for i, (u, ao) in enumerate(pages, 1)]
+    body = "\n".join(blocks)
+    n = len(pages)
+    return f"""You are a Google E-E-A-T COMPARATIVE diagnostic evaluator.
+TARGET SEARCH QUERY (relevance anchor for ALL pages): "{anchor}"
+
+You are given {n} pages below (PAGE_1..PAGE_{n}). Score EACH page on the four
+E-E-A-T dimensions (experience, expertise, authoritativeness, trustworthiness),
+each an INTEGER 0-10, JUDGED FOR THE TARGET QUERY'S TOPIC. Evaluate the pages
+COMPARATIVELY and RELATIVELY against one another on the same query. If a page is
+largely off-topic for the query, its topic-relevant dimensions score lower.
+
+HARD GUARD: justifications must be DESCRIPTIVE / DIAGNOSTIC / RELATIVE (what is
+present vs missing). It is FORBIDDEN to predict or imply Google ranking, SERP
+position, or AI-citation likelihood, or to reference SERP correlation. Never
+invent a signal not in the ground-truth. Score ONLY on-page signals.
+
+Return JSON: {{"evaluations":[{{"page_id","experience","expertise",
+"authoritativeness","trustworthiness","justification"}}]}} — one object per page,
+page_id EXACTLY as labelled (PAGE_1..).
+
+{body}
+"""
+
+
+def score_eeat_comparative(client_ao: dict, competitors: list,
+                           anchor_keyword: str) -> tuple[dict, float]:
+    """AAA-172 S1 — comparative query-anchored E-E-A-T.
+
+    client_ao   : the client's archived audit_output (full content).
+    competitors : list of {"url","audit_id","audit_output"} for the audited set.
+    anchor_keyword : the client's category_keyword (common-query basis).
+
+    full_content gate (word-count >= _CONTENT_WORD_MIN) is applied to each
+    COMPETITOR; sub-threshold competitors are excluded (recorded with reason +
+    word_count). If < 2 genuine competitors remain -> returns a 'skip' marker
+    (status='skipped_insufficient_full_content') and the caller keeps the
+    page-intrinsic client score (no comparative call made; cost 0.0).
+
+    Returns (result_dict, cost_usd). Never raises (skip-finding).
+
+    result_dict on success:
+      {rubric_version, anchor_keyword, scoring_mode:"comparative",
+       comparative_status:"ok",
+       client:{4 dims, total_0_40, justifications, verdict, grounding_confidence},
+       competitors:[{url, brand, audit_id, 4 dims, total_0_40, justification,
+                     grounding_confidence}],
+       ranking:[{url, brand, total_0_40, rank}],
+       competitors_excluded:[{url, reason, word_count}],
+       _meta:{...}}
+    """
+    from google.genai import types
+
+    t0 = time.perf_counter()
+    try:
+        anchor = (anchor_keyword or "").strip()
+        # full_content gate on competitors (word-count, NOT grounding_confidence)
+        genuine, excluded = [], []
+        for c in competitors:
+            cao = c.get("audit_output") or {}
+            w = _content_words(cao)
+            if w >= _CONTENT_WORD_MIN:
+                genuine.append(c)
+            else:
+                excluded.append({"url": c.get("url"), "reason": "below_full_content_threshold",
+                                 "word_count": w})
+
+        if len(genuine) < 2:
+            # Fallback — no comparative; caller keeps page-intrinsic client score.
+            return ({
+                "scoring_mode": "page_intrinsic_fallback",
+                "comparative_status": "skipped_insufficient_full_content",
+                "rubric_version": RUBRIC_VERSION_COMPARATIVE,
+                "anchor_keyword": anchor,
+                "competitors_excluded": excluded,
+                "competitors_genuine_count": len(genuine),
+                "_meta": {"model_id": MODEL, "cost_usd": 0.0,
+                          "latency_s": round(time.perf_counter() - t0, 3),
+                          "error": None},
+            }, 0.0)
+
+        # Build pages: client first (PAGE_1), then genuine competitors.
+        pages = [(client_ao.get("url") or (client_ao.get("site_profile") or {}).get("url")
+                  or "(client)", client_ao)]
+        for c in genuine:
+            pages.append((c.get("url"), c.get("audit_output") or {}))
+        prompt = _build_comparative_prompt(pages, anchor)
+
+        resp = _get_client().models.generate_content(
+            model=MODEL, contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=TEMPERATURE,
+                response_mime_type="application/json",
+                response_schema=_comparative_schema(),
+                thinking_config=types.ThinkingConfig(thinking_level=THINKING_LEVEL),
+            ),
+        )
+        latency = round(time.perf_counter() - t0, 3)
+        um = resp.usage_metadata
+        in_tok = getattr(um, "prompt_token_count", 0) or 0
+        out_tok = ((getattr(um, "candidates_token_count", 0) or 0)
+                   + (getattr(um, "thoughts_token_count", 0) or 0))
+        cost = round(compute_call_cost_usd(MODEL, in_tok, out_tok), 8)
+
+        parsed = json.loads(resp.text).get("evaluations") or []
+        by_pid = {e.get("page_id"): e for e in parsed}
+
+        def _dims(e: dict) -> dict:
+            d = {k: int(e[k]) for k in DIMS}
+            for k in DIMS:
+                if not (0 <= d[k] <= 10):
+                    raise ValueError(f"dim {k} out of range: {d[k]}")
+            d["total_0_40"] = sum(d[k] for k in DIMS)
+            return d
+
+        # client = PAGE_1
+        ce = by_pid.get("PAGE_1")
+        if not ce:
+            raise ValueError("comparative response missing PAGE_1 (client)")
+        cd = _dims(ce)
+        client_block = {
+            **{k: cd[k] for k in DIMS}, "total_0_40": cd["total_0_40"],
+            "justifications": {"comparative": ce.get("justification") or ""},
+            "verdict": ce.get("justification") or "",
+            "grounding_confidence": "full_content",
+        }
+        # competitors = PAGE_2..
+        comp_out, ranking = [], []
+        for i, c in enumerate(genuine, start=2):
+            ee = by_pid.get(f"PAGE_{i}")
+            cao = c.get("audit_output") or {}
+            brand = (cao.get("site_profile") or {}).get("brand") or c.get("brand")
+            if not ee:
+                continue
+            dd = _dims(ee)
+            comp_out.append({
+                "url": c.get("url"), "brand": brand, "audit_id": c.get("audit_id"),
+                **{k: dd[k] for k in DIMS}, "total_0_40": dd["total_0_40"],
+                "justification": ee.get("justification") or "",
+                "grounding_confidence": "full_content",
+            })
+        # ranking incl. client, by total desc
+        rank_rows = [{"url": pages[0][0],
+                      "brand": (client_ao.get("site_profile") or {}).get("brand"),
+                      "total_0_40": client_block["total_0_40"], "is_client": True}]
+        rank_rows += [{"url": c["url"], "brand": c["brand"],
+                       "total_0_40": c["total_0_40"], "is_client": False}
+                      for c in comp_out]
+        rank_rows.sort(key=lambda r: -r["total_0_40"])
+        for n, r in enumerate(rank_rows, 1):
+            r["rank"] = n
+        ranking = rank_rows
+
+        logger.info("score_eeat_comparative: %d pages, client %d/40, $%.6f, %.1fs",
+                    len(pages), client_block["total_0_40"], cost, latency)
+        return ({
+            "scoring_mode": "comparative",
+            "comparative_status": "ok",
+            "rubric_version": RUBRIC_VERSION_COMPARATIVE,
+            "anchor_keyword": anchor,
+            "client": client_block,
+            "competitors": comp_out,
+            "ranking": ranking,
+            "competitors_excluded": excluded,
+            "_meta": {"model_id": MODEL, "temperature": TEMPERATURE,
+                      "thinking_level": THINKING_LEVEL, "anchor_keyword": anchor,
+                      "anchor_source": "category_keyword",
+                      "input_tokens": in_tok, "output_tokens": out_tok,
+                      "latency_s": latency, "cost_usd": cost, "error": None},
+        }, cost)
+    except (ValidationError, json.JSONDecodeError, ValueError) as e:
+        logger.warning("score_eeat_comparative: parse/schema fail: %s: %s",
+                       type(e).__name__, e)
+        return ({"scoring_mode": "comparative", "comparative_status": "error",
+                 "rubric_version": RUBRIC_VERSION_COMPARATIVE,
+                 "anchor_keyword": (anchor_keyword or "").strip(),
+                 "_meta": {"model_id": MODEL, "cost_usd": 0.0,
+                           "latency_s": round(time.perf_counter() - t0, 3),
+                           "error": f"{type(e).__name__}: {e}"}}, 0.0)
+    except Exception as e:  # noqa: BLE001 — never fail the audit
+        logger.warning("score_eeat_comparative: call failed: %s: %s",
+                       type(e).__name__, e)
+        return ({"scoring_mode": "comparative", "comparative_status": "error",
+                 "rubric_version": RUBRIC_VERSION_COMPARATIVE,
+                 "anchor_keyword": (anchor_keyword or "").strip(),
+                 "_meta": {"model_id": MODEL, "cost_usd": 0.0,
+                           "latency_s": round(time.perf_counter() - t0, 3),
+                           "error": f"{type(e).__name__}: {e}"}}, 0.0)
