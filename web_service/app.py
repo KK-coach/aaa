@@ -378,19 +378,33 @@ def report(audit_id: str, lang: str = "") -> Response:
             return _status_page(lang, "pending", 200)
         return _status_page(lang, "notfound", 404)
     ao = (snap.to_dict() or {}).get("audit_output") or {}
-    uri = ao.get("customer_report_html_uri")
-    if ao.get("_customer_report_html_failed") is not None or not isinstance(uri, dict):
+    # AAA-161 Gate 4 — serving cutover: prefer the fact-first artifact
+    # (customer_report_html_uri_ff) and fall back to the legacy 18-section
+    # report (customer_report_html_uri) for older audits that predate
+    # fact-first OR if the .ff.html object is missing in GCS. Per lang.
+    candidates: list[tuple[str, str]] = []
+    for ref_key in ("customer_report_html_uri_ff", "customer_report_html_uri"):
+        uri = ao.get(ref_key)
+        if not isinstance(uri, dict):
+            continue
+        objects = uri.get("objects") or {}
+        chosen = lang if lang in objects else uri.get("default_lang")
+        key = objects.get(chosen) if chosen else None
+        bucket = uri.get("bucket")
+        if key and bucket:
+            candidates.append((bucket, key))
+    if not candidates:
+        # nothing rendered yet (or render failed) — friendly "still preparing"
         return _status_page(lang, "pending", 200)
-    objects = uri.get("objects") or {}
-    chosen = lang if lang in objects else uri.get("default_lang")
-    key = objects.get(chosen) if chosen else None
-    if not key:
-        return _status_page(lang, "pending", 200)
-    try:
-        data = _storage().bucket(uri.get("bucket")).blob(key).download_as_bytes()
-    except Exception:  # noqa: BLE001
-        return _status_page(lang, "error", 503)
-    return Response(content=data, media_type="text/html; charset=utf-8")
+    last_error = False
+    for bucket, key in candidates:
+        try:
+            data = _storage().bucket(bucket).blob(key).download_as_bytes()
+            return Response(content=data, media_type="text/html; charset=utf-8")
+        except Exception:  # noqa: BLE001 — object absent/unreadable → try next (legacy)
+            last_error = True
+            continue
+    return _status_page(lang, "error", 503 if last_error else 404)
 
 
 if __name__ == "__main__":  # local dev only

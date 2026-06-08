@@ -755,15 +755,17 @@ def _render_upload_ff(ao: dict, audit_id: str, bucket: str,
     b = client.bucket(bucket)
     objects: dict = {}
     cost = 0.0
+    version = None
     for lang in ("en", "hu"):
         html, meta = render_factfirst_report(ao, lang, available_langs=["en", "hu"])
         cost += float(meta.get("cost_usd", 0.0) or 0.0)
+        version = meta.get("render_version") or version  # G4: from the module
         key = "reports/%s.%s.ff.html" % (audit_id, lang)
         b.blob(key).upload_from_string(
             html, content_type="text/html; charset=utf-8"
         )
         objects[lang] = key
-    return objects, round(cost, 8)
+    return objects, round(cost, 8), version
 
 
 async def attach_customer_report_html(audit_id: str, bucket: str | None = None) -> dict:
@@ -809,12 +811,13 @@ async def attach_customer_report_html(audit_id: str, bucket: str | None = None) 
         # Skip-finding: a ff-render failure must not affect the legacy uri.
         try:
             _audit_date = (existing.get("audit_date") or existing.get("created_at") or "")[:10]
-            ff_objects, ff_cost = await asyncio.to_thread(
+            ff_objects, ff_cost, ff_version = await asyncio.to_thread(
                 _render_upload_ff, ao, audit_id, bucket, _audit_date)
             update_payload["audit_output.customer_report_html_uri_ff"] = {
                 "bucket": bucket, "objects": ff_objects,
                 "default_lang": "en", "rendered_at": now,
-                "render_version": "factfirst_v1", "render_cost_usd": ff_cost,
+                # G4 root-cause: read the version from the render module (no drift).
+                "render_version": ff_version, "render_cost_usd": ff_cost,
             }
             update_payload["audit_output._customer_report_html_ff_failed"] = \
                 firestore.DELETE_FIELD

@@ -25,6 +25,10 @@ import html as _html
 
 SECTION_IDS = ["§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8"]
 
+# AAA-161 Gate 4: single source of truth for the render version (persisted ref
+# reads THIS, so the label can't drift from the actual output again).
+RENDER_VERSION = "factfirst_v2_skin"
+
 # layer value (stored, HU) -> (mockup css class, {en,hu} chip label)
 _LAYER_CHIP = {
     "mért": ("t-mert", {"en": "measured", "hu": "mért"}),
@@ -607,4 +611,4 @@ def render_factfirst_report(audit_output, lang="en", available_langs=None):
         _esc(t["doc_title"]), _esc(t["sub"]), legend, toc, snap, body)
 
     return doc, {"cost_usd": 0.0, "lang": lang,
-                 "sections": [s[0] for s in secs], "render_version": "factfirst_v2_skin"}
+                 "sections": [s[0] for s in secs], "render_version": RENDER_VERSION}
