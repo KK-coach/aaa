@@ -409,8 +409,55 @@ def _map_onpage(ao) -> dict:
     }
 
 
+def _aio_status(ao):
+    """AAA-161 G3.5 — AI-Overview citation status from the SAME source the §6
+    prose reads: re_findings.serp_{branded,category}.ai_overview_present +
+    .ai_overview_citations (the top-level ai_overview block is often empty).
+    Returns (triggered, client_status_fact, cited_regs_set). Client cited =
+    measured(True); triggered but client absent from the citation list =
+    absent(False)=excluded; no AIO = not_measured."""
+    rf, _ = _dig(ao, "re_findings")
+    rf = rf if isinstance(rf, dict) else {}
+    triggered = False
+    cites = []
+    src = "re_findings.serp_branded/serp_category.ai_overview_citations"
+    for blk in ("serp_branded", "serp_category"):
+        s = rf.get(blk) or {}
+        if s.get("ai_overview_present"):
+            triggered = True
+        cites += (s.get("ai_overview_citations") or [])
+    cited_regs = set()
+    for u in cites:
+        url = u if isinstance(u, str) else (u.get("url") if isinstance(u, dict) else "")
+        if url:
+            cited_regs.add(_reg(url))
+    client_url = ao.get("url") or (ao.get("crawl") or {}).get("url") or ""
+    client_reg = _reg(client_url)
+    if not triggered:
+        client_fact = _fact(None, NOT_MEASURED, src)
+    else:
+        is_cited = client_reg in cited_regs
+        client_fact = _fact(is_cited, MEASURED if is_cited else ABSENT, src)
+    return triggered, client_fact, cited_regs
+
+
 def _map_ai_visibility(ao) -> dict:
+    triggered, aio_client, cited_regs = _aio_status(ao)
+    # which audited competitors are cited in the AI Overview (measured presence)
+    comp_ids = ((ao.get("re_findings") or {}).get("competitor_audit_ids") or {})
+    cited_comps = []
+    if triggered and isinstance(comp_ids, dict):
+        for url in comp_ids:
+            if _reg(url) in cited_regs:
+                cited_comps.append(url)
     return {
+        # AAA-161 G3.5: AIO status wired to the SERP citation source (real status).
+        "ai_overview_triggered": _fact(triggered, MEASURED, "re_findings.serp_*.ai_overview_present"),
+        "ai_overview_client_status": aio_client,  # measured cited / absent=excluded / not_measured
+        "ai_overview_cited_competitors": _fact(
+            cited_comps, (MEASURED if cited_comps else ABSENT) if triggered else NOT_MEASURED,
+            "re_findings.serp_*.ai_overview_citations ∩ competitor_audit_ids"),
+        # legacy passthroughs (kept; top-level ai_overview block often empty)
         "ai_overview_present": r_bool(ao, "ai_overview", "present"),
         "ai_overview_client_cited": r_client_cited(ao, "ai_overview", "client_cited"),
         "ai_overview_cited_sources": r_list(ao, "ai_overview", "cited_sources"),

@@ -736,7 +736,8 @@ def _render_upload_all(ao: dict, cst: dict, audit_id: str, bucket: str) -> dict:
     return objects
 
 
-def _render_upload_ff(ao: dict, audit_id: str, bucket: str) -> tuple[dict, float]:
+def _render_upload_ff(ao: dict, audit_id: str, bucket: str,
+                      audit_date: str | None = None) -> tuple[dict, float]:
     """AAA-161 Gate 3 — SYNC: render the NEW 8-section fact-first report (hu+en)
     from audit_output.fact_base + .decisions and upload to a PARALLEL GCS key
     reports/{audit_id}.{lang}.ff.html. Returns ({lang: key}, total_cost_usd).
@@ -745,6 +746,11 @@ def _render_upload_ff(ao: dict, audit_id: str, bucket: str) -> tuple[dict, float
     from report.render_factfirst import render_factfirst_report
     from google.cloud import storage
 
+    # G3.5: audit_date lives on the DOC, not audit_output — inject for the
+    # header + §8 freshness table (date-only, AAA-177).
+    if audit_date and not ao.get("audit_date"):
+        ao = dict(ao)
+        ao["audit_date"] = audit_date
     client = storage.Client()
     b = client.bucket(bucket)
     objects: dict = {}
@@ -802,8 +808,9 @@ async def attach_customer_report_html(audit_id: str, bucket: str | None = None) 
         # AAA-161 Gate 3 — PARALLEL fact-first report (does NOT replace legacy).
         # Skip-finding: a ff-render failure must not affect the legacy uri.
         try:
+            _audit_date = (existing.get("audit_date") or existing.get("created_at") or "")[:10]
             ff_objects, ff_cost = await asyncio.to_thread(
-                _render_upload_ff, ao, audit_id, bucket)
+                _render_upload_ff, ao, audit_id, bucket, _audit_date)
             update_payload["audit_output.customer_report_html_uri_ff"] = {
                 "bucket": bucket, "objects": ff_objects,
                 "default_lang": "en", "rendered_at": now,

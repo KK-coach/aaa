@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tényalap-riport — mockup</title>
+<style>
+  :root{
+    --bg:#f6f1e7; --surface:#fffdf8; --card:#fffefb;
+    --ink:#2a2622; --muted:#6f6657; --faint:#938974;
+    --line:#e6ddc9; --line-strong:#d6c9ab;
+    --accent:#9c4a21;
+    --bad:#b3261e; --bad-bg:#fbeae8;
+    --warn:#9a6a00; --warn-bg:#fbf2dd;
+    --ok:#2e6b3e; --ok-bg:#e9f3ea;
+    --t-mert:#2f5d8c; --t-becs:#8a6d00; --t-ai:#6b4d8a; --t-kov:#9c4221;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:ui-sans-serif,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;color:var(--ink)}
+  h1{font-size:30px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:26px}
+  h2.sec{font-size:21px;margin:0 0 2px}
+  .secnum{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent)}
+  .role{color:var(--faint);font-size:13.5px;font-style:italic;margin:2px 0 16px}
+  section{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:24px 26px;margin:0 0 18px;scroll-margin-top:16px}
+  p{margin:0 0 12px}
+  .lead{font-size:17px}
+  ul{margin:0 0 12px;padding-left:20px}
+  li{margin:3px 0}
+  /* layer tags */
+  .tag{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:600;
+    letter-spacing:.02em;padding:1px 7px;border-radius:20px;border:1px solid currentColor;
+    vertical-align:middle;white-space:nowrap}
+  .t-mert{color:var(--t-mert)} .t-becs{color:var(--t-becs)}
+  .t-ai{color:var(--t-ai)} .t-kov{color:var(--t-kov)}
+  /* status chips */
+  .st{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:6px}
+  .st-bad{background:var(--bad-bg);color:var(--bad)}
+  .st-warn{background:var(--warn-bg);color:var(--warn)}
+  .st-ok{background:var(--ok-bg);color:var(--ok)}
+  /* dashboard */
+  .hook{border-left:3px solid var(--accent);padding:6px 0 6px 16px;margin:6px 0 20px;
+    font-family:var(--serif);font-size:20px;line-height:1.4}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .axis{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 15px;
+    display:flex;flex-direction:column;gap:7px}
+  .axis .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .axis .name{font-weight:600;font-size:15.5px}
+  .axis .why{color:var(--muted);font-size:13.5px;line-height:1.45;flex:1}
+  .axis .foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .lnk{color:var(--accent);font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap}
+  .lnk:hover{text-decoration:underline}
+  /* tables */
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 4px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{font-family:var(--sans);font-size:12px;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--faint);font-weight:700}
+  td.num{font-variant-numeric:tabular-nums}
+  .ph{color:var(--faint);font-style:italic}
+  /* mini bar */
+  .bar{height:7px;border-radius:5px;background:var(--line);overflow:hidden;min-width:80px}
+  .bar > i{display:block;height:100%;border-radius:5px;background:var(--accent)}
+  .bar.low > i{background:var(--bad)}
+  .dimrow{display:grid;grid-template-columns:150px 56px 1fr;gap:12px;align-items:center;
+    padding:9px 0;border-bottom:1px solid var(--line)}
+  .dimrow:last-child{border-bottom:0}
+  .dimname{font-weight:600;font-size:14.5px}
+  .dimname small{display:block;color:var(--faint);font-weight:400;font-size:12px}
+  .dimsig{color:var(--muted);font-size:13px}
+  .band{display:inline-block;background:var(--card);border:1px solid var(--line-strong);
+    border-radius:8px;padding:8px 14px;font-family:var(--serif);font-size:17px;margin:2px 0 10px}
+  .band b{color:var(--accent)}
+  .note{background:var(--card);border:1px dashed var(--line-strong);border-radius:10px;
+    padding:14px 16px;color:var(--muted);font-size:13.5px;margin-top:10px}
+  /* §7 placeholder */
+  .placeholder{border:2px dashed var(--accent);background:#fdf4ec}
+  .placeholder h2.sec{color:var(--accent)}
+  .ph-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:20px;margin-left:8px;
+    font-family:var(--sans);vertical-align:middle}
+  .designnote{background:#fffaf3;border:1px solid var(--line-strong);border-left:3px solid var(--accent);
+    border-radius:8px;padding:12px 15px;margin-top:14px;font-size:13.5px;color:var(--muted)}
+  .designnote strong{color:var(--ink)}
+  /* legend / nav */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:0 0 8px;font-size:12.5px}
+  .legend b{font-family:var(--sans);color:var(--faint);font-weight:700;text-transform:uppercase;
+    letter-spacing:.05em;font-size:11px;margin-right:2px}
+  nav.toc{font-size:13px;color:var(--muted);margin:0 0 26px;line-height:1.9}
+  nav.toc a{color:var(--accent);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  .snapshot{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;
+    font-size:12.5px;color:var(--muted);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:4px 16px}
+  .snapshot span b{color:var(--ink);font-weight:600}
+  /* §2 keyword hero + why + chart */
+  .kwhero{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;background:var(--card);
+    border:1px solid var(--line-strong);border-left:4px solid var(--accent);border-radius:10px;
+    padding:16px 20px;margin:6px 0 4px}
+  .kwhero .kw{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink)}
+  .kwhero .kwmeta{color:var(--muted);font-size:14px}
+  .kwhero .kwmeta b{color:var(--ink)}
+  .whybox{background:#fffaf3;border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+    margin:12px 0 18px;font-size:14.5px}
+  .whybox .h{font-weight:600;font-family:var(--serif);font-size:16px;margin-bottom:4px}
+  .illus{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--warn);background:var(--warn-bg);border-radius:5px;padding:2px 8px}
+  .chartcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px 10px;margin:6px 0 6px}
+  .chartcard .ctop{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .chartcard .ctop .t{font-weight:600;font-size:14.5px}
+  .avgpill{font-family:var(--serif);font-size:15px;background:var(--surface);border:1px solid var(--line-strong);
+    border-radius:8px;padding:5px 12px}
+  .avgpill b{color:var(--accent);font-size:18px}
+  svg.chart{width:100%;height:auto;display:block}
+  svg.chart .bar{fill:var(--accent);opacity:.5}
+  svg.chart .lbl{font-family:var(--sans);font-size:10.5px;fill:var(--faint)}
+  svg.chart .val{font-family:var(--sans);font-size:9.5px;fill:var(--muted)}
+  svg.chart .avgbar{fill:var(--accent);opacity:1}
+  svg.chart .divider{stroke:var(--line-strong);stroke-width:1.5}
+  svg.chart .avgtxt{font-family:var(--sans);font-size:10px;fill:var(--accent);font-weight:700}
+  td.brand{font-weight:600}
+  tr.clientrow td{background:var(--bad-bg)}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}.dimrow{grid-template-columns:1fr 50px;gap:8px}
+    .dimsig{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ FEJLÉC ============ -->
+  <h1>Láthatósági és tartalmi audit</h1>
+  <div class="sub">Egy weboldal teljesítményének visszafejtése a keresőben és az AI-keresésben — tényalapú riport.</div>
+
+  <div class="legend">
+    <b>Réteg-jelölés:</b>
+    <span class="tag t-mert">mért</span>
+    <span class="tag t-becs">becslés</span>
+    <span class="tag t-ai">AI-értelmezés</span>
+    <span class="tag t-kov">következtetés</span>
+    <span style="color:var(--faint)">— minden adatpont mellett jelezzük, honnan jön.</span>
+  </div>
+  <nav class="toc">
+    <a href="#s1">1 · Összefoglaló státusz</a> &nbsp;·&nbsp;
+    <a href="#s2">2 · Keresési környezet</a> &nbsp;·&nbsp;
+    <a href="#s3">3 · AI-láthatóság</a> &nbsp;·&nbsp;
+    <a href="#s4">4 · Saját oldal</a> &nbsp;·&nbsp;
+    <a href="#s5">5 · Konkurens benchmark</a> &nbsp;·&nbsp;
+    <a href="#s6">6 · E-E-A-T / bizalom</a> &nbsp;·&nbsp;
+    <a href="#s7">7 · Javaslatok</a> &nbsp;·&nbsp;
+    <a href="#s8">8 · Adatminőség</a>
+  </nav>
+
+  <!-- ============ §1 DASHBOARD — PLACEHOLDER ============ -->
+  <section id="s1" class="placeholder">
+    <div class="secnum">1. szekció</div>
+    <h2 class="sec">Összefoglaló státusz <span class="ph-badge">placeholder</span></h2>
+    <div class="role">Mit nézel és hogy állsz — egy képernyőnyi összegzés, fentről.</div>
+    <p style="color:var(--muted)">Ez a szekció a többi szekció kész tartalmából és a 7. szekció hatás-rangsorából épül fel (a fő olvasat onnan jön). Akkor véglegesítjük, ha a §2–§7 tartalma megvan — addig placeholder.</p>
+  </section>
+
+  <!-- ============ §2 KERESÉSI KÖRNYEZET ============ -->
+  <section id="s2">
+    <div class="secnum">2. szekció</div>
+    <h2 class="sec">Keresési környezet</h2>
+    <div class="role">A színpad: melyik kulcsszóra, milyen szándékkal keresnek, hogy néz ki a találati lista, és hol állsz benne.</div>
+
+    <div class="kwhero">
+      <span class="kw">„tax compliance software"</span>
+      <span class="kwmeta">piac: <b>US / angol</b> &nbsp;·&nbsp; szándék: <b>kereskedelmi</b> &nbsp;·&nbsp; <span class="tag t-mert">mért</span></span>
+    </div>
+
+    <div class="whybox">
+      <div class="h">Miért ezt a kulcsszót elemezzük?</div>
+      Ez az a kifejezés, amelyre az oldal a <b>kategóriájában ténylegesen verseng</b>: a termék kategóriáját írja le, kereskedelmi (vásárlási) szándékú, és erre épül a versenytárs-mezőny is. Nem a márkanévre optimalizálunk — arra az oldal amúgy is megjelenik —, hanem arra a vásárlói kifejezésre, ahol a valódi verseny zajlik.
+      <span class="tag t-kov">következtetés</span>
+    </div>
+
+    <div class="chartcard">
+      <div class="ctop">
+        <span class="t">Keresési kereslet — átlag + utolsó 12 hónap, havi bontás &nbsp;<span class="illus">illusztratív</span></span>
+      </div>
+      <svg class="chart" viewBox="0 0 760 210" role="img" aria-label="Havi keresési volumen: átlag 720, majd az utolsó 12 hónap havi bontásban">
+        <!-- átlag oszlop -->
+        <rect class="avgbar" x="16" y="65" width="44" height="115" rx="3"></rect>
+        <text class="avgtxt" x="38" y="61" text-anchor="middle">720</text>
+        <text class="avgtxt" x="38" y="196" text-anchor="middle">Átlag</text>
+        <!-- elválasztó -->
+        <line class="divider" x1="74" y1="24" x2="74" y2="186"></line>
+        <!-- havi oszlopok -->
+        <rect class="bar" x="88"  y="87" width="40" height="93"  rx="3"></rect><text class="val" x="108" y="83">580</text><text class="lbl" x="108" y="196">Jún</text>
+        <rect class="bar" x="142" y="91" width="40" height="89"  rx="3"></rect><text class="val" x="162" y="87">560</text><text class="lbl" x="162" y="196">Júl</text>
+        <rect class="bar" x="196" y="84" width="40" height="96"  rx="3"></rect><text class="val" x="216" y="80">600</text><text class="lbl" x="216" y="196">Aug</text>
+        <rect class="bar" x="250" y="71" width="40" height="109" rx="3"></rect><text class="val" x="270" y="67">680</text><text class="lbl" x="270" y="196">Szep</text>
+        <rect class="bar" x="304" y="62" width="40" height="118" rx="3"></rect><text class="val" x="324" y="58">740</text><text class="lbl" x="324" y="196">Okt</text>
+        <rect class="bar" x="358" y="52" width="40" height="128" rx="3"></rect><text class="val" x="378" y="48">800</text><text class="lbl" x="378" y="196">Nov</text>
+        <rect class="bar" x="412" y="40" width="40" height="140" rx="3"></rect><text class="val" x="432" y="36">880</text><text class="lbl" x="432" y="196">Dec</text>
+        <rect class="bar" x="466" y="30" width="40" height="150" rx="3"></rect><text class="val" x="486" y="26">940</text><text class="lbl" x="486" y="196">Jan</text>
+        <rect class="bar" x="520" y="46" width="40" height="134" rx="3"></rect><text class="val" x="540" y="42">840</text><text class="lbl" x="540" y="196">Feb</text>
+        <rect class="bar" x="574" y="59" width="40" height="121" rx="3"></rect><text class="val" x="594" y="55">760</text><text class="lbl" x="594" y="196">Már</text>
+        <rect class="bar" x="628" y="75" width="40" height="105" rx="3"></rect><text class="val" x="648" y="71">660</text><text class="lbl" x="648" y="196">Ápr</text>
+        <rect class="bar" x="682" y="84" width="40" height="96"  rx="3"></rect><text class="val" x="702" y="80">600</text><text class="lbl" x="702" y="196">Máj</text>
+      </svg>
+      <div style="font-size:12px;color:var(--faint);margin-top:2px">Az átlag (kiemelt oszlop) a 12 havi érték számtani közepe; a havi értékek a tárolt 12-havi trendből. <span class="tag t-mert">mért</span> <span style="color:var(--warn)">— a számok itt illusztratívak, a valós trend behúzandó.</span></div>
+    </div>
+
+    <p style="margin-top:14px"><b>Kapcsolódó kulcsszavak.</b> 4 másodlagos kifejezés, ezekből kettőre van volumen-adat (~50 és ~30 / hó); 4 hosszú-farok kifejezésre nincs megbízható adat — ezt üresen hagyjuk, nem becsüljük. <span class="tag t-mert">mért</span></p>
+
+    <h3 style="font-size:16px;margin:16px 0 6px">A találati lista (SERP) <span class="illus">illusztratív szerkezet</span></h3>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:4px">A fő kulcsszó szerves találati listája — pozíció, URL és brand szerint. A te oldalad pozíciója is itt látszik a mezőnyhöz képest.</p>
+    <table>
+      <tr><th style="width:64px">Pozíció</th><th>URL</th><th style="width:150px">Brand</th></tr>
+      <tr><td class="num">1</td><td class="ph">— valós SERP-sor behúzandó —</td><td class="ph">—</td></tr>
+      <tr><td class="num">2</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr><td class="num">3</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr><td class="num">…</td><td class="ph">…</td><td class="ph">…</td></tr>
+      <tr><td class="num">10</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr class="clientrow"><td class="num">10+</td><td>taxually.com</td><td class="brand">taxually — top 10-en kívül</td></tr>
+    </table>
+    <p style="font-size:12.5px;color:var(--faint)">A pozíció · URL · brand sorok a tárolt auditból töltődnek; a brand a domainből vezethető le. A te oldalad a fő kulcsszóra a top 10-en kívül van. <span class="tag t-mert">mért</span></p>
+
+    <p style="margin-top:14px"><b>A lista jellege.</b> A találatokat összehasonlító listák („8 legjobb…", „5 legjobb…"), gyártói honlapok és útmutatók uralják, és megjelenik a Google AI Overview is — annak a tartalma (kit idéz) a 3. szekcióban. <span class="tag t-mert">mért</span></p>
+  </section>
+
+  <!-- ============ §3 AI-LÁTHATÓSÁG ============ -->
+  <section id="s3">
+    <div class="secnum">3. szekció</div>
+    <h2 class="sec">AI-láthatóság</h2>
+    <div class="role">Hol jelensz meg az AI-felületeken — pillanatfelvétel, nem napi átlag.</div>
+
+    <div class="snapshot">
+      <span><b>Felület:</b> Google AI Overview + ChatGPT</span>
+      <span><b>Ország/nyelv:</b> US / angol</span>
+      <span><b>Kulcsszó:</b> „tax compliance software"</span>
+      <span><b>Mérés:</b> 2026-06-06</span>
+      <span><b>Futások:</b> 1</span>
+    </div>
+
+    <p><b>Google AI Overview.</b> A kulcsszóra megjelenik az AI-összefoglaló. Ezt az oldalt <b>nem</b> idézi. Az idézett 9 forrás: gyártói honlapok (Avalara, Vertex, Symmetry, Getsphere), egy referencia (Wikipedia), összehasonlító listák (Anrok, Deel, Getsphere) és egy útmutató (Thomson Reuters). A kapcsolódó AI Overview-kben (17 megjelenés) a leggyakrabban idézettek: Getsphere (3×), Kintsugi (3×), Anrok (2×) — ez az oldal egyikben sem szerepel. <span class="tag t-mert">mért</span></p>
+
+    <p><b>ChatGPT.</b> A kulcsszóra adott válaszban ezt az oldalt <b>nem</b> idézi. A 3 idézett forrás mind sajtóközlemény (Thomson Reuters, Sovos, Vertex). <span class="tag t-mert">mért</span></p>
+
+    <p><b>Kapcsolódó AI-alkérdések (fan-out).</b> Az AI a fő kérdést 5 alkérdésre bontja; ezekből az oldal <b>0-t</b> fed le. Kettő releváns volna, de nincs lefedve; három az oldal témáján kívül esik. <span class="tag t-mert">mért</span></p>
+
+    <p><b>Olvasat.</b> Az oldal a vizsgált AI-felületeken nincs jelen a fő kulcsszavára, miközben a fő versenytársak idézve vannak. A mezőnyhöz mérten ez tényleges lemaradás — nem az általános „a legtöbb oldalt nem idézik" jelenség. <span class="tag t-ai">AI-értelmezés</span></p>
+  </section>
+
+  <!-- ============ §4 SAJÁT OLDAL ============ -->
+  <section id="s4">
+    <div class="secnum">4. szekció</div>
+    <h2 class="sec">Saját oldal</h2>
+    <div class="role">Minden, ami erről az oldalról szól: mit mond, hogy látja a gép, és technikailag egészséges-e.</div>
+
+    <h3 style="font-size:16px;margin:4px 0 6px">a) Tartalmi profil</h3>
+    <ul>
+      <li>Tartalomtípus: gyártói honlap (termék-bemutató fókusz). <span class="tag t-mert">mért</span></li>
+      <li>Nincs nevesített szerző / szakértő az oldalon. <span class="tag t-mert">mért</span></li>
+      <li>8 helyen befejezetlen helykitöltő szöveg („Lorem ipsum") maradt a megjelenő tartalomban. <span class="tag t-mert">mért</span></li>
+    </ul>
+
+    <h3 style="font-size:16px;margin:14px 0 6px">b) Gép-olvashatóság</h3>
+    <ul>
+      <li>Címsor-szerkezet: 1 db H1, összesen 30 címsor, nincs szint-ugrás. <span class="tag t-mert">mért</span></li>
+      <li>Tájékozódási pontok: nav, main, footer megvan; hiányzik az article, aside, header. <span class="tag t-mert">mért</span></li>
+      <li>Képek alternatív szövege: 142-ből 92 ellátva (~65%). <span class="tag t-mert">mért</span></li>
+      <li>Strukturált adat (JSON-LD) jelen, 7 típussal; keresődoboz-jelölés (SearchAction) megvan. <span class="tag t-mert">mért</span></li>
+    </ul>
+
+    <h3 style="font-size:16px;margin:14px 0 6px">c) Technikai egészség <span class="st st-ok" style="font-size:11px;vertical-align:middle">jó</span></h3>
+    <ul>
+      <li><b>Renderelés:</b> szerver-oldali (SSR); a tartalom JavaScript nélkül is látható, így az AI-botok és keresők számára olvasható. <span class="tag t-mert">mért</span></li>
+      <li><b>Indexálhatóság:</b> indexelt; nincs tiltó beállítás; a canonical önmagára mutat (nincs ütközés); HTTPS mindenhol; a http és a www nélküli verzió átirányít. <span class="tag t-mert">mért</span></li>
+      <li><b>Oldalsúly:</b> nyers HTML ~126 KB — a Google 2 MB-os indexelési keretének 6,16%-a, bőven biztonságos, nincs tartalom-levágás. <span class="tag t-mert">mért</span></li>
+    </ul>
+
+    <p style="margin-top:10px"><b>Core Web Vitals — a Google mezei (valós felhasználói) adatai, p75, mobil:</b> <span class="tag t-mert">mért</span></p>
+    <table>
+      <tr><th>Mutató</th><th>Érték</th><th>Google küszöb</th></tr>
+      <tr><td>LCP (legnagyobb tartalom betöltése)</td><td class="num">1,6 mp</td><td>gyors</td></tr>
+      <tr><td>INP (interakció válaszideje)</td><td class="num">311 ms</td><td>átlagos</td></tr>
+      <tr><td>CLS (elrendezés-elmozdulás)</td><td class="num">0,0</td><td>kiváló</td></tr>
+      <tr><td>FCP (első tartalom megjelenése)</td><td class="num">1,4 mp</td><td>gyors</td></tr>
+      <tr><td>TTFB (szerver válaszidő)</td><td class="num">0,6 mp</td><td>gyors</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">A „gyors / átlagos" a Google saját küszöbe, nem a mi minősítésünk. Az egyetlen nem-gyors valós jel az INP. Laborteszt (PageSpeed): mobil teljesítmény 56 / asztali 74; SEO 92; akadálymentesség 88. <span class="tag t-mert">mért</span></p>
+  </section>
+
+  <!-- ============ §5 KONKURENS BENCHMARK ============ -->
+  <section id="s5">
+    <div class="secnum">5. szekció</div>
+    <h2 class="sec">Konkurens benchmark</h2>
+    <div class="role">Fej-fej: hogy állsz a mezőny ténylegesen releváns szereplőihez mérve.</div>
+
+    <p><b>Tartalmi összevetés.</b> A versenytársak (Avalara, Vertex, Thomson Reuters) és ez az oldal egységes mérés szerint. Fontos: a <b>szöveg hossza önmagában nem rangsoroló tényező</b> — az egyik versenytárs ~400 szóval is a 3. helyen rangsorol. A különbség a tartalmi mélységben és a témalefedettségben van, nem a puszta szószámban. <span class="tag t-kov">következtetés</span></p>
+
+    <p><b>E-E-A-T összevetés a közös kulcsszón.</b> Mind a négy oldalt ugyanarra a kulcsszóra mérve, relatív sorrendben (a pontos pontszámot lásd a 6. szekció sáv-magyarázatánál — nyers számként szándékosan nem jelenítjük meg): <span class="tag t-mert">mért</span></p>
+    <table>
+      <tr><th>Helyezés a mezőnyben</th><th>Oldal</th><th>Relatív erő</th></tr>
+      <tr><td class="num">#1</td><td>Avalara</td><td><div class="bar"><i style="width:92%"></i></div></td></tr>
+      <tr><td class="num">#2</td><td>Thomson Reuters</td><td><div class="bar"><i style="width:92%"></i></div></td></tr>
+      <tr><td class="num">#3</td><td>Vertex</td><td><div class="bar"><i style="width:74%"></i></div></td></tr>
+      <tr><td class="num">#4</td><td><b>taxually.com</b> (ez az oldal)</td><td><div class="bar low"><i style="width:56%"></i></div></td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">A bizalmi/szakértői jelek terén ez az oldal a mezőny végén áll, a jól illeszkedő gyártók fölötte. A dimenzió-szintű részletek a 6. szekcióban. <span class="tag t-ai">AI-értelmezés</span></p>
+  </section>
+
+  <!-- ============ §6 E-E-A-T ============ -->
+  <section id="s6">
+    <div class="secnum">6. szekció</div>
+    <h2 class="sec">E-E-A-T / bizalmi olvasat</h2>
+    <div class="role">A tartalmi olvasat csúcspontja: mennyire tükröz az oldal tapasztalatot, szakértelmet, tekintélyt és megbízhatóságot — kizárólag a mért on-page jelekből.</div>
+
+    <p style="font-size:13.5px;color:var(--muted)">Az E-E-A-T a Google tartalmi-minőségi kerete (Experience / Expertise / Authoritativeness / Trustworthiness). A négy dimenziót a mért on-page jelekre kötjük, <b>kizárólag erre az oldalra</b>. A háttér-tekintélyt (backlinkek, domain-tekintély) és a tényleges helyezést itt <b>nem</b> mérjük és nem jósoljuk.</p>
+
+    <h3 style="font-size:16px;margin:14px 0 6px">Dimenziók (0–10, jelekre kötve)</h3>
+    <div class="band">Összpontszám sávja: <b>≈ 18–21 / 40</b> &nbsp;·&nbsp; kvalitatív: gyenge–közepes</div>
+    <p style="font-size:13px;color:var(--muted);margin-top:-4px">A pontos összpont ±~3 ponton belül mozog mérésről mérésre — ezért sávként közöljük. A diagnosztikus érték a <b>dimenzió-mintázat</b> és a <b>javítható tételek</b> listája, nem a pontos szám. <span class="tag t-mert">mért</span> <span class="tag t-ai">AI-értelmezés</span></p>
+
+    <div style="margin-top:12px">
+      <div class="dimrow">
+        <div class="dimname">Tapasztalat<small>Experience</small></div>
+        <div><span class="band" style="margin:0;padding:4px 10px;font-size:15px">7/10</span></div>
+        <div class="dimsig">Van jel: nagy, működő ügyfélbázisra utaló állítások (pl. „15 000 vállalat").</div>
+      </div>
+      <div class="dimrow">
+        <div class="dimname">Szakértelem<small>Expertise</small></div>
+        <div><span class="band" style="margin:0;padding:4px 10px;font-size:15px">5/10</span></div>
+        <div class="dimsig">Részben: nincs nevesített szerző vagy szakértő az oldalon.</div>
+      </div>
+      <div class="dimrow">
+        <div class="dimname">Tekintély<small>Authoritativeness</small></div>
+        <div><span class="band" style="margin:0;padding:4px 10px;font-size:15px">6/10</span></div>
+        <div class="dimsig">Van némi jel, de gyenge az explicit tekintély-jelzés.</div>
+      </div>
+      <div class="dimrow">
+        <div class="dimname">Megbízhatóság<small>Trustworthiness</small></div>
+        <div><span class="band low" style="margin:0;padding:4px 10px;font-size:15px;border-color:var(--bad);color:var(--bad)">3/10</span></div>
+        <div class="dimsig">Hiányzik: 8 helyen befejezetlen helykitöltő szöveg, és nincs feltüntetett biztonsági tanúsítvány (pl. SOC 2 / ISO).</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--faint);margin-top:6px"><span class="tag t-mert">mért</span> a jelek; <span class="tag t-ai">AI-értelmezés</span> a pontérték.</p>
+
+    <h3 style="font-size:16px;margin:18px 0 6px">Konkurencia-összevetés (dimenziónként)</h3>
+    <table>
+      <tr><th>Dimenzió</th><th>Ez az oldal</th><th>Avalara</th><th>Vertex</th><th>Thomson R.</th></tr>
+      <tr><td>Tapasztalat</td><td class="num">7</td><td class="ph">— feltöltés alatt</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr><td>Szakértelem</td><td class="num">5</td><td class="ph">—</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr><td>Tekintély</td><td class="num">6</td><td class="ph">—</td><td class="ph">—</td><td class="ph">—</td></tr>
+      <tr><td>Megbízhatóság</td><td class="num">3</td><td class="ph">—</td><td class="ph">—</td><td class="ph">—</td></tr>
+    </table>
+    <p style="font-size:12.5px;color:var(--faint)">A dimenzió-szintű versenytárs-oszlopok feltöltés alatt; üresen hagyjuk, nem találgatunk. Az összesített relatív sorrend a 5. szekcióban már látszik. <span class="tag t-mert">mért</span></p>
+
+    <h3 style="font-size:16px;margin:18px 0 6px">Verdikt</h3>
+    <p>Az oldal hiteles ügyfélbázist sugall, de a megbízhatósági jelek gyengék: a befejezetlen helykitöltő szöveg és a hiányzó biztonsági tanúsítvány a látogató és a kereső szemében egyaránt rontja a bizalmat. Ez leíró olvasat a mért jelekből — nem minősíti a céget, és nem jósol helyezést. <span class="tag t-ai">AI-értelmezés</span></p>
+
+    <h3 style="font-size:16px;margin:18px 0 6px">Javítható tételek (hatás szerint, ezen a szekción belül)</h3>
+    <ul>
+      <li>A befejezetlen helykitöltő szöveg eltávolítása / valós tartalomra cserélése.</li>
+      <li>Biztonsági tanúsítvány (SOC 2 / ISO) feltüntetése, ha létezik.</li>
+      <li>Nevesített szerző + Person strukturált adat hozzáadása.</li>
+      <li>SoftwareApplication / Offer strukturált adat a termékhez.</li>
+      <li>Ügyfél-esettanulmány a tapasztalat alátámasztására.</li>
+    </ul>
+    <p style="font-size:12.5px;color:var(--faint)">Ez a szekció saját, E-E-A-T-specifikus listája. A teljes, szekciókon átívelő prioritás a 7. szekcióban.</p>
+  </section>
+
+  <!-- ============ §7 JAVASLATOK — PLACEHOLDER ============ -->
+  <section id="s7" class="placeholder">
+    <div class="secnum">7. szekció</div>
+    <h2 class="sec">Javaslatok <span class="ph-badge">tervezés alatt</span></h2>
+    <div class="role">Mit tegyél most — egyetlen, hatás szerint rangsorolt lista, az összes szekció jeleiből összevonva.</div>
+
+    <p style="color:var(--muted)">Ez a szekció a riport ítélet-rétege: a tényekből (2–6. szekció) egyetlen, prioritizált cselekvési listává fordít. A tartalma és formátuma még nincs kidolgozva — ezt tervezzük most.</p>
+
+    <div class="designnote">
+      <strong>Rögzített tervezési korlátok (a kidolgozáshoz):</strong>
+      <ul style="margin-top:8px">
+        <li>Egyetlen, hatás szerint rangsorolt lista — ez az ajánlások egyedüli gazdája (a szekciónkénti fix-listák ezt nem váltják ki).</li>
+        <li>Csak <strong>mért gapből</strong> születik taszk — nincs naiv „írj többet / növeld a szószámot" javaslat.</li>
+        <li><strong>Authority-hedge:</strong> nem ígérünk on-page lépésre top-10 helyezést; a háttér-tekintély kvalitatív marad.</li>
+        <li>Az AI-alkérdések (fan-out) tartalmi-lefedettségi javaslatai <strong>itt</strong> jelennek meg (a 3. szekció csak a tényt mutatja).</li>
+        <li>Destruktív / visszafordíthatatlan lépés csak feltételesen, explicit figyelmeztetéssel.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ §8 ADATMINŐSÉG ============ -->
+  <section id="s8">
+    <div class="secnum">8. szekció</div>
+    <h2 class="sec">Adatminőség, mérési körök, caveat-ek</h2>
+    <div class="role">Honnan jönnek az adatok, mit mértünk és mit nem — hogy a riport állításai ellenőrizhetők legyenek.</div>
+
+    <p><b>Adatforrások.</b> Szerves keresési (SERP) adatok; a Google valós felhasználói élmény-adatai (CrUX) és laborteszt (PageSpeed); az AI-felületek (AI Overview, ChatGPT) pillanatfelvételei; kulcsszó-volumen adatok.</p>
+
+    <p><b>Pillanatfelvétel-keret.</b> Az AI-láthatósági adatok egy adott napon, egyetlen futással készült pillanatfelvételek; a felület, ország/nyelv, kulcsszó és dátum rögzítve. Más napon vagy más megfogalmazással az AI-válaszok eltérhetnek.</p>
+
+    <p><b>Mérési körök.</b> Az E-E-A-T pontszám egyetlen mérésből származik; a pontos összpont ±~3 sávban ingadozik, ezért sávként és relatívan közöljük, nem nyers számként.</p>
+
+    <p><b>Amit szándékosan NEM mérünk.</b> Háttér-tekintély (backlinkek, domain-tekintély) és egyéb off-page jelek — ezekhez külön, harmadik-feles forrás kellene. A hiányukból nem vonunk le oksági következtetést, és a nem-idézettséget több-tényezős jelenségként kezeljük.</p>
+
+    <p><b>Hiányzó adat = nem találgatunk.</b> Ahol nincs megbízható mért adat (pl. egyes long-tail volumenek, vagy a még feltöltés alatt álló versenytárs-dimenziók), üresen hagyjuk.</p>
+
+    <p style="font-size:13px;color:var(--faint)"><b>Nyitott mérési tétel:</b> a cím- és leírás-szöveg pixel-szélességének mérése egy későbbi frissítésben kerül be.</p>
+  </section>
+
+  <div style="text-align:center;color:var(--faint);font-size:12px;margin-top:24px">
+    Tényalap-riport — szerkezeti mockup &nbsp;·&nbsp; taxually.com canary-adatokkal &nbsp;·&nbsp; a 7. szekció kidolgozás alatt
+  </div>
+
+</div>
+</body>
+</html>
