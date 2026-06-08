@@ -736,6 +736,30 @@ def _render_upload_all(ao: dict, cst: dict, audit_id: str, bucket: str) -> dict:
     return objects
 
 
+def _render_upload_ff(ao: dict, audit_id: str, bucket: str) -> tuple[dict, float]:
+    """AAA-161 Gate 3 — SYNC: render the NEW 8-section fact-first report (hu+en)
+    from audit_output.fact_base + .decisions and upload to a PARALLEL GCS key
+    reports/{audit_id}.{lang}.ff.html. Returns ({lang: key}, total_cost_usd).
+    Deterministic; reuses stored prose → cost 0.0. Raises on error (caller
+    skip-finds; the legacy report is unaffected)."""
+    from report.render_factfirst import render_factfirst_report
+    from google.cloud import storage
+
+    client = storage.Client()
+    b = client.bucket(bucket)
+    objects: dict = {}
+    cost = 0.0
+    for lang in ("en", "hu"):
+        html, meta = render_factfirst_report(ao, lang, available_langs=["en", "hu"])
+        cost += float(meta.get("cost_usd", 0.0) or 0.0)
+        key = "reports/%s.%s.ff.html" % (audit_id, lang)
+        b.blob(key).upload_from_string(
+            html, content_type="text/html; charset=utf-8"
+        )
+        objects[lang] = key
+    return objects, round(cost, 8)
+
+
 async def attach_customer_report_html(audit_id: str, bucket: str | None = None) -> dict:
     """AAA-145 ship — render the customer-facing HTML report(s) from the persisted
     customer_summary_translations and upload to GCS; attach a REFERENCE field
@@ -770,12 +794,30 @@ async def attach_customer_report_html(audit_id: str, bucket: str | None = None) 
             "default_lang": default_lang,
             "rendered_at": now,
         }
-        ref = _db().collection(_COLLECTION).document(audit_id)
-        await asyncio.to_thread(ref.update, {
+        update_payload = {
             "audit_output.customer_report_html_uri": uri,
             "audit_output._customer_report_html_failed": firestore.DELETE_FIELD,
             "updated_at": now,
-        })
+        }
+        # AAA-161 Gate 3 — PARALLEL fact-first report (does NOT replace legacy).
+        # Skip-finding: a ff-render failure must not affect the legacy uri.
+        try:
+            ff_objects, ff_cost = await asyncio.to_thread(
+                _render_upload_ff, ao, audit_id, bucket)
+            update_payload["audit_output.customer_report_html_uri_ff"] = {
+                "bucket": bucket, "objects": ff_objects,
+                "default_lang": "en", "rendered_at": now,
+                "render_version": "factfirst_v1", "render_cost_usd": ff_cost,
+            }
+            update_payload["audit_output._customer_report_html_ff_failed"] = \
+                firestore.DELETE_FIELD
+        except Exception as e:  # noqa: BLE001 — legacy report unaffected
+            logger.warning("fact-first render failed %s: %s: %s",
+                           audit_id, type(e).__name__, e)
+            update_payload["audit_output._customer_report_html_ff_failed"] = \
+                "%s: %s" % (type(e).__name__, e)
+        ref = _db().collection(_COLLECTION).document(audit_id)
+        await asyncio.to_thread(ref.update, update_payload)
         logger.info("customer_report_html attached: %s (%d objs, bucket=%s)",
                     audit_id, len(objects), bucket)
         return {"ok": True, "bucket": bucket, "objects": objects, "default_lang": default_lang}
