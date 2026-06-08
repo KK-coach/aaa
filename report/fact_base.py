@@ -88,12 +88,74 @@ def _serp_position_map(ao: dict):
                     pos[r] = p
     return pos, present
 
-SCHEMA_VERSION = "fact_base_v3"  # v2: SERP-fit promoted; v3: eeat passthrough (AAA-170 S2)
+SCHEMA_VERSION = "fact_base_v4"  # v2: SERP-fit; v3: eeat passthrough; v4: AAA-161 G2 (layer tags + competition/eeat expansion + content_qa)
 
 # Provenance enum
 MEASURED = "measured"
 ABSENT = "absent"
 NOT_MEASURED = "not_measured"
+
+# AAA-161 Gate 2 — derivation-method axis (orthogonal to `provenance`). Every
+# leaf gets exactly one `layer`, assigned deterministically by group + source.
+LAYER_MEAS = "mért"            # raw crawl/PSI/SERP/CrUX measurement or count
+LAYER_EST = "becslés"         # estimated/modeled/3rd-party (pixel width, search volume)
+LAYER_AI = "AI-értelmezés"    # produced by an LLM (eeat, entities, fan-out, classify)
+LAYER_INFER = "következtetés"  # computed conclusion (ratios, rankings, gaps, stance, verdicts)
+
+_GROUP_DEFAULT_LAYER = {
+    "classification": LAYER_AI,
+    "target": LAYER_AI,
+    "onpage": LAYER_MEAS,
+    "ai_visibility": LAYER_MEAS,
+    "technical": LAYER_MEAS,
+    "competition": LAYER_MEAS,
+    "eeat": LAYER_AI,
+}
+
+
+def _layer_for(group, source):
+    """Deterministic group+source -> layer. Source-substring overrides first."""
+    sl = (source or "").lower()
+    if "eeat" in sl:
+        return LAYER_AI
+    if "entities" in sl:
+        return LAYER_AI
+    if "fan_out" in sl or "query_fan_out" in sl:
+        return LAYER_AI
+    if "comparison.patterns" in sl:
+        return LAYER_AI
+    if "comparison.dimension_table" in sl:
+        return LAYER_INFER
+    if "title_meta_measurements" in sl:
+        return LAYER_EST if "pixel" in sl else LAYER_INFER
+    if ("keywords_classified" in sl or "estimated_difficulty" in sl
+            or "search_volume" in sl):
+        return LAYER_EST
+    return _GROUP_DEFAULT_LAYER.get(group, LAYER_MEAS)
+
+
+def _is_leaf(o):
+    return (isinstance(o, dict) and "value" in o
+            and "provenance" in o and "source" in o)
+
+
+def _stamp_layers(fb):
+    """Stamp `layer` onto every {value,provenance,source} leaf, keyed by its
+    top-level group. Mutates in place. Deterministic, no I/O."""
+    def _walk(node, group):
+        if _is_leaf(node):
+            node["layer"] = _layer_for(group, node.get("source"))
+            return
+        if isinstance(node, dict):
+            for v in node.values():
+                _walk(v, group)
+        elif isinstance(node, list):
+            for v in node:
+                _walk(v, group)
+    for group, val in fb.items():
+        if group == "meta":
+            continue
+        _walk(val, group)
 
 _MISSING = object()
 
@@ -319,10 +381,31 @@ def _map_onpage(ao) -> dict:
         "desc_verdict_desktop": r_scalar(ao, "title_meta_measurements", "description", "desktop", "verdict"),
         "desc_verdict_mobile": r_scalar(ao, "title_meta_measurements", "description", "mobile", "verdict"),
     }
+    # AAA-161 G2 — content-QA / placeholder leak (AAA-173 deterministic detector).
+    # page_flag True → measured (a positive leak finding); False → absent
+    # (detector ran, clean); missing → not_measured.
+    cq, cq_present = _dig(ao, "content_qa_leak")
+    cq = cq if isinstance(cq, dict) else {}
+    pf = cq.get("page_flag")
+    if not cq_present or "_error" in cq:
+        pf_fact = _fact(None, NOT_MEASURED, "content_qa_leak.page_flag")
+    elif pf is True:
+        pf_fact = _fact(True, MEASURED, "content_qa_leak.page_flag")
+    elif pf is False:
+        pf_fact = _fact(False, ABSENT, "content_qa_leak.page_flag")
+    else:
+        pf_fact = _fact(None, NOT_MEASURED, "content_qa_leak.page_flag")
+    content_qa = {
+        "page_flag": pf_fact,
+        "hard_hit_count": r_count(ao, "content_qa_leak", "hard_hit_count", error_subtree=cq),
+        "name_hit_count": r_count(ao, "content_qa_leak", "name_hit_count", error_subtree=cq),
+        "categories": r_scalar(ao, "content_qa_leak", "categories"),
+    }
     return {
         "headings": headings, "structure": structure, "links": links,
         "forms": forms, "aria": aria, "images": images, "schema": schema,
         "entities_client": entities_client, "title_meta": title_meta,
+        "content_qa": content_qa,
     }
 
 
@@ -371,7 +454,74 @@ def _map_technical(ao) -> dict:
     }
 
 
-def _map_competition(ao) -> dict:
+def _cdig(d, *path):
+    """Dig into a competitor audit_output; return (value, present)."""
+    return _dig(d if isinstance(d, dict) else {}, *path)
+
+
+def _competitor_rich(url, comp_ao, eeat_entry):
+    """AAA-161 G2 — rich per-competitor MEASURED facts from the competitor's OWN
+    corpus audit doc (comp_ao) + the comparative E-E-A-T entry (eeat_entry from
+    the client doc). Every value is a measured fact from the competitor's audit —
+    NOT an LLM claim about the competitor (anti-fabrication: measured only).
+    Missing doc / dimension -> not_measured / absent (never guessed)."""
+    base = "competitor_docs[%s]" % url
+
+    def _cf(path_tuple, src_suffix, zero_absent=False):
+        if comp_ao is None:
+            return _fact(None, NOT_MEASURED, base + "." + src_suffix)
+        v, present = _cdig(comp_ao, *path_tuple)
+        if not present or v is None:
+            return _fact(v, NOT_MEASURED, base + "." + src_suffix)
+        if zero_absent and v == 0:
+            return _fact(0, ABSENT, base + "." + src_suffix)
+        return _fact(v, MEASURED, base + "." + src_suffix)
+
+    def _clen(path_tuple, src_suffix):
+        if comp_ao is None:
+            return _fact(None, NOT_MEASURED, base + "." + src_suffix)
+        v, present = _cdig(comp_ao, *path_tuple)
+        if not present or v is None:
+            return _fact(None, NOT_MEASURED, base + "." + src_suffix)
+        n = len(v) if isinstance(v, (list, tuple, dict)) else None
+        if n is None:
+            return _fact(None, NOT_MEASURED, base + "." + src_suffix)
+        return _fact(n, ABSENT if n == 0 else MEASURED, base + "." + src_suffix)
+
+    # E-E-A-T per-dimension from the comparative block (client doc).
+    if isinstance(eeat_entry, dict):
+        es = "eeat_score.competitors[url=%s]" % url
+        eeat = {
+            d: _fact(eeat_entry.get(d),
+                     MEASURED if eeat_entry.get(d) is not None else NOT_MEASURED,
+                     es + "." + d)
+            for d in ("experience", "expertise", "authoritativeness", "trustworthiness")
+        }
+        eeat["total_0_40"] = _fact(eeat_entry.get("total_0_40"),
+                                   MEASURED if eeat_entry.get("total_0_40") is not None else NOT_MEASURED,
+                                   es + ".total_0_40")
+    else:
+        es = "eeat_score.competitors[url=%s]" % url
+        eeat = {d: _fact(None, NOT_MEASURED, es + "." + d)
+                for d in ("experience", "expertise", "authoritativeness",
+                          "trustworthiness", "total_0_40")}
+
+    return {
+        "word_count_doc": _cf(("crawl", "main_content", "words"), "crawl.main_content.words"),
+        "orgs_count": _clen(("entities", "organizations"), "entities.organizations"),
+        "title_chars": _cf(("crawl", "meta", "title", "chars"), "crawl.meta.title.chars"),
+        "meta_chars": _cf(("crawl", "meta", "description", "chars"), "crawl.meta.description.chars"),
+        "h1_count": _cf(("agent_friendly_measurements", "heading", "h1_count"), "agent_friendly_measurements.heading.h1_count", zero_absent=True),
+        "total_headings": _cf(("agent_friendly_measurements", "heading", "total_headings"), "agent_friendly_measurements.heading.total_headings"),
+        "level_skips": _cf(("agent_friendly_measurements", "heading", "level_skips"), "agent_friendly_measurements.heading.level_skips"),
+        "schema_types_count": _clen(("crawl", "schema_markup", "schema_types_detected"), "crawl.schema_markup.schema_types_detected"),
+        "alt_coverage_pct": _cf(("crawl", "images", "alt_coverage_percent"), "crawl.images.alt_coverage_percent"),
+        "perf_mobile_lab": _cf(("pagespeed", "mobile", "scores", "performance"), "pagespeed.mobile.scores.performance"),
+        "eeat": eeat,
+    }
+
+
+def _map_competition(ao, competitor_docs=None) -> dict:
     rf, _ = _dig(ao, "re_findings")
     rf = rf if isinstance(rf, dict) else {}
     comp, _ = _dig(ao, "re_findings", "comparison")
@@ -380,6 +530,13 @@ def _map_competition(ao) -> dict:
     raw = raw if isinstance(raw, dict) else {}
     audits = rf.get("competitor_audits") or {}
     posmap, serp_present = _serp_position_map(ao)
+    competitor_docs = competitor_docs or {}
+    # AAA-161 G2: index the comparative E-E-A-T competitor entries by reg-host.
+    _es = ao.get("eeat_score") if isinstance(ao.get("eeat_score"), dict) else {}
+    eeat_by_url = {}
+    for _ce in (_es.get("competitors") or []):
+        if isinstance(_ce, dict) and _ce.get("url"):
+            eeat_by_url[_reg(_ce["url"])] = _ce
 
     competitors = []
     raw_comps = raw.get("competitors") if isinstance(raw.get("competitors"), list) else []
@@ -407,7 +564,12 @@ def _map_competition(ao) -> dict:
             anchored = True
         ec = c.get("entity_counts") or {}
         sp = f"re_findings.comparison._raw_dimensions.competitors[{i}]"
-        competitors.append({
+        # AAA-161 G2 — rich measured facts from the competitor's own corpus doc
+        # (via competitor_audit_ids) + its comparative E-E-A-T entry.
+        _comp_ao = competitor_docs.get(url) if url else None
+        _eeat_entry = eeat_by_url.get(_reg(url)) if url else None
+        rich = _competitor_rich(url, _comp_ao, _eeat_entry)
+        competitors.append({**rich,
             "url": _fact(url, MEASURED if url else NOT_MEASURED, sp + ".url"),
             "brand": _fact(c.get("brand"), MEASURED if c.get("brand") else NOT_MEASURED, sp + ".brand"),
             "is_anchor": is_anchor,
@@ -499,22 +661,53 @@ def _map_competition(ao) -> dict:
     }
 
 
+def _map_eeat(ao) -> dict:
+    """AAA-161 G2 — E-E-A-T group as proper {value,provenance,source} facts.
+    Client per-dimension + total + scoring_mode/anchor; comparative ranking.
+    All leaves are layer=AI-értelmezés (LLM scores). Reads the existing
+    comparative E-E-A-T block; NO new scoring call. Errored/absent → not_measured."""
+    es = ao.get("eeat_score") if isinstance(ao.get("eeat_score"), dict) else None
+    errored = bool(((es or {}).get("_meta") or {}).get("error")) if es else True
+    DIMS = ("experience", "expertise", "authoritativeness", "trustworthiness")
+    client = (es or {}).get("client") if (es and not errored) else None
+
+    def _ef(value, src):
+        return _fact(value, MEASURED if value is not None else NOT_MEASURED, src)
+
+    if isinstance(client, dict):
+        client_facts = {d: _ef(client.get(d), "eeat_score.client.%s" % d) for d in DIMS}
+        client_facts["total_0_40"] = _ef(client.get("total_0_40"), "eeat_score.client.total_0_40")
+    else:
+        client_facts = {d: _fact(None, NOT_MEASURED, "eeat_score.client.%s" % d)
+                        for d in (*DIMS, "total_0_40")}
+
+    return {
+        "scoring_mode": _ef((es or {}).get("scoring_mode") if not errored else None,
+                            "eeat_score.scoring_mode"),
+        "anchor_keyword": _ef((es or {}).get("anchor_keyword") if not errored else None,
+                              "eeat_score.anchor_keyword"),
+        "client": client_facts,
+        "ranking": r_list(ao, "eeat_score", "ranking") if (es and not errored)
+                   else _fact(None, NOT_MEASURED, "eeat_score.ranking"),
+    }
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
-def build_fact_base(audit_output: dict) -> dict:
+def build_fact_base(audit_output: dict, competitor_docs: dict | None = None) -> dict:
     """Pure: audit_output dict → closed fact_base (S0 C.1 structure). Never raises
-    on a well-formed dict; missing subtrees resolve to not_measured facts."""
+    on a well-formed dict; missing subtrees resolve to not_measured facts.
+
+    AAA-161 G2: optional `competitor_docs` = {competitor_url: competitor_audit_output}
+    (read by the caller from competitor_audit_ids) enriches competition with the
+    competitors' own measured on-page facts. When None, those rich facts resolve
+    to not_measured (the function stays pure / I/O-free either way). Every leaf is
+    stamped with a deterministic `layer` (derivation method)."""
     ao = audit_output or {}
     crawl = ao.get("crawl") or {}
     sp = ao.get("site_profile") or {}
-    # AAA-170 S2: client E-E-A-T diagnostic passthrough (composite pre-scored
-    # block, not a measured leaf). None when absent or errored.
-    _es = ao.get("eeat_score") if isinstance(ao.get("eeat_score"), dict) else None
-    _eeat_client = (_es or {}).get("client") if _es else None
-    eeat = _eeat_client if (isinstance(_eeat_client, dict)
-                            and not ((_es or {}).get("_meta") or {}).get("error")) else None
-    return {
+    fb = {
         "meta": {
             "schema_version": SCHEMA_VERSION,
             "audit_id": ao.get("audit_id"),
@@ -527,9 +720,11 @@ def build_fact_base(audit_output: dict) -> dict:
         "onpage": _map_onpage(ao),
         "ai_visibility": _map_ai_visibility(ao),
         "technical": _map_technical(ao),
-        "competition": _map_competition(ao),
-        "eeat": eeat,  # AAA-170 S2 client E-E-A-T passthrough (None if absent/errored)
+        "competition": _map_competition(ao, competitor_docs),
+        "eeat": _map_eeat(ao),  # AAA-161 G2: expanded (client per-dim + comparative)
     }
+    _stamp_layers(fb)  # AAA-161 G2: derivation-method layer on every leaf
+    return fb
 
 
 # Reference map (fact → source) for documentation/tests.

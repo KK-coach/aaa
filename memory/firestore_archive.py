@@ -653,7 +653,19 @@ async def attach_fact_base_decisions(audit_id: str) -> dict:
         ao = existing.get("audit_output") or {}
         from report.fact_base import build_fact_base
         from report.decide import build_decisions
-        fb = build_fact_base(ao)
+        # AAA-161 G2: read each corpus-audited competitor's own doc (by
+        # competitor_audit_ids) so build_fact_base can emit rich MEASURED
+        # per-competitor on-page facts. Read-only; missing doc → not_measured.
+        comp_ids = ((ao.get("re_findings") or {}).get("competitor_audit_ids") or {})
+        competitor_docs = {}
+        for _url, _aid in (comp_ids.items() if isinstance(comp_ids, dict) else []):
+            try:
+                _cdoc = await read_audit(_aid)
+                if _cdoc:
+                    competitor_docs[_url] = _cdoc.get("audit_output") or {}
+            except Exception:  # noqa: BLE001 — a missing competitor doc is not fatal
+                pass
+        fb = build_fact_base(ao, competitor_docs=competitor_docs)
         dec = build_decisions(fb)
 
         # AAA-103 1 MiB watch — measure current doc + the two new leaves.

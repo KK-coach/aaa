@@ -39,12 +39,14 @@ from __future__ import annotations
 
 from report.fact_base import MEASURED, ABSENT, NOT_MEASURED
 
-DECISIONS_VERSION = "decisions_v1"
+DECISIONS_VERSION = "decisions_v2"  # AAA-161 G2: content-QA / placeholder finding
 
 _SEV_RANK = {"high": 3, "medium": 2, "low": 1}
-# category priority for tie-break within the same severity (higher first)
+# category priority for tie-break within the same severity (higher first).
+# AAA-161 G2: `trust` ranks above ranking/visibility — an unfinished-content leak
+# is the highest-impact Trust gap and should surface at/near the top.
 _CAT_PRIORITY = {
-    "visibility": 5, "ranking": 4, "content": 3, "schema": 2,
+    "trust": 6, "visibility": 5, "ranking": 4, "content": 3, "schema": 2,
     "technical": 1, "structure_accessibility": 0,
 }
 
@@ -283,6 +285,20 @@ def decide_ranked_findings(fact_base: dict) -> list:
     if _prov(lc) == MEASURED and isinstance(_val(lc), (int, float)) and _val(lc) < 1.0:
         fnds.append(_finding("Some form fields lack bound labels", "medium",
                              "content", [lc["source"]], conditional=True))
+
+    # --- (f) AAA-161 G2: content-QA / placeholder leak (Trust, HIGH) ---
+    # page_flag provenance MEASURED == a positive leak (AAA-173 hard/name hit);
+    # ABSENT == detector ran clean; not_measured == no detector. Only the
+    # positive-measured case raises a finding.
+    cq_flag = fb["onpage"].get("content_qa", {}).get("page_flag")
+    if cq_flag and _prov(cq_flag) == MEASURED and _val(cq_flag) is True:
+        hh = fb["onpage"]["content_qa"].get("hard_hit_count") or {}
+        ev = [cq_flag["source"]]
+        if hh.get("source"):
+            ev.append(hh["source"])
+        fnds.append(_finding(
+            "Unfinished / placeholder content on the page",
+            "high", "trust", ev))
 
     # impact-driven order: severity desc, then category priority, stable
     fnds.sort(key=lambda f: (-_SEV_RANK.get(f["impact_severity"], 0),
