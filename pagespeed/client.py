@@ -41,6 +41,95 @@ _METRIC_SOURCES = {
     "ttfb": ("server-response-time", "EXPERIMENTAL_TIME_TO_FIRST_BYTE"),
 }
 
+# AAA-175: independent LAB Core Web Vitals (Lighthouse lab, source-labelled).
+# Separate from the blended `core_web_vitals` (field-preferred-else-lab) so
+# consumers get a real lab signal even when CrUX field data exists (which
+# otherwise wins and hides lab). Lab has NO INP (field-only metric); TBT is the
+# lab interactivity proxy — we store TBT, never fabricate a lab INP.
+#   metric -> (lab audit id, "ms"|"score")
+_LAB_METRICS = {
+    "lcp": ("largest-contentful-paint", "ms"),
+    "cls": ("cumulative-layout-shift", "score"),
+    "tbt": ("total-blocking-time", "ms"),
+    "fcp": ("first-contentful-paint", "ms"),
+    "speed_index": ("speed-index", "ms"),
+}
+# AAA-175: CrUX FIELD Core Web Vitals (real-user), source-labelled. Field has
+# no TBT/Speed-Index (lab-only); INP is the authoritative field responsiveness.
+#   metric -> CrUX field metric key
+_FIELD_METRICS = {
+    "lcp": "LARGEST_CONTENTFUL_PAINT_MS",
+    "inp": "INTERACTION_TO_NEXT_PAINT",
+    "cls": "CUMULATIVE_LAYOUT_SHIFT_SCORE",
+    "fcp": "FIRST_CONTENTFUL_PAINT_MS",
+    "ttfb": "EXPERIMENTAL_TIME_TO_FIRST_BYTE",
+}
+# Lab-only rating thresholds (Lighthouse scoring curve breakpoints) for metrics
+# absent from _THRESHOLDS. CWV metrics (lcp/cls/fcp) reuse _THRESHOLDS via _rating.
+_LAB_THRESHOLDS = {
+    "tbt": (200, 600),          # ms
+    "speed_index": (3400, 5800),  # ms
+}
+
+
+def _lab_rating(metric: str, value: float | None) -> str | None:
+    """Rating for a lab metric. CWV metrics reuse the public _THRESHOLDS;
+    lab-only metrics (tbt, speed_index) use _LAB_THRESHOLDS. Unknown -> None."""
+    if value is None:
+        return None
+    if metric in _THRESHOLDS:
+        return _rating(metric, value)
+    bounds = _LAB_THRESHOLDS.get(metric)
+    if not bounds:
+        return None
+    good_max, ni_max = bounds
+    if value < good_max:
+        return "good"
+    if value < ni_max:
+        return "needs_improvement"
+    return "poor"
+
+
+def _lab_cwv(audits: dict) -> dict:
+    """AAA-175: extract independent LAB CWV from lighthouseResult.audits.
+    numericValue per metric. Missing metric -> omitted (no fabrication).
+    has_data=False when no lab metric resolves. Never raises."""
+    out: dict = {"source": "lab", "has_data": False}
+    if not isinstance(audits, dict) or not audits:
+        return out
+    for metric, (audit_id, unit) in _LAB_METRICS.items():
+        audit = audits.get(audit_id) or {}
+        num = audit.get("numericValue")
+        if not isinstance(num, (int, float)):
+            continue
+        val = round(float(num), 4 if unit == "score" else 1)
+        key = "value" if unit == "score" else "value_ms"
+        out[metric] = {key: val, "rating": _lab_rating(metric, float(num))}
+        out["has_data"] = True
+    return out
+
+
+def _field_cwv(field_metrics: dict) -> dict:
+    """AAA-175: extract CrUX FIELD CWV from loadingExperience.metrics
+    (p75 percentile), source-labelled. Missing metric -> omitted.
+    has_data=False when no field metric resolves. Never raises."""
+    out: dict = {"source": "field", "has_data": False}
+    if not isinstance(field_metrics, dict) or not field_metrics:
+        return out
+    for metric, field_key in _FIELD_METRICS.items():
+        field = field_metrics.get(field_key)
+        if not (isinstance(field, dict) and "percentile" in field):
+            continue
+        pct = field["percentile"]
+        # CrUX CLS percentile is x100 integer (e.g. 10 -> 0.10).
+        val = pct / 100.0 if metric == "cls" else float(pct)
+        if metric == "cls":
+            out[metric] = {"value": round(val, 4), "rating": _rating(metric, val)}
+        else:
+            out[metric] = {"value_ms": round(val, 1), "rating": _rating(metric, val)}
+        out["has_data"] = True
+    return out
+
 
 def _rating(metric: str, value: float | None) -> str | None:
     if value is None:
@@ -263,6 +352,13 @@ async def get_pagespeed_score(url: str, strategy: str = "mobile") -> dict:
             "seo": _score(categories, "seo"),
         },
         "core_web_vitals": cwv,
+        # AAA-175: source-separated CWV (schema-additive; `core_web_vitals`
+        # above stays the back-compat blended field-preferred-else-lab value).
+        # _lab_cwv = independent Lighthouse lab metrics (incl. TBT, Speed Index),
+        # _field_cwv = CrUX real-user p75 — so a lab signal survives even when
+        # field data exists and wins the blended view.
+        "core_web_vitals_lab": _lab_cwv(audits),
+        "core_web_vitals_field": _field_cwv(field_metrics),
         "field_data_available": field_available,
         "lab_data_available": lab_available,
         "opportunities": opportunities,
