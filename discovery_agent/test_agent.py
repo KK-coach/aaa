@@ -474,6 +474,16 @@ async def audit(url: str, corpus_mode: bool = False,
     except Exception as e:  # noqa: BLE001 — never fail the audit on this measurement
         out.title_meta_measurements = {"_error": f"{type(e).__name__}: {e}"}
 
+    # AAA-173 — deterministic placeholder / content-QA-leak detector ($0, no LLM).
+    # Scans crawl.main_content.text + visible_text + heading_tree for unfinished-
+    # content markers; raises a page-level flag on any HARD/NAME hit. Runs late so
+    # crawl text + phase2 heading_tree are populated. Skip-finding: never raises.
+    try:
+        from page_analysis.placeholder_detector import detect_placeholder_leaks
+        out.content_qa_leak = detect_placeholder_leaks(out.model_dump())
+    except Exception as e:  # noqa: BLE001 — never fail the audit on this measurement
+        out.content_qa_leak = {"_error": f"{type(e).__name__}: {e}"}
+
     # AAA-124 Sub-step 1 (Option E) — per-aspect page evaluation. ONE Gemini
     # 3.5 Flash holistic (V3) call producing 7 per-aspect findings. MUST run
     # AFTER multi_dim_classify (needs page_type/business_model/audience for

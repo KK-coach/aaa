@@ -313,6 +313,13 @@ class AuditOutput(BaseModel):
     # legacy + crawl-failed audits keep None / carry an _error skip-finding.
     title_meta_measurements: dict | None = None
 
+    # AAA-173 — deterministic placeholder / content-QA-leak detector ($0, no LLM).
+    # Scans extracted text for unfinished-content markers (Lorem ipsum, dev/
+    # template form-state leaks, canonical placeholder names) and raises a
+    # page-level "unfinished/placeholder content" flag. Forward-only: legacy +
+    # crawl-failed audits keep None / carry an _error skip-finding.
+    content_qa_leak: dict | None = None
+
     # AAA-170 Sub-step 1 — client E-E-A-T score. ONE gemini-3.5-flash call rating
     # the CLIENT page on the 4 E-E-A-T dimensions (Experience/Expertise/
     # Authoritativeness/Trustworthiness, 0-10 each + total_0_40 + per-dim
