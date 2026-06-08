@@ -167,6 +167,28 @@ _RAW: dict[str, tuple[str, str, str]] = {
         structured data, the machine has to infer all of this from the raw text
         alone — less reliably and with more room for error.""",
     ),
+    "text_level_semantics": (
+        "edu_text_level_semantics_v1",
+        """A szöveg-szintű szemantika azt vizsgálja, hogy maga a tartalom mit mond:
+        milyen témákat és altémákat fed le, milyen állításokat fogalmaz meg, kinek
+        szól és milyen keresési szándékot szolgál ki, mennyire mély és teljes a
+        témában, és nincsenek-e benne önellentmondások. Azért fontos, mert a
+        keresőmotorok és az AI-asszisztensek elsősorban a szöveg jelentéséből
+        döntik el, hogy az oldal valóban hiteles, releváns válasz-e a kérdésre — a
+        jól lefedett, következetes, konkrét állításokkal alátámasztott tartalmat
+        idézik szívesen. A felszínes, ellentmondásos vagy a saját céljához képest
+        hiányos szöveg ezzel szemben gyengíti a témahitelességet, akkor is, ha
+        technikailag minden rendben van.""",
+        """Text-level semantics looks at what the content itself actually says: which
+        topics and sub-topics it covers, what claims it makes, who it is for and
+        which search intent it serves, how deep and complete it is on the topic, and
+        whether it contradicts itself. It matters because search engines and AI
+        assistants decide largely from the meaning of the text whether the page is a
+        genuinely authoritative, relevant answer — they prefer to cite content that
+        is well-covered, consistent, and backed by concrete claims. Shallow,
+        self-contradictory, or — relative to its own purpose — incomplete text
+        weakens topical authority, even when everything is technically fine.""",
+    ),
 }
 
 # Final locked store: aspect -> {template_id, text:{hu,en}}.

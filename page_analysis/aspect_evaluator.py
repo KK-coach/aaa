@@ -46,6 +46,11 @@ ASPECTS = [
     "macro_structure", "heading_semantics", "above_the_fold",
     "micro_semantics", "inline_link_semantics", "forms_conversion_points",
     "schema_entity",
+    # AAA-174: text-level semantics — reads the FULL main_content.text (added to
+    # the payload) for the content/meaning layer. Completes the 3-layer
+    # "tartalmi felépítés" (macro_structure + micro_semantics + this). SCHEMA is
+    # deliberately NOT in this aspect's framing (stays in schema_entity / §4.3).
+    "text_level_semantics",
 ]
 
 _ASPECT_FOCUS = {
@@ -56,6 +61,14 @@ _ASPECT_FOCUS = {
     "inline_link_semantics": "internal/external link quality (descriptive anchor text, rel attributes, target=_blank safety, internal-link depth)",
     "forms_conversion_points": "conversion-point quality (form fields, CTA placement, lead-gen funnel signals relevant to the business_model)",
     "schema_entity": "structured-data presence and fit (JSON-LD, page_type-specific schema types, entity coverage, KG signals)",
+    # AAA-174: text-level / content semantics — analyse the ACTUAL CONTENT TEXT
+    # (provided in full below), NOT the markup: core topics & sub-topics covered;
+    # the concrete claims made; the target audience + search intent the prose
+    # serves; topical depth/coverage (covered well vs thin/missing for the page's
+    # apparent purpose); internal contradictions (conflicting facts/numbers,
+    # leaked/placeholder/wrong-language text); overall coherence. Do NOT assess
+    # schema/structured data here (that is schema_entity).",
+    "text_level_semantics": "the CONTENT TEXT meaning (covered topics/sub-topics, concrete claims, target audience + search intent, topical depth/coverage vs the page's purpose, internal contradictions, coherence) — analyse the prose, NOT the markup or schema",
 }
 
 
@@ -85,6 +98,7 @@ class AAA124AspectEvaluations(BaseModel):
     inline_link_semantics: AspectEvaluation
     forms_conversion_points: AspectEvaluation
     schema_entity: AspectEvaluation
+    text_level_semantics: AspectEvaluation  # AAA-174
 
 
 # Vertex/Gemini response_schema (mirrors the Pydantic shape; the structured
@@ -150,6 +164,44 @@ def _ground_truth_block(audit_output: dict) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------------------
+# AAA-174: full content text + heading outline blocks (for text_level_semantics)
+# ---------------------------------------------------------------------------
+_MAIN_TEXT_CHARS = 12000  # ~2.7k-3k tokens; full taxually main_content is ~10.7k
+
+
+def _content_blocks(audit_output: dict) -> tuple[str, str]:
+    """Build the CONTENT (full main_content.text) + HEADING OUTLINE blocks.
+    The full text is the grounding source the model must verify quoted figures
+    against (AAA-174 grounding guard). Missing text -> an explicit absence note
+    so the model lowers confidence on text_level_semantics rather than inventing."""
+    cr = audit_output.get("crawl") or {}
+    mc = cr.get("main_content") or {}
+    text = (mc.get("text") or (cr.get("content") or {}).get("visible_text") or "").strip()
+    if not text:
+        content = ("PAGE CONTENT (full extracted main text): (not available — no "
+                   "main_content.text on this audit; do NOT invent content claims, "
+                   "and set text_level_semantics confidence low)")
+    else:
+        truncated = len(text) > _MAIN_TEXT_CHARS
+        body = text[:_MAIN_TEXT_CHARS] + ("...[truncated]" if truncated else "")
+        content = ("PAGE CONTENT (full extracted main text — the AUTHORITATIVE source "
+                   "for any content/claim/quote; verify every quoted figure against "
+                   f"THIS text):\n{body}")
+    # heading outline
+    ss = (audit_output.get("phase2_html_measurements") or {}).get("semantic_structure") or {}
+    tree = ss.get("heading_tree") or []
+    if tree:
+        lines = "\n".join(
+            f"  H{h.get('level')} — {h.get('text')}" for h in tree
+            if isinstance(h, dict) and h.get("text")
+        )
+        heading = f"HEADING OUTLINE (H1–H6, in document order):\n{lines}"
+    else:
+        heading = "HEADING OUTLINE: (not available)"
+    return content, heading
+
+
 def _build_prompt(audit_output: dict) -> str:
     url = audit_output.get("url") or audit_output.get("client_url") or "(unknown)"
     page_type = audit_output.get("page_type")
@@ -163,6 +215,7 @@ def _build_prompt(audit_output: dict) -> str:
     if summary and len(summary) > 1500:
         summary = summary[:1500] + "...[truncated]"
     gt = _ground_truth_block(audit_output)
+    content_block, heading_block = _content_blocks(audit_output)  # AAA-174
 
     aspect_focus_lines = "\n".join(
         f"  - {asp}: {_ASPECT_FOCUS[asp]}" for asp in ASPECTS
@@ -171,7 +224,7 @@ def _build_prompt(audit_output: dict) -> str:
     return f"""\
 You are an SEO/AEO (Answer-Engine-Optimization) audit expert evaluating ONE
 webpage's per-aspect performance. Produce a factual, customer-facing finding for
-each of 7 aspects.
+each of {len(ASPECTS)} aspects.
 
 PAGE CONTEXT:
   url: {url}
@@ -187,7 +240,11 @@ DISCOVERY NARRATIVE (LLM-generated page overview, truncated):
 
 {gt}
 
-THE 7 ASPECTS TO EVALUATE:
+{content_block}
+
+{heading_block}
+
+THE {len(ASPECTS)} ASPECTS TO EVALUATE:
 {aspect_focus_lines}
 
 For EACH aspect emit:
@@ -207,19 +264,27 @@ For EACH aspect emit:
 
 RULES:
   - Do NOT contradict the GROUND-TRUTH MEASUREMENTS. They are authoritative.
-  - GROUNDEDNESS: confine every finding to the PROVIDED measurements and
-    observable page facts. Do NOT invent or assume performance data or advice —
-    e.g. CrUX / LCP / CLS / Core Web Vitals thresholds — nor framework-specific
-    tips (Next.js, React, etc.) when no such ground-truth is supplied above.
-    Not contradicting the data is NOT the same as being grounded in it: if you
-    do not have the measurement, do not make the claim.
+  - GROUNDEDNESS: confine every finding to the PROVIDED measurements, the PAGE
+    CONTENT text, and observable page facts. Do NOT invent or assume performance
+    data or advice — e.g. CrUX / LCP / CLS / Core Web Vitals thresholds — nor
+    framework-specific tips (Next.js, React, etc.) when no such ground-truth is
+    supplied above. Not contradicting the data is NOT the same as being grounded
+    in it: if you do not have the measurement, do not make the claim.
+  - GROUNDING-VERIFICATION (text claims): for text_level_semantics you MAY cite
+    topics, claims, contradictions, and quoted phrases — but ONLY from the PAGE
+    CONTENT text provided above. Any specific number, statistic, or quoted figure
+    you attribute to the page MUST be literally checkable in that text. If a
+    figure is not verifiable there, write it as "unverified" (or omit it) rather
+    than asserting it as fact. Prefer quoting a short exact fragment as evidence.
+  - text_level_semantics analyses the CONTENT/PROSE meaning only — do NOT discuss
+    schema.org / JSON-LD / structured data in that aspect (that is schema_entity).
   - Calibrate findings to the page_type / business_model / audience context
     (e.g. a product page's schema expectations differ from a news article's).
   - Do NOT explain in general WHY this aspect matters for SEO/AEO — that
     educational context is added separately by the system. Write ONLY about
     THIS page's specific, measured situation (avoids duplicating the template).
 
-Return ONLY structured JSON matching the required schema (all 7 aspects).
+Return ONLY structured JSON matching the required schema (all {len(ASPECTS)} aspects).
 """
 
 
@@ -281,8 +346,8 @@ def evaluate_aspects(audit_output: dict) -> tuple[dict | None, float]:
             "cost_usd": cost,
             "error": None,
         }
-        logger.info("evaluate_aspects: 7/7 aspects, $%.6f, %.1fs",
-                    cost, latency)
+        logger.info("evaluate_aspects: %d/%d aspects, $%.6f, %.1fs",
+                    len(ASPECTS), len(ASPECTS), cost, latency)
         return result, cost
     except (ValidationError, json.JSONDecodeError) as e:
         logger.warning("evaluate_aspects: schema/parse fail: %s: %s",
