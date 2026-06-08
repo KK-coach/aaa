@@ -627,6 +627,78 @@ async def attach_customer_summary(audit_id: str) -> dict:
         return {"_error": "%s: %s" % (type(e).__name__, e)}
 
 
+async def attach_fact_base_decisions(audit_id: str) -> dict:
+    """AAA-161 Gate 1 — wire the RG1 fact-first data layer into the pipeline
+    (ADDITIVE; NO render change). Builds the deterministic fact_base (RG1-S1,
+    fact_base_v3) + decisions (RG1-S2, decisions_v1) from the COMPLETE archived
+    audit_output and persists them as schema-additive leaves:
+        audit_output.fact_base = build_fact_base(audit_output)   (meta.schema_version)
+        audit_output.decisions = build_decisions(fact_base)      (meta.schema_version)
+
+    Both are pure / deterministic / $0 (no LLM). MUST run AFTER persist_re_findings
+    (fact_base reads re_findings.competition + eeat_score). Dotted-path update()
+    touches only the two new leaves + updated_at.
+
+    1 MiB guard (AAA-103): if the projected doc size approaches the Firestore
+    limit, SKIP the write and flag (no truncation, no fabrication).
+
+    No-fabricate contract: build_fact_base / build_decisions are NOT wrapped to
+    hide errors — on exception the exact error is recorded in
+    audit_output._fact_base_failed and returned, so the canary surfaces it."""
+    import json as _json
+    try:
+        existing = await read_audit(audit_id)
+        if existing is None:
+            return {"_error": "audit not found"}
+        ao = existing.get("audit_output") or {}
+        from report.fact_base import build_fact_base
+        from report.decide import build_decisions
+        fb = build_fact_base(ao)
+        dec = build_decisions(fb)
+
+        # AAA-103 1 MiB watch — measure current doc + the two new leaves.
+        doc_bytes = len(_json.dumps(existing, default=str).encode("utf-8"))
+        add_bytes = len(_json.dumps({"fact_base": fb, "decisions": dec},
+                                    default=str).encode("utf-8"))
+        projected = doc_bytes + add_bytes
+        limit = 1_048_576
+        if projected > int(limit * 0.95):
+            msg = ("1MiB guard: projected %d B (doc %d + add %d) > 95%% of %d — "
+                   "STOP, not persisting" % (projected, doc_bytes, add_bytes, limit))
+            logger.warning("attach_fact_base_decisions(%s): %s", audit_id, msg)
+            return {"_error": msg, "doc_bytes": doc_bytes, "add_bytes": add_bytes,
+                    "projected_bytes": projected}
+
+        now = _now_iso()
+        ref = _db().collection(_COLLECTION).document(audit_id)
+        await asyncio.to_thread(ref.update, {
+            "audit_output.fact_base": fb,
+            "audit_output.decisions": dec,
+            "audit_output._fact_base_failed": firestore.DELETE_FIELD,
+            "updated_at": now,
+        })
+        logger.info("fact_base+decisions attached: %s (fb=%dB dec=%dB doc~%.2fMiB)",
+                    audit_id, len(_json.dumps(fb, default=str)),
+                    len(_json.dumps(dec, default=str)), projected / limit)
+        return {"ok": True, "fb_groups": list(fb.keys()),
+                "dec_keys": list(dec.keys()),
+                "doc_bytes": doc_bytes, "add_bytes": add_bytes,
+                "projected_bytes": projected}
+    except Exception as e:  # surfaced, NOT patched around (AAA-161 no-fabricate)
+        logger.warning("attach_fact_base_decisions(%s) failed: %s: %s",
+                       audit_id, type(e).__name__, e)
+        try:
+            now = _now_iso()
+            ref = _db().collection(_COLLECTION).document(audit_id)
+            await asyncio.to_thread(ref.update, {
+                "audit_output._fact_base_failed": "%s: %s" % (type(e).__name__, e),
+                "updated_at": now,
+            })
+        except Exception:  # noqa: BLE001 — best-effort flag
+            pass
+        return {"_error": "%s: %s" % (type(e).__name__, e)}
+
+
 _DEFAULT_REPORTS_BUCKET = "aaa-customer-reports-664356368213"
 
 

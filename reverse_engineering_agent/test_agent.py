@@ -106,6 +106,17 @@ async def run_one(url: str, audit_id: str | None = None) -> dict:
         except Exception as e:  # noqa: BLE001 — test path tolerates failure
             re_persist_status = f"error: {type(e).__name__}: {e}"
 
+    # AAA-161 Gate 1 — wire the RG1 fact-first data layer (ADDITIVE; no render
+    # change). Builds + persists audit_output.fact_base (fact_base_v3) +
+    # audit_output.decisions (decisions_v1). MUST run AFTER persist_re_findings
+    # (fact_base reads re_findings.competition + eeat_score). Pure/$0/no LLM.
+    fact_base_status = "skipped (no audit_id or re_persist not ok)"
+    if audit_id_for_re and re_persist_status == "ok":
+        from memory.firestore_archive import attach_fact_base_decisions
+        fbd = await attach_fact_base_decisions(audit_id_for_re)
+        fact_base_status = ("ok" if fbd.get("ok")
+                            else f"skip-finding: {fbd.get('_error')}")
+
     # AAA-96 ship — end-of-pipeline customer-facing bilingual render. Runs only
     # after re_findings is persisted (the comparison sections depend on it).
     # Skip-finding: attach_customer_summary never raises; failure -> _error in
