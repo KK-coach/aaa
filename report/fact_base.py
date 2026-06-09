@@ -380,10 +380,34 @@ def _map_onpage(ao) -> dict:
         "title_text": r_scalar(ao, "crawl", "meta", "title", "text"),
         "desc_text": r_scalar(ao, "crawl", "meta", "description", "text"),
         "title_pixel": r_scalar(ao, "title_meta_measurements", "title", "pixel_width"),
+        "title_limit_px": r_scalar(ao, "title_meta_measurements", "title", "limit_px"),
         "title_verdict": r_scalar(ao, "title_meta_measurements", "title", "verdict"),
         "desc_verdict_desktop": r_scalar(ao, "title_meta_measurements", "description", "desktop", "verdict"),
         "desc_verdict_mobile": r_scalar(ao, "title_meta_measurements", "description", "mobile", "verdict"),
     }
+    # AAA-185: keyword-in-title + title<->H1 duplication (AAA-158 quality_signals).
+    # keyword_in_title: present True -> measured (keyword IS in title); present
+    # False -> absent (keyword missing = a finding); not available -> not_measured.
+    _kit, _kp = _dig(ao, "title_meta_measurements", "quality_signals", "keyword_in_title")
+    _kit = _kit if isinstance(_kit, dict) else {}
+    _ksrc = "title_meta_measurements.quality_signals.keyword_in_title.present"
+    if not _kp or not _kit.get("available"):
+        title_meta["keyword_in_title"] = _fact(None, NOT_MEASURED, _ksrc)
+    else:
+        _present = bool(_kit.get("present"))
+        title_meta["keyword_in_title"] = _fact(_present, MEASURED if _present else ABSENT, _ksrc)
+    # title<->H1 duplication: available -> measured {exact, near, overlap}; else not_measured.
+    _dup, _dp = _dig(ao, "title_meta_measurements", "quality_signals", "title_h1_duplication")
+    _dup = _dup if isinstance(_dup, dict) else {}
+    _dsrc = "title_meta_measurements.quality_signals.title_h1_duplication"
+    if not _dp or not _dup.get("available"):
+        title_meta["title_h1_dup"] = _fact(None, NOT_MEASURED, _dsrc)
+    else:
+        title_meta["title_h1_dup"] = _fact(
+            {"exact_duplicate": bool(_dup.get("exact_duplicate")),
+             "near_duplicate": bool(_dup.get("near_duplicate")),
+             "token_overlap": _dup.get("token_overlap")},
+            MEASURED, _dsrc)
     # AAA-161 G2 — content-QA / placeholder leak (AAA-173 deterministic detector).
     # page_flag True → measured (a positive leak finding); False → absent
     # (detector ran, clean); missing → not_measured.

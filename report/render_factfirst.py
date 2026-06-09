@@ -105,6 +105,7 @@ UI = {
         "landmarks": "Landmarkok", "altcov": "Alt-lefedettség", "labelcov": "Űrlap-címke lefedettség",
         "headings": "Címsorok (H1 / összes / ugrás)", "indexed": "Indexelt", "perf": "Teljesítmény (mobil/asztali)",
         " contentqa": "Tartalom-QA jelzés",
+        "tm_title": "Cím hossza (SERP)", "tm_kw": "Kulcsszó a címben", "tm_dup": "Cím ↔ H1",
     },
     "en": {
         "doc_title": "Visibility & content audit",
@@ -141,6 +142,7 @@ UI = {
         "landmarks": "Landmarks", "altcov": "Alt coverage", "labelcov": "Form-label coverage",
         "headings": "Headings (H1 / total / skips)", "indexed": "Indexed", "perf": "Performance (mobile/desktop)",
         " contentqa": "Content-QA flag",
+        "tm_title": "Title length (SERP)", "tm_kw": "Keyword in title", "tm_dup": "Title vs H1",
     },
 }
 
@@ -413,6 +415,68 @@ def _cwv_view(ao, lang, key, label):
         cell("inp", "value_ms"), cell("cls", "value")))
 
 
+def _title_meta_rows(tm, lang):
+    """AAA-185 — three customer-facing title/meta rows (AAA-158 signals),
+    provenance-aware (AAA-182): measured → verdict/value; absent → field-aware
+    finding/clean; not_measured → 'not measured'."""
+    t = UI[lang]
+    hu = (lang == "hu")
+    rows = []
+
+    # 1) title length / SERP truncation
+    tv = tm.get("title_verdict") or {}
+    px = (tm.get("title_pixel") or {}).get("value")
+    lim = (tm.get("title_limit_px") or {}).get("value") or 600
+    pxs = ("%d / %d px" % (int(px), int(lim))) if isinstance(px, (int, float)) else ""
+    if _is_fact(tv) and tv.get("provenance") == "measured":
+        v = tv.get("value")
+        if v == "truncated":
+            txt = ("⚠ A cím levágódik a Google találatban" if hu
+                   else "⚠ Title is truncated in Google results")
+        elif v == "borderline":
+            txt = ("Határeset — a cím a levágás közelében" if hu
+                   else "Borderline — near the truncation limit")
+        else:
+            txt = ("Megfelelő hosszúság" if hu else "Good length")
+        # pixel width is a font-table estimate → becslés/estimate chip.
+        rows.append((t["tm_title"], "%s%s %s" % (
+            _esc(txt), (" (%s)" % pxs if pxs else ""), _chip("becslés", lang))))
+    else:
+        rows.append((t["tm_title"], _nd(lang)))
+
+    # 2) keyword in title — deterministic substring check (mért). measured(True)=
+    # present(good); absent(False)=keyword missing (a finding); else not_measured.
+    kit = tm.get("keyword_in_title")
+    if _is_fact(kit) and kit.get("provenance") == "measured":
+        kw = ("✓ A kulcsszó szerepel a címben" if hu
+              else "✓ Your keyword appears in the title")
+        rows.append((t["tm_kw"], "%s %s" % (_esc(kw), _chip("mért", lang))))
+    elif _is_fact(kit) and kit.get("provenance") == "absent":
+        kw = ("⚠ A kulcsszó hiányzik a címből" if hu
+              else "⚠ Keyword missing from the title")
+        rows.append((t["tm_kw"], "%s %s" % (_esc(kw), _chip("mért", lang))))
+    else:
+        rows.append((t["tm_kw"], _nd(lang)))
+
+    # 3) title ↔ H1 duplication — deterministic token overlap (mért)
+    dup = tm.get("title_h1_dup") or {}
+    if _is_fact(dup) and dup.get("provenance") == "measured":
+        d = dup.get("value") or {}
+        ov = d.get("token_overlap")
+        ovs = (" (%d%% %s)" % (round(100 * ov), "átfedés" if hu else "overlap")) if isinstance(ov, (int, float)) else ""
+        if d.get("exact_duplicate"):
+            txt = ("⚠ A cím és a H1 azonos — érdemes megkülönböztetni" if hu
+                   else "⚠ Title and H1 are identical — differentiate them")
+        elif d.get("near_duplicate"):
+            txt = ("Közel azonos a cím és a H1" if hu else "Title and H1 are near-duplicates")
+        else:
+            txt = ("A cím és a H1 eltér" if hu else "Title and H1 differ")
+        rows.append((t["tm_dup"], "%s%s %s" % (_esc(txt), _esc(ovs), _chip("mért", lang))))
+    else:
+        rows.append((t["tm_dup"], _nd(lang)))
+    return rows
+
+
 def _s4(fb, ao, lang):
     t = UI[lang]
     op = fb.get("onpage") or {}
@@ -454,6 +518,9 @@ def _s4(fb, ao, lang):
             fmt=lambda v: ", ".join(v) if isinstance(v, list) else _esc(v))),
         (t["schema_jsonld"], _fv((op.get("schema") or {}).get("json_ld_present"), lang)),
     ]
+    # AAA-185: title_meta (AAA-158) — truncation verdict + keyword-in-title + title↔H1 dup.
+    tm = op.get("title_meta") or {}
+    rows += _title_meta_rows(tm, lang)
     out += "<table>" + "".join("<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows) + "</table>"
     out += _subsec("4.4", "Technikai egészség" if lang == "hu" else "Technical health")
     out += "<table><tr><th>%s</th><th>LCP</th><th>INP</th><th>CLS</th></tr>" % (
