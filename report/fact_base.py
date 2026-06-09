@@ -526,6 +526,24 @@ def _map_technical(ao) -> dict:
         "psi_seo": r_scalar(ao, "pagespeed", "mobile", "scores", "seo"),
         "psi_accessibility": r_scalar(ao, "pagespeed", "mobile", "scores", "accessibility"),
         "crux": metrics,
+        # AAA-187 — AI-crawler readiness (CSR/SPA visibility + ~2MB byte budget).
+        # measured-but-never-surfaced signals. Provenance-aware (AAA-183 pattern):
+        # booleans → measured True/False (the negative is a real fact, not absence).
+        "rendering": {
+            "is_csr_likely": r_bool(ao, "phase2_html_measurements", "rendering_mode", "is_csr_likely"),
+            "ai_crawler_visibility_warning": r_bool(
+                ao, "phase2_html_measurements", "rendering_mode", "ai_crawler_visibility_warning"),
+            "spa_framework_signals": r_list(
+                ao, "phase2_html_measurements", "rendering_mode", "spa_framework_signals"),
+        },
+        "byte_budget": {
+            "exceeds_2mb": r_bool(ao, "crawl", "googlebot_index_limit", "exceeds_limit"),
+            "raw_html_bytes": r_count(ao, "crawl", "googlebot_index_limit", "raw_html_bytes"),
+            "budget_used_percent": r_scalar(ao, "crawl", "googlebot_index_limit", "budget_used_percent"),
+            "bytes_over_limit": r_scalar(ao, "crawl", "googlebot_index_limit", "bytes_over_limit"),
+            "words_after_cutoff": r_scalar(
+                ao, "crawl", "googlebot_index_limit", "content_at_risk", "approx_words_after_cutoff"),
+        },
     }
 
 

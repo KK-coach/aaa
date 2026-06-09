@@ -105,6 +105,10 @@ UI = {
         "landmarks": "Landmarkok", "altcov": "Alt-lefedettség", "labelcov": "Űrlap-címke lefedettség",
         "headings": "Címsorok (H1 / összes / ugrás)", "indexed": "Indexelt", "perf": "Teljesítmény (mobil/asztali)",
         " contentqa": "Tartalom-QA jelzés",
+        "aic_title": "AI-crawler láthatóság",
+        "aic_clean": "✓ A tartalmad teljesen látható az AI/Google crawlerek számára, az indexelési kereten belül.",
+        "aic_csr": "⚠ A tartalom egy része JavaScripttel renderelődik — az AI-crawlerek nem biztos, hogy látják.",
+        "aic_2mb": "⚠ A HTML meghaladja a ~2 MB-os indexelési limitet; a tartalom %s%%-a a levágási pont után van — kimaradhat az indexből.",
         "tm_title": "Cím hossza (SERP)", "tm_kw": "Kulcsszó a címben", "tm_dup": "Cím ↔ H1",
         "kw_map": "Kulcsszó-térkép — mit céloz az oldal", "kw_kw": "Kulcsszó", "kw_type": "Típus",
         "kw_rel": "Relevancia", "kw_intent": "Szándék",
@@ -150,6 +154,10 @@ UI = {
         "landmarks": "Landmarks", "altcov": "Alt coverage", "labelcov": "Form-label coverage",
         "headings": "Headings (H1 / total / skips)", "indexed": "Indexed", "perf": "Performance (mobile/desktop)",
         " contentqa": "Content-QA flag",
+        "aic_title": "AI-crawler visibility",
+        "aic_clean": "✓ Your content is fully visible to AI/Google crawlers, within the index budget.",
+        "aic_csr": "⚠ Part of the content is JS-rendered — AI crawlers may not see it.",
+        "aic_2mb": "⚠ The HTML exceeds the ~2MB index limit; %s%% of the content is past the cutoff — it may be dropped from the index.",
         "tm_title": "Title length (SERP)", "tm_kw": "Keyword in title", "tm_dup": "Title vs H1",
         "kw_map": "Keyword map — what the page targets", "kw_kw": "Keyword", "kw_type": "Type",
         "kw_rel": "Relevance", "kw_intent": "Intent",
@@ -647,7 +655,56 @@ def _s4(fb, ao, lang):
             fmt=lambda v: "%d B (%.1f%% / 2MB)" % (v, 100 * v / 2097152))),
     ]
     out += "<table>" + "".join("<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows44) + "</table>"
+    out += _ai_crawler_block(tech, lang)  # AAA-187 — AI-crawler visibility sub-block
     return out
+
+
+def _ai_crawler_block(tech, lang):
+    """AAA-187 — AI-crawler readiness sub-block (§4.4). Always rendered WITH a
+    verdict (AAA-182 'Clean' positive pattern — never hidden when clean): the
+    reassurance case is itself customer value. Covers two threads:
+      (1) CSR/SPA visibility — JS-rendered content a non-JS crawler can't see.
+      (2) ~2MB byte budget — HTML past Googlebot's index cutoff may be dropped.
+    Provenance-aware: if neither thread was measured → 'not measured'."""
+    t = UI[lang]
+    rend = (tech or {}).get("rendering") or {}
+    bb = (tech or {}).get("byte_budget") or {}
+    csr = rend.get("is_csr_likely") or {}
+    warn = rend.get("ai_crawler_visibility_warning") or {}
+    over = bb.get("exceeds_2mb") or {}
+
+    def _meas(f):
+        return _is_fact(f) and f.get("provenance") == "measured"
+
+    # Distinct labeled sub-block under §4.4 (no number collision with the
+    # technical-health table, which owns the 4.4 numbering).
+    header = ('<div class="subsec"><b style="font-family:var(--serif)">%s</b> %s</div>'
+              % (_esc(t["aic_title"]), _chip("mért", lang)))
+
+    # not_measured on every thread → honest "not measured", still labeled.
+    if not (_meas(csr) or _meas(warn) or _meas(over)):
+        return header + ('<div class="note">%s</div>' % _nd(lang))
+
+    lines = []
+    # Thread 1 — CSR/SPA visibility warning.
+    if (_meas(csr) and bool(csr.get("value"))) or (_meas(warn) and bool(warn.get("value"))):
+        lines.append(('st-warn', t["aic_csr"]))
+    # Thread 2 — byte budget cutoff.
+    if _meas(over) and bool(over.get("value")):
+        total = (bb.get("raw_html_bytes") or {}).get("value")
+        overb = (bb.get("bytes_over_limit") or {}).get("value")
+        pct = None
+        if isinstance(total, (int, float)) and total and isinstance(overb, (int, float)):
+            pct = round(100.0 * overb / total, 1)
+        lines.append(('st-bad', t["aic_2mb"] % (pct if pct is not None else "?")))
+    # Clean — positive reassurance (only when nothing flagged).
+    if not lines:
+        lines.append(('st-ok', t["aic_clean"]))
+
+    rows = "".join(
+        '<div style="margin:6px 0"><span class="st %s">%s</span></div>' % (cls, _esc(msg))
+        for cls, msg in lines)
+    return header + rows
 
 
 def _s5(fb, ao, lang):
