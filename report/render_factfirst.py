@@ -22,6 +22,38 @@ finding is SUPPRESSED at render (product decision).
 from __future__ import annotations
 
 import html as _html
+import re as _re
+
+# AAA-181 — §4.2 aspect dict-keys → customer-facing display labels (no raw keys).
+_ASPECT_LABELS = {
+    "macro_structure": {"hu": "Makró-struktúra", "en": "Macro structure"},
+    "micro_semantics": {"hu": "Mikró-szemantika", "en": "Micro semantics"},
+    "text_level_semantics": {"hu": "Szövegszintű szemantika", "en": "Text-level semantics"},
+}
+
+# AAA-181 — strip internal page-handle leaks (PAGE_1 = client, PAGE_2.. = competitors)
+# from any customer-facing prose (E-E-A-T verdict, aspect findings, RE synthesis).
+_PAGE_RE = _re.compile(r"\bPAGE[_\s-]?(\d+)\b", _re.I)
+
+
+def _page_names(ao):
+    """PAGE_N → display name: PAGE_1 = client brand / 'This page'; PAGE_2.. =
+    the comparative competitors in order (brand / neutral)."""
+    fb = ao.get("fact_base") or {}
+    client = (fb.get("meta") or {}).get("brand") or (ao.get("site_profile") or {}).get("brand")
+    names = {1: client or "This page"}
+    comps = ((ao.get("eeat_score") or {}).get("competitors")) or []
+    for i, c in enumerate(comps, start=2):
+        names[i] = (c.get("brand") if isinstance(c, dict) else None) or "a competitor"
+    return names
+
+
+def _sanitize_labels(text, page_names):
+    """Replace any leaked PAGE_N handle in customer prose with a display name."""
+    if not text:
+        return text
+    return _PAGE_RE.sub(
+        lambda m: str(page_names.get(int(m.group(1)), "This page")), text)
 
 SECTION_IDS = ["§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8"]
 
@@ -329,7 +361,7 @@ def _s3(fb, ao, lang):
     # AI-interpretation: exclusion reason (reuse stored RE comparison summary)
     syn = _dig(ao, "re_findings", "comparison", "ai_overview_summary")
     if syn:
-        out += '<div class="note">%s %s</div>' % (_esc(syn), _chip("AI-értelmezés", lang))
+        out += '<div class="note">%s %s</div>' % (_esc(_sanitize_labels(syn, _page_names(ao))), _chip("AI-értelmezés", lang))
     # fan-out coverage (already correct)
     fo = av.get("fan_out_enriched")
     if _is_fact(fo) and fo.get("value"):
@@ -373,10 +405,14 @@ def _s4(fb, ao, lang):
     out += "</table>"
     out += _subsec("4.2", "Szemantika + struktúra" if lang == "hu" else "Semantics + structure")
     ae = ao.get("aaa124_aspect_evaluations") or {}
+    pn = _page_names(ao)
     for asp in ("macro_structure", "micro_semantics", "text_level_semantics"):
         f = (ae.get(asp) or {}).get("structured_finding")
         if f:
-            out += '<div class="note"><b>%s</b> %s<br>%s</div>' % (_esc(asp), _chip("AI-értelmezés", lang), _esc(f))
+            label = _ASPECT_LABELS.get(asp, {}).get(lang) or asp  # AAA-181: friendly label
+            out += '<div class="note"><b>%s</b> %s<br>%s</div>' % (
+                _esc(label), _chip("AI-értelmezés", lang),
+                _esc(_sanitize_labels(f, pn)))
     out += _subsec("4.3", "Gép-olvashatóság" if lang == "hu" else "Machine-readability")
     h = op.get("headings") or {}
     img = op.get("images") or {}
@@ -441,6 +477,7 @@ def _s5(fb, ao, lang):
     out += "</div>"
     verdict = _dig(ao, "eeat_score", "client", "verdict")
     if verdict:
+        verdict = _sanitize_labels(verdict, _page_names(ao))  # AAA-181: strip PAGE_N
         out += '<div class="subsec"><span class="n">%s</span></div><p>%s %s</p>' % (
             t["verdict"], _esc(verdict), _chip("AI-értelmezés", lang))
     out += '<p class="role">%s</p>' % t["see_s6"]
@@ -499,7 +536,7 @@ def _s6(fb, ao, lang):
         out += "</table>"
     syn = _dig(ao, "re_findings", "comparison", "ai_overview_summary")
     if syn:
-        out += '<div class="note">%s %s</div>' % (_esc(syn), _chip("AI-értelmezés", lang))
+        out += '<div class="note">%s %s</div>' % (_esc(_sanitize_labels(syn, _page_names(ao))), _chip("AI-értelmezés", lang))
     return out
 
 

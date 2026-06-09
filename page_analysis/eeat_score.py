@@ -384,9 +384,15 @@ present vs missing). It is FORBIDDEN to predict or imply Google ranking, SERP
 position, or AI-citation likelihood, or to reference SERP correlation. Never
 invent a signal not in the ground-truth. Score ONLY on-page signals.
 
+LABEL HYGIENE (AAA-181): the "PAGE_N" handles are an INTERNAL index for the JSON
+mapping ONLY. In the free-text "justification" string, refer to each page
+NEUTRALLY — as "this page" / "the page" (or by its brand) — and NEVER write the
+literal token "PAGE_1", "PAGE_2", etc. The justification is shown to customers.
+
 Return JSON: {{"evaluations":[{{"page_id","experience","expertise",
 "authoritativeness","trustworthiness","justification"}}]}} — one object per page,
-page_id EXACTLY as labelled (PAGE_1..).
+page_id EXACTLY as labelled (PAGE_1..) in the page_id field (but NOT in the
+justification text).
 
 {body}
 """
