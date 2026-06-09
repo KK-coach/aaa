@@ -34,6 +34,7 @@ app = FastAPI(title="playwright-render-service", version="1")
 class RenderRequest(BaseModel):
     url: str
     wait_for: str = "networkidle"
+    locale: str | None = None  # AAA-179: requested locale → context Accept-Language
 
 
 @app.get("/health")
@@ -50,7 +51,7 @@ async def render(req: RenderRequest) -> JSONResponse:
     # render_in_process never raises — it returns an {error, error_type} dict on
     # any failure. Belt-and-suspenders guard keeps the endpoint crash-proof.
     try:
-        result = await render_in_process(req.url, wait_for)
+        result = await render_in_process(req.url, wait_for, locale=req.locale)
     except Exception as e:  # noqa: BLE001
         result = {"url": req.url, "error": "%s: %s" % (type(e).__name__, e),
                   "error_type": "render_error"}

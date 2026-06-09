@@ -183,7 +183,7 @@ async def run(request: Request) -> JSONResponse:
     # --- the heavy run. A failure here is the AUDIT's failure (deterministic):
     #     record it and return 200 so Cloud Tasks does NOT retry a bad audit. ---
     try:
-        result = await run_one(url, audit_id=audit_id)
+        result = await run_one(url, audit_id=audit_id, locale=locale)  # AAA-179
     except Exception as e:  # noqa: BLE001 — skip-finding: record, don't fabricate
         reason = ("%s: %s" % (type(e).__name__, e))[:500]
         logger.exception("run_one failed for %s", audit_id)

@@ -52,13 +52,18 @@ _HTTP_TIMEOUT_S = (TIMEOUT_MS / 1000.0) + 15.0
 _LOCAL_RENDER_DISABLED = os.environ.get("PLAYWRIGHT_DISABLE_LOCAL") == "1"
 
 
-async def _render_via_http(base_url: str, url: str, wait_for: str) -> dict:
+async def _render_via_http(base_url: str, url: str, wait_for: str,
+                           locale: str | None = None) -> dict:
     """POST to the Playwright microservice. Maps transport faults to the
-    skip-finding contract (never raises)."""
+    skip-finding contract (never raises). AAA-179: forwards the requested
+    ``locale`` so the render context negotiates the right page language."""
     endpoint = base_url.rstrip("/") + "/render"
+    body = {"url": url, "wait_for": wait_for}
+    if locale:
+        body["locale"] = locale
     try:
         async with httpx.AsyncClient(timeout=_HTTP_TIMEOUT_S) as client:
-            resp = await client.post(endpoint, json={"url": url, "wait_for": wait_for})
+            resp = await client.post(endpoint, json=body)
     except httpx.TimeoutException as exc:
         return {"url": url, "error": f"{type(exc).__name__}: {exc}".strip(),
                 "error_type": "timeout"}
@@ -76,28 +81,31 @@ async def _render_via_http(base_url: str, url: str, wait_for: str) -> dict:
                 "error_type": "render_error"}
 
 
-async def _render_in_process_fallback(url: str, wait_for: str) -> dict:
+async def _render_in_process_fallback(url: str, wait_for: str,
+                                      locale: str | None = None) -> dict:
     """Local-dev fallback: render with a locally-installed Chromium. If Chromium
     is absent the launch fails and render_in_process returns the error dict
     (skip-finding) — no crash."""
     from playwright_service.renderer import render_in_process
-    return await render_in_process(url, wait_for)
+    return await render_in_process(url, wait_for, locale=locale)
 
 
-async def render_url(url: str, wait_for: str = "networkidle") -> dict:
+async def render_url(url: str, wait_for: str = "networkidle",
+                     locale: str | None = None) -> dict:
     """Render ``url`` and return structured DOM data. See module docstring for
-    the resolution order and the (unchanged) return contract."""
+    the resolution order and the (unchanged) return contract. AAA-179: ``locale``
+    is forwarded to the render context's Accept-Language / context locale."""
     if wait_for not in VALID_WAIT:
         wait_for = "networkidle"
 
     pw_url = os.environ.get("PLAYWRIGHT_URL")
     # 1. HTTP-first (production).
     if pw_url:
-        return await _render_via_http(pw_url, url, wait_for)
+        return await _render_via_http(pw_url, url, wait_for, locale=locale)
 
     # 2. In-process fallback (local dev only).
     if not _LOCAL_RENDER_DISABLED:
-        return await _render_in_process_fallback(url, wait_for)
+        return await _render_in_process_fallback(url, wait_for, locale=locale)
 
     # 3. Skip-finding.
     return {

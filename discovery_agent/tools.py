@@ -88,7 +88,8 @@ async def crawl_with_playwright_tool(url: str, tool_context: ToolContext) -> dic
     Args:
         url: The absolute URL to render and re-crawl.
     """
-    rendered = await render_url(url)
+    from crawler.crawler import get_requested_locale  # AAA-179
+    rendered = await render_url(url, locale=get_requested_locale())
     if rendered.get("error"):
         _bump(tool_context, "crawl_with_playwright")
         return {"error": rendered["error"],

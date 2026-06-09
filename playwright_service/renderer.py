@@ -66,25 +66,43 @@ def _classify_error(exc: Exception) -> str:
     return "render_error"
 
 
-async def render_in_process(url: str, wait_for: str = "networkidle") -> dict:
+# AAA-179: requested locale -> (BCP-47 context locale, Accept-Language header).
+# Mirrors crawler.ACCEPT_LANGUAGE_BY_LOCALE; kept local to avoid the renderer
+# microservice importing the crawler package.
+_LOCALE_CTX = {
+    "hu": ("hu-HU", "hu-HU,hu;q=0.9"),
+    "en": ("en-US", "en-US,en;q=0.9"),
+    "de": ("de-DE", "de-DE,de;q=0.9"),
+    "es": ("es-ES", "es-ES,es;q=0.9"),
+}
+
+
+async def render_in_process(url: str, wait_for: str = "networkidle",
+                            locale: str | None = None) -> dict:
     """Render a URL with Playwright Chromium headless and return structured data.
 
     ``wait_for`` is one of ``networkidle`` | ``domcontentloaded`` | ``load``.
-    On failure returns ``{"url", "error", "error_type"}`` where ``error_type``
+    AAA-179: ``locale`` (e.g. 'hu') hard-sets the browser context locale +
+    Accept-Language so the render fetch negotiates the right page language;
+    unsupported/absent locale → omitted (site serves its own default). On
+    failure returns ``{"url", "error", "error_type"}`` where ``error_type``
     is ``timeout`` | ``render_error`` | ``network_error``.
     """
     if wait_for not in VALID_WAIT:
         wait_for = "networkidle"
+
+    ctx_kwargs = {"viewport": VIEWPORT, "user_agent": USER_AGENT}
+    _lc = _LOCALE_CTX.get((locale or "").strip().lower().replace("_", "-").split("-")[0])
+    if _lc:
+        ctx_kwargs["locale"] = _lc[0]
+        ctx_kwargs["extra_http_headers"] = {"Accept-Language": _lc[1]}
 
     start = time.perf_counter()
     browser = None
     try:
         async with async_playwright() as pw:
             browser = await pw.chromium.launch(headless=True)
-            context = await browser.new_context(
-                viewport=VIEWPORT,
-                user_agent=USER_AGENT,
-            )
+            context = await browser.new_context(**ctx_kwargs)
             page = await context.new_page()
             page.set_default_timeout(TIMEOUT_MS)
 

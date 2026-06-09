@@ -233,6 +233,34 @@ async def audit(url: str, corpus_mode: bool = False,
         summary_markdown=summary_text,
     )
 
+    # AAA-179 Sub-step 2 — post-crawl language-mismatch flag (defense-in-depth).
+    # If the requested locale and the DETECTED page language disagree (the site
+    # forced a different language despite the requested Accept-Language — e.g. a
+    # geo/IP redirect, or the requested-locale variant doesn't exist), record a
+    # schema-additive flag (crawl.i18n.locale_mismatch) so the report can surface
+    # it. We keep deriving on what was fetched (best available) — never silently.
+    if not corpus_mode:
+        try:
+            from crawler.crawler import get_requested_locale, _norm_locale
+            req_loc = get_requested_locale()
+            det_loc = _norm_locale((out.site_profile or {}).get("language"))
+            if req_loc and det_loc and req_loc != det_loc:
+                cr = out.crawl if isinstance(out.crawl, dict) else {}
+                i18n = cr.get("i18n") if isinstance(cr.get("i18n"), dict) else {}
+                tech = cr.get("technical") if isinstance(cr.get("technical"), dict) else {}
+                i18n["locale_mismatch"] = {
+                    "requested": req_loc,
+                    "detected": det_loc,
+                    "final_url": cr.get("url") or url,
+                    "redirect_chain": tech.get("redirect_chain"),
+                }
+                cr["i18n"] = i18n
+                out.crawl = cr
+                print(f"  AAA-179 locale_mismatch: requested={req_loc} "
+                      f"detected={det_loc} final_url={cr.get('url') or url}")
+        except Exception as _e:  # noqa: BLE001 — flag is best-effort, never break the audit
+            print(f"  AAA-179 locale_mismatch check skipped: {type(_e).__name__}: {_e}")
+
     if not corpus_mode:  # AAA-75 DROP step(s): W4-W9
         # AAA-80: Google AI-Mode query fan-out for the primary target keyword.
         # Serial placement (write_audit's enrichments are currently sequential,

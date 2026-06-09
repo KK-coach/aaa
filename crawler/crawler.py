@@ -9,12 +9,15 @@ Pure Python utility — safe to import from any ADK agent.
 from __future__ import annotations
 
 import json
+import logging
 import re
 import time
 from urllib.parse import urlparse
 
 import httpx
 from selectolax.parser import HTMLParser
+
+logger = logging.getLogger(__name__)
 
 # Chrome desktop UA so servers return the same markup a real browser would get.
 USER_AGENT = (
@@ -25,6 +28,42 @@ USER_AGENT = (
 
 REQUEST_TIMEOUT_SECONDS = 30.0
 MAX_REDIRECTS = 5
+
+# AAA-179: deterministic crawl Accept-Language from the audit's requested locale.
+# Hard-set per audit; NEVER an ambient/environment default. Extensible.
+ACCEPT_LANGUAGE_BY_LOCALE = {
+    "hu": "hu-HU,hu;q=0.9",
+    "en": "en-US,en;q=0.9",
+    "de": "de-DE,de;q=0.9",
+    "es": "es-ES,es;q=0.9",
+}
+
+# Module-global requested locale (mirrors reverse_engineering_agent.tools'
+# _FORCED_CLIENT_AUDIT_ID pattern — SAFE under Cloud Run concurrency=1). Set once
+# per audit by run_one(); read by crawl_html() / the Playwright escalation tool.
+_REQUESTED_LOCALE: str | None = None
+
+
+def _norm_locale(locale) -> str | None:
+    s = (locale or "").strip().lower().replace("_", "-")
+    return (s.split("-")[0] or None) if s else None
+
+
+def set_requested_locale(locale: str | None) -> None:
+    """Hard-set the audit's requested locale for the crawl fetch (AAA-179)."""
+    global _REQUESTED_LOCALE
+    _REQUESTED_LOCALE = _norm_locale(locale)
+
+
+def get_requested_locale() -> str | None:
+    return _REQUESTED_LOCALE
+
+
+def accept_language_for(locale: str | None) -> str | None:
+    """BCP-47 Accept-Language header for a requested locale, or None if the
+    locale is absent/unsupported (caller then OMITS the header — never injects
+    en-US, so the site serves its own default)."""
+    return ACCEPT_LANGUAGE_BY_LOCALE.get(_norm_locale(locale) or "")
 
 _WORD_RE = re.compile(r"\b\w+\b", re.UNICODE)
 
@@ -782,19 +821,30 @@ def _build_report(url: str, response: httpx.Response, fetch_time_ms: int) -> dic
     }
 
 
-async def crawl_html(url: str) -> dict:
+async def crawl_html(url: str, locale: str | None = None) -> dict:
     """Fetch a URL and extract structured SEO/GEO data.
+
+    AAA-179: the crawl ``Accept-Language`` is derived deterministically from the
+    audit's requested ``locale`` (explicit arg, else the module-global set by
+    run_one) — NEVER an ambient en-US default. Unsupported/absent locale → the
+    header is OMITTED so the site serves its own default language (logged).
 
     Returns the report dict on success. On failure returns
     ``{"url": url, "error": str, "error_type": ...}`` where ``error_type`` is
     one of ``timeout``, ``http_error``, ``parse_error``, ``network_error``.
     """
     timeout = httpx.Timeout(REQUEST_TIMEOUT_SECONDS)
+    loc = locale if locale is not None else _REQUESTED_LOCALE
     headers = {
         "User-Agent": USER_AGENT,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
     }
+    accept_lang = accept_language_for(loc)
+    if accept_lang:
+        headers["Accept-Language"] = accept_lang  # hard-set from requested locale
+    else:
+        logger.warning("crawl_html: no Accept-Language for locale=%r — omitting "
+                       "header so the site serves its own default (url=%s)", loc, url)
 
     start = time.perf_counter()
     try:
