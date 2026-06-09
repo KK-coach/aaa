@@ -332,13 +332,28 @@ def _map_onpage(ao) -> dict:
         "list_structure": r_scalar(ao, *P, "list_structure"),
         "table_count": r_count(ao, *P, "table_structure", "table", error_subtree=ss),
         "blockquote_count": r_count(ao, *P, "blockquote_count", error_subtree=ss),
+        "blockquote_with_cite": r_count(ao, *P, "blockquote_with_cite", error_subtree=ss),  # AAA-189
         "figure_count": r_count(ao, *P, "figure_count", error_subtree=ss),
+        "figure_with_figcaption": r_count(ao, *P, "figure_with_figcaption", error_subtree=ss),  # AAA-189
         "div_table_suspicious": r_count(ao, *P, "div_table_suspicious", error_subtree=ss),
+        # AAA-189 — structural cleanliness inputs (boolean negative → measured False).
+        "structural_noise_warning": r_bool(ao, *P, "structural_noise_warning"),
+        "semantic_to_visual_ratio": r_scalar(ao, *P, "semantic_to_visual_ratio", none_is_absent=True),
+        "inline_emphasis": r_scalar(ao, *P, "inline_emphasis"),
+        "heading_stacking_candidate": r_bool(ao, *P, "heading_stacking_candidate"),  # mapped; §4.2 narrates
+        # AAA-189 — native-semantics signal (the accessibility verdict driver,
+        # NOT ARIA count): div-onclick antipattern. False → measured (clean).
+        "div_onclick_antipattern": r_bool(ao, *A, "semantic_html", "has_div_onclick_antipattern"),
+        "button_count": r_count(ao, *A, "semantic_html", "button_count", error_subtree=afm),
     }
     links = {
         "anchor_count": r_count(ao, *P, "link_semantic", "anchor_count", error_subtree=ss),
         "generic_anchor_count": r_count(ao, *P, "link_semantic", "generic_anchor_text_count", error_subtree=ss),
+        "blank_target_count": r_count(ao, *P, "link_semantic", "blank_target_count", error_subtree=ss),  # AAA-189
         "blank_unsafe_count": r_count(ao, *P, "link_semantic", "blank_target_unsafe_count", error_subtree=ss),
+        # AAA-189 NOTE: link_semantic counters are NOT CMP-excluded (anchor_nodes
+        # unfiltered, phase2_html L323) → render-DEFERRED to AAA-156. Mapped for
+        # completeness only; _s4 does not surface any link count or verdict.
     }
     # FORMS: structural counts from phase2 (canonical); label_coverage from
     # agent_friendly (no phase2 equivalent).
@@ -346,6 +361,10 @@ def _map_onpage(ao) -> dict:
         "form_count": r_count(ao, *P, "form_quality_extended", "form_count", error_subtree=ss),
         "input_count": r_count(ao, *P, "form_quality_extended", "input_count", error_subtree=ss),
         "input_type_distribution": r_scalar(ao, *P, "form_quality_extended", "input_type_distribution"),
+        # AAA-189 — submit quality (verdict-only in render; submit_button_count is
+        # NOT CMP-excluded — qualitative line only, no raw count surfaced).
+        "submit_button_count": r_count(ao, *P, "form_quality_extended", "submit_button_count", error_subtree=ss),
+        "submit_button_generic_count": r_count(ao, *P, "form_quality_extended", "submit_button_generic_count", error_subtree=ss),
         "label_coverage": r_scalar(ao, *A, "forms", "label_coverage"),
     }
     aria = {

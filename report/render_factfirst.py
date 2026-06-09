@@ -105,6 +105,17 @@ UI = {
         "landmarks": "Landmarkok", "altcov": "Alt-lefedettség", "labelcov": "Űrlap-címke lefedettség",
         "headings": "Címsorok (H1 / összes / ugrás)", "indexed": "Indexelt", "perf": "Teljesítmény (mobil/asztali)",
         " contentqa": "Tartalom-QA jelzés",
+        "lm_missing": "hiányzik", "schema_fit": "Séma-illeszkedés",
+        "mr_struct_ok": "✓ Tiszta szerkezet — nincs div-túltengés vagy strukturális zaj; a címsorok a fő tartalomban összpontosulnak.",
+        "mr_struct_warn": "⚠ Strukturális zaj észlelve (mély div-beágyazás) — nehezíti a gépi feldolgozást.",
+        "mr_emph_ok": " A szövegkiemelés szemantikus (strong/em).",
+        "mr_native_ok": "✓ Az interaktív elemek natív HTML-szemantikát használnak — nincs div-onclick antiminta.",
+        "mr_native_warn": "⚠ div-onclick antiminta — kattintható div-ek natív gomb/link helyett.",
+        "mr_lists_ok": "✓ Valódi listaszerkezet (ul/ol) jelen van.",
+        "mr_fig_warn": " A képblokkok egy részének nincs figcaption-je.",
+        "mr_schema_ok": "✓ A strukturált adat illeszkedik az oldaltípushoz.",
+        "mr_schema_action": " SearchAction jelen van.",
+        "mr_submit_generic": "A küldő/CTA gombok általános feliratot használnak — a leíró feliratok javítják az érthetőséget.",
         "aic_title": "AI-crawler láthatóság",
         "aic_clean": "✓ A tartalmad teljesen látható az AI/Google crawlerek számára, az indexelési kereten belül.",
         "aic_csr": "⚠ A tartalom egy része JavaScripttel renderelődik — az AI-crawlerek nem biztos, hogy látják.",
@@ -163,6 +174,17 @@ UI = {
         "landmarks": "Landmarks", "altcov": "Alt coverage", "labelcov": "Form-label coverage",
         "headings": "Headings (H1 / total / skips)", "indexed": "Indexed", "perf": "Performance (mobile/desktop)",
         " contentqa": "Content-QA flag",
+        "lm_missing": "missing", "schema_fit": "Schema fit",
+        "mr_struct_ok": "✓ Clean structure — no div-soup or structural noise; headings concentrate in the main content.",
+        "mr_struct_warn": "⚠ Structural noise detected (deep div nesting) — harder for machines to parse.",
+        "mr_emph_ok": " Text emphasis is semantic (strong/em).",
+        "mr_native_ok": "✓ Interactive elements use native HTML semantics — no div-onclick antipattern.",
+        "mr_native_warn": "⚠ div-onclick antipattern — clickable divs instead of native buttons/links.",
+        "mr_lists_ok": "✓ Real list structure (ul/ol) is present.",
+        "mr_fig_warn": " Some figures lack a figcaption.",
+        "mr_schema_ok": "✓ Structured data matches the page type.",
+        "mr_schema_action": " SearchAction present.",
+        "mr_submit_generic": "Submit/CTA buttons use generic labels — descriptive labels improve clarity.",
         "aic_title": "AI-crawler visibility",
         "aic_clean": "✓ Your content is fully visible to AI/Google crawlers, within the index budget.",
         "aic_csr": "⚠ Part of the content is JS-rendered — AI crawlers may not see it.",
@@ -614,6 +636,84 @@ def _title_meta_rows(tm, lang):
     return rows
 
 
+def _landmarks_fmt(present, missing_fact, lang):
+    """AAA-189 — show present landmarks AND the missing ones (was present-only)."""
+    t = UI[lang]
+    s = ", ".join(_esc(x) for x in present) if isinstance(present, list) else _esc(present)
+    mv = missing_fact.get("value") if _is_fact(missing_fact) else None
+    if isinstance(mv, list) and mv:
+        s += ' &nbsp;·&nbsp; <span class="ph">%s: %s</span>' % (
+            t["lm_missing"], ", ".join(_esc(x) for x in mv))
+    return s
+
+
+def _s43_verdicts(op, lang):
+    """AAA-189 — §4.3 machine-readability cluster verdicts (B+C: curated rows +
+    folded verdicts). measured-clean = positive (AAA-187); per-verdict chip, not
+    blanket (AAA-185). ARIA stays neutral (no coverage verdict — native elements
+    need no ARIA); link_semantic deferred to AAA-156 (not CMP-excluded). Heading-
+    stacking is narrated in §4.2 — NOT restated here (single consistent statement)."""
+    t = UI[lang]
+    st = op.get("structure") or {}
+    sch = op.get("schema") or {}
+    forms = op.get("forms") or {}
+
+    def _m(f):
+        return _is_fact(f) and f.get("provenance") == "measured"
+
+    def _v(f):
+        return f.get("value") if _is_fact(f) else None
+
+    notes = []  # (st-class, message, chip-layer)
+
+    # 1) Structural cleanliness — structural_noise (deterministic) + semantic-to-
+    #    visual emphasis ratio (estimate). headings_by_zone folds in implicitly.
+    noise = st.get("structural_noise_warning")
+    if _m(noise):
+        if _v(noise):
+            notes.append(("st-warn", t["mr_struct_warn"], "mért"))
+        else:
+            msg = t["mr_struct_ok"]
+            ratio = st.get("semantic_to_visual_ratio")
+            if _m(ratio) and isinstance(_v(ratio), (int, float)) and _v(ratio) >= 0.999:
+                msg += t["mr_emph_ok"]
+            notes.append(("st-ok", msg, "mért"))
+
+    # 2) Native semantics — div-onclick antipattern (the real a11y signal, not
+    #    ARIA count). Boolean negative → measured False → positive.
+    anti = st.get("div_onclick_antipattern")
+    if _m(anti):
+        notes.append(("st-warn", t["mr_native_warn"], "mért") if _v(anti)
+                      else ("st-ok", t["mr_native_ok"], "mért"))
+
+    # 3) Lists & media — real lists (positive); figures without figcaption (minor).
+    ls = _v(st.get("list_structure"))
+    if isinstance(ls, dict) and ((ls.get("ul") or 0) + (ls.get("ol") or 0)) > 0:
+        notes.append(("st-ok", t["mr_lists_ok"], "mért"))
+    fig, figc = st.get("figure_count"), st.get("figure_with_figcaption")
+    if _m(fig) and isinstance(_v(fig), int) and _v(fig) > 0 and (_v(figc) or 0) < _v(fig):
+        notes.append(("st-warn", t["mr_fig_warn"].strip(), "mért"))
+
+    # 4) Structured-data fit — pagetype match + schema actions.
+    pm = sch.get("pagetype_match")
+    if _m(pm) and _v(pm):
+        msg = t["mr_schema_ok"]
+        acts = _v(sch.get("actions"))
+        if isinstance(acts, list) and acts:
+            msg += t["mr_schema_action"]
+        notes.append(("st-ok", msg, "mért"))
+
+    # 5) Forms submit-quality — verdict-only, qualitative (no raw count; submit
+    #    counter is NOT CMP-excluded). Surface only when ALL submits are generic.
+    sb, sg = forms.get("submit_button_count"), forms.get("submit_button_generic_count")
+    if _m(sb) and _m(sg) and isinstance(_v(sb), int) and _v(sb) > 0 and (_v(sg) or 0) >= _v(sb):
+        notes.append(("st-warn", t["mr_submit_generic"], "mért"))
+
+    return "".join(
+        '<div class="note"><span class="st %s">%s</span> %s</div>'
+        % (cls, _esc(msg), _chip(chip, lang)) for cls, msg, chip in notes)
+
+
 def _s4(fb, ao, lang):
     t = UI[lang]
     op = fb.get("onpage") or {}
@@ -651,14 +751,16 @@ def _s4(fb, ao, lang):
             _fv(h.get("level_skips"), lang))),
         (t["altcov"], _fv(_raw(altc, "következtetés"), lang, fmt=lambda v: "%s%%" % v)),
         (t["labelcov"], _fv((op.get("forms") or {}).get("label_coverage"), lang)),
+        # AAA-189: landmarks now show present AND missing (was present-only).
         (t["landmarks"], _fv((op.get("aria") or {}).get("landmarks_present"), lang,
-            fmt=lambda v: ", ".join(v) if isinstance(v, list) else _esc(v))),
+            fmt=lambda v: _landmarks_fmt(v, (op.get("aria") or {}).get("landmarks_missing"), lang))),
         (t["schema_jsonld"], _fv((op.get("schema") or {}).get("json_ld_present"), lang)),
     ]
     # AAA-185: title_meta (AAA-158) — truncation verdict + keyword-in-title + title↔H1 dup.
     tm = op.get("title_meta") or {}
     rows += _title_meta_rows(tm, lang)
     out += "<table>" + "".join("<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows) + "</table>"
+    out += _s43_verdicts(op, lang)  # AAA-189 — machine-readability cluster verdicts
     out += _subsec("4.4", "Technikai egészség" if lang == "hu" else "Technical health")
     out += "<table><tr><th>%s</th><th>LCP</th><th>INP</th><th>CLS</th></tr>" % (
         "Nézet" if lang == "hu" else "View")
