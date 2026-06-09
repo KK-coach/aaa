@@ -106,6 +106,14 @@ UI = {
         "headings": "Címsorok (H1 / összes / ugrás)", "indexed": "Indexelt", "perf": "Teljesítmény (mobil/asztali)",
         " contentqa": "Tartalom-QA jelzés",
         "tm_title": "Cím hossza (SERP)", "tm_kw": "Kulcsszó a címben", "tm_dup": "Cím ↔ H1",
+        "kw_map": "Kulcsszó-térkép — mit céloz az oldal", "kw_kw": "Kulcsszó", "kw_type": "Típus",
+        "kw_rel": "Relevancia", "kw_intent": "Szándék",
+        "kw_demand": "Valós keresési kereslet — mérhető keresési volumenű kulcsszavak",
+        "kw_vol": "Havi keresés", "kw_trend": "12 hó trend", "kw_cpc": "CPC",
+        "kw_topic": "Témakör", "kw_branded": "Márkázott elsődleges kulcsszó",
+        "kw_intentmix": "Szándék-összetétel", "kw_primary": "elsődleges",
+        "rb_high": "magas", "rb_med": "közepes", "rb_low": "alacsony",
+        "tail_short": "rövid", "tail_mid": "közepes", "tail_long": "long-tail", "yes": "igen", "no": "nem",
     },
     "en": {
         "doc_title": "Visibility & content audit",
@@ -143,6 +151,14 @@ UI = {
         "headings": "Headings (H1 / total / skips)", "indexed": "Indexed", "perf": "Performance (mobile/desktop)",
         " contentqa": "Content-QA flag",
         "tm_title": "Title length (SERP)", "tm_kw": "Keyword in title", "tm_dup": "Title vs H1",
+        "kw_map": "Keyword map — what the page targets", "kw_kw": "Keyword", "kw_type": "Type",
+        "kw_rel": "Relevance", "kw_intent": "Intent",
+        "kw_demand": "Real search demand — keywords with measurable search volume",
+        "kw_vol": "Monthly searches", "kw_trend": "12-mo trend", "kw_cpc": "CPC",
+        "kw_topic": "Topic", "kw_branded": "Branded primary keyword",
+        "kw_intentmix": "Intent mix", "kw_primary": "primary",
+        "rb_high": "high", "rb_med": "medium", "rb_low": "low",
+        "tail_short": "short", "tail_mid": "mid", "tail_long": "long-tail", "yes": "yes", "no": "no",
     },
 }
 
@@ -332,6 +348,100 @@ def _s1(fb, dec, ao, lang):
     return hook + '<div class="grid">%s</div>' % grid
 
 
+_TAIL = {"shorttail": "tail_short", "midtail": "tail_mid", "longtail": "tail_long"}
+
+
+def _rel_band(score, t):
+    if not isinstance(score, (int, float)):
+        return "—"
+    return t["rb_high"] if score >= 0.85 else (t["rb_med"] if score >= 0.7 else t["rb_low"])
+
+
+def _trend_arrow(tr):
+    """trend_12m is newest-first {month,year,search_volume}; newest vs oldest."""
+    vals = [x.get("search_volume") for x in (tr or [])
+            if isinstance(x, dict) and isinstance(x.get("search_volume"), (int, float))]
+    if len(vals) < 2:
+        return "→"
+    new, old = vals[0], vals[-1]
+    if new > old * 1.15:
+        return "↑"
+    if new < old * 0.85:
+        return "↓"
+    return "→"
+
+
+def _s2_keyword_blocks(fb, lang):
+    """AAA-186 — §2 blocks A (keyword map) / B (real demand, volume-bearing only)
+    / C (topic + aggregate intent). Provenance-aware; B omits if zero volume."""
+    t, hu = UI[lang], (lang == "hu")
+    tg = fb.get("target") or {}
+    kc = tg.get("keywords_classified") or {}
+    items = kc.get("value") if (_is_fact(kc) and kc.get("provenance") == "measured") else None
+    out = ""
+
+    # ---- (A) keyword map ----
+    if items:
+        out += _subsec("", t["kw_map"]) + (
+            '<table><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>' % (
+                t["kw_kw"], t["kw_type"], t["kw_rel"], t["kw_intent"]))
+        for i, k in enumerate(items):
+            tail = k.get("tail_type")
+            typ = t["kw_primary"] if (k.get("relevance_score") == 1.0 or i == 0) else (
+                t.get(_TAIL.get(tail, ""), tail or "—"))
+            band = _rel_band(k.get("relevance_score"), t)
+            l1 = k.get("search_intent") or "—"
+            l2 = k.get("search_intent_l2")
+            intent = "%s%s" % (_esc(l1), (" · %s" % _esc(l2) if l2 else ""))
+            out += "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+                _esc(k.get("keyword")), _esc(typ), _esc(band), intent)
+        out += "</table>"
+        out += '<p class="small">%s %s · %s %s</p>' % (
+            ("Relevancia: sávként" if hu else "Relevance: shown as a band"), _chip("következtetés", lang),
+            ("szándék: legjobb tipp" if hu else "intent: best-effort"), _chip("AI-értelmezés", lang))
+
+    # ---- (B) real search demand — ONLY volume-bearing; omit block if none ----
+    vb = [k for k in (items or []) if k.get("search_volume_monthly") is not None]
+    if vb:
+        out += _subsec("", t["kw_demand"]) + (
+            '<table><tr><th>%s</th><th class="num">%s</th><th>%s</th><th class="num">%s</th></tr>' % (
+                t["kw_kw"], t["kw_vol"], t["kw_trend"], t["kw_cpc"]))
+        for k in sorted(vb, key=lambda x: -(x.get("search_volume_monthly") or 0)):
+            cpc = k.get("cpc_usd")
+            out += "<tr><td>%s</td><td class='num'>%s</td><td>%s</td><td class='num'>%s</td></tr>" % (
+                _esc(k.get("keyword")), _esc(k.get("search_volume_monthly")),
+                _trend_arrow(k.get("trend_12m")),
+                ("$%.2f" % cpc) if isinstance(cpc, (int, float)) else "—")
+        out += "</table>"
+        out += '<p class="small">%s %s</p>' % (
+            ("Forrás: DataForSEO (becsült keresési volumen)" if hu
+             else "Source: DataForSEO (estimated search volume)"), _chip("becslés", lang))
+
+    # ---- (C) topic + aggregate intent (1-2 lines, hedged) ----
+    tc = (tg.get("topic_cluster") or {}).get("value")
+    isb = (tg.get("is_branded") or {}).get("value")
+    # aggregate intent from the L1 distribution across classified items
+    bits = []
+    if tc:
+        bits.append("%s: <b>%s</b>" % (t["kw_topic"], _esc(tc)))
+    if isb is not None:
+        bits.append("%s: <b>%s</b>" % (t["kw_branded"], t["yes"] if isb else t["no"]))
+    if items:
+        from collections import Counter
+        c = Counter((k.get("search_intent") or "").lower() for k in items if k.get("search_intent"))
+        if c:
+            ranked = [x for x, _ in c.most_common()]
+            dom = ranked[0]
+            rest = ranked[1:3]
+            mix = ("elsősorban %s" % dom if hu else "primarily %s" % dom)
+            if rest:
+                mix += (", %s elemekkel" % "/".join(rest) if hu else ", with %s elements" % "/".join(rest))
+            bits.append("%s: <b>%s</b> %s" % (t["kw_intentmix"], _esc(mix), _chip("AI-értelmezés", lang)))
+    if bits:
+        out += '<div class="note">%s</div>' % (" &nbsp;·&nbsp; ".join(bits))
+    return out
+
+
 def _s2(fb, ao, lang):
     t = UI[lang]
     tg = fb.get("target") or {}
@@ -346,6 +456,7 @@ def _s2(fb, ao, lang):
             ("Business model", _fv(cl.get("business_model"), lang)),
             ("Topic domain", _fv(cl.get("topic_domain"), lang))]
     out += "<table>" + "".join("<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows) + "</table>"
+    out += _s2_keyword_blocks(fb, lang)  # AAA-186: keyword map / real demand / topic+intent
     serp = _dig(fb, "competition", "primary_keyword_serp", "top10")
     if _is_fact(serp) and serp.get("provenance") == "measured":
         out += "<div class='subsec'><span class='n'>SERP %s</span></div><table><tr><th>#</th><th>URL</th></tr>" % _chip("mért", lang)

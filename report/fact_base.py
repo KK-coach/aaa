@@ -304,6 +304,7 @@ def _map_target(ao) -> dict:
         "secondary_keywords": r_list(ao, "target_keywords", "secondary_keywords"),
         "long_tail_keywords": r_list(ao, "target_keywords", "long_tail_keywords"),
         "keywords_classified": r_list(ao, "target_keywords_classified"),
+        "topic_cluster": r_scalar(ao, "target_keywords", "topic_cluster"),  # AAA-186
     }
 
 
