@@ -278,6 +278,15 @@ RULES:
     than asserting it as fact. Prefer quoting a short exact fragment as evidence.
   - text_level_semantics analyses the CONTENT/PROSE meaning only — do NOT discuss
     schema.org / JSON-LD / structured data in that aspect (that is schema_entity).
+  - TRANSCRIPTION FIDELITY (AAA-180): when you quote or echo any on-page string
+    (brand names, headings, testimonial names, any verbatim site text),
+    reproduce it CHARACTER-FOR-CHARACTER, preserving every non-ASCII / accented
+    character EXACTLY — Hungarian á é í ó ö ő ú ü ű (and uppercase Á É Í Ó Ö Ő Ú
+    Ü Ű) and any other diacritics. NEVER normalize, transliterate, drop an
+    accent, or substitute a diacritic with a digit or an ASCII look-alike (e.g.
+    write "Hungária" and "Rugalmasság" — NOT "Hung1ria" / "Rugalmass1g", not
+    "Hungaria" / "Rugalmassag"). If unsure of a character, copy it verbatim from
+    the provided text.
   - Calibrate findings to the page_type / business_model / audience context
     (e.g. a product page's schema expectations differ from a news article's).
   - Do NOT explain in general WHY this aspect matters for SEO/AEO — that
