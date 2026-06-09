@@ -782,6 +782,21 @@ def _map_eeat(ao) -> dict:
         "client": client_facts,
         "ranking": r_list(ao, "eeat_score", "ranking") if (es and not errored)
                    else _fact(None, NOT_MEASURED, "eeat_score.ranking"),
+        # AAA-188 — E-E-A-T EVIDENCE (the grounding BESIDE the score, not the
+        # score). Reversed polarity in render: absent = negative weak-signal
+        # finding (opposite of AAA-187). Deterministic extractions → render
+        # tags them "mért" explicitly (the eeat group default layer is AI).
+        # named_people surfaced as-is (AAA-173: may contain placeholder names;
+        # NO content_qa cross-ref — separate scope).
+        "evidence": {
+            "named_people": r_list(ao, "eeat_signals", "named_people"),
+            "owner_org": r_scalar(ao, "eeat_signals", "owner_org", none_is_absent=True),
+            "kg_calls": r_count(ao, "audit_kg_calls"),
+            "client_orgs": r_list(ao, "entities", "organizations"),
+            "client_products": r_list(ao, "entities", "products"),
+            "client_tech": r_list(ao, "entities", "technologies"),
+            "client_concepts": r_list(ao, "entities", "concepts"),
+        },
     }
 
 

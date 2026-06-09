@@ -109,6 +109,15 @@ UI = {
         "aic_clean": "✓ A tartalmad teljesen látható az AI/Google crawlerek számára, az indexelési kereten belül.",
         "aic_csr": "⚠ A tartalom egy része JavaScripttel renderelődik — az AI-crawlerek nem biztos, hogy látják.",
         "aic_2mb": "⚠ A HTML meghaladja a ~2 MB-os indexelési limitet; a tartalom %s%%-a a levágási pont után van — kimaradhat az indexből.",
+        "ev_title": "E-E-A-T bizonyíték",
+        "ev_people": "Megnevezett szakértők / szerzők",
+        "ev_people_none": "⚠ Nincs megnevezett szerző/szakértő — gyengíti a Tapasztalat és a Tekintély dimenziót.",
+        "ev_org": "Szervezet (tulajdonos)",
+        "ev_org_none": "⚠ Nincs egyértelmű tulajdonos-szervezet azonosítva — gyengébb entitás-tekintély.",
+        "ev_kg_none": "⚠ Nem található a Knowledge Graphban — gyengébb entitás-tekintély.",
+        "ev_kg_ok": "Knowledge Graph által megerősítve",
+        "ev_entities": "Tekintély-entitások",
+        "ev_orgs": "Szervezetek", "ev_products": "Termékek / szolgáltatások", "ev_tech": "Technológiák",
         "tm_title": "Cím hossza (SERP)", "tm_kw": "Kulcsszó a címben", "tm_dup": "Cím ↔ H1",
         "kw_map": "Kulcsszó-térkép — mit céloz az oldal", "kw_kw": "Kulcsszó", "kw_type": "Típus",
         "kw_rel": "Relevancia", "kw_intent": "Szándék",
@@ -158,6 +167,15 @@ UI = {
         "aic_clean": "✓ Your content is fully visible to AI/Google crawlers, within the index budget.",
         "aic_csr": "⚠ Part of the content is JS-rendered — AI crawlers may not see it.",
         "aic_2mb": "⚠ The HTML exceeds the ~2MB index limit; %s%% of the content is past the cutoff — it may be dropped from the index.",
+        "ev_title": "E-E-A-T evidence",
+        "ev_people": "Named people",
+        "ev_people_none": "⚠ No named author/expert found — weakens Experience & Authoritativeness.",
+        "ev_org": "Organization (owner)",
+        "ev_org_none": "⚠ No clear owner organization identified — weaker entity authority.",
+        "ev_kg_none": "⚠ Not found in the Knowledge Graph — weaker entity authority.",
+        "ev_kg_ok": "Knowledge Graph confirmed",
+        "ev_entities": "Authority entities",
+        "ev_orgs": "Organizations", "ev_products": "Products / services", "ev_tech": "Technologies",
         "tm_title": "Title length (SERP)", "tm_kw": "Keyword in title", "tm_dup": "Title vs H1",
         "kw_map": "Keyword map — what the page targets", "kw_kw": "Keyword", "kw_type": "Type",
         "kw_rel": "Relevance", "kw_intent": "Intent",
@@ -742,7 +760,76 @@ def _s5(fb, ao, lang):
         verdict = _sanitize_labels(verdict, _page_names(ao))  # AAA-181: strip PAGE_N
         out += '<div class="subsec"><span class="n">%s</span></div><p>%s %s</p>' % (
             t["verdict"], _esc(verdict), _chip("AI-értelmezés", lang))
+    out += _eeat_evidence_block(fb, lang)  # AAA-188 — grounding beside the score
     out += '<p class="role">%s</p>' % t["see_s6"]
+    return out
+
+
+def _eeat_evidence_block(fb, lang):
+    """AAA-188 — E-E-A-T evidence sub-block (§5). The GROUNDING beside the score
+    (named people / owner org+KG / client authority entities), NOT a restatement
+    of the 4-dim band. REVERSED polarity vs AAA-187: absent = a NEGATIVE
+    weak-signal finding (no named author, not in KG), never reassurance.
+    Deterministic extractions → explicit 'mért' chips (eeat group default is AI).
+    named_people surfaced as-is (AAA-173: no content_qa placeholder cross-ref)."""
+    t = UI[lang]
+    ev = (fb.get("eeat") or {}).get("evidence") or {}
+
+    def _prov(f):
+        return f.get("provenance") if _is_fact(f) else "not_measured"
+
+    def _cap(vals, n=8):
+        vals = [v for v in (vals or []) if v]
+        extra = len(vals) - n
+        shown = ", ".join(_esc(v) for v in vals[:n])
+        return shown + (" …(+%d)" % extra if extra > 0 else "")
+
+    rows = []  # (label, html)
+
+    # --- Named people (Experience / Expertise) — reversed polarity ---
+    np_f = ev.get("named_people") or {}
+    pv = _prov(np_f)
+    if pv == "measured":
+        rows.append((t["ev_people"], "%s %s" % (_cap(np_f.get("value")), _chip("mért", lang))))
+    elif pv == "absent":
+        rows.append((t["ev_people"], '<span class="st st-warn">%s</span> %s' % (
+            _esc(t["ev_people_none"]), _chip("mért", lang))))
+    else:
+        rows.append((t["ev_people"], _nd(lang)))
+
+    # --- Organization (Authoritativeness) — owner_org + KG-confirmed status ---
+    org_f = ev.get("owner_org") or {}
+    kg_f = ev.get("kg_calls") or {}
+    ov = _prov(org_f)
+    if ov == "measured":
+        kg = (" · <span class=\"st st-ok\">%s</span>" % _esc(t["ev_kg_ok"])) \
+            if _prov(kg_f) == "measured" else ""
+        rows.append((t["ev_org"], "%s%s %s" % (_esc(org_f.get("value")), kg, _chip("mért", lang))))
+    elif ov == "absent":
+        # KG lookup ran (kg_calls measured) but confirmed no owner entity →
+        # the sharper "not in Knowledge Graph" finding; else generic absence.
+        msg = t["ev_kg_none"] if _prov(kg_f) == "measured" else t["ev_org_none"]
+        rows.append((t["ev_org"], '<span class="st st-warn">%s</span> %s' % (
+            _esc(msg), _chip("mért", lang))))
+    else:
+        rows.append((t["ev_org"], _nd(lang)))
+
+    # --- Authority entities (brief) — client orgs/products/tech (topical
+    # authority; removes the client↔competitor asymmetry of §6). Names shown,
+    # consistent with the §6 entity families. ---
+    ent_bits = []
+    for key, lbl in (("client_orgs", t["ev_orgs"]), ("client_products", t["ev_products"]),
+                     ("client_tech", t["ev_tech"])):
+        f = ev.get(key) or {}
+        if _prov(f) == "measured":
+            ent_bits.append("<b>%s:</b> %s" % (_esc(lbl), _cap(f.get("value"), 6)))
+    if ent_bits:
+        rows.append((t["ev_entities"], "%s %s" % (
+            " &nbsp;·&nbsp; ".join(ent_bits), _chip("mért", lang))))
+
+    out = _subsec("", t["ev_title"])
+    out += "<table>" + "".join(
+        "<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows) + "</table>"
     return out
 
 
