@@ -91,6 +91,8 @@ UI = {
         "excluded": "Kihagyva", "competitor": "Versenytárs", "competitors_cited": "Idézett versenytársak",
         "ax_ai": "AI-láthatóság", "ax_page": "Saját oldal", "ax_tech": "Technikai egészség", "ax_eeat": "E-E-A-T",
         "st_weak": "Gyenge", "st_attn": "Odafigyelést igényel", "st_ok": "Rendben",
+        "st_clean": "Tiszta", "cq_clean": "Tiszta — nincs helykitöltő",
+        "cq_flag": "⚠ helykitöltő/befejezetlen tartalom", "cq_clean_why": "Nincs helykitöltő/befejezetlen tartalom",
         "fam_content": "Tartalom", "fam_seo": "On-site SEO", "fam_tech": "Technikai SEO", "fam_eeat": "E-E-A-T",
         "rank": "Helyezés a mezőnyben", "client": "Ez az oldal", "total": "Összesen",
         "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (Lighthouse)",
@@ -125,6 +127,8 @@ UI = {
         "excluded": "Excluded", "competitor": "Competitor", "competitors_cited": "Competitors cited",
         "ax_ai": "AI visibility", "ax_page": "Your page", "ax_tech": "Technical health", "ax_eeat": "E-E-A-T",
         "st_weak": "Weak", "st_attn": "Needs attention", "st_ok": "OK",
+        "st_clean": "Clean", "cq_clean": "Clean — no placeholder",
+        "cq_flag": "⚠ placeholder/unfinished content", "cq_clean_why": "No placeholder/unfinished content",
         "fam_content": "Content", "fam_seo": "On-site SEO", "fam_tech": "Technical SEO", "fam_eeat": "E-E-A-T",
         "rank": "Rank in the field", "client": "This page", "total": "Total",
         "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (Lighthouse)",
@@ -220,11 +224,24 @@ def _nd(lang):
     return '<span class="ph">%s</span>' % UI[lang]["nd"]
 
 
-def _fv(fact, lang, fmt=None):
+def _fv(fact, lang, fmt=None, absent_label=None):
+    """AAA-182 field-aware three-state render:
+      measured     -> value (+ layer chip)
+      absent        -> `absent_label` (+ chip) if the field gives one
+                       (e.g. content_qa absent = "Clean"); else a neutral "—"
+                       — NEVER "not measured" (it WAS measured, value just absent).
+      not_measured  -> "not measured" (never assessed).
+    """
     if not _is_fact(fact):
         return _nd(lang)
     prov, val = fact.get("provenance"), fact.get("value")
-    if prov in ("absent", "not_measured") or val is None:
+    if prov == "not_measured":
+        return _nd(lang)
+    if prov == "absent":
+        if absent_label:
+            return "%s %s" % (_esc(absent_label), _chip(fact.get("layer"), lang))
+        return '<span class="ph">—</span>'
+    if val is None:  # measured-but-null guard
         return _nd(lang)
     shown = fmt(val) if fmt else _esc(val)
     return "%s %s" % (shown, _chip(fact.get("layer"), lang))
@@ -279,12 +296,17 @@ def _s1(fb, dec, ao, lang):
         ai = ("st-ok", t["st_ok"], t["cited"], "mért")
     else:
         ai = ("st-warn", t["st_attn"], t["nd"], "mért")
+    # AAA-182 — three-state, field-aware: measured-True=placeholder (bad);
+    # absent=detector ran, page CLEAN (ok); not_measured=never ran (warn, NOT "OK").
     cq = ((fb.get("onpage") or {}).get("content_qa") or {}).get("page_flag") or {}
-    if cq.get("value") is True and cq.get("provenance") == "measured":
+    cq_prov = cq.get("provenance")
+    if cq.get("value") is True and cq_prov == "measured":
         page = ("st-bad", t["st_weak"], ("Befejezetlen/helykitöltő tartalom az oldalon"
                 if lang == "hu" else "Unfinished / placeholder content on the page"), "mért")
-    else:
-        page = ("st-ok", t["st_ok"], ("Nincs tartalmi-QA jelzés" if lang == "hu" else "No content-QA flag"), "mért")
+    elif cq_prov == "absent":
+        page = ("st-ok", t["st_clean"], t["cq_clean_why"], "mért")
+    else:  # not_measured / missing — never assert "OK"
+        page = ("st-warn", t["st_attn"], t["nd"], "mért")
     perf = ((fb.get("technical") or {}).get("psi_mobile_perf") or {}).get("value")
     if isinstance(perf, int):
         pc = "st-ok" if perf >= 90 else ("st-warn" if perf >= 50 else "st-bad")
@@ -400,8 +422,10 @@ def _s4(fb, ao, lang):
     out = _subsec("4.1", "Tartalmi profil" if lang == "hu" else "Content profile")
     out += "<table>"
     out += "<tr><th>%s</th><td>%s</td></tr>" % (t["word_count"], _fv(_raw(words, "mért"), lang))
-    out += "<tr><th>%s</th><td>%s</td></tr>" % (t[" contentqa"], _fv(cq.get("page_flag"), lang,
-        fmt=lambda v: ("⚠ placeholder/leak" if v else "clean")))
+    # AAA-182 — three-state: measured-True → flag; absent → "Clean" (ran, no
+    # placeholder); not_measured → "not measured". Agrees with §1.
+    out += "<tr><th>%s</th><td>%s</td></tr>" % (t[" contentqa"], _fv(
+        cq.get("page_flag"), lang, fmt=lambda v: t["cq_flag"], absent_label=t["cq_clean"]))
     out += "</table>"
     out += _subsec("4.2", "Szemantika + struktúra" if lang == "hu" else "Semantics + structure")
     ae = ao.get("aaa124_aspect_evaluations") or {}
