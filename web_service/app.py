@@ -282,6 +282,18 @@ def _enforce_one_per_company() -> bool:
         return False
 
 
+def _email_gate_disabled() -> bool:
+    """config/global.email_gate_disabled — when True, the company-email checks
+    (free-webmail / disposable / domain-match) are SKIPPED; the basic format
+    check still applies. Default False (gate ON). Toggle via Firestore, no
+    redeploy. Fail-closed: a config read error keeps the gate ON."""
+    try:
+        snap = _db().collection("config").document("global").get()
+        return bool((snap.to_dict() or {}).get("email_gate_disabled")) if snap.exists else False
+    except Exception:  # noqa: BLE001 — keep the gate ON if config can't be read
+        return False
+
+
 def _company_exists(etld1: str) -> bool:
     return _db().collection(LEADS_COLLECTION).document(etld1).get().exists
 
@@ -325,10 +337,13 @@ def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Resp
     if not url_etld1:
         return _form_page(lang, t["err_url"], url_raw, email, status=400)
     email_domain = email.rsplit("@", 1)[-1]
-    if email_domain in FREE_PROVIDERS or email_domain in DISPOSABLE:
-        return _form_page(lang, t["err_free"], url_raw, email, status=400)
-    if _etld1(email_domain) != url_etld1:
-        return _form_page(lang, t["err_mismatch"], url_raw, email, status=400)
+    # Company-email enforcement — temporarily skippable via the Firestore flag
+    # config/global.email_gate_disabled (format check above always applies).
+    if not _email_gate_disabled():
+        if email_domain in FREE_PROVIDERS or email_domain in DISPOSABLE:
+            return _form_page(lang, t["err_free"], url_raw, email, status=400)
+        if _etld1(email_domain) != url_etld1:
+            return _form_page(lang, t["err_mismatch"], url_raw, email, status=400)
 
     # (c) quota check (flag-gated; default OFF)
     if _enforce_one_per_company() and _company_exists(url_etld1):
