@@ -322,6 +322,9 @@ def _map_onpage(ao) -> dict:
         "by_zone": r_scalar(ao, *P, "headings_by_zone"),
         "stacking_candidate": r_bool(ao, *P, "heading_stacking_candidate"),
         "h1_count": r_count(ao, *A, "heading", "h1_count", error_subtree=afm),
+        # AAA-183: total_headings was measured upstream but omitted client-side
+        # (competitor mapper already carries it). Same r_count signature as siblings.
+        "total_headings": r_count(ao, *A, "heading", "total_headings", error_subtree=afm),
         "level_skips": r_count(ao, *A, "heading", "level_skips", error_subtree=afm),
     }
     structure = {
