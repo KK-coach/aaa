@@ -26,7 +26,9 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
+import unicodedata
 
 from pydantic import BaseModel, Field, ValidationError
 
@@ -308,6 +310,61 @@ def _get_client():
     return _client
 
 
+# ---------------------------------------------------------------------------
+# AAA-180 — deterministic diacritic-drift FLAG (flag-only, no correction).
+# ---------------------------------------------------------------------------
+_ACCENT_RE = re.compile(r"[áéíóöőúüűÁÉÍÓÖŐÚÜŰ]")
+_WORD_RE = re.compile(r"\b\w{4,}\b", re.UNICODE)
+
+
+def _fold(s: str) -> str:
+    """ASCII-fold: strip combining diacritics (á→a, ő→o)."""
+    return "".join(c for c in unicodedata.normalize("NFKD", s)
+                   if not unicodedata.combining(c))
+
+
+def detect_diacritic_drift(prose: str, clean_text: str) -> list:
+    """AAA-180 (flag-only): detect echoed on-page strings whose diacritics were
+    lost (á→a) or digit-substituted (á→1) in the LLM prose, by comparing against
+    the CLEAN crawl text. Returns a list of {echoed, clean, kind}; never corrects.
+    Low-FP: only words that genuinely carry accents in the crawl (len>=4)."""
+    if not prose or not clean_text:
+        return []
+    # clean accented words -> {ascii-folded-lower: original accented form}
+    fold_map = {}
+    for w in set(_WORD_RE.findall(clean_text)):
+        if _ACCENT_RE.search(w):
+            fold_map.setdefault(_fold(w).lower(), w)
+    if not fold_map:
+        return []
+    flags, seen = [], set()
+    for tok in _WORD_RE.findall(prose):
+        if _ACCENT_RE.search(tok):
+            continue  # token kept its accents → fine
+        tl = tok.lower()
+        kind, clean = None, None
+        if tl in fold_map:
+            # ASCII-fold of an accented crawl word → accent dropped (e.g.
+            # "Hungaria" for "Hungária"). Skip if the crawl word equals its own
+            # fold (it had no accents — not a drop).
+            kind, clean = "accent_dropped", fold_map[tl]
+        elif re.search(r"[a-z]\d", tl) or re.search(r"\d[a-z]", tl):
+            # digit where a letter should be (e.g. "hung1ria"): match each fold
+            # key of equal length, treating digits as single-char wildcards.
+            pat = re.compile("".join(r"[a-z]" if ch.isdigit() else re.escape(ch)
+                                     for ch in tl))
+            for k, orig in fold_map.items():
+                if len(k) == len(tl) and pat.fullmatch(k):
+                    kind, clean = "digit_substituted", orig
+                    break
+        if kind:
+            key = (tok, clean)
+            if key not in seen:
+                seen.add(key)
+                flags.append({"echoed": tok, "clean": clean, "kind": kind})
+    return flags
+
+
 def evaluate_aspects(audit_output: dict) -> tuple[dict | None, float]:
     """Run the V3 holistic per-aspect evaluation. Returns
     (aspect_evaluations_dict | None, cost_usd). Skip-finding: any failure
@@ -345,6 +402,18 @@ def evaluate_aspects(audit_output: dict) -> tuple[dict | None, float]:
             result[asp]["educational_context"] = tpl["text"]
             result[asp]["educational_context_template_id"] = tpl["template_id"]
 
+        # AAA-180 (flag-only): deterministic diacritic-drift check — compare the
+        # text_level_semantics prose against the CLEAN crawl text; flag echoed
+        # strings that lost accents (á→a) or got digit-substituted (á→1). No
+        # correction; schema-additive _meta.diacritic_warnings for the QA/render.
+        try:
+            tls = result.get("text_level_semantics") or {}
+            _prose = " ".join(str(tls.get(k, "")) for k in
+                              ("structured_finding", "justification", "recommendation"))
+            _clean = ((audit_output.get("crawl") or {}).get("main_content") or {}).get("text") or ""
+            diacritic_warnings = detect_diacritic_drift(_prose, _clean)
+        except Exception as _e:  # noqa: BLE001 — flag is best-effort
+            diacritic_warnings = []
         # Attach non-validated meta (kept out of the Pydantic model so the
         # contract stays clean for downstream readers).
         result["_meta"] = {
@@ -354,7 +423,12 @@ def evaluate_aspects(audit_output: dict) -> tuple[dict | None, float]:
             "latency_s": latency,
             "cost_usd": cost,
             "error": None,
+            "diacritic_warnings": diacritic_warnings,  # AAA-180 flag-only
         }
+        if diacritic_warnings:
+            logger.warning("evaluate_aspects: %d diacritic-drift flag(s): %s",
+                           len(diacritic_warnings),
+                           [w["echoed"] for w in diacritic_warnings][:5])
         logger.info("evaluate_aspects: %d/%d aspects, $%.6f, %.1fs",
                     len(ASPECTS), len(ASPECTS), cost, latency)
         return result, cost
