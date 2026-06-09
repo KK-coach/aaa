@@ -678,12 +678,15 @@ def _ai_crawler_block(tech, lang):
 
     # Distinct labeled sub-block under §4.4 (no number collision with the
     # technical-health table, which owns the 4.4 numbering).
-    header = ('<div class="subsec"><b style="font-family:var(--serif)">%s</b> %s</div>'
-              % (_esc(t["aic_title"]), _chip("mért", lang)))
+    def _header(chip):
+        return ('<div class="subsec"><b style="font-family:var(--serif)">%s</b> %s</div>'
+                % (_esc(t["aic_title"]), chip))
 
-    # not_measured on every thread → honest "not measured", still labeled.
+    # not_measured on every thread → honest "not measured" (no measured chip).
     if not (_meas(csr) or _meas(warn) or _meas(over)):
-        return header + ('<div class="note">%s</div>' % _nd(lang))
+        return _header("") + ('<div class="note">%s</div>' % _nd(lang))
+
+    header = _header(_chip("mért", lang))
 
     lines = []
     # Thread 1 — CSR/SPA visibility warning.
