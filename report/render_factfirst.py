@@ -116,6 +116,13 @@ UI = {
         "mr_schema_ok": "✓ A strukturált adat illeszkedik az oldaltípushoz.",
         "mr_schema_action": " SearchAction jelen van.",
         "mr_submit_generic": "A küldő/CTA gombok általános feliratot használnak — a leíró feliratok javítják az érthetőséget.",
+        "cwv_lab_desktop": "Labor (asztali)", "cwv_support": "Kiegészítő metrikák",
+        "cwv_ttfb": "TTFB (mező)", "cwv_tbt": "TBT (labor m/a)", "cwv_si": "Speed Index (labor m/a)",
+        "cq_hard": "durva találatok", "cq_names": "név-helykitöltők", "cq_cats": "kategóriák",
+        "canonical": "Canonical", "canon_ok": "✓ önhivatkozó (nincs eltérés)", "canon_bad": "⚠ canonical-eltérés",
+        "ctx_pagetype": "Oldaltípus", "ctx_audience": "Közönség",
+        "cg_cites": "ChatGPT által idézett források", "fan_detail": "Lekérdezésenként",
+        "fan_covered": "lefedve", "fan_missing": "hiányzik",
         "aic_title": "AI-crawler láthatóság",
         "aic_clean": "✓ A tartalmad teljesen látható az AI/Google crawlerek számára, az indexelési kereten belül.",
         "aic_csr": "⚠ A tartalom egy része JavaScripttel renderelődik — az AI-crawlerek nem biztos, hogy látják.",
@@ -185,6 +192,13 @@ UI = {
         "mr_schema_ok": "✓ Structured data matches the page type.",
         "mr_schema_action": " SearchAction present.",
         "mr_submit_generic": "Submit/CTA buttons use generic labels — descriptive labels improve clarity.",
+        "cwv_lab_desktop": "Lab (desktop)", "cwv_support": "Supporting metrics",
+        "cwv_ttfb": "TTFB (field)", "cwv_tbt": "TBT (lab m/d)", "cwv_si": "Speed Index (lab m/d)",
+        "cq_hard": "hard hits", "cq_names": "name hits", "cq_cats": "categories",
+        "canonical": "Canonical", "canon_ok": "✓ self-referencing (no mismatch)", "canon_bad": "⚠ canonical mismatch",
+        "ctx_pagetype": "Page type", "ctx_audience": "Audience",
+        "cg_cites": "Sources ChatGPT cited", "fan_detail": "Per query",
+        "fan_covered": "covered", "fan_missing": "missing",
         "aic_title": "AI-crawler visibility",
         "aic_clean": "✓ Your content is fully visible to AI/Google crawlers, within the index budget.",
         "aic_csr": "⚠ Part of the content is JS-rendered — AI crawlers may not see it.",
@@ -393,7 +407,17 @@ def _s1(fb, dec, ao, lang):
             + _axis(t["ax_page"], *page[:2], page[2], page[3], "s4", lang)
             + _axis(t["ax_tech"], *tech[:2], tech[2], tech[3], "s4", lang)
             + _axis(t["ax_eeat"], *eeat[:2], eeat[2], eeat[3], "s5", lang))
-    return hook + '<div class="grid">%s</div>' % grid
+    # AAA-190 (#8) — neutral page-type · audience context (descriptive, no
+    # polarity — magnitude ≠ polarity, AAA-189).
+    cl = fb.get("classification") or {}
+    ctx_bits = []
+    for key, lbl in (("page_type", "ctx_pagetype"), ("audience_primary", "ctx_audience")):
+        v = (cl.get(key) or {}).get("value")
+        if v:
+            ctx_bits.append("%s: <b>%s</b>" % (t[lbl], _esc(v)))
+    ctx = ('<div class="note">%s %s</div>' % (" &nbsp;·&nbsp; ".join(ctx_bits), _chip("mért", lang))
+           if ctx_bits else "")
+    return hook + ctx + '<div class="grid">%s</div>' % grid
 
 
 _TAIL = {"shorttail": "tail_short", "midtail": "tail_mid", "longtail": "tail_long"}
@@ -535,6 +559,22 @@ def _s3(fb, ao, lang):
         av.get("ai_overview_client_status"), excluded_label=t["excluded"])
     out += "<tr><td>ChatGPT</td><td>%s</td></tr>" % _cite_cell(av.get("chatgpt_target_cited"))
     out += "</table>"
+    # AAA-190 (#6) — ChatGPT citation list (the sources it cited instead).
+    # AIO brand+URL list is DEFERRED to AAA-168 (reliability gated); not rendered.
+    cg = av.get("chatgpt_citations")
+    if _is_fact(cg) and cg.get("provenance") == "measured" and cg.get("value"):
+        from urllib.parse import urlparse
+        rows_cg = ""
+        for c in cg["value"]:
+            if not isinstance(c, dict) or c.get("is_target_site"):
+                continue
+            url = c.get("url") or ""
+            dom = urlparse(url).netloc.replace("www.", "")
+            title = c.get("title") or dom
+            rows_cg += '<li>%s <span class="ph">%s</span></li>' % (_esc(title), _esc(dom))
+        if rows_cg:
+            out += '<div class="subsec"><span class="n">%s</span> %s</div><ul>%s</ul>' % (
+                t["cg_cites"], _chip("mért", lang), rows_cg)
     # competitors cited in AIO (client vs competitors)
     cc = av.get("ai_overview_cited_competitors")
     if _is_fact(cc) and cc.get("provenance") == "measured" and cc.get("value"):
@@ -545,12 +585,28 @@ def _s3(fb, ao, lang):
     syn = _dig(ao, "re_findings", "comparison", "ai_overview_summary")
     if syn:
         out += '<div class="note">%s %s</div>' % (_esc(_sanitize_labels(syn, _page_names(ao))), _chip("AI-értelmezés", lang))
-    # fan-out coverage (already correct)
+    # fan-out coverage aggregate (kept) + AAA-190 (#6) per-query detail.
     fo = av.get("fan_out_enriched")
     if _is_fact(fo) and fo.get("value"):
-        items = fo.get("value")
-        cov = sum(1 for x in items if isinstance(x, dict) and x.get("coverage") == "covered")
+        items = [x for x in fo.get("value") if isinstance(x, dict)]
+        cov = sum(1 for x in items if x.get("coverage") == "covered")
         out += '<p>%s: <b>%d / %d</b> %s</p>' % (t["fan_cov"], cov, len(items), _chip("AI-értelmezés", lang))
+        if items:
+            hdr_q = "Lekérdezés" if lang == "hu" else "Query"
+            hdr_v = "Variáns" if lang == "hu" else "Variant"
+            hdr_c = "Lefedettség" if lang == "hu" else "Coverage"
+            out += ('<div class="subsec"><span class="n">%s</span> %s</div>'
+                    '<table><tr><th>%s</th><th>%s</th><th>%s</th></tr>'
+                    % (t["fan_detail"], _chip("AI-értelmezés", lang), hdr_q, hdr_v, hdr_c))
+            for x in items:
+                cvg = x.get("coverage")
+                lbl = t["fan_covered"] if cvg == "covered" else (
+                    t["fan_missing"] if cvg == "missing" else (cvg or "—"))
+                cls = "st-ok" if cvg == "covered" else ("st-warn" if cvg == "missing" else "")
+                cell = ('<span class="st %s">%s</span>' % (cls, _esc(lbl))) if cls else _esc(lbl)
+                out += "<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+                    _esc(x.get("query") or "—"), _esc(x.get("variant_type") or "—"), cell)
+            out += "</table>"
     return out
 
 
@@ -558,20 +614,54 @@ def _subsec(n, title):
     return '<div class="subsec"><span class="n">%s</span> <b style="font-family:var(--serif)">%s</b></div>' % (_esc(n), _esc(title))
 
 
-def _cwv_view(ao, lang, key, label):
-    b = _dig(ao, "pagespeed", "mobile", key) or {}
+_CWV_RATE = {"good": "st-ok", "needs_improvement": "st-warn", "poor": "st-bad"}
+
+
+def _cwv_span(node, sub, lang):
+    """A single rating-colored CWV metric span (AAA-190). None if not measured."""
+    node = node or {}
+    v = node.get(sub)
+    if not isinstance(v, (int, float)):
+        return None
+    cls = _CWV_RATE.get(node.get("rating"), "")
+    disp = ("%d ms" % int(v)) if sub == "value_ms" else ("%.3f" % v)
+    return ('<span class="st %s">%s</span>' % (cls, disp)) if cls else disp
+
+
+def _cwv_view(ao, lang, surface, key, label):
+    """AAA-190 — one CWV view row. Columns LCP · INP · CLS · FCP. INP is field-
+    only (lab has no INP — TBT is the lab proxy, shown in the supporting line).
+    Polarity = PSI rating chips (canonical thresholds); no raw-ms verdict."""
+    b = _dig(ao, "pagespeed", surface, key) or {}
     def cell(metric, sub):
-        node = b.get(metric) or {}
-        v = node.get(sub); rating = node.get("rating")
-        if not isinstance(v, (int, float)):
-            return '<td class="num"><span class="ph">%s</span></td>' % UI[lang]["nd"]
-        cls = {"good": "st-ok", "needs_improvement": "st-warn", "poor": "st-bad"}.get(rating, "")
-        disp = ("%d ms" % int(v)) if sub == "value_ms" else ("%.3f" % v)
-        chip = '<span class="st %s">%s</span>' % (cls, disp) if cls else disp
-        return '<td class="num">%s</td>' % chip
-    return ("<tr><td>%s %s</td>%s%s%s</tr>" % (
+        s = _cwv_span(b.get(metric), sub, lang)
+        return '<td class="num">%s</td>' % (
+            s if s is not None else '<span class="ph">%s</span>' % UI[lang]["nd"])
+    return ("<tr><td>%s %s</td>%s%s%s%s</tr>" % (
         _esc(label), _chip("mért", lang), cell("lcp", "value_ms"),
-        cell("inp", "value_ms"), cell("cls", "value")))
+        cell("inp", "value_ms"), cell("cls", "value"), cell("fcp", "value_ms")))
+
+
+def _cwv_support(ao, lang):
+    """AAA-190 — compact supporting-metrics line: field TTFB; lab TBT / Speed-
+    Index (mobile / desktop). Client-only (competitor CWV stays AAA-139)."""
+    t = UI[lang]
+    fm = _dig(ao, "pagespeed", "mobile", "core_web_vitals_field") or {}
+    lm = _dig(ao, "pagespeed", "mobile", "core_web_vitals_lab") or {}
+    ld = _dig(ao, "pagespeed", "desktop", "core_web_vitals_lab") or {}
+    bits = []
+    ttfb = _cwv_span(fm.get("ttfb"), "value_ms", lang)
+    if ttfb:
+        bits.append("<b>%s</b> %s" % (t["cwv_ttfb"], ttfb))
+    for label, metric in (("cwv_tbt", "tbt"), ("cwv_si", "speed_index")):
+        m = _cwv_span(lm.get(metric), "value_ms", lang)
+        d = _cwv_span(ld.get(metric), "value_ms", lang)
+        if m or d:
+            bits.append("<b>%s</b> %s / %s" % (t[label], m or "—", d or "—"))
+    if not bits:
+        return ""
+    return '<div class="note"><b>%s:</b> %s %s</div>' % (
+        t["cwv_support"], " &nbsp;·&nbsp; ".join(bits), _chip("mért", lang))
 
 
 def _title_meta_rows(tm, lang):
@@ -714,6 +804,44 @@ def _s43_verdicts(op, lang):
         % (cls, _esc(msg), _chip(chip, lang)) for cls, msg, chip in notes)
 
 
+def _canonical_cell(tech, lang):
+    """AAA-190 (#8) — canonical verdict: self-referencing + no mismatch → positive
+    (AAA-187); mismatch → weakness (AAA-188). not_measured → 'not measured'."""
+    t = UI[lang]
+    mm = tech.get("canonical_mismatch") or {}
+    if not (_is_fact(mm) and mm.get("provenance") == "measured"):
+        return _nd(lang)
+    if mm.get("value"):  # mismatch → weakness, show the divergent target
+        val = (tech.get("canonical_value") or {}).get("value")
+        extra = (" → %s" % _esc(val)) if val else ""
+        return '<span class="st st-bad">%s</span>%s %s' % (t["canon_bad"], extra, _chip("mért", lang))
+    return '<span class="st st-ok">%s</span> %s' % (t["canon_ok"], _chip("mért", lang))
+
+
+def _content_qa_breakdown(cq, lang):
+    """AAA-190 (#8) — when content-QA is FLAGGED, render tiered counts + per-
+    category breakdown. Tier counts are the measured facts (hard/name); the
+    category dict is raw detail. NO conflated headline that doesn't sum
+    (decision 3). Clean/not_measured → '' (the §4.1 page_flag row carries it)."""
+    t = UI[lang]
+    pf = cq.get("page_flag") or {}
+    if not (_is_fact(pf) and pf.get("provenance") == "measured" and pf.get("value")):
+        return ""
+    bits = []
+    for key, lbl in (("hard_hit_count", "cq_hard"), ("name_hit_count", "cq_names")):
+        f = cq.get(key) or {}
+        if _is_fact(f) and f.get("provenance") == "measured":
+            bits.append("<b>%s</b> %s" % (t[lbl], _esc(f.get("value"))))
+    cats = cq.get("categories") or {}
+    cat_val = cats.get("value") if _is_fact(cats) else None
+    cat_part = ""
+    if isinstance(cat_val, dict) and cat_val:
+        cat_str = ", ".join("%s %s" % (_esc(k), _esc(v)) for k, v in cat_val.items())
+        cat_part = " &nbsp;·&nbsp; <b>%s:</b> %s" % (t["cq_cats"], cat_str)
+    return '<div class="note"><span class="st st-bad">%s</span> %s%s %s</div>' % (
+        t["cq_flag"], " &nbsp;·&nbsp; ".join(bits), cat_part, _chip("mért", lang))
+
+
 def _s4(fb, ao, lang):
     t = UI[lang]
     op = fb.get("onpage") or {}
@@ -728,6 +856,7 @@ def _s4(fb, ao, lang):
     out += "<tr><th>%s</th><td>%s</td></tr>" % (t[" contentqa"], _fv(
         cq.get("page_flag"), lang, fmt=lambda v: t["cq_flag"], absent_label=t["cq_clean"]))
     out += "</table>"
+    out += _content_qa_breakdown(cq, lang)  # AAA-190 (#8) — category breakdown when flagged
     out += _subsec("4.2", "Szemantika + struktúra" if lang == "hu" else "Semantics + structure")
     ae = ao.get("aaa124_aspect_evaluations") or {}
     pn = _page_names(ao)
@@ -762,15 +891,22 @@ def _s4(fb, ao, lang):
     out += "<table>" + "".join("<tr><th>%s</th><td>%s</td></tr>" % (k, v) for k, v in rows) + "</table>"
     out += _s43_verdicts(op, lang)  # AAA-189 — machine-readability cluster verdicts
     out += _subsec("4.4", "Technikai egészség" if lang == "hu" else "Technical health")
-    out += "<table><tr><th>%s</th><th>LCP</th><th>INP</th><th>CLS</th></tr>" % (
+    # AAA-190 (#7) — 3-view CWV table (field-mobile / lab-mobile / lab-desktop),
+    # columns LCP · INP · CLS · FCP, + a supporting-metrics line.
+    out += "<table><tr><th>%s</th><th>LCP</th><th>INP</th><th>CLS</th><th>FCP</th></tr>" % (
         "Nézet" if lang == "hu" else "View")
-    out += _cwv_view(ao, lang, "core_web_vitals_field", t["cwv_field"])
-    out += _cwv_view(ao, lang, "core_web_vitals_lab", t["cwv_lab"])
+    out += _cwv_view(ao, lang, "mobile", "core_web_vitals_field", t["cwv_field"])
+    out += _cwv_view(ao, lang, "mobile", "core_web_vitals_lab", t["cwv_lab"])
+    out += _cwv_view(ao, lang, "desktop", "core_web_vitals_lab", t["cwv_lab_desktop"])
     out += "</table>"
+    out += _cwv_support(ao, lang)
     rows44 = [
         (t["perf"], "%s / %s" % (_fv(tech.get("psi_mobile_perf"), lang), _fv(tech.get("psi_desktop_perf"), lang))),
         (t["indexed"], _fv(tech.get("indexed"), lang)),
         ("HTTPS", _fv(tech.get("https"), lang)),
+        # AAA-190 (#8) — canonical: self-ref + no mismatch → positive (AAA-187);
+        # mismatch → weakness (AAA-188).
+        (t["canonical"], _canonical_cell(tech, lang)),
         (t["page_weight"], _fv(_raw(_dig(ao, "crawl", "content", "raw_html_bytes"), "mért"), lang,
             fmt=lambda v: "%d B (%.1f%% / 2MB)" % (v, 100 * v / 2097152))),
     ]
