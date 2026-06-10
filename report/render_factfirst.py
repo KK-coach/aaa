@@ -94,6 +94,13 @@ UI = {
         "st_clean": "Tiszta", "cq_clean": "Tiszta — nincs helykitöltő",
         "cq_flag": "⚠ helykitöltő/befejezetlen tartalom", "cq_clean_why": "Nincs helykitöltő/befejezetlen tartalom",
         "fam_content": "Tartalom", "fam_seo": "On-site SEO", "fam_tech": "Technikai SEO", "fam_eeat": "E-E-A-T",
+        "ee_band_pre": "E-E-A-T (saját oldal)",
+        "ee_caveat": "a dimenzió-minta és a teendők a diagnosztikai jel, nem a pontos szám (a sáv render-szintű ±3 keret, nem mért szórás)",
+        "ee_weak": "gyenge", "ee_moderate": "közepes", "ee_strong": "erős",
+        "ee_fixes": "Teendők (hatás szerint)",
+        "ee_twolens": "Ez a szakasz a saját oldalad profilját értékeli (oldal-intrinzik); a versenytárs-összevetés a §6-ban van, külön összehasonlító pontozással — két lencse, nem ellentmondás.",
+        "ent_diff_title": "Entitás-különbség — a versenytárs említi, te nem",
+        "ent_diff_none": "Nincs jelentős entitás-különbség kimutatva.",
         "rank": "Helyezés a mezőnyben", "client": "Ez az oldal", "total": "Összesen",
         "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (Lighthouse)",
         "t1": "Magas hatás", "t2": "Közepes hatás", "t3": "Alacsony hatás",
@@ -170,6 +177,13 @@ UI = {
         "st_clean": "Clean", "cq_clean": "Clean — no placeholder",
         "cq_flag": "⚠ placeholder/unfinished content", "cq_clean_why": "No placeholder/unfinished content",
         "fam_content": "Content", "fam_seo": "On-site SEO", "fam_tech": "Technical SEO", "fam_eeat": "E-E-A-T",
+        "ee_band_pre": "E-E-A-T (your page)",
+        "ee_caveat": "the dimension pattern + fixes are the diagnostic signal, not the exact number (the band is a render-level ±3 bracket, not a measured spread)",
+        "ee_weak": "weak", "ee_moderate": "moderate", "ee_strong": "strong",
+        "ee_fixes": "Fixes (by impact)",
+        "ee_twolens": "This section reads your own page's profile (page-intrinsic); the competitor comparison is in §6, with a separate comparative scoring — two lenses, not a contradiction.",
+        "ent_diff_title": "Entity gap — competitor cites, you don't",
+        "ent_diff_none": "No significant entity gap detected.",
         "rank": "Rank in the field", "client": "This page", "total": "Total",
         "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (Lighthouse)",
         "t1": "High impact", "t2": "Medium impact", "t3": "Low impact",
@@ -966,24 +980,47 @@ def _ai_crawler_block(tech, lang):
     return header + rows
 
 
+_EEAT_DIMS = [("experience", "Tapasztalat", "Experience"),
+              ("expertise", "Szakértelem", "Expertise"),
+              ("authoritativeness", "Tekintély", "Authority"),
+              ("trustworthiness", "Megbízhatóság", "Trust")]
+
+
+def _clause(s, n=110):
+    """First clause/sentence of a justification, capped — for the compact §5
+    per-dim signal-note."""
+    s = (s or "").strip()
+    cut = s.find(". ")
+    if 0 < cut < n:
+        return s[:cut + 1]
+    return (s[:n].rstrip() + "…") if len(s) > n else s
+
+
 def _s5(fb, ao, lang):
+    """AAA-170 S2 — client E-E-A-T capstone from PAGE-INTRINSIC scores (the page's
+    own profile), NOT the comparative scores (§6.D). Band, not a hard standalone
+    number (AAA-172): the dimension pattern + fix-list are the diagnostic signal.
+    Verdict is signal-bound — HARD GUARD: no rank prediction (page-intrinsic
+    verdict is about the page itself, not its SERP position)."""
     t = UI[lang]
-    cl = (fb.get("eeat") or {}).get("client") or {}
-    tot = (cl.get("total_0_40") or {}).get("value")
+    pi = (fb.get("eeat") or {}).get("page_intrinsic") or {}
+    just = pi.get("justifications") or {}
+    DIMS = [(k, hu if lang == "hu" else en, en) for k, hu, en in _EEAT_DIMS]
+
+    # Band (page-intrinsic total ±3) — never a hard standalone number.
+    tot = (pi.get("total_0_40") or {}).get("value")
+    out = ""
     if isinstance(tot, int):
-        band = ("gyenge–közepes" if lang == "hu" else "weak–moderate") if tot < 30 else ("erős" if lang == "hu" else "strong")
-        out = '<div class="band">%s: <b>≈ %d / 40</b> &nbsp;·&nbsp; %s</div>' % (
-            t["total"], tot, band)
-    else:
-        out = ""
-    DIMS = [("experience", "Tapasztalat" if lang == "hu" else "Experience", "Experience"),
-            ("expertise", "Szakértelem" if lang == "hu" else "Expertise", "Expertise"),
-            ("authoritativeness", "Tekintély" if lang == "hu" else "Authority", "Authoritativeness"),
-            ("trustworthiness", "Megbízhatóság" if lang == "hu" else "Trust", "Trustworthiness")]
+        lo, hi = max(0, tot - 3), min(40, tot + 3)
+        lab = t["ee_weak"] if tot < 20 else (t["ee_moderate"] if tot < 30 else t["ee_strong"])
+        out += ('<div class="band">%s: <b>≈ %d–%d / 40</b> &nbsp;·&nbsp; %s</div>'
+                '<div class="note">%s %s</div>'
+                % (t["ee_band_pre"], lo, hi, lab, t["ee_caveat"], _chip("AI-értelmezés", lang)))
+
+    # 4 dim-rows: score + bar + compact signal-note from the page-intrinsic justification.
     out += '<div style="margin-top:10px">'
     for k, lbl, sub in DIMS:
-        f = cl.get(k) or {}
-        v = f.get("value")
+        v = (pi.get(k) or {}).get("value")
         band_cls = "band low" if isinstance(v, int) and v <= 3 else "band"
         style = "margin:0;padding:4px 10px;font-size:15px"
         if band_cls == "band low":
@@ -992,15 +1029,47 @@ def _s5(fb, ao, lang):
         out += ('<div class="dimrow"><div class="dimname">%s<small>%s</small></div>'
                 '<div>%s</div><div class="dimsig">%s</div></div>'
                 % (_esc(lbl), _esc(sub), val_html, _chip("AI-értelmezés", lang)))
+        jn = (just.get(k) or {}).get("value")
+        if jn:
+            out += '<div class="note" style="font-size:13px;margin:2px 0 8px 0">%s</div>' % (
+                _esc(_clause(_sanitize_labels(jn, _page_names(ao)))))
     out += "</div>"
-    verdict = _dig(ao, "eeat_score", "client", "verdict")
+
+    # Verdict (page-intrinsic, signal-bound — no rank prediction).
+    verdict = (pi.get("verdict") or {}).get("value")
     if verdict:
         verdict = _sanitize_labels(verdict, _page_names(ao))  # AAA-181: strip PAGE_N
         out += '<div class="subsec"><span class="n">%s</span></div><p>%s %s</p>' % (
             t["verdict"], _esc(verdict), _chip("AI-értelmezés", lang))
+
+    # Impact-ranked fix-list (lowest dims first → biggest gap), action from justification.
+    out += _eeat_fixlist(pi, DIMS, lang, ao)
     out += _eeat_evidence_block(fb, lang)  # AAA-188 — grounding beside the score
-    out += '<p class="role">%s</p>' % t["see_s6"]
+    # §5→§6 two-lens cross-reference (page-intrinsic here vs comparative in §6).
+    out += '<p class="role">%s</p>' % t["ee_twolens"]
     return out
+
+
+def _eeat_fixlist(pi, DIMS, lang, ao):
+    """AAA-170 S2 — impact-ranked E-E-A-T fix-list: the lowest-scoring dimensions
+    first (lowest score = biggest gap = highest impact), each with the gap from
+    its page-intrinsic justification. NOTE: when the §7 unified recommendations
+    layer lands, de-duplicate these E-E-A-T fixes against §7."""
+    t = UI[lang]
+    just = pi.get("justifications") or {}
+    scored = []
+    for k, lbl, sub in DIMS:
+        v = (pi.get(k) or {}).get("value")
+        jn = (just.get(k) or {}).get("value")
+        if isinstance(v, int) and jn:
+            scored.append((v, lbl, jn))
+    if not scored:
+        return ""
+    scored.sort(key=lambda x: x[0])
+    items = "".join(
+        '<li><b>%s</b> (%d/10): %s</li>' % (_esc(lbl), v, _esc(_sanitize_labels(jn, _page_names(ao))))
+        for v, lbl, jn in scored[:3])
+    return '<div class="subsec"><span class="n">%s</span></div><ul>%s</ul>' % (t["ee_fixes"], items)
 
 
 def _eeat_evidence_block(fb, lang):
@@ -1071,17 +1140,73 @@ def _eeat_evidence_block(fb, lang):
     return out
 
 
+def _entity_diff(fb, lang):
+    """AAA-164 — concrete entity set-difference: named entities each competitor
+    cites that the CLIENT does not (orgs/products/tech). Case-insensitive match;
+    original casing shown. No data → 'none detected' (no fabrication, AAA-182).
+    MA degrades to near-empty (competitor orgs = 0)."""
+    t = UI[lang]
+    comps = (fb.get("competition") or {}).get("competitors") or []
+    ev = (fb.get("eeat") or {}).get("evidence") or {}
+
+    def _cl_set(key):
+        f = ev.get(key) or {}
+        return set(f.get("value") or []) if (_is_fact(f) and isinstance(f.get("value"), list)) else set()
+    cl_all = _cl_set("client_orgs") | _cl_set("client_products") | _cl_set("client_tech")
+    cl_lower = {x.lower().strip() for x in cl_all if isinstance(x, str)}
+
+    rows = []
+    for c in comps:
+        comp_set = set()
+        for key in ("entity_orgs_list", "entity_products_list", "entity_tech_list"):
+            f = c.get(key) or {}
+            if _is_fact(f) and isinstance(f.get("value"), list):
+                comp_set |= {x for x in f.get("value") if isinstance(x, str)}
+        diff = sorted({x for x in comp_set if x.lower().strip() not in cl_lower})
+        if diff:
+            rows.append(((c.get("brand") or {}).get("value") or "?", diff))
+    if not rows:
+        return '<div class="subsec"><span class="n">%s</span></div><div class="note">%s %s</div>' % (
+            t["ent_diff_title"], t["ent_diff_none"], _chip("mért", lang))
+    out = '<div class="subsec"><span class="n">%s</span> %s</div>' % (
+        t["ent_diff_title"], _chip("mért", lang))
+    for brand, diff in rows:
+        out += '<div class="note"><b>%s</b> — %s</div>' % (
+            _esc(brand), ", ".join(_esc(x) for x in diff[:10]))
+    return out
+
+
 def _s6(fb, ao, lang):
     t = UI[lang]
     comps = (fb.get("competition") or {}).get("competitors") or []
     names = [((c.get("brand") or {}).get("value") or "?") for c in comps]
     cl = (fb.get("eeat") or {}).get("client") or {}
 
+    # AAA-164 — client column for §6.A/B/C (apples-to-apples; same paths as
+    # _competitor_rich so semantics match). Deterministic measurements.
+    def _ln(x):
+        return len(x) if isinstance(x, (list, tuple)) else None
+    ccells = {
+        "word_count_doc": _dig(ao, "crawl", "main_content", "words"),
+        "orgs_count": _ln(_dig(ao, "entities", "organizations")),
+        "title_chars": _dig(ao, "crawl", "meta", "title", "chars"),
+        "meta_chars": _dig(ao, "crawl", "meta", "description", "chars"),
+        "h1_count": _dig(ao, "agent_friendly_measurements", "heading", "h1_count"),
+        "total_headings": _dig(ao, "agent_friendly_measurements", "heading", "total_headings"),
+        "schema_types_count": _ln(_dig(ao, "crawl", "schema_markup", "schema_types_detected")),
+        "alt_coverage_pct": _dig(ao, "crawl", "images", "alt_coverage_percent"),
+        "perf_mobile_lab": _dig(ao, "pagespeed", "mobile", "scores", "performance"),
+    }
+
     def fam(title, rows, layer):
-        h = _subsec("", title) + '<table><tr><th>%s %s</th>' % (t["competitor"], _chip(layer, lang))
+        h = _subsec("", title) + '<table><tr><th>%s %s</th><th class="num">%s</th>' % (
+            t["competitor"], _chip(layer, lang), t["client"])
         h += "".join("<th class='num'>%s</th>" % _esc(n) for n in names) + "</tr>"
         for label, key in rows:
             h += "<tr><td>%s</td>" % label
+            cv = ccells.get(key)
+            h += '<td class="num"><b>%s</b></td>' % (
+                _esc(cv) if cv is not None else '<span class="ph">—</span>')
             for c in comps:
                 v = (c.get(key) or {}).get("value")
                 h += "<td class='num'>%s</td>" % (_esc(v) if v is not None else '<span class="ph">—</span>')
@@ -1107,6 +1232,7 @@ def _s6(fb, ao, lang):
             h += "<td class='num'>%s</td>" % (_esc(ev) if ev is not None else '<span class="ph">—</span>')
         h += "</tr>"
     out += h + "</table>"
+    out += _entity_diff(fb, lang)  # AAA-164 — concrete entity set-difference
     rk = (fb.get("eeat") or {}).get("ranking") or {}
     if _is_fact(rk) and rk.get("value"):
         out += '<div class="subsec"><span class="n">%s</span></div><table><tr><th>#</th><th>%s</th><th>%s</th></tr>' % (

@@ -629,6 +629,11 @@ def _competitor_rich(url, comp_ao, eeat_entry):
         "schema_types_count": _clen(("crawl", "schema_markup", "schema_types_detected"), "crawl.schema_markup.schema_types_detected"),
         "alt_coverage_pct": _cf(("crawl", "images", "alt_coverage_percent"), "crawl.images.alt_coverage_percent"),
         "perf_mobile_lab": _cf(("pagespeed", "mobile", "scores", "performance"), "pagespeed.mobile.scores.performance"),
+        # AAA-164 — competitor entity LISTS (names, not just counts) for the §6
+        # entity-diff (set-difference vs client). Missing doc → not_measured.
+        "entity_orgs_list": _cf(("entities", "organizations"), "entities.organizations"),
+        "entity_products_list": _cf(("entities", "products"), "entities.products"),
+        "entity_tech_list": _cf(("entities", "technologies"), "entities.technologies"),
         "eeat": eeat,
     }
 
@@ -793,12 +798,32 @@ def _map_eeat(ao) -> dict:
         client_facts = {d: _fact(None, NOT_MEASURED, "eeat_score.client.%s" % d)
                         for d in (*DIMS, "total_0_40")}
 
+    # AAA-170 S2 — PAGE-INTRINSIC client capstone (§5 source). DISTINCT context
+    # from the comparative `client` above (§6.D source): page-intrinsic scores the
+    # client's own page, not query-anchored vs competitors. Carries per-dim
+    # justifications (drive §5 signal-notes + fix-list) + its own verdict.
+    pi = (es or {}).get("client_page_intrinsic") if (es and not errored) else None
+    pi = pi if isinstance(pi, dict) else {}
+    pij = pi.get("justifications") if isinstance(pi.get("justifications"), dict) else {}
+    page_intrinsic = {
+        d: _ef(pi.get(d), "eeat_score.client_page_intrinsic.%s" % d) for d in DIMS}
+    page_intrinsic["total_0_40"] = _ef(pi.get("total_0_40"),
+                                       "eeat_score.client_page_intrinsic.total_0_40")
+    page_intrinsic["verdict"] = _ef(pi.get("verdict"),
+                                    "eeat_score.client_page_intrinsic.verdict")
+    page_intrinsic["justifications"] = {
+        d: _ef(pij.get(d), "eeat_score.client_page_intrinsic.justifications.%s" % d)
+        for d in DIMS}
+    page_intrinsic["grounding_confidence"] = _ef(
+        pi.get("grounding_confidence"), "eeat_score.client_page_intrinsic.grounding_confidence")
+
     return {
         "scoring_mode": _ef((es or {}).get("scoring_mode") if not errored else None,
                             "eeat_score.scoring_mode"),
         "anchor_keyword": _ef((es or {}).get("anchor_keyword") if not errored else None,
                               "eeat_score.anchor_keyword"),
         "client": client_facts,
+        "page_intrinsic": page_intrinsic,  # AAA-170 S2 — §5 capstone source
         "ranking": r_list(ao, "eeat_score", "ranking") if (es and not errored)
                    else _fact(None, NOT_MEASURED, "eeat_score.ranking"),
         # AAA-188 — E-E-A-T EVIDENCE (the grounding BESIDE the score, not the
