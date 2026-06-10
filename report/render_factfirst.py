@@ -1336,9 +1336,13 @@ def _s6(fb, ao, lang):
             tot = r.get("total_0_40") or 0
             cls = " clientrow" if r.get("is_client") else ""
             barcls = "bar low" if r.get("is_client") else "bar"
+            # AAA-195 FIX 2 — client row uses the brand fallback (no generic
+            # "Weblap"); competitor rows keep their resolved brand.
+            brand = _client_brand(ao) if r.get("is_client") else (
+                r.get("brand") or t["brand_unresolved"])
             out += ('<tr class="%s"><td class="num">#%s</td><td class="brand">%s</td>'
                     '<td><div class="%s"><i style="width:%d%%"></i></div> <span class="num">%s</span></td></tr>'
-                    % (cls.strip(), _esc(r.get("rank")), _esc(r.get("brand")), barcls, int(100 * tot / mx), _esc(tot)))
+                    % (cls.strip(), _esc(r.get("rank")), _esc(brand), barcls, int(100 * tot / mx), _esc(tot)))
         out += "</table>"
     syn = _dig(ao, "re_findings", "comparison", "ai_overview_summary")
     if syn:
