@@ -82,10 +82,19 @@ def resolve_location_code(audit_language: str) -> int:
 
 
 def _credentials() -> tuple[str, str]:
+    """AAA-201 — .env first (local dev), os.environ fallback (the worker has the
+    creds as Cloud Run env vars and no .env file — it's gitignored, not in the
+    image). Without the fallback every worker-launched audit's volume call
+    short-circuited to creds-missing → null §2 volume."""
+    import os as _os
+
     from dotenv import dotenv_values
 
     v = dotenv_values(_ENV_PATH)
-    return v.get("DATAFORSEO_LOGIN") or "", v.get("DATAFORSEO_PASSWORD") or ""
+    login = v.get("DATAFORSEO_LOGIN") or _os.environ.get("DATAFORSEO_LOGIN") or ""
+    password = (v.get("DATAFORSEO_PASSWORD")
+                or _os.environ.get("DATAFORSEO_PASSWORD") or "")
+    return login, password
 
 
 # AAA-197 — transient-failure retry. A successful DataForSEO call returns >=1

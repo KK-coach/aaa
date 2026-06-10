@@ -33,10 +33,19 @@ _ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 
 
 def _credentials() -> tuple[str, str]:
+    """AAA-201 — .env first (local dev), os.environ fallback (the worker has the
+    creds as Cloud Run env vars and no .env file). Same fix as keywords_volume;
+    without it the worker's AIO check failed creds-missing → top-level
+    ai_overview null on every worker-launched audit."""
+    import os as _os
+
     from dotenv import dotenv_values
 
     v = dotenv_values(_ENV_PATH)
-    return v.get("DATAFORSEO_LOGIN") or "", v.get("DATAFORSEO_PASSWORD") or ""
+    login = v.get("DATAFORSEO_LOGIN") or _os.environ.get("DATAFORSEO_LOGIN") or ""
+    password = (v.get("DATAFORSEO_PASSWORD")
+                or _os.environ.get("DATAFORSEO_PASSWORD") or "")
+    return login, password
 
 
 def _registrable(url: str) -> str | None:
