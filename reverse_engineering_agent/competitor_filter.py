@@ -339,9 +339,16 @@ def filter_and_rank_competitors(
             entry["soft_score_breakdown"] = breakdown
             flat.append(entry)
 
-    # Step 2: dedupe by URL across keywords (rare edge case)
-    # Keep the entry with highest soft_score, then earliest position,
-    # preferring hard_filter_pass=True over False
+    # Step 2: dedupe by URL across keywords.
+    # AAA-195 FIX 1 — when a URL appears in BOTH keyword SERPs, PREFER the
+    # primary-keyword entry (the entered keyword = serp_branded, the SERP §2
+    # displays), NOT the highest soft_score. This anchors the §6 set on the same
+    # SERP as the §2 markers (AAA-194), keeping them consistent. Tie-break:
+    # hard_filter_pass, then primary, then earliest position. soft_score is still
+    # computed/persisted (transparency) but NO LONGER influences dedup/order.
+    def _is_primary(e):
+        return (e.get("keyword_role") or "") == "primary"
+
     by_url: dict[str, dict] = {}
     order: list[str] = []
     for entry in flat:
@@ -351,25 +358,22 @@ def filter_and_rank_competitors(
             order.append(url)
             continue
         existing = by_url[url]
-        # Prefer the entry that passed hard filter
-        if entry["hard_filter_pass"] and not existing["hard_filter_pass"]:
+        # Prefer hard-filter pass, then primary-keyword, then earliest position.
+        def _rank_key(e):
+            return (0 if e["hard_filter_pass"] else 1,
+                    0 if _is_primary(e) else 1,
+                    e.get("position") or 9999)
+        if _rank_key(entry) < _rank_key(existing):
             by_url[url] = entry
-        elif entry["hard_filter_pass"] == existing["hard_filter_pass"]:
-            e_score = entry.get("soft_score") if entry.get("soft_score") is not None else -1
-            x_score = existing.get("soft_score") if existing.get("soft_score") is not None else -1
-            if e_score > x_score:
-                by_url[url] = entry
-            elif e_score == x_score:
-                e_pos = entry.get("position") or 9999
-                x_pos = existing.get("position") or 9999
-                if e_pos < x_pos:
-                    by_url[url] = entry
     deduped = [by_url[u] for u in order if u in by_url]
 
-    # Step 3: rank top-3 from hard_filter_pass=True candidates
+    # Step 3: select the FIRST 3 gate-passers in SERP ORDER (AAA-195 FIX 1 —
+    # decision b). Primary-SERP passers first (by position), then secondary-only
+    # passers (by their secondary position) to backfill if the primary SERP
+    # yields <3. soft_score is NOT a ranker here.
     passers = [e for e in deduped if e["hard_filter_pass"]]
     passers.sort(key=lambda e: (
-        -(e.get("soft_score") or 0.0),
+        0 if _is_primary(e) else 1,
         e.get("position") or 9999,
     ))
     for rank, entry in enumerate(passers[:_CAP], start=1):

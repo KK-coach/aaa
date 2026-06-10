@@ -36,11 +36,31 @@ _ASPECT_LABELS = {
 _PAGE_RE = _re.compile(r"\bPAGE[_\s-]?(\d+)\b", _re.I)
 
 
+# AAA-195 FIX 2 — high-precision generic non-brand words. A resolved "brand"
+# equal to one of these (e.g. matebalazs → "Weblap") is a mis-resolution, not a
+# real brand → fall back to the registrable domain. Kept tiny so a real brand is
+# never suppressed (MA "Marketing Astro" / TX "Taxually" are unaffected).
+_GENERIC_BRANDS = frozenset({
+    "weblap", "website", "webpage", "web", "honlap", "oldal", "home",
+    "homepage", "site", "weboldal",
+})
+
+
+def _client_brand(ao):
+    """AAA-195 FIX 2 — client brand for display: resolved brand, unless it's a
+    generic non-brand word or empty → registrable domain (never 'Weblap')."""
+    fb = ao.get("fact_base") or {}
+    sp = ao.get("site_profile") or {}
+    brand = sp.get("brand_name") or (fb.get("meta") or {}).get("brand") or sp.get("brand")
+    if isinstance(brand, str) and brand.strip() and brand.strip().lower() not in _GENERIC_BRANDS:
+        return brand
+    return _host(ao.get("url")) or (brand if isinstance(brand, str) else "")
+
+
 def _page_names(ao):
     """PAGE_N → display name: PAGE_1 = client brand / 'This page'; PAGE_2.. =
     the comparative competitors in order (brand / neutral)."""
-    fb = ao.get("fact_base") or {}
-    client = (fb.get("meta") or {}).get("brand") or (ao.get("site_profile") or {}).get("brand")
+    client = _client_brand(ao)  # AAA-195 FIX 2 — no generic "Weblap"
     names = {1: client or "This page"}
     comps = ((ao.get("eeat_score") or {}).get("competitors")) or []
     for i, c in enumerate(comps, start=2):
@@ -91,6 +111,9 @@ UI = {
         "excluded": "Kihagyva", "competitor": "Versenytárs", "competitors_cited": "Idézett versenytársak",
         "aio_none": "Nincs AI Overview erre a kulcsszóra (ellenőrizve)", "aio_none_short": "Nincs AI Overview",
         "serp_you": "(az Ön oldala)", "serp_comp": "(versenytárs)",
+        "comp_unavail": "(nem volt elérhető a lekérdezés pillanatában%s)",
+        "comp_usable": "%d kiválasztott versenytársból %d használható",
+        "brand_unresolved": "(márka feloldatlan)",
         "ax_ai": "AI-láthatóság", "ax_page": "Saját oldal", "ax_tech": "Technikai egészség", "ax_eeat": "E-E-A-T",
         "st_weak": "Gyenge", "st_attn": "Odafigyelést igényel", "st_ok": "Rendben",
         "st_clean": "Tiszta", "cq_clean": "Tiszta — nincs helykitöltő",
@@ -180,6 +203,9 @@ UI = {
         "excluded": "Excluded", "competitor": "Competitor", "competitors_cited": "Competitors cited",
         "aio_none": "No AI Overview appears for this keyword (checked)", "aio_none_short": "No AI Overview",
         "serp_you": "(your site)", "serp_comp": "(competitor)",
+        "comp_unavail": "(not available at the moment of the query%s)",
+        "comp_usable": "%d of %d selected competitors usable",
+        "brand_unresolved": "(brand unresolved)",
         "ax_ai": "AI visibility", "ax_page": "Your page", "ax_tech": "Technical health", "ax_eeat": "E-E-A-T",
         "st_weak": "Weak", "st_attn": "Needs attention", "st_ok": "OK",
         "st_clean": "Clean", "cq_clean": "Clean — no placeholder",
@@ -1213,10 +1239,34 @@ def _entity_diff(fb, lang):
     return out
 
 
+def _comp_url(c):
+    u = c.get("url")
+    return (u.get("value") if isinstance(u, dict) else u) or ""
+
+
+def _comp_name(c, lang):
+    """AAA-195 FIX 2 — competitor column label: resolved brand → registrable
+    domain → '(brand unresolved)'. Never '?'. Failed-crawl rows get the
+    unavailable flag appended."""
+    b = (c.get("brand") or {}).get("value")
+    base = b or _host(_comp_url(c)) or UI[lang]["brand_unresolved"]
+    return base
+
+
 def _s6(fb, ao, lang):
     t = UI[lang]
     comps = (fb.get("competition") or {}).get("competitors") or []
-    names = [((c.get("brand") or {}).get("value") or "?") for c in comps]
+    audit_dt = _audit_date(ao)
+    # AAA-195 FIX 2 — brand→domain fallback (no "?"); flag failed-crawl columns.
+    names = []
+    for c in comps:
+        nm = _comp_name(c, lang)
+        if c.get("crawl_failed"):
+            ts = (", " + audit_dt) if audit_dt else ""
+            nm += " " + (t["comp_unavail"] % _esc(ts))
+        names.append(nm)
+    n_total = len(comps)
+    n_usable = sum(1 for c in comps if not c.get("crawl_failed"))
     cl = (fb.get("eeat") or {}).get("client") or {}
 
     # AAA-164 — client column for §6.A/B/C (apples-to-apples; same paths as
@@ -1250,7 +1300,13 @@ def _s6(fb, ao, lang):
             h += "</tr>"
         return h + "</table>"
 
-    out = fam(t["fam_content"], [("Word count", "word_count_doc"), ("Orgs", "orgs_count")], "mért")
+    # AAA-195 FIX 2 — honest usable-count when a selected competitor's crawl failed.
+    out = ""
+    if n_total and n_usable < n_total:
+        usable = (t["comp_usable"] % (n_total, n_usable)) if lang == "hu" else (
+            t["comp_usable"] % (n_usable, n_total))
+        out += '<div class="note"><span class="st st-warn">%s</span></div>' % _esc(usable)
+    out += fam(t["fam_content"], [("Word count", "word_count_doc"), ("Orgs", "orgs_count")], "mért")
     out += fam(t["fam_seo"], [("Title chars", "title_chars"), ("Meta chars", "meta_chars"),
                               ("H1", "h1_count"), ("Headings", "total_headings")], "mért")
     out += fam(t["fam_tech"], [("Schema types", "schema_types_count"), ("Alt %", "alt_coverage_pct"),

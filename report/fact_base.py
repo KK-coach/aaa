@@ -597,6 +597,13 @@ def _competitor_rich(url, comp_ao, eeat_entry):
     Missing doc / dimension -> not_measured / absent (never guessed)."""
     base = "competitor_docs[%s]" % url
 
+    # AAA-195 FIX 2 — crawl-failure flag (timeout/empty fetch). When set, the
+    # rich cells are already not_measured (FIX 2b gated the measurers at source),
+    # and the render flags the row "(unavailable at the moment of the query)".
+    _cr = (comp_ao or {}).get("crawl") if isinstance(comp_ao, dict) else None
+    _crawl_failed = bool((_cr or {}).get("error") or (_cr or {}).get("error_type"))
+    _crawl_status = ((_cr or {}).get("error_type") or "error") if _crawl_failed else "ok"
+
     def _cf(path_tuple, src_suffix, zero_absent=False):
         if comp_ao is None:
             return _fact(None, NOT_MEASURED, base + "." + src_suffix)
@@ -652,6 +659,9 @@ def _competitor_rich(url, comp_ao, eeat_entry):
         "entity_orgs_list": _cf(("entities", "organizations"), "entities.organizations"),
         "entity_products_list": _cf(("entities", "products"), "entities.products"),
         "entity_tech_list": _cf(("entities", "technologies"), "entities.technologies"),
+        # AAA-195 FIX 2 — plain flags (not facts) for the honest-degrade render.
+        "crawl_failed": _crawl_failed,
+        "crawl_status": _crawl_status,
         "eeat": eeat,
     }
 

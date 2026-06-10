@@ -377,12 +377,25 @@ async def audit(url: str, corpus_mode: bool = False,
         out.fan_out_enriched = fan_out_enriched
         out.audit_fan_out_enrichment_cost_usd = fan_out_enrich_cost
 
+    # AAA-195 FIX 2 — gate the raw-HTML structural measurers on a FAILED/EMPTY
+    # crawl so they never emit fabricated zeros (h1=0/headings=0/schema=0) on
+    # missing HTML. AAA-182 at source: a failed crawl → not_measured, NOT 0.
+    # STRICT trigger: empty fetch OR crawl error only — a SUCCESSFUL crawl whose
+    # page genuinely lacks h1/schema still measures real zeros.
+    _cr = getattr(out, "crawl", None) or {}
+    _crawl_failed = (not (raw_html_for_aaa42 or "").strip()) or bool(
+        _cr.get("error") or _cr.get("error_type"))
+
     # AAA-42 Sub-step 1 — agent-friendliness raw-HTML measurement (no LLM,
     # selectolax-only, <2s, $0). Uses the transient raw HTML popped above
     # (never archived). Skip-finding: errors degrade only failed dimensions.
-    out.agent_friendly_measurements = measure_agent_friendliness(
-        raw_html_for_aaa42
-    )
+    if _crawl_failed:
+        out.agent_friendly_measurements = {
+            "_error": "crawl_failed", "_not_measured": True}
+    else:
+        out.agent_friendly_measurements = measure_agent_friendliness(
+            raw_html_for_aaa42
+        )
     out.render_method_used = render_method_used
 
     # AAA-89 Sub-step 1 — CrUX field data from PSI mobile response.
@@ -473,6 +486,8 @@ async def audit(url: str, corpus_mode: bool = False,
     try:
         from page_analysis.phase2_html import run_phase2_measurements
         _audit_lang_for_p2 = (st.get("site_profile") or {}).get("language") or "en"
+        if _crawl_failed:  # AAA-195 FIX 2 — no phase2 zeros on a failed crawl
+            raise RuntimeError("crawl_failed")
         # crawl_result-shaped dict for the orchestrator. Headers byte
         # count is approximate from selectolax-via-AAA-42 path; we don't
         # carry the live HTTP response headers through to audit() today,

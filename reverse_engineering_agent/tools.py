@@ -310,9 +310,22 @@ async def audit_all_competitors_tool(tool_context: ToolContext) -> dict:
     # quality via audit(corpus_mode=True) (KEEP enrichments + EN-canonical +
     # embedding; DROP client-strategy steps + HU). Parallel — each gets its own
     # InMemoryRunner + session, gather is safe; per-call exceptions captured.
+    def _crawl_errored(a: dict) -> bool:
+        cr = (a or {}).get("crawl") or {}
+        return bool(cr.get("error") or cr.get("error_type"))
+
     async def _run_competitor_corpus(u: str) -> dict:
         re_audit, aid, _ = await _run_discovery_archived(
             u, corpus_mode=True, eeat_anchor_keyword=client_anchor_kw)  # AAA-172
+        # AAA-195 FIX 2 — RETRY ONCE on a competitor crawl timeout/empty fetch.
+        # If the retry succeeds, use it; if it also fails, keep the failed audit
+        # (downstream skips it from the comparison + the render flags it as
+        # "unavailable at the moment of the query" — NO replacement, NO zeros).
+        if _crawl_errored(re_audit):
+            re_audit2, aid2, _ = await _run_discovery_archived(
+                u, corpus_mode=True, eeat_anchor_keyword=client_anchor_kw)
+            if not _crawl_errored(re_audit2):
+                re_audit, aid = re_audit2, aid2
         re_audit["audit_id"] = aid
         return re_audit
 
