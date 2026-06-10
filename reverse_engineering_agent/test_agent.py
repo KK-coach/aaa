@@ -124,6 +124,19 @@ async def run_one(url: str, audit_id: str | None = None,
         fact_base_status = ("ok" if fbd.get("ok")
                             else f"skip-finding: {fbd.get('_error')}")
 
+    # AAA-202 Gate 3 — success-peer comparison verdict (§9 source). Deterministic
+    # pipeline step: AFTER fact_base (prompt input), BEFORE the report render.
+    # Skip-finding: never raises; <3 peers → honest note; 0/error → §9 omitted.
+    peer_verdict_status = "skipped (no audit_id or re_persist not ok)"
+    if audit_id_for_re and re_persist_status == "ok":
+        from memory.firestore_archive import attach_peer_verdict
+        pv = await attach_peer_verdict(audit_id_for_re)
+        peer_verdict_status = (
+            "ok (cost=$%.5f%s)" % (pv.get("cost", 0.0),
+                                   ", note=%s" % pv["note"] if pv.get("note") else "")
+            if pv.get("ok") else "skip-finding: %s" % pv.get("_error")
+        )
+
     # AAA-96 ship — end-of-pipeline customer-facing bilingual render. Runs only
     # after re_findings is persisted (the comparison sections depend on it).
     # Skip-finding: attach_customer_summary never raises; failure -> _error in
@@ -221,6 +234,7 @@ async def run_one(url: str, audit_id: str | None = None,
             ),
             "re_persist_status": re_persist_status,
             "re_persist_audit_id": audit_id_for_re,
+            "peer_verdict_status": peer_verdict_status,  # AAA-202 Gate 3
             "customer_summary_status": customer_summary_status,
             "customer_report_html_status": customer_report_html_status,
             "serp_enforcement": serp_enforcement,

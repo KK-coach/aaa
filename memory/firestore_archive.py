@@ -655,6 +655,49 @@ async def attach_customer_summary(audit_id: str) -> dict:
         return {"_error": "%s: %s" % (type(e).__name__, e)}
 
 
+async def attach_peer_verdict(audit_id: str) -> dict:
+    """AAA-202 Gate 3 — success-peer comparison verdict → audit_output.peer_verdict.
+
+    Runs AFTER attach_fact_base_decisions (the client fact_base is the prompt
+    input) and BEFORE attach_customer_report_html (§9 renders from it).
+    Skip-finding: never raises; failure → {_error}. Cost in the SEPARATE
+    audit_peer_verdict_cost_usd doc field (AAA-53). Degrade contract: <3 peers
+    → peer_verdict.note (render shows the honest line); 0 peers/error → no
+    peer_verdict persisted (render omits §9)."""
+    try:
+        ref = _db().collection(_COLLECTION).document(audit_id)
+        snap = await asyncio.to_thread(ref.get)
+        d = snap.to_dict() if snap.exists else None
+        if not d:
+            return {"_error": "audit not found"}
+        ao = d.get("audit_output") or {}
+        peers = d.get("success_peers") or []
+        from memory.peer_verdict import build_peer_verdict
+        v = await build_peer_verdict(ao, peers, _db())
+        if not v.get("text_en") and not v.get("note"):
+            # 0 peers / model error — nothing to render; record cost+error only.
+            payload = {"audit_peer_verdict_cost_usd": v.get("cost_usd") or 0.0,
+                       "updated_at": _now_iso()}
+            if v.get("_error"):
+                payload["audit_output._peer_verdict_failed"] = v["_error"]
+            await asyncio.to_thread(ref.update, payload)
+            return {"ok": False, "_error": v.get("_error") or "no peers"}
+        pv = {"text_en": v.get("text_en"), "text_hu": v.get("text_hu"),
+              "note": v.get("note"), "model_id": v.get("model_id"),
+              "peers_used": v.get("peers_used") or [],
+              "drift_flags": v.get("drift_flags") or [],
+              "generated_at": _now_iso()}
+        await asyncio.to_thread(ref.update, {
+            "audit_output.peer_verdict": pv,
+            "audit_peer_verdict_cost_usd": v.get("cost_usd") or 0.0,
+            "updated_at": _now_iso(),
+        })
+        return {"ok": True, "cost": v.get("cost_usd") or 0.0,
+                "note": v.get("note"), "flags": v.get("drift_flags") or []}
+    except Exception as e:  # noqa: BLE001 — skip-finding
+        return {"_error": "%s: %s" % (type(e).__name__, e)}
+
+
 async def attach_fact_base_decisions(audit_id: str) -> dict:
     """AAA-161 Gate 1 — wire the RG1 fact-first data layer into the pipeline
     (ADDITIVE; NO render change). Builds the deterministic fact_base (RG1-S1,

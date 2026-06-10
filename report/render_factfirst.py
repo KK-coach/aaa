@@ -97,6 +97,9 @@ UI = {
         "s1": "Összefoglaló státusz", "s2": "Keresési környezet", "s3": "AI-láthatóság",
         "s4": "Saját oldal", "s5": "E-E-A-T bizalmi olvasat", "s6": "Konkurens benchmark",
         "s7": "Javaslatok", "s8": "Adatminőség / provenance",
+        "s9": "Mit csinálnak másképp a sikeres oldalak?",
+        "r9": "A te oldalad összevetve 3 bizonyítottan sikeres oldallal (top-3 SERP-pozíció vagy AI-idézettség) — AI-értelmezés, nem mérés.",
+        "s9_peers": "Összehasonlítási alap", "s9_note": "Még nincs elég összehasonlítható, bizonyítottan sikeres oldal a korpuszban ehhez az elemzéshez.",
         "r1": "Mit nézel és hogy állsz — egy képernyőnyi összegzés, fentről.",
         "r2": "A színpad: melyik kulcsszó, milyen szándék, hogy néz ki a találati lista.",
         "r3": "Megjelensz-e az AI-válaszokban — pillanatkép az audit napján.",
@@ -194,6 +197,9 @@ UI = {
         "s1": "Status summary", "s2": "Search environment", "s3": "AI visibility",
         "s4": "Your page", "s5": "E-E-A-T trust read", "s6": "Competitor benchmark",
         "s7": "Recommendations", "s8": "Data quality / provenance",
+        "s9": "What successful pages do differently",
+        "r9": "Your page compared against 3 demonstrably successful pages (top-3 SERP position or AI citation) — AI interpretation, not measurement.",
+        "s9_peers": "Comparison basis", "s9_note": "Not enough comparable, demonstrably successful pages in the corpus yet for this analysis.",
         "r1": "What you're looking at and where you stand — a one-screen summary, top-down.",
         "r2": "The stage: which keyword, what intent, what the results page looks like.",
         "r3": "Whether you show up in AI answers — a snapshot as of the audit date.",
@@ -1553,6 +1559,41 @@ def _fix_type(f):
     return None
 
 
+def _s9(ao, lang):
+    """AAA-202 Gate 3 — §9 success-peer comparison verdict. AI-interpretation
+    layer (chip on the heading; the body carries no internal labels — produced
+    + post-checked at verdict time, AAA-152/181). Graceful: <3 peers → honest
+    note; 0 peers / error → '' (section omitted)."""
+    t = UI[lang]
+    pv = ao.get("peer_verdict") or {}
+    if not isinstance(pv, dict):
+        return ""
+    text = (pv.get("text_hu") if lang == "hu" else pv.get("text_en")) or pv.get("text_en")
+    if pv.get("note") and not text:
+        return '<div class="note">%s %s</div>' % (
+            _esc(t["s9_note"]), _chip("AI-értelmezés", lang))
+    if not text:
+        return ""
+    # peers line (transparency: which successful pages it was compared against)
+    peers = [p for p in (pv.get("peers_used") or []) if p]
+    out = '<div class="note"><b>%s:</b> %s %s</div>' % (
+        t["s9_peers"], ", ".join(_esc(p) for p in peers), _chip("mért", lang))
+    # markdown-lite render: paragraphs + **bold** + bullet lines
+    body = _esc(text)
+    body = _re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", body)
+    paras = []
+    for blk in body.split("\n\n"):
+        lines = [ln.strip() for ln in blk.split("\n") if ln.strip()]
+        if lines and all(ln.startswith(("- ", "* ", "• ")) for ln in lines):
+            paras.append("<ul>%s</ul>" % "".join(
+                "<li>%s</li>" % ln[2:].strip() for ln in lines))
+        else:
+            paras.append("<p>%s</p>" % " ".join(lines))
+    out += "".join(paras)
+    out += '<p class="role">%s</p>' % _chip("AI-értelmezés", lang)
+    return out
+
+
 def _s7(fb, dec, lang):
     """AAA-192 — unified, impact-ranked action list. Deterministic collector/ranker
     (decide_ranked_findings, RG5 severity) → 3 tiers (high · medium · Refinement).
@@ -1655,6 +1696,12 @@ def render_factfirst_report(audit_output, lang="en", available_langs=None):
         ("§7", t["s7"], t["r7"], "s7", _s7(fb, dec, lang)),
         ("§8", t["s8"], t["r8"], "s8", _s8(fb, ao, dec, lang)),
     ]
+    # AAA-202 Gate 3 — §9 success-peer comparison (AI-interpretation layer,
+    # AFTER the 8 fact sections). 0 peers / error → no peer_verdict persisted →
+    # §9 omitted entirely (no empty shell); <3 peers → honest note.
+    s9 = _s9(ao, lang)
+    if s9:
+        secs.append(("§9", t["s9"], t["r9"], "s9", s9))
     legend = ('<div class="legend"><b>%s</b>%s%s%s%s<span style="color:var(--faint)">%s</span></div>'
               % (t["legend"], _chip("mért", lang), _chip("becslés", lang),
                  _chip("AI-értelmezés", lang), _chip("következtetés", lang), t["legend_note"]))
