@@ -89,6 +89,8 @@ UI = {
         "date": "Audit dátuma", "nd": "nincs mérve",
         "snapshot": "Pillanatkép az audit napján", "cited": "Idézve", "not_cited": "Nincs idézve",
         "excluded": "Kihagyva", "competitor": "Versenytárs", "competitors_cited": "Idézett versenytársak",
+        "aio_none": "Nincs AI Overview erre a kulcsszóra (ellenőrizve)", "aio_none_short": "Nincs AI Overview",
+        "serp_you": "(az Ön oldala)", "serp_comp": "(versenytárs)",
         "ax_ai": "AI-láthatóság", "ax_page": "Saját oldal", "ax_tech": "Technikai egészség", "ax_eeat": "E-E-A-T",
         "st_weak": "Gyenge", "st_attn": "Odafigyelést igényel", "st_ok": "Rendben",
         "st_clean": "Tiszta", "cq_clean": "Tiszta — nincs helykitöltő",
@@ -176,6 +178,8 @@ UI = {
         "date": "Audit date", "nd": "not measured",
         "snapshot": "Snapshot as of the audit date", "cited": "Cited", "not_cited": "Not cited",
         "excluded": "Excluded", "competitor": "Competitor", "competitors_cited": "Competitors cited",
+        "aio_none": "No AI Overview appears for this keyword (checked)", "aio_none_short": "No AI Overview",
+        "serp_you": "(your site)", "serp_comp": "(competitor)",
         "ax_ai": "AI visibility", "ax_page": "Your page", "ax_tech": "Technical health", "ax_eeat": "E-E-A-T",
         "st_weak": "Weak", "st_attn": "Needs attention", "st_ok": "OK",
         "st_clean": "Clean", "cq_clean": "Clean — no placeholder",
@@ -314,6 +318,15 @@ def _esc(s):
     return _html.escape(str(s)) if s is not None else ""
 
 
+def _host(url):
+    """AAA-194 — normalize a URL to a comparable host: strip scheme/www/path,
+    lowercase. '' for non-strings so it never falsely matches."""
+    if not isinstance(url, str) or not url.strip():
+        return ""
+    h = _re.sub(r"^https?://", "", url.strip().lower()).split("/")[0]
+    return h[4:] if h.startswith("www.") else h
+
+
 def _chip(layer, lang):
     c = _LAYER_CHIP.get(layer)
     if not c:
@@ -379,6 +392,22 @@ def _axis(name, st_cls, st_txt, why, layer, link, lang):
             % (_esc(name), st_cls, _esc(st_txt), _esc(why), _chip(layer, lang), link, link))
 
 
+def _aio_render_state(av):
+    """AAA-194 — unified Google AI Overview render state from the grounded SERP
+    facts: 'cited' (client in AIO) / 'excluded' (AIO present, client not cited) /
+    'none_checked' (SERP checked, NO AIO present → measured-absent, AAA-182) /
+    'not_measured' (never checked)."""
+    cs = av.get("ai_overview_client_status") or {}
+    tr = av.get("ai_overview_triggered") or {}
+    if _is_fact(cs) and cs.get("provenance") == "measured" and cs.get("value"):
+        return "cited"
+    if _is_fact(cs) and cs.get("provenance") == "absent":
+        return "excluded"
+    if _is_fact(tr) and tr.get("provenance") == "absent":
+        return "none_checked"
+    return "not_measured"
+
+
 def _s1(fb, dec, ao, lang):
     t = UI[lang]
     rf = dec.get("ranked_findings") or []
@@ -390,12 +419,15 @@ def _s1(fb, dec, ao, lang):
                 else "The highest-impact finding: ")
         hook = '<div class="hook">%s%s.</div>' % (lead, _esc(top.get("finding")))
     av = fb.get("ai_visibility") or {}
-    aio = av.get("ai_overview_client_status") or {}
-    if aio.get("provenance") == "absent":
+    # AAA-194 — grounded AIO state: cited / excluded / none_checked / not_measured.
+    aio_state = _aio_render_state(av)
+    if aio_state == "excluded":
         ai = ("st-bad", t["st_weak"], (t["excluded"] + " — AI Overview" if lang == "en"
               else "Kihagyva az AI Overview-ból"), "mért")
-    elif aio.get("provenance") == "measured" and aio.get("value"):
+    elif aio_state == "cited":
         ai = ("st-ok", t["st_ok"], t["cited"], "mért")
+    elif aio_state == "none_checked":  # AIO checked, none present → measured-absent (neutral)
+        ai = ("st-ok", t["aio_none_short"], t["aio_none"], "mért")
     else:
         ai = ("st-warn", t["st_attn"], t["nd"], "mért")
     # AAA-182 — three-state, field-aware: measured-True=placeholder (bad);
@@ -553,9 +585,27 @@ def _s2(fb, ao, lang):
     out += _s2_keyword_blocks(fb, lang)  # AAA-186: keyword map / real demand / topic+intent
     serp = _dig(fb, "competition", "primary_keyword_serp", "top10")
     if _is_fact(serp) and serp.get("provenance") == "measured":
+        # AAA-194 — mark the client row + selected-competitor rows (domain-level
+        # match so path differences don't break it). Render-only; the selected
+        # set is unchanged (that's AAA-195).
+        client_host = _host(ao.get("url"))
+        comp_hosts = {}  # host -> resolved brand (if any)
+        for c in ((fb.get("competition") or {}).get("competitors") or []):
+            ch = _host((c.get("url") or {}).get("value") if isinstance(c.get("url"), dict) else c.get("url"))
+            if ch:
+                comp_hosts[ch] = (c.get("brand") or {}).get("value")
         out += "<div class='subsec'><span class='n'>SERP %s</span></div><table><tr><th>#</th><th>URL</th></tr>" % _chip("mért", lang)
         for r in (serp.get("value") or [])[:10]:
-            out += "<tr><td class='num'>%s</td><td>%s</td></tr>" % (_esc(r.get("position")), _esc(r.get("url")))
+            host = _host(r.get("url"))
+            mark = ""
+            if client_host and host == client_host:
+                mark = ' <b class="serpmark">%s</b>' % t["serp_you"]
+            elif host in comp_hosts:
+                brand = comp_hosts[host]
+                mark = ' <b class="serpmark">%s</b>' % (
+                    ("(%s)" % _esc(brand)) if brand else t["serp_comp"])
+            out += "<tr><td class='num'>%s</td><td>%s%s</td></tr>" % (
+                _esc(r.get("position")), _esc(r.get("url")), mark)
         out += "</table>"
     return out
 
@@ -577,8 +627,12 @@ def _s3(fb, ao, lang):
             return '<span class="st st-bad">%s</span> %s' % (lbl, _chip("mért", lang))
         return _nd(lang)
 
-    out += "<tr><td>Google AI Overview</td><td>%s</td></tr>" % _cite_cell(
-        av.get("ai_overview_client_status"), excluded_label=t["excluded"])
+    # AAA-194 — checked-but-no-AIO → measured-absent line (not "not measured").
+    if _aio_render_state(av) == "none_checked":
+        aio_cell = '<span class="st st-ok">%s</span> %s' % (t["aio_none"], _chip("mért", lang))
+    else:
+        aio_cell = _cite_cell(av.get("ai_overview_client_status"), excluded_label=t["excluded"])
+    out += "<tr><td>Google AI Overview</td><td>%s</td></tr>" % aio_cell
     out += "<tr><td>ChatGPT</td><td>%s</td></tr>" % _cite_cell(av.get("chatgpt_target_cited"))
     out += "</table>"
     # AAA-190 (#6) — ChatGPT citation list (the sources it cited instead).

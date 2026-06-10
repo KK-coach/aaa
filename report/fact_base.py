@@ -460,18 +460,25 @@ def _aio_status(ao):
     """AAA-161 G3.5 — AI-Overview citation status from the SAME source the §6
     prose reads: re_findings.serp_{branded,category}.ai_overview_present +
     .ai_overview_citations (the top-level ai_overview block is often empty).
-    Returns (triggered, client_status_fact, cited_regs_set). Client cited =
-    measured(True); triggered but client absent from the citation list =
-    absent(False)=excluded; no AIO = not_measured."""
+    Returns (triggered, client_status_fact, cited_regs_set, checked). Client
+    cited = measured(True); triggered but client absent from the citation list =
+    absent(False)=excluded; no AIO = not_measured. AAA-194: `checked` is True
+    when a serp block carries ai_overview_present as a real bool — lets the
+    caller distinguish "checked & no AIO" (measured-absent) from "never checked"
+    (not_measured)."""
     rf, _ = _dig(ao, "re_findings")
     rf = rf if isinstance(rf, dict) else {}
     triggered = False
+    checked = False
     cites = []
     src = "re_findings.serp_branded/serp_category.ai_overview_citations"
     for blk in ("serp_branded", "serp_category"):
         s = rf.get(blk) or {}
-        if s.get("ai_overview_present"):
-            triggered = True
+        present = s.get("ai_overview_present")
+        if isinstance(present, bool):  # AAA-194: the SERP was checked
+            checked = True
+            if present:
+                triggered = True
         cites += (s.get("ai_overview_citations") or [])
     cited_regs = set()
     for u in cites:
@@ -485,11 +492,21 @@ def _aio_status(ao):
     else:
         is_cited = client_reg in cited_regs
         client_fact = _fact(is_cited, MEASURED if is_cited else ABSENT, src)
-    return triggered, client_fact, cited_regs
+    return triggered, client_fact, cited_regs, checked
 
 
 def _map_ai_visibility(ao) -> dict:
-    triggered, aio_client, cited_regs = _aio_status(ao)
+    triggered, aio_client, cited_regs, checked = _aio_status(ao)
+    # AAA-194 — provenance-aware AIO-presence: present → measured(True);
+    # checked but no AIO → absent(False) [definitive, NOT "not measured"];
+    # never checked → not_measured.
+    _trig_src = "re_findings.serp_*.ai_overview_present"
+    if triggered:
+        trig_fact = _fact(True, MEASURED, _trig_src)
+    elif checked:
+        trig_fact = _fact(False, ABSENT, _trig_src)
+    else:
+        trig_fact = _fact(None, NOT_MEASURED, _trig_src)
     # which audited competitors are cited in the AI Overview (measured presence)
     comp_ids = ((ao.get("re_findings") or {}).get("competitor_audit_ids") or {})
     cited_comps = []
@@ -498,8 +515,9 @@ def _map_ai_visibility(ao) -> dict:
             if _reg(url) in cited_regs:
                 cited_comps.append(url)
     return {
-        # AAA-161 G3.5: AIO status wired to the SERP citation source (real status).
-        "ai_overview_triggered": _fact(triggered, MEASURED, "re_findings.serp_*.ai_overview_present"),
+        # AAA-161 G3.5 / AAA-194: AIO presence wired to the grounded SERP source
+        # (measured present / absent=checked-no-AIO / not_measured=never checked).
+        "ai_overview_triggered": trig_fact,
         "ai_overview_client_status": aio_client,  # measured cited / absent=excluded / not_measured
         "ai_overview_cited_competitors": _fact(
             cited_comps, (MEASURED if cited_comps else ABSENT) if triggered else NOT_MEASURED,
