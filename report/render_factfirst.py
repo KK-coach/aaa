@@ -176,6 +176,7 @@ UI = {
         "kw_map": "Kulcsszó-térkép — mit céloz az oldal", "kw_kw": "Kulcsszó", "kw_type": "Típus",
         "kw_rel": "Relevancia", "kw_intent": "Szándék",
         "kw_demand": "Valós keresési kereslet — mérhető keresési volumenű kulcsszavak",
+        "kw_vol_unavail": "Keresési volumen nem elérhető ezekre a kulcsszavakra",
         "kw_vol": "Havi keresés", "kw_trend": "12 hó trend", "kw_cpc": "CPC",
         "kw_topic": "Témakör", "kw_branded": "Márkázott elsődleges kulcsszó",
         "kw_intentmix": "Szándék-összetétel", "kw_primary": "elsődleges",
@@ -268,6 +269,7 @@ UI = {
         "kw_map": "Keyword map — what the page targets", "kw_kw": "Keyword", "kw_type": "Type",
         "kw_rel": "Relevance", "kw_intent": "Intent",
         "kw_demand": "Real search demand — keywords with measurable search volume",
+        "kw_vol_unavail": "Search volume unavailable for these keywords",
         "kw_vol": "Monthly searches", "kw_trend": "12-mo trend", "kw_cpc": "CPC",
         "kw_topic": "Topic", "kw_branded": "Branded primary keyword",
         "kw_intentmix": "Intent mix", "kw_primary": "primary",
@@ -552,8 +554,14 @@ def _s2_keyword_blocks(fb, lang):
             ("Relevancia: sávként" if hu else "Relevance: shown as a band"), _chip("következtetés", lang),
             ("szándék: legjobb tipp" if hu else "intent: best-effort"), _chip("AI-értelmezés", lang))
 
-    # ---- (B) real search demand — ONLY volume-bearing; omit block if none ----
+    # ---- (B) real search demand — volume-bearing rows; AAA-196: when keywords
+    # exist but NONE carry volume (genuine no-data OR a failed DFS call), render
+    # an EXPLICIT "unavailable" note instead of silently omitting the block. ----
     vb = [k for k in (items or []) if k.get("search_volume_monthly") is not None]
+    if items and not vb:
+        out += _subsec("", t["kw_demand"]) + (
+            '<div class="note">%s %s</div>' % (
+                _esc(t["kw_vol_unavail"]), _chip("becslés", lang)))
     if vb:
         out += _subsec("", t["kw_demand"]) + (
             '<table><tr><th>%s</th><th class="num">%s</th><th>%s</th><th class="num">%s</th></tr>' % (
