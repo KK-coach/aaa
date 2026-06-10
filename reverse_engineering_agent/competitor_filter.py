@@ -54,7 +54,7 @@ from reverse_engineering_agent.ranking import registrable_domain
 _BUSINESS_TYPES = frozenset({
     "business_homepage", "business_category", "business_product",
     "business_service", "business_pricing", "business_documentation",
-    "business_blog_or_article", "business_case_study_or_resource",
+    "business_case_study_or_resource",
     "business_contact_or_form", "business_legal",
 })
 
@@ -68,13 +68,22 @@ _EXCLUDED_TYPES = frozenset({
     "aggregator_or_personal_blog", "other_or_unknown",
 })
 
-# 2 conditional types — comparable only when target_type is in the
-# "publisher" or "gov" shape category for that conditional type
+# conditional types — comparable only when target_type is in the allowed-target
+# set for that conditional type
 _CONDITIONAL_TYPES: dict[str, frozenset[str]] = {
     # News/publisher articles are comparable competitors only when the
     # target is itself a publisher-content shape
     "news_or_publisher_article": frozenset({
         "news_or_publisher_article", "business_blog_or_article",
+    }),
+    # AAA-195 — a business blog/article (e.g. a "TOP N agencies" listicle or a
+    # "how to choose an agency" guide) is NOT a competing business for a normal
+    # business target — it's informational content ABOUT the category. Comparable
+    # ONLY when the target is itself an article (mirrors news_or_publisher_article).
+    # Previously in _BUSINESS_TYPES (always-included); under SERP-order selection
+    # that let listicles displace genuine competitor pages (MA regression).
+    "business_blog_or_article": frozenset({
+        "business_blog_or_article", "news_or_publisher_article",
     }),
     # gov_or_education is comparable only for explicit gov_or_education targets
     # (target_type=gov_or_education is rare today — AAA-118 S2.2 mapping
