@@ -103,7 +103,11 @@ UI = {
         "ent_diff_none": "✓ Nincs mért megnevezett-szervezet különbség ezen a canaryn.",
         "rank": "Helyezés a mezőnyben", "client": "Ez az oldal", "total": "Összesen",
         "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (Lighthouse)",
-        "t1": "Magas hatás", "t2": "Közepes hatás", "t3": "Alacsony hatás",
+        "t1": "Magas hatás", "t2": "Közepes hatás", "t3": "Finomítás",
+        "r7_intro": "Hogyan olvasd: minden tétel egy konkrét, mért hiányhoz kötődik — többségük a bizalom, a tekintély vagy az AI-láthatóság körül van, nem a technikai mechanikáról szól. Az oldalon belüli javítások erősítik a minőség-/bizalom-jeleket, de nem garantálják a SERP-rangsort; az oldalon kívüli tényezők (linkek/domain-tekintély) nem tartoznak ide. Visszafordíthatatlan lépés előtt mentsd a munkád.",
+        "rec_gap": "Mért hiány", "rec_src": "Forrás", "rec_improves": "Javítja", "rec_effort": "Ráfordítás", "rec_indic": "indikatív",
+        "eff_low": "alacsony", "eff_medium": "közepes", "eff_high": "magas",
+        "ee_see7": "A teljes, egységes teendőlista a §7-ben található.",
         "fresh_source": "Forrás", "fresh_when": "Mikor rögzült", "fresh_state": "Frissesség",
         "prov_summary": "Adat-provenance összegzés", "word_count": "Szószám", "page_weight": "Oldalsúly",
         "verdict": "Verdikt", "see_s6": "A dimenzió-szintű összevetést lásd a §6-ban.",
@@ -186,7 +190,11 @@ UI = {
         "ent_diff_none": "✓ No measured named-organization gap on this canary.",
         "rank": "Rank in the field", "client": "This page", "total": "Total",
         "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (Lighthouse)",
-        "t1": "High impact", "t2": "Medium impact", "t3": "Low impact",
+        "t1": "High impact", "t2": "Medium impact", "t3": "Refinement",
+        "r7_intro": "How to read: each item targets a concrete measured gap — most are about trust, authority, or AI-visibility, not technical mechanics. On-page fixes strengthen quality/trust signals but do not guarantee SERP ranking; off-page factors (backlinks/domain authority) are out of scope. Save your work before any irreversible step.",
+        "rec_gap": "Measured gap", "rec_src": "Source", "rec_improves": "Improves", "rec_effort": "Effort", "rec_indic": "indicative",
+        "eff_low": "low", "eff_medium": "medium", "eff_high": "high",
+        "ee_see7": "The full, unified action list is in §7.",
         "fresh_source": "Source", "fresh_when": "Captured", "fresh_state": "Freshness",
         "prov_summary": "Data-provenance summary", "word_count": "Word count", "page_weight": "Page weight",
         "verdict": "Verdict", "see_s6": "See §6 for the per-dimension comparison.",
@@ -1042,34 +1050,13 @@ def _s5(fb, ao, lang):
         out += '<div class="subsec"><span class="n">%s</span></div><p>%s %s</p>' % (
             t["verdict"], _esc(verdict), _chip("AI-értelmezés", lang))
 
-    # Impact-ranked fix-list (lowest dims first → biggest gap), action from justification.
-    out += _eeat_fixlist(pi, DIMS, lang, ao)
+    # AAA-192 — §5 dedupe: the E-E-A-T fixes now live in the single §7 action
+    # list (was _eeat_fixlist here). Point to §7 instead of a duplicate list.
+    out += '<p class="role">%s</p>' % t["ee_see7"]
     out += _eeat_evidence_block(fb, lang)  # AAA-188 — grounding beside the score
     # §5→§6 two-lens cross-reference (page-intrinsic here vs comparative in §6).
     out += '<p class="role">%s</p>' % t["ee_twolens"]
     return out
-
-
-def _eeat_fixlist(pi, DIMS, lang, ao):
-    """AAA-170 S2 — impact-ranked E-E-A-T fix-list: the lowest-scoring dimensions
-    first (lowest score = biggest gap = highest impact), each with the gap from
-    its page-intrinsic justification. NOTE: when the §7 unified recommendations
-    layer lands, de-duplicate these E-E-A-T fixes against §7."""
-    t = UI[lang]
-    just = pi.get("justifications") or {}
-    scored = []
-    for k, lbl, sub in DIMS:
-        v = (pi.get(k) or {}).get("value")
-        jn = (just.get(k) or {}).get("value")
-        if isinstance(v, int) and jn:
-            scored.append((v, lbl, jn))
-    if not scored:
-        return ""
-    scored.sort(key=lambda x: x[0])
-    items = "".join(
-        '<li><b>%s</b> (%d/10): %s</li>' % (_esc(lbl), v, _esc(_sanitize_labels(jn, _page_names(ao))))
-        for v, lbl, jn in scored[:3])
-    return '<div class="subsec"><span class="n">%s</span></div><ul>%s</ul>' % (t["ee_fixes"], items)
 
 
 def _eeat_evidence_block(fb, lang):
@@ -1254,22 +1241,109 @@ def _is_volume_finding(f):
     return f.get("category") == "content" and any(w in txt for w in ("volume", "word", "deficit", "depth"))
 
 
+# AAA-192 — deterministic per-fix-type recommendation TEMPLATES (no live LLM,
+# AAA-129 hybrid: audit-independent action phrasing, the concrete gap is the
+# finding it's bound to). Used only for template (non-competitive) findings;
+# competitive-pattern findings keep their RG3-grounded recommendation as-is.
+# Detection is by finding-text signature (the deterministic texts in decide.py).
+_FIX_SIGNATURES = [
+    ("top 10", "ranking"), ("ai overview", "aio"), ("chatgpt", "chatgpt"),
+    ("https", "https"), ("not indexed", "indexed"), ("redirect", "redirect"),
+    ("structured-data types do not", "schema_match"), ("heading hierarchy", "heading_skips"),
+    ("landmarks", "landmarks"), ("form fields lack", "form_labels"), ("placeholder", "placeholder"),
+]
+_REC_TEMPLATES = {
+    "ranking": {"en": "Deepen the page's topical coverage and trust signals for the target query — on-page quality is the lever you control here.",
+                "hu": "Mélyítsd az oldal témafedését és bizalmi jeleit a célkulcsszóra — az oldalon belüli minőség az, amit befolyásolni tudsz."},
+    "aio": {"en": "Mirror the structure of the cited sources (clear answers, structured data, named entities) so the page becomes citable in the AI Overview.",
+            "hu": "Kövesd az idézett források szerkezetét (világos válaszok, strukturált adat, megnevezett entitások), hogy az oldal idézhetővé váljon az AI Overview-ban."},
+    "chatgpt": {"en": "Add concise, well-structured answer passages and authoritative citations so the page is usable as a source in AI answers.",
+                "hu": "Adj tömör, jól strukturált válaszrészeket és hiteles hivatkozásokat, hogy az oldal forrásként használható legyen az AI-válaszokban."},
+    "https": {"en": "Serve the whole site over HTTPS with a valid certificate and redirect HTTP → HTTPS.",
+              "hu": "Szolgáld ki a teljes oldalt HTTPS-en érvényes tanúsítvánnyal, és irányítsd át a HTTP-t HTTPS-re."},
+    "indexed": {"en": "Resolve the indexing blocker (robots / meta-robots / canonical) so Google can index the page.",
+                "hu": "Oldd fel az indexelési akadályt (robots / meta-robots / canonical), hogy a Google indexelni tudja az oldalt."},
+    "redirect": {"en": "Point internal links and the canonical directly at the final URL to remove the redirect hop.",
+                 "hu": "Mutasson a belső linkek és a canonical közvetlenül a végső URL-re, hogy megszűnjön az átirányítási lépés."},
+    "schema_match": {"en": "Add the structured-data types that match this page type so machines can classify it correctly.",
+                     "hu": "Add hozzá az oldaltípushoz illő strukturált-adat típusokat, hogy a gépek helyesen osztályozzák."},
+    "heading_skips": {"en": "Fix the heading hierarchy so levels follow in order, with no skipped levels.",
+                      "hu": "Javítsd a címsor-hierarchiát, hogy a szintek sorrendben kövessék egymást, kihagyás nélkül."},
+    "landmarks": {"en": "Add the missing structural landmarks (e.g. header, article, aside) so crawlers can parse the page regions.",
+                  "hu": "Add hozzá a hiányzó strukturális landmarkokat (pl. header, article, aside), hogy a crawlerek értelmezzék az oldalrészeket."},
+    "form_labels": {"en": "Bind a label to every form field so the form is accessible and machine-readable.",
+                    "hu": "Köss minden űrlapmezőhöz label-t, hogy az űrlap akadálymentes és gépileg olvasható legyen."},
+    "placeholder": {"en": "Remove or replace the unfinished / placeholder text in the main content with final copy.",
+                    "hu": "Távolítsd el vagy cseréld le a befejezetlen / helykitöltő szöveget a fő tartalomban végleges szövegre."},
+}
+# Enrichment (deterministic from category): which section surfaced it · what it improves.
+_REC_SRC = {"ranking": "§3", "visibility": "§3", "content": "§4", "schema": "§4.3",
+            "technical": "§4.4", "structure_accessibility": "§4.3", "trust": "§4.1"}
+_REC_IMPROVES = {
+    "ranking": {"en": "competitive positioning", "hu": "versenypozíció"},
+    "visibility": {"en": "AI-visibility", "hu": "AI-láthatóság"},
+    "content": {"en": "content depth & accessibility", "hu": "tartalmi mélység és akadálymentesség"},
+    "schema": {"en": "machine-readability", "hu": "gép-olvashatóság"},
+    "technical": {"en": "technical health", "hu": "technikai egészség"},
+    "structure_accessibility": {"en": "machine-readability / accessibility", "hu": "gép-olvashatóság / akadálymentesség"},
+    "trust": {"en": "trust signals", "hu": "bizalmi jelek"},
+}
+# Indicative effort per fix-type; category fallback for competitive-pattern findings.
+_REC_EFFORT_FT = {"placeholder": "low", "heading_skips": "low", "landmarks": "low",
+                  "form_labels": "low", "redirect": "low", "https": "low",
+                  "schema_match": "medium", "chatgpt": "medium", "indexed": "medium",
+                  "ranking": "high", "aio": "high"}
+_REC_EFFORT_CAT = {"content": "medium", "schema": "medium", "technical": "medium",
+                   "visibility": "high", "ranking": "high", "trust": "low",
+                   "structure_accessibility": "low"}
+
+
+def _fix_type(f):
+    txt = (f.get("finding") or "").lower()
+    for sig, key in _FIX_SIGNATURES:
+        if sig in txt:
+            return key
+    return None
+
+
 def _s7(fb, dec, lang):
+    """AAA-192 — unified, impact-ranked action list. Deterministic collector/ranker
+    (decide_ranked_findings, RG5 severity) → 3 tiers (high · medium · Refinement).
+    Phrasing (no live LLM): RG3-grounded `recommendation` where present, else a
+    per-fix-type action TEMPLATE; each item is bound to its concrete measured gap
+    (the finding) + deterministic source/improves/indicative-effort enrichment.
+    Rank-prediction-free by construction (static templates, hard-guard intro)."""
     t = UI[lang]
     findings = [f for f in (dec.get("ranked_findings") or []) if not _is_volume_finding(f)]
     tiers = {"high": [], "medium": [], "low": []}
     for f in findings:
         tiers.get(f.get("impact_severity"), tiers["low"]).append(f)
-    out = ""
+    # Static "how to read" framing + hard-guard + save-before-irreversible note.
+    out = '<div class="note">%s</div>' % t["r7_intro"]
     for sev, label, cls in (("high", t["t1"], "t1"), ("medium", t["t2"], "t2"), ("low", t["t3"], "t3")):
         if not tiers[sev]:
             continue
         out += _subsec("", label)
         for f in tiers[sev]:
-            rec = f.get("recommendation") or ""
-            out += ('<div class="rec %s"><span class="sev">%s · %s</span><div><b>%s</b></div>%s</div>'
-                    % (cls, _esc(sev), _esc(f.get("category")), _esc(f.get("finding")),
-                       ("<div class='dimsig'>%s</div>" % _esc(rec)) if rec else ""))
+            cat = f.get("category") or ""
+            ft = _fix_type(f)
+            # Phrasing: RG3-grounded rec as-is, else the per-fix-type template.
+            rec = (f.get("recommendation") or "").strip() or _REC_TEMPLATES.get(ft, {}).get(lang) or ""
+            # Fallback (no template, no rec): action-frame from the finding so we
+            # never render a raw gap-label as the recommendation.
+            if not rec:
+                rec = f.get("finding") or ""
+            src = _REC_SRC.get(cat, "§4")
+            improves = (_REC_IMPROVES.get(cat) or {}).get(lang, "")
+            eff_key = _REC_EFFORT_FT.get(ft) or _REC_EFFORT_CAT.get(cat, "medium")
+            eff = t["eff_" + eff_key]
+            meta = "%s %s &nbsp;·&nbsp; %s: %s &nbsp;·&nbsp; %s: %s (%s)" % (
+                t["rec_src"], src, t["rec_improves"], _esc(improves),
+                t["rec_effort"], eff, t["rec_indic"])
+            out += ('<div class="rec %s"><div><b>%s</b></div>'
+                    '<div class="dimsig">%s: %s</div>'
+                    '<div class="recmeta" style="font-size:12px;margin-top:3px">%s</div></div>'
+                    % (cls, _esc(rec), t["rec_gap"], _esc(f.get("finding")), meta))
     return out
 
 
