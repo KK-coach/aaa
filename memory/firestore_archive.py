@@ -403,6 +403,34 @@ async def write_audit(audit_output: AuditOutput | dict, audit_url: str,
     except Exception as e:  # noqa: BLE001 - never fail the archive on embed
         logger.warning("embedding step skipped for %s: %s", audit_id, e)
 
+    # AAA-202 Gate 2 — deterministic success-peer retrieval (CLIENT audits only;
+    # corpus/competitor entries are the pool, not consumers). Orchestrator-level,
+    # NOT an agent tool (flywheel S0: advisory instructions get skipped).
+    # Persist a REFERENCE list only (doc ids + metadata — no peer fact-bases on
+    # the doc, AAA-103 1MiB). Failure → EXPLICIT success_peers_error (AAA-197:
+    # silent skip is indistinguishable from no-data); never kills the audit.
+    if not corpus_mode:
+        payload = {"updated_at": _now_iso()}
+        try:
+            from memory.success_retrieval import retrieve_success_peers
+            sp_res = await retrieve_success_peers(
+                summary_markdown_en, audit_url, db=_db())
+            payload["success_peers"] = sp_res.get("peers") or []
+            payload["success_peers_error"] = sp_res.get("error")
+            payload["success_peers_note"] = sp_res.get("note")
+            # AAA-53 separation: retrieval embed cost in its OWN field.
+            payload["audit_success_retrieval_cost_usd"] = sp_res.get(
+                "cost_usd") or 0.0
+        except Exception as e:  # noqa: BLE001 — same contract as the module
+            payload["success_peers"] = []
+            payload["success_peers_error"] = "%s: %s" % (
+                type(e).__name__, str(e)[:300])
+            payload["audit_success_retrieval_cost_usd"] = 0.0
+        try:
+            await asyncio.to_thread(ref.update, payload)
+        except Exception as e:  # noqa: BLE001 — never fail the archive
+            logger.warning("success_peers persist failed %s: %s", audit_id, e)
+
     return audit_id
 
 

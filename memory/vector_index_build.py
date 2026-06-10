@@ -109,6 +109,10 @@ def build(db):
         display_name=INDEX_DISPLAY,
         dimensions=DIMS,
         approximate_neighbors_count=10,
+        # explicit tree-AH algorithmConfig — required by the API ("algorithmConfig
+        # is required but missing from the metadata" without these two).
+        leaf_node_embedding_count=500,
+        leaf_nodes_to_search_percent=10,
         distance_measure_type="COSINE_DISTANCE",
         index_update_method="STREAM_UPDATE",
         shard_size="SHARD_SIZE_SMALL",
