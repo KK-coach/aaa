@@ -169,6 +169,11 @@ class AuditOutput(BaseModel):
     # AAA-76 — DataForSEO keyword-volume enrichment cost (AAA-53 separation;
     # batched $0.075 flat regardless of keyword count).
     audit_keywords_volume_cost_usd: float = 0.0
+    # AAA-197 — True only when the volume fetch FAILED (exception/empty after
+    # retries, or creds missing) — distinct from a successful call where keywords
+    # legitimately have no/zero volume. Lets §2 distinguish "temporarily
+    # unavailable" from "no measurable volume". False on success or no-keywords.
+    volume_fetch_failed: bool = False
     # AAA-85 — AI Overview trigger state for the PRIMARY keyword only.
     #   None  = not measured (API failure, or no primary keyword)
     #   False = checked, AI Overview did NOT trigger

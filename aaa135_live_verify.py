@@ -22,7 +22,7 @@ async def main():
     print(f"\n   ({bad} keyword(s) contained previously-interfering chars)")
     lang=(ao.get("site_profile") or {}).get("language") or ao.get("audit_language") or "en"
     print(f"\nLIVE CALL: lang={lang} location={resolve_location_code(lang)} ...")
-    vol,cost=await fetch_keywords_volume(kws, language_code=lang, location_code=resolve_location_code(lang))
+    vol,cost,_failed=await fetch_keywords_volume(kws, language_code=lang, location_code=resolve_location_code(lang))
     print(f"  returned {len(vol)} result(s), cost=${cost:.6f}")
     # confirm canonical restored (join works): any returned keyword present in canonical set?
     canon_set=set(kws)

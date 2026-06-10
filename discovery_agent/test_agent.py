@@ -307,10 +307,13 @@ async def audit(url: str, corpus_mode: bool = False,
             sp = st.get("site_profile") or {}
             lang = str(sp.get("language") or "").strip().lower()[:2]
             lang = lang if lang in ("hu", "en") else "en"
-            vol_data, volume_cost = await fetch_keywords_volume(
+            vol_data, volume_cost, volume_failed = await fetch_keywords_volume(
                 kw_strings, language_code=lang,
                 location_code=resolve_location_code(lang),
             )
+            # AAA-197 — explicit transient-failure signal (distinct from genuine
+            # no-data): set only when the call FAILED after retries.
+            out.volume_fetch_failed = bool(volume_failed)
             vol_map = {v.get("keyword"): v for v in (vol_data or [])
                        if v.get("keyword")}
             for c in classified:

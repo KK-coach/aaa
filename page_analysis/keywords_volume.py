@@ -88,25 +88,36 @@ def _credentials() -> tuple[str, str]:
     return v.get("DATAFORSEO_LOGIN") or "", v.get("DATAFORSEO_PASSWORD") or ""
 
 
+# AAA-197 — transient-failure retry. A successful DataForSEO call returns >=1
+# result row per payload keyword and bills ~$0.075; an exception OR an empty
+# result is a transient blip (timeout / 5xx / network), NOT genuine no-data.
+# Retry with short backoff before falling to the skip-finding contract.
+_VOLUME_ATTEMPTS = 3
+_VOLUME_BACKOFF = (1.5, 3.0)  # seconds between attempts 1->2, 2->3
+
+
 async def fetch_keywords_volume(
     keywords: list[str],
     language_code: str,
     location_code: int,
-) -> tuple[list[dict], float]:
-    """Return (per_keyword_volume_data, cost_usd).
+) -> tuple[list[dict], float, bool]:
+    """Return (per_keyword_volume_data, cost_usd, fetch_failed).
 
     Each result dict: {keyword, search_volume, monthly_searches, cpc,
     competition, competition_index, ...}. Unknown keywords are returned
-    with null fields (not dropped). Skip-finding: errors -> ([], 0.0).
+    with null fields (not dropped). AAA-197: ``fetch_failed`` is True only when
+    the CALL failed (exception / empty result after retries, or creds missing) —
+    distinct from a successful call where keywords legitimately carry null/zero
+    volume. Skip-finding: a failed fetch returns ([], 0.0, True).
     """
     kws = [k for k in (keywords or []) if k and k.strip()]
     if not kws:
-        return [], 0.0
+        return [], 0.0, False  # nothing to fetch — not a failure
 
     login, password = _credentials()
     if not login or not password:
         logger.warning("fetch_keywords_volume: DataForSEO creds missing")
-        return [], 0.0
+        return [], 0.0, True  # could not fetch → flag as failed
 
     # AAA-135: build the sanitized PAYLOAD copy (canonical kws untouched). Keep a
     # sanitized->canonical map (lower-cased keys; DataForSEO echoes keywords
@@ -130,7 +141,7 @@ async def fetch_keywords_volume(
             len(skipped), len(kws), skipped,
         )
     if not payload_keywords:
-        return [], 0.0
+        return [], 0.0, False  # keywords all degenerate — data edge, not a fetch failure
 
     body = [{
         "keywords": payload_keywords,
@@ -153,14 +164,27 @@ async def fetch_keywords_volume(
         result = (tasks[0].get("result") or []) if tasks else []
         return list(result), cost
 
-    try:
-        result, cost = await asyncio.to_thread(_call)
-    except Exception as e:  # noqa: BLE001 — skip-finding contract
+    # AAA-197: retry on transient failure (exception OR empty result) before the
+    # skip-finding fallback. A real success returns >=1 row per payload keyword.
+    result, cost, last_err = [], 0.0, None
+    for attempt in range(_VOLUME_ATTEMPTS):
+        try:
+            result, cost = await asyncio.to_thread(_call)
+            if result:
+                break  # success
+            last_err = "empty_result"
+        except Exception as e:  # noqa: BLE001 — transient; retry then skip-finding
+            last_err = "%s: %s" % (type(e).__name__, e)
+            result, cost = [], 0.0
+        if attempt < _VOLUME_ATTEMPTS - 1:
+            await asyncio.sleep(_VOLUME_BACKOFF[attempt])
+
+    if not result:
         logger.warning(
-            "fetch_keywords_volume failed: %s: %s — returning ([], 0.0)",
-            type(e).__name__, e,
+            "fetch_keywords_volume failed after %d attempts (%s) — ([], 0.0, failed)",
+            _VOLUME_ATTEMPTS, last_err,
         )
-        return [], 0.0
+        return [], 0.0, True
 
     # AAA-135: restore the canonical keyword onto each result so the caller's
     # canonical-keyed join (vol_map keyed on c["keyword"]) still attaches volume
@@ -171,4 +195,4 @@ async def fetch_keywords_volume(
         canon = sanitized_to_canonical.get(echoed)
         if canon is not None:
             r["keyword"] = canon
-    return list(result), round(cost, 6)
+    return list(result), round(cost, 6), False
