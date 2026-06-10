@@ -177,6 +177,10 @@ UI = {
         "kw_rel": "Relevancia", "kw_intent": "Szándék",
         "kw_demand": "Valós keresési kereslet — mérhető keresési volumenű kulcsszavak",
         "kw_vol_unavail": "Keresési volumen nem elérhető ezekre a kulcsszavakra",
+        "dc_title": "Keresési kereslet — 12-havi átlag + havi bontás", "dc_avg": "Átlag",
+        "dc_for": "Kulcsszó", "dc_caption": "Átlag %d/hó; mélypont: %s (%d), csúcs: %s (%d).",
+        "bl_title": "Kulcsszó-szett keresési volumen szerint", "bl_nodata": "nincs adat",
+        "bl_caption": "%d/hó dominál; %d a(z) %d kulcsszóból hordoz volument.",
         "kw_vol": "Havi keresés", "kw_trend": "12 hó trend", "kw_cpc": "CPC",
         "kw_topic": "Témakör", "kw_branded": "Márkázott elsődleges kulcsszó",
         "kw_intentmix": "Szándék-összetétel", "kw_primary": "elsődleges",
@@ -270,6 +274,10 @@ UI = {
         "kw_rel": "Relevance", "kw_intent": "Intent",
         "kw_demand": "Real search demand — keywords with measurable search volume",
         "kw_vol_unavail": "Search volume unavailable for these keywords",
+        "dc_title": "Search demand — 12-month average + monthly breakdown", "dc_avg": "Average",
+        "dc_for": "Keyword", "dc_caption": "Average %d/mo; low in %s (%d), peak in %s (%d).",
+        "bl_title": "Keyword set by search volume", "bl_nodata": "no data",
+        "bl_caption": "%d/mo dominates; %d of %d keywords carry volume.",
         "kw_vol": "Monthly searches", "kw_trend": "12-mo trend", "kw_cpc": "CPC",
         "kw_topic": "Topic", "kw_branded": "Branded primary keyword",
         "kw_intentmix": "Intent mix", "kw_primary": "primary",
@@ -525,9 +533,132 @@ def _trend_arrow(tr):
     return "→"
 
 
+_MONTH_ABBR = {
+    "hu": ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Szep", "Okt", "Nov", "Dec"],
+    "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+}
+
+
+def _has_nonzero_trend(k):
+    tr = k.get("trend_12m")
+    return isinstance(tr, list) and any(
+        isinstance(e, dict) and (e.get("search_volume") or 0) > 0 for e in tr)
+
+
+def _pick_chart_kw(items, primary_kw_text):
+    """AAA-200 — chart the PRIMARY keyword's trend if it's volume-bearing; else the
+    highest-volume volume-bearing keyword. None if no volume-bearing keyword."""
+    vb = [k for k in (items or [])
+          if k.get("search_volume_monthly") and _has_nonzero_trend(k)]
+    if not vb:
+        return None
+    if primary_kw_text:
+        p = next((k for k in vb if k.get("keyword") == primary_kw_text), None)
+        if p:
+            return p
+    return max(vb, key=lambda k: k.get("search_volume_monthly") or 0)
+
+
+def _demand_chart(items, primary_kw_text, lang):
+    """AAA-200 VISUAL 1 — inline SVG: 12-month average + monthly breakdown bars for
+    the chosen keyword. Deterministic; all numbers verbatim from trend_12m."""
+    t = UI[lang]
+    k = _pick_chart_kw(items, primary_kw_text)
+    if not k:
+        return ""  # no volume-bearing keyword → AAA-196 note covers it
+    tr = [e for e in (k.get("trend_12m") or []) if isinstance(e, dict)]
+    tr = list(reversed(tr))  # newest-first → chronological (oldest left)
+    vals = [int(e.get("search_volume") or 0) for e in tr]
+    if not vals:
+        return ""
+    avg = round(sum(vals) / len(vals))
+    maxV = max([avg] + vals) or 1
+    BASE, MAXH, VB_W = 165, 120, 760
+
+    def bar(cx, w, v, label, opacity):
+        h = (v / maxV) * MAXH
+        y = BASE - h
+        return (
+            '<rect x="%.1f" y="%.1f" width="%d" height="%.1f" rx="2" fill="var(--accent)" opacity="%.2f"/>'
+            '<text x="%.1f" y="%.1f" text-anchor="middle" font-size="11" fill="var(--muted)">%s</text>'
+            '<text x="%.1f" y="%d" text-anchor="middle" font-size="10" fill="var(--faint)">%s</text>'
+            % (cx, y, w, h, opacity, cx + w / 2, y - 4, _esc(v), cx + w / 2, BASE + 16, _esc(label)))
+
+    svg = ['<svg viewBox="0 0 %d 210" style="width:100%%;height:auto" xmlns="http://www.w3.org/2000/svg">' % VB_W]
+    # average bar (full opacity) + divider
+    svg.append(bar(14, 50, avg, t["dc_avg"], 1.0))
+    svg.append('<line x1="80" y1="20" x2="80" y2="%d" stroke="var(--line)"/>' % BASE)
+    # 12 monthly bars (≈50% opacity), evenly spaced in x:95..755
+    months = _MONTH_ABBR.get(lang, _MONTH_ABBR["en"])
+    n = len(tr)
+    slot = (755 - 95) / max(n, 1)
+    bw = max(18, int(slot * 0.72))
+    for i, e in enumerate(tr):
+        cx = 95 + i * slot + (slot - bw) / 2
+        m = e.get("month")
+        mlbl = months[m - 1] if isinstance(m, int) and 1 <= m <= 12 else "—"
+        svg.append(bar(cx, bw, int(e.get("search_volume") or 0), mlbl, 0.5))
+    svg.append("</svg>")
+
+    # sub-caption: keyword + date range from trend first/last
+    def ym(e):
+        return "%04d-%02d" % (e.get("year") or 0, e.get("month") or 0)
+    rng = ("%s → %s" % (ym(tr[0]), ym(tr[-1]))) if tr else ""
+    # caption: avg + min/max month (computed)
+    lo = min(tr, key=lambda e: e.get("search_volume") or 0)
+    hi = max(tr, key=lambda e: e.get("search_volume") or 0)
+    mn = lambda e: (months[(e.get("month") or 1) - 1] if isinstance(e.get("month"), int) else "—")
+    cap = t["dc_caption"] % (avg, mn(lo), int(lo.get("search_volume") or 0),
+                             mn(hi), int(hi.get("search_volume") or 0))
+    return (_subsec("", t["dc_title"])
+            + '<div class="small" style="margin:-4px 0 4px">%s: <b>%s</b> &nbsp;·&nbsp; %s</div>'
+            % (t["dc_for"], _esc(k.get("keyword")), _esc(rng))
+            + "".join(svg)
+            + '<p class="small">%s %s</p>' % (_esc(cap), _chip("becslés", lang)))
+
+
+def _volume_bar_list(items, primary_kw_text, lang):
+    """AAA-200 VISUAL 2 — horizontal keyword-volume bars. volume-bearing desc, then
+    null rows ("no data"). Primary keyword prominent. Deterministic."""
+    t = UI[lang]
+    items = items or []
+    vb = [k for k in items if k.get("search_volume_monthly") is not None]
+    if not vb:
+        return ""  # AAA-196 note covers the all-null case
+    nulls = [k for k in items if k.get("search_volume_monthly") is None]
+    maxset = max((k.get("search_volume_monthly") or 0) for k in vb) or 1
+    rows = sorted(vb, key=lambda k: -(k.get("search_volume_monthly") or 0)) + nulls
+
+    out = _subsec("", t["bl_title"])
+    for k in rows:
+        v = k.get("search_volume_monthly")
+        is_primary = (k.get("keyword") == primary_kw_text) or (k.get("relevance_score") == 1.0)
+        name_style = "font-family:var(--serif);font-weight:700" if is_primary else "color:var(--muted)"
+        if v is None:
+            bar = '<i style="position:absolute;left:0;top:0;height:12px;width:0"></i>'
+            val = '<span style="font-style:italic;color:var(--faint)">%s</span>' % t["bl_nodata"]
+        else:
+            w = (v / maxset) * 100.0
+            op = 1.0 if is_primary else 0.55
+            bar = ('<i style="position:absolute;left:0;top:0;height:12px;border-radius:3px;'
+                   'background:var(--accent);opacity:%.2f;width:%.1f%%"></i>' % (op, w))
+            val = "<b>%s</b>" % _esc(v) if is_primary else _esc(v)
+        out += ('<div style="display:flex;align-items:center;gap:8px;margin:3px 0">'
+                '<span style="flex:0 0 42%%;%s">%s</span>'
+                '<span style="flex:1;background:var(--line);border-radius:3px;height:12px;position:relative">%s</span>'
+                '<span style="flex:0 0 64px;text-align:right">%s</span></div>'
+                % (name_style, _esc(k.get("keyword")), bar, val))
+    # caption: dominant volume + N of M carry volume
+    dom = max((k.get("search_volume_monthly") or 0) for k in vb)
+    cap = t["bl_caption"] % (dom, len(vb), len(items))
+    out += '<p class="small">%s %s</p>' % (_esc(cap), _chip("becslés", lang))
+    return out
+
+
 def _s2_keyword_blocks(fb, lang):
     """AAA-186 — §2 blocks A (keyword map) / B (real demand, volume-bearing only)
-    / C (topic + aggregate intent). Provenance-aware; B omits if zero volume."""
+    / C (topic + aggregate intent). Provenance-aware; B omits if zero volume.
+    AAA-200 — block B is now the demand chart (SVG) + keyword-volume bar list."""
     t, hu = UI[lang], (lang == "hu")
     tg = fb.get("target") or {}
     kc = tg.get("keywords_classified") or {}
@@ -557,25 +688,19 @@ def _s2_keyword_blocks(fb, lang):
     # ---- (B) real search demand — volume-bearing rows; AAA-196: when keywords
     # exist but NONE carry volume (genuine no-data OR a failed DFS call), render
     # an EXPLICIT "unavailable" note instead of silently omitting the block. ----
+    # AAA-200 — block B is now (1) the demand chart (SVG monthly bars) + (2) the
+    # keyword-volume bar list, REPLACING the old arrow table. CPC omitted from §2
+    # (mockup-faithful; value stays persisted). AAA-196 unavailable-note stands
+    # when no keyword carries volume.
+    primary_kw_text = (tg.get("primary_keyword") or {}).get("value")
     vb = [k for k in (items or []) if k.get("search_volume_monthly") is not None]
     if items and not vb:
         out += _subsec("", t["kw_demand"]) + (
             '<div class="note">%s %s</div>' % (
                 _esc(t["kw_vol_unavail"]), _chip("becslés", lang)))
-    if vb:
-        out += _subsec("", t["kw_demand"]) + (
-            '<table><tr><th>%s</th><th class="num">%s</th><th>%s</th><th class="num">%s</th></tr>' % (
-                t["kw_kw"], t["kw_vol"], t["kw_trend"], t["kw_cpc"]))
-        for k in sorted(vb, key=lambda x: -(x.get("search_volume_monthly") or 0)):
-            cpc = k.get("cpc_usd")
-            out += "<tr><td>%s</td><td class='num'>%s</td><td>%s</td><td class='num'>%s</td></tr>" % (
-                _esc(k.get("keyword")), _esc(k.get("search_volume_monthly")),
-                _trend_arrow(k.get("trend_12m")),
-                ("$%.2f" % cpc) if isinstance(cpc, (int, float)) else "—")
-        out += "</table>"
-        out += '<p class="small">%s %s</p>' % (
-            ("Forrás: DataForSEO (becsült keresési volumen)" if hu
-             else "Source: DataForSEO (estimated search volume)"), _chip("becslés", lang))
+    else:
+        out += _demand_chart(items, primary_kw_text, lang)
+        out += _volume_bar_list(items, primary_kw_text, lang)
 
     # ---- (C) topic + aggregate intent (1-2 lines, hedged) ----
     tc = (tg.get("topic_cluster") or {}).get("value")
