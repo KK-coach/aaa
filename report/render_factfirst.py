@@ -100,7 +100,7 @@ UI = {
         "ee_fixes": "Teendők (hatás szerint)",
         "ee_twolens": "Ez a szakasz a saját oldalad profilját értékeli (oldal-intrinzik); a versenytárs-összevetés a §6-ban van, külön összehasonlító pontozással — két lencse, nem ellentmondás.",
         "ent_diff_title": "Entitás-különbség — a versenytárs említi, te nem",
-        "ent_diff_none": "Nincs jelentős entitás-különbség kimutatva.",
+        "ent_diff_none": "✓ Nincs mért megnevezett-szervezet különbség ezen a canaryn.",
         "rank": "Helyezés a mezőnyben", "client": "Ez az oldal", "total": "Összesen",
         "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (Lighthouse)",
         "t1": "Magas hatás", "t2": "Közepes hatás", "t3": "Alacsony hatás",
@@ -183,7 +183,7 @@ UI = {
         "ee_fixes": "Fixes (by impact)",
         "ee_twolens": "This section reads your own page's profile (page-intrinsic); the competitor comparison is in §6, with a separate comparative scoring — two lenses, not a contradiction.",
         "ent_diff_title": "Entity gap — competitor cites, you don't",
-        "ent_diff_none": "No significant entity gap detected.",
+        "ent_diff_none": "✓ No measured named-organization gap on this canary.",
         "rank": "Rank in the field", "client": "This page", "total": "Total",
         "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (Lighthouse)",
         "t1": "High impact", "t2": "Medium impact", "t3": "Low impact",
@@ -1141,33 +1141,29 @@ def _eeat_evidence_block(fb, lang):
 
 
 def _entity_diff(fb, lang):
-    """AAA-164 — concrete entity set-difference: named entities each competitor
-    cites that the CLIENT does not (orgs/products/tech). Case-insensitive match;
-    original casing shown. No data → 'none detected' (no fabrication, AAA-182).
-    MA degrades to near-empty (competitor orgs = 0)."""
+    """AAA-164 — concrete entity set-difference: named ORGANIZATIONS each
+    competitor cites that the CLIENT does not. ORG-SCOPED ONLY (decision
+    2026-06-09): no product/tech fallback. Case-insensitive; original casing
+    shown. Empty competitor org sets (e.g. marketingastro) → a clean
+    measured-positive line (AAA-187), never product/tech substitution."""
     t = UI[lang]
     comps = (fb.get("competition") or {}).get("competitors") or []
     ev = (fb.get("eeat") or {}).get("evidence") or {}
 
-    def _cl_set(key):
-        f = ev.get(key) or {}
-        return set(f.get("value") or []) if (_is_fact(f) and isinstance(f.get("value"), list)) else set()
-    cl_all = _cl_set("client_orgs") | _cl_set("client_products") | _cl_set("client_tech")
-    cl_lower = {x.lower().strip() for x in cl_all if isinstance(x, str)}
+    cl_f = ev.get("client_orgs") or {}
+    cl_orgs = set(cl_f.get("value") or []) if (_is_fact(cl_f) and isinstance(cl_f.get("value"), list)) else set()
+    cl_lower = {x.lower().strip() for x in cl_orgs if isinstance(x, str)}
 
     rows = []
     for c in comps:
-        comp_set = set()
-        for key in ("entity_orgs_list", "entity_products_list", "entity_tech_list"):
-            f = c.get(key) or {}
-            if _is_fact(f) and isinstance(f.get("value"), list):
-                comp_set |= {x for x in f.get("value") if isinstance(x, str)}
+        f = c.get("entity_orgs_list") or {}
+        comp_set = {x for x in (f.get("value") or []) if isinstance(x, str)} if _is_fact(f) else set()
         diff = sorted({x for x in comp_set if x.lower().strip() not in cl_lower})
         if diff:
             rows.append(((c.get("brand") or {}).get("value") or "?", diff))
     if not rows:
-        return '<div class="subsec"><span class="n">%s</span></div><div class="note">%s %s</div>' % (
-            t["ent_diff_title"], t["ent_diff_none"], _chip("mért", lang))
+        return '<div class="subsec"><span class="n">%s</span></div><div class="note"><span class="st st-ok">%s</span> %s</div>' % (
+            t["ent_diff_title"], _esc(t["ent_diff_none"]), _chip("mért", lang))
     out = '<div class="subsec"><span class="n">%s</span> %s</div>' % (
         t["ent_diff_title"], _chip("mért", lang))
     for brand, diff in rows:
