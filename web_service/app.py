@@ -165,9 +165,15 @@ _SHELL = (
 #   _EMAIL_FIELD_ENABLED : show + require the email field. False = field removed
 #       from the form; submit accepts no email and uses a non-PII sentinel so the
 #       submit→job→worker chain stays unbroken. Flip True to restore the field.
+#   REPORT_FORCE_EN      : serve-layer override. True = EVERY /report request is
+#       served in ENGLISH, ignoring ?lang= and the stored default_lang. The audit
+#       pipeline still renders + stores the HU artifact (untouched) and both EN/HU
+#       blobs stay in GCS — only the serve-time selection is pinned to EN. Flip to
+#       False to restore per-link language selection (one line, no re-render).
 # --------------------------------------------------------------------------
 FORM_LANG = "en"
 _EMAIL_FIELD_ENABLED = False
+REPORT_FORCE_EN = True
 
 # --------------------------------------------------------------------------
 # AAA — Basic-Auth gate on the LAUNCH FORM ONLY (/ and /submit). The shared
@@ -438,12 +444,17 @@ def submit(request: Request, url: str = Form(""), email: str = Form(""),
 
     # (f) confirmation (English) — surface the bookmarkable report link, opened in
     # the audit locale. Email-link delivery stays dormant; the link IS the delivery.
-    report_link = "%s/report/%s?lang=%s" % (_base_url(request), audit_id, audit_lang)
+    # While REPORT_FORCE_EN is on, bake lang=en into the shared link so new links
+    # are clean EN (the serve handler forces EN regardless; this just keeps the URL honest).
+    link_lang = "en" if REPORT_FORCE_EN else audit_lang
+    report_link = "%s/report/%s?lang=%s" % (_base_url(request), audit_id, link_lang)
     return _confirm_page(lang, report_link)
 
 
 @app.get("/report/{audit_id}", response_class=HTMLResponse)
 def report(audit_id: str, lang: str = "") -> Response:
+    if REPORT_FORCE_EN:
+        lang = "en"  # TEMPORARY: pin every serve to EN (see REPORT_FORCE_EN)
     try:
         snap = _db().collection(COLLECTION).document(audit_id).get()
     except Exception:  # noqa: BLE001
