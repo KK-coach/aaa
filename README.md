@@ -190,19 +190,12 @@ gcloud run deploy playwright-render --source playwright_service --region <REGION
 
 ---
 
-## Testing instructions (for judges)
+## Running an audit
 
-**Live demo:** `<LIVE_SUBMIT_URL>` *(filled in at submission — the hosted launch
-form; if a Basic-Auth gate is enabled, the shared credentials are provided with
-the submission).*
-
-1. Open the URL, paste any website URL (English-language sites fully supported),
-   and click **Start my audit**. No signup, no cost, no usage restriction.
-2. The audit runs **asynchronously (~15–25 minutes)** — a full client crawl plus
-   parallel deep-audits of up to 3 SERP competitors.
-3. The result page shows a **bookmarkable report link** (`/report/{id}`). Revisit
-   it; the 8-section report + peer-verdict appears automatically when ready
-   (report links are public / shareable even when the launch form is gated).
+The web front-door (`aaa-web`) serves a launch form: submit a URL, the audit runs
+asynchronously (~15–25 min — a full client crawl plus parallel deep-audits of up to
+3 SERP competitors), and the result page returns a bookmarkable report link
+(`/report/{id}`) that renders the 8-section report + peer-verdict when ready.
 
 To run a single audit on the developer path, invoke the RE agent's
 `run_one(url, audit_id, locale)` entry point in `reverse_engineering_agent/`.
