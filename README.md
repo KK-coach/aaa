@@ -20,7 +20,7 @@ and an impact-ranked action list — no generic "write more content" advice.
 
 ---
 
-## What makes it interesting (judging hooks)
+## What makes it interesting
 
 - **ADK multi-agent orchestration** — a Coordinator/Dispatcher agent + a
   Discovery agent + a Reverse-Engineering agent, each a real ADK `Agent` with a
