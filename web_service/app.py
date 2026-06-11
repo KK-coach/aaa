@@ -15,6 +15,8 @@ memory.firestore_archive). Runs as the aaa-web SA.
 
 from __future__ import annotations
 
+import base64
+import hmac
 import json
 import os
 import re
@@ -22,7 +24,7 @@ import uuid
 from datetime import datetime, timezone
 
 import tldextract
-from fastapi import FastAPI, Form, Request
+from fastapi import Depends, FastAPI, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 from google.cloud import firestore, storage
 
@@ -166,6 +168,39 @@ _SHELL = (
 # --------------------------------------------------------------------------
 FORM_LANG = "en"
 _EMAIL_FIELD_ENABLED = False
+
+# --------------------------------------------------------------------------
+# AAA — Basic-Auth gate on the LAUNCH FORM ONLY (/ and /submit). The shared
+# password comes from Cloud Run env (FORM_AUTH_USER + FORM_AUTH_PASS) — never
+# hardcoded. Safe default: if either is unset the gate is INACTIVE (the form
+# stays open), so a code deploy can never lock the form out before the secret
+# is set. /report/{id} and /health are intentionally NOT gated (report links
+# stay shareable). Reversible: clear the env vars to disable.
+# --------------------------------------------------------------------------
+_FORM_AUTH_USER = os.environ.get("FORM_AUTH_USER", "")
+_FORM_AUTH_PASS = os.environ.get("FORM_AUTH_PASS", "")
+_FORM_AUTH_ENABLED = bool(_FORM_AUTH_USER and _FORM_AUTH_PASS)
+_AUTH_REALM = "AAA audit launch"
+
+
+def _require_form_auth(request: Request) -> None:
+    """Basic-Auth guard for the launch form. No-op when the gate is inactive."""
+    if not _FORM_AUTH_ENABLED:
+        return
+    header = request.headers.get("authorization", "")
+    ok = False
+    if header.startswith("Basic "):
+        try:
+            user, _, pwd = base64.b64decode(
+                header[6:]).decode("utf-8").partition(":")
+            ok = (hmac.compare_digest(user, _FORM_AUTH_USER)
+                  and hmac.compare_digest(pwd, _FORM_AUTH_PASS))
+        except Exception:  # noqa: BLE001 — malformed header → unauthorized
+            ok = False
+    if not ok:
+        raise HTTPException(
+            status_code=401,
+            headers={"WWW-Authenticate": 'Basic realm="%s"' % _AUTH_REALM})
 # RFC-2606 reserved non-routable TLD — no PII, never delivers (email-link delivery
 # is dormant anyway; the bookmarkable report link is shown on the confirm page).
 _NO_EMAIL_SENTINEL = "disabled@launch-form.invalid"
@@ -343,12 +378,13 @@ def health() -> dict:
 
 
 @app.get("/", response_class=HTMLResponse)
-def index(request: Request) -> Response:
+def index(request: Request, _auth: None = Depends(_require_form_auth)) -> Response:
     return _form_page(_form_lang(request.headers.get("accept-language")))
 
 
 @app.post("/submit", response_class=HTMLResponse)
-def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Response:
+def submit(request: Request, url: str = Form(""), email: str = Form(""),
+           _auth: None = Depends(_require_form_auth)) -> Response:
     al = request.headers.get("accept-language")
     lang = _form_lang(al)        # FORM/CONFIRM display language (English now)
     audit_lang = _pick_locale(al)  # AUDIT locale — UI toggle does NOT change it
