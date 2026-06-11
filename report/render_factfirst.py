@@ -121,6 +121,10 @@ UI = {
         "st_weak": "Gyenge", "st_attn": "Odafigyelést igényel", "st_ok": "Rendben",
         "st_clean": "Tiszta", "cq_clean": "Tiszta — nincs helykitöltő",
         "cq_flag": "⚠ helykitöltő/befejezetlen tartalom", "cq_clean_why": "Nincs helykitöltő/befejezetlen tartalom",
+        "cq_axis_clean": "Nincs tartalmi probléma (ellenőrizve)", "cq_axis_lead": "Tartalmi probléma",
+        "cq_axis_nd": "A tartalom-QA nem futott le", "cq_axis_generic": "befejezetlen/helykitöltő tartalom",
+        "cat_lorem": "lorem ipsum helykitöltő", "cat_form": "kicseréletlen sablon-/űrlapszöveg",
+        "cat_name": "helykitöltő nevek", "cat_soft": "gyenge helykitöltő kifejezések",
         "fam_content": "Tartalom", "fam_seo": "On-site SEO", "fam_tech": "Technikai SEO", "fam_eeat": "E-E-A-T",
         "ee_band_pre": "E-E-A-T (saját oldal)",
         "ee_caveat": "a dimenzió-minta és a teendők a diagnosztikai jel, nem a pontos szám (a sáv render-szintű ±3 keret, nem mért szórás)",
@@ -221,6 +225,10 @@ UI = {
         "st_weak": "Weak", "st_attn": "Needs attention", "st_ok": "OK",
         "st_clean": "Clean", "cq_clean": "Clean — no placeholder",
         "cq_flag": "⚠ placeholder/unfinished content", "cq_clean_why": "No placeholder/unfinished content",
+        "cq_axis_clean": "No content issues found (checked)", "cq_axis_lead": "Content issue",
+        "cq_axis_nd": "Content-QA was not assessed", "cq_axis_generic": "unfinished/placeholder content",
+        "cat_lorem": "lorem-ipsum placeholder", "cat_form": "unreplaced template/form text",
+        "cat_name": "placeholder names", "cat_soft": "weak placeholder phrasing",
         "fam_content": "Content", "fam_seo": "On-site SEO", "fam_tech": "Technical SEO", "fam_eeat": "E-E-A-T",
         "ee_band_pre": "E-E-A-T (your page)",
         "ee_caveat": "the dimension pattern + fixes are the diagnostic signal, not the exact number (the band is a render-level ±3 bracket, not a measured spread)",
@@ -434,6 +442,45 @@ def _axis(name, st_cls, st_txt, why, layer, link, lang):
             % (_esc(name), st_cls, _esc(st_txt), _esc(why), _chip(layer, lang), link, link))
 
 
+# AAA-203 — content-QA leak categories in severity order (hard placeholder /
+# template leak > fake names > soft phrasing). The §1 "your page" axis names the
+# ACTUAL problems present, not just a generic placeholder flag.
+_CQ_CATS = [
+    ("lorem_ipsum", "cat_lorem", 3),
+    ("form_template_leak", "cat_form", 3),
+    ("placeholder_name", "cat_name", 2),
+    ("soft_placeholder_term", "cat_soft", 1),
+]
+
+
+def _content_qa_axis(fb, lang):
+    """AAA-203 — §1 'your page' status from the FULL content-QA state:
+      measured-flagged → name the actual leak categories, severity-led (st-bad)
+      absent (detector ran, no leak) → explicit positive verdict (st-ok)
+      not_measured / missing → honest hedge, NEVER 'OK' (st-warn).
+    Provenance contract (AAA-182 / Pattern #36): clean = 'we checked, no issues';
+    absent-of-measurement = hedge, not a clean claim."""
+    t = UI[lang]
+    cq = (fb.get("onpage") or {}).get("content_qa") or {}
+    pf = cq.get("page_flag") or {}
+    prov = pf.get("provenance") if _is_fact(pf) else "not_measured"
+    if prov == "absent":  # detector ran, found no leak → measured-clean positive
+        return ("st-ok", t["st_ok"], t["cq_axis_clean"], "mért")
+    if prov != "measured" or not pf.get("value"):  # never ran → hedge, not "OK"
+        return ("st-warn", t["st_attn"], t["cq_axis_nd"], "mért")
+    # measured-flagged → enumerate the actual categories, most severe first.
+    cats = cq.get("categories") or {}
+    catv = cats.get("value") if _is_fact(cats) else None
+    parts = []
+    if isinstance(catv, dict):
+        present = [(lbl, sev, int(catv.get(key) or 0))
+                   for key, lbl, sev in _CQ_CATS if catv.get(key)]
+        present.sort(key=lambda x: (-x[1], -x[2]))
+        parts = ["%s (%d)" % (t[lbl], n) for lbl, _sev, n in present]
+    detail = ", ".join(parts) if parts else t["cq_axis_generic"]
+    return ("st-bad", t["st_weak"], "%s: %s" % (t["cq_axis_lead"], detail), "mért")
+
+
 def _aio_render_state(av):
     """AAA-194 — unified Google AI Overview render state from the grounded SERP
     facts: 'cited' (client in AIO) / 'excluded' (AIO present, client not cited) /
@@ -472,17 +519,10 @@ def _s1(fb, dec, ao, lang):
         ai = ("st-ok", t["aio_none_short"], t["aio_none"], "mért")
     else:
         ai = ("st-warn", t["st_attn"], t["nd"], "mért")
-    # AAA-182 — three-state, field-aware: measured-True=placeholder (bad);
-    # absent=detector ran, page CLEAN (ok); not_measured=never ran (warn, NOT "OK").
-    cq = ((fb.get("onpage") or {}).get("content_qa") or {}).get("page_flag") or {}
-    cq_prov = cq.get("provenance")
-    if cq.get("value") is True and cq_prov == "measured":
-        page = ("st-bad", t["st_weak"], ("Befejezetlen/helykitöltő tartalom az oldalon"
-                if lang == "hu" else "Unfinished / placeholder content on the page"), "mért")
-    elif cq_prov == "absent":
-        page = ("st-ok", t["st_clean"], t["cq_clean_why"], "mért")
-    else:  # not_measured / missing — never assert "OK"
-        page = ("st-warn", t["st_attn"], t["nd"], "mért")
+    # AAA-203 — "your page" axis reflects the FULL content-QA state (named
+    # categories when flagged / explicit clean / honest hedge), not just a
+    # generic placeholder flag. See _content_qa_axis.
+    page = _content_qa_axis(fb, lang)
     perf = ((fb.get("technical") or {}).get("psi_mobile_perf") or {}).get("value")
     if isinstance(perf, int):
         pc = "st-ok" if perf >= 90 else ("st-warn" if perf >= 50 else "st-bad")
@@ -1686,36 +1726,43 @@ def render_factfirst_report(audit_output, lang="en", available_langs=None):
     market = (((fb.get("classification") or {}).get("locality") or {}).get("value")) or "—"
     date = _audit_date(ao)
 
+    # Tuples are (anchor, title, role, html). Section numbers are POSITIONAL
+    # (computed at render time) so they stay contiguous whether or not the
+    # optional peer-verdict section is present.
     secs = [
-        ("§1", t["s1"], t["r1"], "s1", _s1(fb, dec, ao, lang)),
-        ("§2", t["s2"], t["r2"], "s2", _s2(fb, ao, lang)),
-        ("§3", t["s3"], t["r3"], "s3", _s3(fb, ao, lang)),
-        ("§4", t["s4"], t["r4"], "s4", _s4(fb, ao, lang)),
-        ("§5", t["s5"], t["r5"], "s5", _s5(fb, ao, lang)),
-        ("§6", t["s6"], t["r6"], "s6", _s6(fb, ao, lang)),
-        ("§7", t["s7"], t["r7"], "s7", _s7(fb, dec, lang)),
-        ("§8", t["s8"], t["r8"], "s8", _s8(fb, ao, dec, lang)),
+        ("s1", t["s1"], t["r1"], _s1(fb, dec, ao, lang)),
+        ("s2", t["s2"], t["r2"], _s2(fb, ao, lang)),
+        ("s3", t["s3"], t["r3"], _s3(fb, ao, lang)),
+        ("s4", t["s4"], t["r4"], _s4(fb, ao, lang)),
+        ("s5", t["s5"], t["r5"], _s5(fb, ao, lang)),
+        ("s6", t["s6"], t["r6"], _s6(fb, ao, lang)),
+        ("s7", t["s7"], t["r7"], _s7(fb, dec, lang)),
     ]
-    # AAA-202 Gate 3 — §9 success-peer comparison (AI-interpretation layer,
-    # AFTER the 8 fact sections). 0 peers / error → no peer_verdict persisted →
-    # §9 omitted entirely (no empty shell); <3 peers → honest note.
-    s9 = _s9(ao, lang)
-    if s9:
-        secs.append(("§9", t["s9"], t["r9"], "s9", s9))
+    # §8 = success-peer comparison (AI-interpretation; _s9 helper), PROMOTED
+    # above the data-quality/provenance appendix (now §9). Omitted entirely when
+    # there is no peer verdict (0 peers / error) — positional numbering keeps the
+    # remaining sections contiguous (then data-quality is §8).
+    pv_html = _s9(ao, lang)
+    if pv_html:
+        secs.append(("s_peer", t["s9"], t["r9"], pv_html))
+    # data-quality / provenance appendix (_s8 helper) — always last.
+    secs.append(("s8", t["s8"], t["r8"], _s8(fb, ao, dec, lang)))
+
     legend = ('<div class="legend"><b>%s</b>%s%s%s%s<span style="color:var(--faint)">%s</span></div>'
               % (t["legend"], _chip("mért", lang), _chip("becslés", lang),
                  _chip("AI-értelmezés", lang), _chip("következtetés", lang), t["legend_note"]))
     toc = '<nav class="toc">' + " &nbsp;·&nbsp; ".join(
-        '<a href="#%s">%d · %s</a>' % (s[3], i + 1, _esc(s[1])) for i, s in enumerate(secs)) + "</nav>"
+        '<a href="#%s">%d · %s</a>' % (anc, i + 1, _esc(ttl))
+        for i, (anc, ttl, _r, _h) in enumerate(secs)) + "</nav>"
     snap = ('<div class="snapshot"><span>%s: <b>%s</b></span><span>%s: <b>%s</b></span>'
             '<span>%s: <b>%s</b></span><span>%s: <b>%s</b></span></div>'
             % (t["domain"], _esc(domain), t["keyword"], _esc(keyword),
                t["market"], _esc(market), t["date"], _esc(date)))
     body = ""
-    for sid, title, role, anchor, html_in in secs:
-        body += ('<section id="%s"><div class="secnum">%s. %s</div>'
+    for i, (anchor, title, role, html_in) in enumerate(secs):
+        body += ('<section id="%s"><div class="secnum">%d. %s</div>'
                  '<h2 class="sec">%s</h2><div class="role">%s</div>%s</section>'
-                 % (anchor, sid.lstrip("§"), t["section"], _esc(title), _esc(role), html_in))
+                 % (anchor, i + 1, t["section"], _esc(title), _esc(role), html_in))
 
     doc = ("<!doctype html><html lang=\"%s\"><head><meta charset=\"utf-8\">"
            "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
