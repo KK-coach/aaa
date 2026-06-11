@@ -43,7 +43,7 @@ and an impact-ranked action list — no generic "write more content" advice.
 
 ## Architecture
 
-![AAA — Multi-Agent Architecture](docs/architecture.png)
+![AAA — Multi-Agent Architecture](docs/AAA_architecture_diagram.png)
 
 **Flow (the deployed path — code is the source of truth):**
 
@@ -67,7 +67,7 @@ and an impact-ranked action list — no generic "write more content" advice.
    OpenAI ChatGPT-citation *data signal* (not reasoning — see the stack section).
 5. **Memory flywheel** + **fact-first report** as described below.
 
-> **The `docs/architecture.png` image is not committed yet** — drop the canonical
+> **The `docs/AAA_architecture_diagram.png` image is not committed yet** — drop the canonical
 > diagram in at that path. Before it ships, correct two points so the diagram
 > matches the code (see the S0 reconciliation note at the bottom of this section).
 
@@ -80,7 +80,7 @@ and an impact-ranked action list — no generic "write more content" advice.
 | **Reverse-Engineering (RE)** — *orchestrator* | `reverse_engineering_agent/` | The root agent the worker runs (`run_one`). Calls Discovery on the client, resolves the competitive SERP (DataForSEO), selects the first-3 comparable competitors in SERP order, deep-audits them **in parallel**, and produces the comparison, E-E-A-T benchmark, recommendations, and success-peer verdict. **There is no separate "Coordinator" agent — RE orchestrates.** |
 | **Discovery** | `discovery_agent/` | Full single-site audit, called as a tool by RE for the client + each competitor: crawl (+ optional Playwright JS-render escalation), site profiling, entity/keyword extraction, schema & content-depth analysis, Core Web Vitals / CrUX, AI-Overview & ChatGPT citation checks, per-aspect findings. Archives each audit to Firestore and embeds it into the memory corpus. |
 
-> **Diagram ⇄ code reconciliation (apply to `docs/architecture.png` before it ships).**
+> **Diagram ⇄ code reconciliation (apply to `docs/AAA_architecture_diagram.png` before it ships).**
 > The canonical PNG currently differs from the code on two points:
 > 1. **Entry path.** The PNG routes *User → ADK Dispatcher (AdkApp) → Cloud Tasks*. In
 >    code, the deployed web-form entry is *User → `aaa-web` (FastAPI) → Cloud Tasks →
