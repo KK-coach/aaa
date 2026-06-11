@@ -43,38 +43,55 @@ and an impact-ranked action list — no generic "write more content" advice.
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    U[User: URL in via web form] -->|POST /submit| W[aaa-web · Cloud Run<br/>form + report serve]
-    W -->|create job| FS[(Firestore<br/>audit_jobs / audits)]
-    W -->|enqueue OIDC task| CT[Cloud Tasks<br/>queue: audit-jobs]
-    CT -->|POST /run| WK[aaa-worker · Cloud Run<br/>concurrency = 1]
+![AAA — Multi-Agent Architecture](docs/architecture.png)
 
-    subgraph ADK[ADK multi-agent run]
-      RE[Reverse-Engineering Agent<br/>Gemini · tools]
-      DISC[Discovery Agent<br/>Gemini · tools]
-      RE -->|client + up to 3 competitors<br/>in parallel| DISC
-    end
-    WK --> RE
+**Flow (the deployed path — code is the source of truth):**
 
-    DISC -->|crawl / measure| DATA[DataForSEO MCP · PageSpeed/CrUX<br/>Knowledge Graph · ChatGPT citation signal]
-    DISC -->|archive + embed| RAG[Vertex AI RAG corpus]
-    RE -->|success-filtered retrieval| VS[Vertex AI Vector Search<br/>winning-page index]
-    VS -->|top-3 peers| PV[Gemini peer-verdict]
-    RE -->|fact-first render| REP[8-section report + peer-verdict<br/>EN/HU → Cloud Storage]
-    REP --> W
-```
+1. **Entry — `aaa-web` (Cloud Run, `web_service/`).** The user submits a URL on the
+   web form; `aaa-web` creates the job in Firestore (`audit_jobs`) and enqueues an
+   OIDC-authenticated **Cloud Tasks** task (`POST <worker>/run`). A separate
+   conversational **Dispatcher ADK agent** (`deploy_agent/dispatcher.py`, wrapped as
+   a Vertex AI Agent Engine `AdkApp`) exposes the same *start-audit + Q&A* capability
+   as an agent interface — but the web-form submit goes through `aaa-web` directly,
+   not through the dispatcher.
+2. **Worker — `aaa-worker` (Cloud Run, concurrency = 1).** Receives the task and runs
+   the ~18–22 min audit by invoking `run_one`, which runs the **Reverse-Engineering
+   agent** as the orchestrator (there is no separate "coordinator" agent — the RE
+   agent is the root agent in the worker).
+3. **Reverse-Engineering agent (ADK · Gemini).** Calls the **Discovery agent** on the
+   client, resolves the competitive SERP (DataForSEO), and deep-audits up to **3 SERP
+   competitors in parallel** — up to **4 Discovery audits per run** — then produces
+   the comparison, E-E-A-T benchmark, recommendations, and the success-peer verdict.
+4. **Tools / grounding** (called by the agents): DataForSEO (remote MCP), the
+   Playwright render microservice, Google Knowledge Graph, PageSpeed/CrUX, and the
+   OpenAI ChatGPT-citation *data signal* (not reasoning — see the stack section).
+5. **Memory flywheel** + **fact-first report** as described below.
 
-*(A polished diagram can live at `docs/architecture.png`; the Mermaid graph above
-renders on GitHub and is the source of truth.)*
+> **The `docs/architecture.png` image is not committed yet** — drop the canonical
+> diagram in at that path. Before it ships, correct two points so the diagram
+> matches the code (see the S0 reconciliation note at the bottom of this section).
 
 ### The agents (as they exist in code)
 
-| Agent | Module | Role |
+| Agent / service | Module | Role |
 | --- | --- | --- |
-| **Dispatcher / Coordinator** | `deploy_agent/dispatcher.py` | Conversational front-door ADK `Agent`, wrapped as a Vertex AI Agent Engine `AdkApp`. Creates the Firestore job and enqueues the Cloud Tasks task. |
-| **Discovery** | `discovery_agent/` | Full single-site audit: crawl (+ optional Playwright JS-render escalation), site profiling, entity/keyword extraction, schema & content-depth analysis, Core Web Vitals / CrUX, AI-Overview & ChatGPT citation checks, per-aspect findings. Archives each audit to Firestore and embeds it into the memory corpus. |
-| **Reverse-Engineering (RE)** | `reverse_engineering_agent/` | Runs Discovery on the client, resolves the competitive SERP (DataForSEO), selects the first-3 comparable competitors in SERP order, deep-audits them in parallel, and produces the comparison, E-E-A-T benchmark, recommendations, and the success-peer verdict. |
+| **Web front-door** | `web_service/` (`aaa-web`) | The deployed entry: serves the launch form, creates the Firestore job, and enqueues the Cloud Tasks task. Also serves the rendered reports. *(Not an ADK agent — a FastAPI service.)* |
+| **Dispatcher** *(parallel agent interface)* | `deploy_agent/dispatcher.py` | A conversational ADK `Agent` wrapped as a Vertex AI Agent Engine `AdkApp` — offers *start-audit + status + Q&A* as an agent. Equivalent start/enqueue capability to `aaa-web`; the web-form path does not route through it. |
+| **Reverse-Engineering (RE)** — *orchestrator* | `reverse_engineering_agent/` | The root agent the worker runs (`run_one`). Calls Discovery on the client, resolves the competitive SERP (DataForSEO), selects the first-3 comparable competitors in SERP order, deep-audits them **in parallel**, and produces the comparison, E-E-A-T benchmark, recommendations, and success-peer verdict. **There is no separate "Coordinator" agent — RE orchestrates.** |
+| **Discovery** | `discovery_agent/` | Full single-site audit, called as a tool by RE for the client + each competitor: crawl (+ optional Playwright JS-render escalation), site profiling, entity/keyword extraction, schema & content-depth analysis, Core Web Vitals / CrUX, AI-Overview & ChatGPT citation checks, per-aspect findings. Archives each audit to Firestore and embeds it into the memory corpus. |
+
+> **Diagram ⇄ code reconciliation (apply to `docs/architecture.png` before it ships).**
+> The canonical PNG currently differs from the code on two points:
+> 1. **Entry path.** The PNG routes *User → ADK Dispatcher (AdkApp) → Cloud Tasks*. In
+>    code, the deployed web-form entry is *User → `aaa-web` (FastAPI) → Cloud Tasks →
+>    worker*; the Dispatcher AdkApp is a **parallel** conversational agent interface
+>    (and its `build_adk_app()` is marked "NOT deployed"), not the web form's path.
+> 2. **Topology.** The PNG shows a *"Coordinator — root agent"* orchestrating
+>    *Discovery ×4 → RE sub-agent*. In code there is **no Coordinator agent**: the
+>    **Reverse-Engineering agent is the root/orchestrator** inside the worker and
+>    invokes Discovery (client + up to 3 competitors, in parallel) as tools. The
+>    "Discovery ×4 parallel" count is correct; the Coordinator box and the
+>    RE-as-sub-agent relationship are not.
 
 ### The flywheel value loop (the differentiator)
 
