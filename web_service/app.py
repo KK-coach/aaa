@@ -157,17 +157,41 @@ _SHELL = (
 )
 
 
+# --------------------------------------------------------------------------
+# AAA — TEMPORARY UI toggles (Krisztián). Reversible:
+#   FORM_LANG            : launch-form display language. "en" now; "" = locale-aware.
+#   _EMAIL_FIELD_ENABLED : show + require the email field. False = field removed
+#       from the form; submit accepts no email and uses a non-PII sentinel so the
+#       submit→job→worker chain stays unbroken. Flip True to restore the field.
+# --------------------------------------------------------------------------
+FORM_LANG = "en"
+_EMAIL_FIELD_ENABLED = False
+# RFC-2606 reserved non-routable TLD — no PII, never delivers (email-link delivery
+# is dormant anyway; the bookmarkable report link is shown on the confirm page).
+_NO_EMAIL_SENTINEL = "disabled@launch-form.invalid"
+
+
+def _form_lang(accept_language: str | None) -> str:
+    """Form/confirmation DISPLAY language (FORM_LANG override, else locale-aware).
+    The AUDIT locale stays locale-derived — this toggle is UI-only."""
+    return FORM_LANG or _pick_locale(accept_language)
+
+
 def _form_page(lang: str, err: str = "", url: str = "", email: str = "", status: int = 200) -> HTMLResponse:
     t = STR[lang]
     err_html = ('<div class="err">%s</div>' % _esc(err)) if err else ""
+    email_field = (
+        "<label>%s</label><input name=\"email\" type=\"email\" value=\"%s\" required>"
+        % (_esc(t["email_label"]), _esc(email))
+    ) if _EMAIL_FIELD_ENABLED else ""
     body = (
         "<h1>%s</h1><p class=\"intro\">%s</p>%s"
         "<form method=\"post\" action=\"/submit\">"
         "<label>%s</label><input name=\"url\" type=\"text\" value=\"%s\" placeholder=\"https://...\" required>"
-        "<label>%s</label><input name=\"email\" type=\"email\" value=\"%s\" required>"
+        "%s"
         "<button type=\"submit\">%s</button></form>" % (
             _esc(t["title"]), _esc(t["intro"]), err_html, _esc(t["url_label"]),
-            _esc(url), _esc(t["email_label"]), _esc(email), _esc(t["submit"]))
+            _esc(url), email_field, _esc(t["submit"]))
     )
     return HTMLResponse(_SHELL % (lang, _esc(t["title"]), body), status_code=status)
 
@@ -320,26 +344,31 @@ def health() -> dict:
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> Response:
-    return _form_page(_pick_locale(request.headers.get("accept-language")))
+    return _form_page(_form_lang(request.headers.get("accept-language")))
 
 
 @app.post("/submit", response_class=HTMLResponse)
 def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Response:
-    lang = _pick_locale(request.headers.get("accept-language"))
+    al = request.headers.get("accept-language")
+    lang = _form_lang(al)        # FORM/CONFIRM display language (English now)
+    audit_lang = _pick_locale(al)  # AUDIT locale — UI toggle does NOT change it
     t = STR[lang]
     url_raw, email = (url or "").strip(), (email or "").strip().lower()
 
-    # (b) validation
-    if not _EMAIL_RE.match(email):
-        return _form_page(lang, t["err_email"], url_raw, email, status=400)
+    # (b) validation. AAA — when the email field is removed (temporary), skip all
+    # email validation and use a non-PII sentinel; only the URL must be valid.
+    if _EMAIL_FIELD_ENABLED:
+        if not _EMAIL_RE.match(email):
+            return _form_page(lang, t["err_email"], url_raw, email, status=400)
+    else:
+        email = _NO_EMAIL_SENTINEL
     url_norm = _normalize_url(url_raw)
     url_etld1 = _etld1(url_norm)
     if not url_etld1:
         return _form_page(lang, t["err_url"], url_raw, email, status=400)
-    email_domain = email.rsplit("@", 1)[-1]
-    # Company-email enforcement — temporarily skippable via the Firestore flag
-    # config/global.email_gate_disabled (format check above always applies).
-    if not _email_gate_disabled():
+    # Company-email enforcement — only when the field is enabled AND the gate is on.
+    if _EMAIL_FIELD_ENABLED and not _email_gate_disabled():
+        email_domain = email.rsplit("@", 1)[-1]
         if email_domain in FREE_PROVIDERS or email_domain in DISPOSABLE:
             return _form_page(lang, t["err_free"], url_raw, email, status=400)
         if _etld1(email_domain) != url_etld1:
@@ -349,10 +378,11 @@ def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Resp
     if _enforce_one_per_company() and _company_exists(url_etld1):
         return _form_page(lang, t["err_quota"], url_raw, email, status=409)
 
-    # (d) dispatch — inline job-record + reused enqueue
-    audit_id = _create_job(url_norm, lang, email)
+    # (d) dispatch — inline job-record + reused enqueue (AUDIT locale, not the
+    # English form-display lang).
+    audit_id = _create_job(url_norm, audit_lang, email)
     try:
-        _enqueue_audit_task(audit_id, url_norm, lang, email)
+        _enqueue_audit_task(audit_id, url_norm, audit_lang, email)
     except Exception as e:  # noqa: BLE001 — surface as job error, still show friendly page
         try:
             _db().collection(JOBS_COLLECTION).document(audit_id).update(
@@ -370,8 +400,9 @@ def submit(request: Request, url: str = Form(""), email: str = Form("")) -> Resp
     except Exception:  # noqa: BLE001 — lead capture is non-fatal to the dispatch
         pass
 
-    # (f) confirmation — surface the bookmarkable report link (email is AAA-149).
-    report_link = "%s/report/%s?lang=%s" % (_base_url(request), audit_id, lang)
+    # (f) confirmation (English) — surface the bookmarkable report link, opened in
+    # the audit locale. Email-link delivery stays dormant; the link IS the delivery.
+    report_link = "%s/report/%s?lang=%s" % (_base_url(request), audit_id, audit_lang)
     return _confirm_page(lang, report_link)
 
 
