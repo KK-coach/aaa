@@ -438,6 +438,8 @@ _LIST_FIELDS = (
     "audit_id", "audit_url", "audit_date",
     "metadata.brand", "metadata.industry_llm", "metadata.page_type",
     "user_validation.validated_at", "user_validation.overall_acceptance",
+    # AAA-205 — webshop column/filter source (still a projection; AAA-103).
+    "audit_output.business_model",
 )
 
 
@@ -469,6 +471,8 @@ async def list_audits(
                 "brand": md.get("brand"),
                 "industry_llm": md.get("industry_llm"),
                 "page_type": md.get("page_type"),
+                "business_model": (d.get("audit_output") or {}).get(
+                    "business_model"),  # AAA-205 webshop source
                 "audit_date": d.get("audit_date"),
                 "validated_at": uv.get("validated_at"),
                 "overall_acceptance": uv.get("overall_acceptance"),
