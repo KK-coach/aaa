@@ -20,8 +20,10 @@ WORKDIR /app
 # Deps first for layer caching: the worker's pinned full-stack set (the
 # transitive imports need it) + the dashboard's own UI deps.
 COPY deploy_agent/requirements.txt /app/deploy_agent/requirements.txt
+# pandas 2.x: the 1.5.x wheels are binary-incompatible with the numpy 2.x
+# that the rest of the dependency set resolves to (numpy.dtype size error).
 RUN pip install --no-cache-dir -r /app/deploy_agent/requirements.txt \
-    streamlit==1.57.0 pandas==1.5.3
+    streamlit==1.57.0 pandas==2.2.3
 
 # App source (repo root; ignore files keep secrets/junk out).
 COPY . /app

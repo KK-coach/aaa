@@ -16,24 +16,34 @@ st.set_page_config(page_title="Validation UI", layout="wide")
 
 
 # --------------------------------------------------------------------------
-# AAA-204 S3b — central credential gate (runs BEFORE st.navigation dispatch,
-# so it covers EVERY page: Statisztikák, Beállítások, all Validáció pages).
-# Credentials come from the runtime env (ADMIN_AUTH_USER + ADMIN_AUTH_PASS;
-# the password is a Secret Manager secret on Cloud Run — NEVER in the repo).
-# Fail-closed on Cloud Run: if creds are missing while running as a Cloud Run
-# service (K_SERVICE set), the app hard-stops instead of serving open.
+# AAA-204 S3b — central credential gate covering EVERY page (Statisztikák,
+# Beállítások, all Validáció pages). Credentials come from the runtime env
+# (ADMIN_AUTH_USER + ADMIN_AUTH_PASS; the password is a Secret Manager secret
+# on Cloud Run — NEVER in the repo). Fail-closed on Cloud Run: creds missing
+# while running as a service (K_SERVICE set) -> hard stop, never open.
 # Local dev (no K_SERVICE, no creds) stays open for convenience.
+#
+# CRITICAL SHAPE: st.navigation MUST run on every script run. If the gate
+# st.stop()s before st.navigation, Streamlit falls back to DIRECTORY-based
+# multipage routing and serves pages/*.py directly at their URLs — bypassing
+# the gate entirely (caught in the S3b cloud canary). Pre-auth we therefore
+# still call st.navigation, registering ONLY the login page: the v2 router
+# then owns routing and unregistered paths (e.g. /statistics) do not resolve.
 # --------------------------------------------------------------------------
-def _auth_gate() -> None:
+def _gate_active() -> bool:
     user = os.environ.get("ADMIN_AUTH_USER", "")
     password = os.environ.get("ADMIN_AUTH_PASS", "")
     if not (user and password):
         if os.environ.get("K_SERVICE"):
             st.error("Auth nincs konfigurálva — a szolgáltatás zárolva.")
             st.stop()
-        return  # local dev without creds: open
-    if st.session_state.get("_aaa_admin_authed"):
-        return
+        return False  # local dev without creds: open
+    return not st.session_state.get("_aaa_admin_authed")
+
+
+def _login_page() -> None:
+    user = os.environ.get("ADMIN_AUTH_USER", "")
+    password = os.environ.get("ADMIN_AUTH_PASS", "")
     st.title("AAA admin — bejelentkezés")
     with st.form("aaa_admin_login"):
         u = st.text_input("Felhasználónév")
@@ -47,10 +57,11 @@ def _auth_gate() -> None:
             st.rerun()
         time.sleep(1.0)  # blunt brute force
         st.error("Hibás felhasználónév vagy jelszó.")
-    st.stop()  # nothing below (navigation/pages/data) renders unauthenticated
 
 
-_auth_gate()
+if _gate_active():
+    st.navigation([st.Page(_login_page, title="Bejelentkezés", icon="🔒")]).run()
+    st.stop()
 
 # AAA-204 S1 — grouped navigation. Existing validation pages unchanged,
 # just regrouped under a section header; new Statisztikák + Beállítások.
