@@ -18,20 +18,20 @@ DIMENSIONS = [
 
 def _back_to_list() -> None:
     st.session_state.pop("selected_audit_id", None)
-    st.switch_page("pages/audit_list.py")
+    st.switch_page("views/audit_list.py")
 
 audit_id = st.session_state.get("selected_audit_id")
 if not audit_id:
     st.warning("No audit selected. Go back to Audit list.")
     if st.button("← Back to list"):
-        st.switch_page("pages/audit_list.py")
+        st.switch_page("views/audit_list.py")
     st.stop()
 
 archive_doc = read_audit_sync(audit_id)
 if not archive_doc:
     st.error(f"Audit {audit_id} not found in archive.")
     if st.button("← Back to list"):
-        st.switch_page("pages/audit_list.py")
+        st.switch_page("views/audit_list.py")
     st.stop()
 
 audit_output = archive_doc.get("audit_output") or {}

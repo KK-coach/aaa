@@ -39,4 +39,4 @@ for audit in audits:
         cols[4].write("⏳ Pending")
     if cols[5].button("Open", key=f"open_{audit['audit_id']}"):
         st.session_state["selected_audit_id"] = audit["audit_id"]
-        st.switch_page("pages/audit_detail.py")
+        st.switch_page("views/audit_detail.py")

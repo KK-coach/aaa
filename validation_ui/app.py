@@ -65,18 +65,22 @@ if _gate_active():
 
 # AAA-204 S1 — grouped navigation. Existing validation pages unchanged,
 # just regrouped under a section header; new Statisztikák + Beállítások.
+# S3b: the directory is named views/ (NOT the magic pages/) on purpose —
+# a pages/ dir arms Streamlit's directory-based router, which serves page
+# scripts directly by URL on a fresh session BEFORE the entrypoint (and its
+# auth gate) ever runs. With views/, only st.navigation routes exist.
 pages = {
     "Statisztikák": [
-        st.Page("pages/03_statistics.py", title="Statisztikák", icon="📊"),
+        st.Page("views/03_statistics.py", title="Statisztikák", icon="📊"),
     ],
     "Validáció": [
-        st.Page("pages/audit_list.py", title="Audit list", icon="📋"),
-        st.Page("pages/audit_detail.py", title="Audit detail", icon="📄"),
-        st.Page("pages/02_data_explorer.py",
+        st.Page("views/audit_list.py", title="Audit list", icon="📋"),
+        st.Page("views/audit_detail.py", title="Audit detail", icon="📄"),
+        st.Page("views/02_data_explorer.py",
                 title="Audit data explorer", icon="🔎"),
     ],
     "Beállítások": [
-        st.Page("pages/04_settings.py", title="Beállítások", icon="⚙️"),
+        st.Page("views/04_settings.py", title="Beállítások", icon="⚙️"),
     ],
 }
 
