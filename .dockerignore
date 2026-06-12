@@ -1,0 +1,36 @@
+# AAA-204 S3 — docker build-context excludes for repo-root-context images
+# (worker root Dockerfile + validation_ui/Dockerfile). Mirrors .gcloudignore —
+# defense in depth: even if the build context bypasses gcloud's source upload
+# (e.g. a local `docker build .`), secrets and junk never enter an image.
+# The repo goes public at competition submission; the images must be clean.
+
+# Secrets — NEVER in an image
+.env
+.env.*
+*service-account*.json
+*credentials*.json
+*.pem
+*.key
+
+# VCS / tooling
+.git/
+.gitignore
+.claude/
+
+# Python caches / envs
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.pytest_cache/
+
+# Node (huge; not needed in python images)
+node_modules/
+package-lock.json
+
+# Local audit artifacts / dev scratch (regenerated; not runtime)
+reports/
+reports_*/
+**/test_outputs/
+aaa*.py
+_aaa*.py
