@@ -702,6 +702,39 @@ async def attach_peer_verdict(audit_id: str) -> dict:
         return {"_error": "%s: %s" % (type(e).__name__, e)}
 
 
+async def attach_ranked_keywords(audit_id: str) -> dict:
+    """AAA-206 — ranked-keywords §2 comparison → audit_output.ranked_keywords_comparison.
+
+    Runs after competitor selection (re_findings.competitor_audit_ids present).
+    Idempotent: if the field already has entities, skip (no refetch). Cost in
+    the SEPARATE audit_ranked_keywords_cost_usd field (AAA-53 flywheel pattern),
+    excluded from audit_cost_usd. Skip-finding: never raises; per-entity
+    failures are handled inside the builder (entity omitted, cost 0)."""
+    try:
+        ref = _db().collection(_COLLECTION).document(audit_id)
+        snap = await asyncio.to_thread(ref.get)
+        d = snap.to_dict() if snap.exists else None
+        if not d:
+            return {"_error": "audit not found"}
+        ao = d.get("audit_output") or {}
+        existing = ao.get("ranked_keywords_comparison") or {}
+        if existing.get("entities"):
+            return {"ok": True, "skipped": "already present",
+                    "cost": ao.get("audit_ranked_keywords_cost_usd") or 0.0}
+        from report.ranked_keywords import build_ranked_keywords_comparison
+        rkc = await build_ranked_keywords_comparison(ao)
+        cost = rkc.get("cost_usd") or 0.0
+        await asyncio.to_thread(ref.update, {
+            "audit_output.ranked_keywords_comparison": rkc,
+            "audit_ranked_keywords_cost_usd": cost,
+            "updated_at": _now_iso(),
+        })
+        return {"ok": True, "cost": cost,
+                "entities": len(rkc.get("entities") or [])}
+    except Exception as e:  # noqa: BLE001 — skip-finding
+        return {"_error": "%s: %s" % (type(e).__name__, e)}
+
+
 async def attach_fact_base_decisions(audit_id: str) -> dict:
     """AAA-161 Gate 1 — wire the RG1 fact-first data layer into the pipeline
     (ADDITIVE; NO render change). Builds the deterministic fact_base (RG1-S1,

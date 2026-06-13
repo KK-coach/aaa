@@ -124,6 +124,19 @@ async def run_one(url: str, audit_id: str | None = None,
         fact_base_status = ("ok" if fbd.get("ok")
                             else f"skip-finding: {fbd.get('_error')}")
 
+    # AAA-206 — ranked-keywords §2 comparison (target + competitors). Runs after
+    # re_findings (needs competitor_audit_ids) and before the report render so §2
+    # includes it. Idempotent + per-entity skip-finding; cost in the SEPARATE
+    # audit_ranked_keywords_cost_usd bucket (excluded from audit_cost_usd).
+    ranked_keywords_status = "skipped (no audit_id or re_persist not ok)"
+    if audit_id_for_re and re_persist_status == "ok":
+        from memory.firestore_archive import attach_ranked_keywords
+        rk = await attach_ranked_keywords(audit_id_for_re)
+        ranked_keywords_status = (
+            "ok (cost=$%.5f, %d entities)" % (rk.get("cost", 0.0),
+                                              rk.get("entities", 0))
+            if rk.get("ok") else "skip-finding: %s" % rk.get("_error"))
+
     # AAA-202 Gate 3 — success-peer comparison verdict (§9 source). Deterministic
     # pipeline step: AFTER fact_base (prompt input), BEFORE the report render.
     # Skip-finding: never raises; <3 peers → honest note; 0/error → §9 omitted.
@@ -235,6 +248,7 @@ async def run_one(url: str, audit_id: str | None = None,
             "re_persist_status": re_persist_status,
             "re_persist_audit_id": audit_id_for_re,
             "peer_verdict_status": peer_verdict_status,  # AAA-202 Gate 3
+            "ranked_keywords_status": ranked_keywords_status,  # AAA-206
             "customer_summary_status": customer_summary_status,
             "customer_report_html_status": customer_report_html_status,
             "serp_enforcement": serp_enforcement,
