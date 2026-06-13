@@ -1,24 +1,25 @@
 """AAA-206 — ranked-keywords §2 comparison fetcher.
 
-For the target + its (up to 3) selected competitors, fetch the HOMEPAGE-only
+For the target + its (up to 3) selected competitors, fetch the WHOLE-DOMAIN
 ranked keywords from DataForSEO Labs and derive two MEASURED facts per
 keyword (S0/Gate-0 verified derivable from this endpoint):
   - organic rank   -> ranked_serp_element.serp_item.rank_absolute
   - AIO present     -> ranked_serp_element.serp_item_types contains "ai_overview"
 
-A THIRD fact — "target cited in the AI Overview" — is NOT carried by this
-endpoint (Gate-0 proved the default call returns 0 ai_overview items even for
-heavily-cited domains; there is no citation field). Per Krisztián's S1
-decision it is populated for the TARGET ONLY, by reusing the per-SERP AIO
-citation data the audit already collected (re_findings.serp_*.ai_overview_*),
-matched by keyword — no new API calls. Competitors carry no cited column.
-Where no measured citation data exists for a keyword, aio_cited is None
-(not_measured) — never a false zero.
+AIO-citation membership is intentionally NOT included: Gate-0 (S1) proved the
+endpoint carries no citation field, and per Krisztián's S2 decision the
+requirement is AIO-PRESENCE per keyword only, never citation. So there is no
+cited column anywhere.
+
+S2 form decision: WHOLE-DOMAIN (no relative_url filter), ordered by search
+volume desc so the top-100-by-volume are returned. This reliably returns
+deep-page competitors (e.g. tax.thomsonreuters.com) that homepage-only "/"
+would skip.
 
 Cost: one ranked_keywords/live call per entity (~$0.013–0.02, scales with
 returned rows, capped at limit=100). 4 entities ≈ $0.08 (~7.9% of mean audit
-cost). Per-entity skip-finding: on exception/empty -> that entity is omitted,
-cost 0 for that call, the rest continue.
+cost). Per-entity skip-finding: on genuine call failure/empty -> that entity
+is omitted, cost 0 for that call, the rest continue.
 """
 
 from __future__ import annotations
@@ -66,8 +67,9 @@ def _bare_domain(url: str) -> str:
 
 
 async def _fetch_one(domain: str) -> tuple[list[dict], float]:
-    """One homepage-only ranked_keywords call for a bare domain.
-    Returns (rows, cost). Raises on transport error (caller skip-finds)."""
+    """One whole-domain ranked_keywords call for a bare domain, ordered so the
+    top-100-by-volume are returned. Returns (rows, cost). Raises on transport
+    error (caller skip-finds)."""
     login, password = _credentials()
     if not login or not password:
         raise RuntimeError("DataForSEO creds missing")
@@ -78,8 +80,10 @@ async def _fetch_one(domain: str) -> tuple[list[dict], float]:
         "language_name": _LANGUAGE_NAME,
         "limit": _LIMIT,
         "load_rank_absolute": True,
-        # homepage-only (S0 form decision): restrict to the root path.
-        "filters": [["ranked_serp_element.serp_item.relative_url", "=", "/"]],
+        # S2: WHOLE-DOMAIN (no relative_url filter) so deep-page competitors
+        # return. Order by search volume desc → the limit-100 are the top-100
+        # by volume, which is exactly what the top-N display cap then shows.
+        "order_by": ["keyword_data.keyword_info.search_volume,desc"],
     }]
 
     def _call() -> tuple[list[dict], float]:
@@ -108,71 +112,33 @@ async def _fetch_one(domain: str) -> tuple[list[dict], float]:
     raise RuntimeError("ranked_keywords fetch failed: %s" % last_err)
 
 
-def _rows_from_items(items: list[dict], cited_kw_map: dict | None) -> list[dict]:
-    """Map raw DataForSEO items -> per-keyword fact rows.
-
-    cited_kw_map: {normalized_keyword: bool} of MEASURED target AIO-citation
-    status from re_findings (target only; None/{} for competitors). A keyword
-    absent from the map -> aio_cited=None (not_measured), never a false zero.
-    """
+def _rows_from_items(items: list[dict]) -> list[dict]:
+    """Map raw DataForSEO items -> per-keyword fact rows (rank + AIO-present)."""
     out = []
     for it in items or []:
         kd = it.get("keyword_data") or {}
         rse = it.get("ranked_serp_element") or {}
         si = rse.get("serp_item") or {}
-        kw = kd.get("keyword")
-        vol = ((kd.get("keyword_info") or {}).get("search_volume"))
         types = rse.get("serp_item_types") or []
-        aio_cited = None
-        if cited_kw_map:
-            aio_cited = cited_kw_map.get((kw or "").strip().lower())
         out.append({
-            "keyword": kw,
+            "keyword": kd.get("keyword"),
             "rank_absolute": si.get("rank_absolute"),
-            "search_volume": vol,
+            "search_volume": ((kd.get("keyword_info") or {}).get("search_volume")),
             "type": si.get("type"),
             "aio_present": "ai_overview" in types,
-            "aio_cited": aio_cited,  # bool (target measured) | None (not measured)
         })
     out.sort(key=lambda r: (r["search_volume"] is None, -(r["search_volume"] or 0)))
     return out
 
 
-def _target_cited_map(ao: dict, target_url: str) -> dict:
-    """Build {normalized_keyword: bool} of the target's MEASURED AIO-citation
-    status, reusing the per-SERP data the audit already collected. No API call.
-    Only the keyword(s) the pipeline ran a full SERP on are present."""
-    rf = (ao or {}).get("re_findings") or {}
-    target_reg = _bare_domain(target_url)
-    cited = {}
-    for branch in ("serp_branded", "serp_category"):
-        sb = rf.get(branch) or {}
-        kw = ((sb.get("query_metadata") or {}).get("keyword")
-              or sb.get("keyword") or "").strip().lower()
-        if not kw:
-            continue
-        if not sb.get("ai_overview_present"):
-            cited[kw] = False  # AIO checked, not present → target not cited
-            continue
-        cites = sb.get("ai_overview_citations") or []
-        hit = any(_bare_domain(u) == target_reg for u in cites if isinstance(u, str))
-        cited[kw] = bool(hit)
-    return cited
-
-
 def summarize_entity(rows: list[dict]) -> dict:
-    """Per-entity summary: keyword count, AIO-present %, and (target only)
-    a measured AIO-cited fraction. Cited % is over the MEASURED subset only."""
+    """Per-entity summary: keyword count + AIO-present %."""
     n = len(rows)
     aio_present = sum(1 for r in rows if r.get("aio_present"))
-    cited_measured = [r for r in rows if r.get("aio_cited") is not None]
-    cited_yes = sum(1 for r in cited_measured if r.get("aio_cited"))
     return {
         "keyword_count": n,
         "aio_present_count": aio_present,
         "aio_present_pct": round(100 * aio_present / n) if n else None,
-        "aio_cited_measured": len(cited_measured),
-        "aio_cited_yes": cited_yes,
     }
 
 
@@ -181,7 +147,7 @@ async def build_ranked_keywords_comparison(ao: dict) -> dict:
       {entities: [{role, domain, url, rows, summary}], cost_usd, _error?}
 
     Per-entity skip-finding: a failed entity is omitted (cost 0 for it); the
-    builder never raises. AIO-cited is filled for the TARGET only.
+    builder never raises. Whole-domain form for all entities; no cited data.
     """
     target_url = ao.get("url") or ""
     comp_ids = ((ao.get("re_findings") or {}).get("competitor_audit_ids") or {})
@@ -190,7 +156,6 @@ async def build_ranked_keywords_comparison(ao: dict) -> dict:
     entities_spec = [("target", target_url)] + [
         ("competitor", u) for u in competitor_urls[:3]
     ]
-    cited_map = _target_cited_map(ao, target_url)
 
     out_entities = []
     total_cost = 0.0
@@ -204,9 +169,9 @@ async def build_ranked_keywords_comparison(ao: dict) -> dict:
             logger.warning("ranked_keywords skip-finding for %s: %s", domain, e)
             continue  # omit entity, cost 0
         total_cost += cost
-        rows = _rows_from_items(items, cited_map if role == "target" else None)
+        rows = _rows_from_items(items)
         if not rows:
-            continue  # empty → omit (homepage ranks for nothing measurable)
+            continue  # genuine empty → omit, audit continues
         out_entities.append({
             "role": role,
             "domain": domain,

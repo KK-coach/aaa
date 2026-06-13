@@ -116,16 +116,12 @@ UI = {
         "serp_you": "(az Ön oldala)", "serp_comp": "(versenytárs)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Kulcsszó-rangsor + AI Overview összevetés",
-        "rk_intro": ("Főoldali organikus rangsor kulcsszavanként, és hogy az adott "
-                     "találati oldalon megjelenik-e AI Overview. Az „AIO idézve\" csak a "
-                     "saját oldalra mért érték (a többinél nincs mérve)."),
+        "rk_intro": ("Domain-szintű organikus rangsor kulcsszavanként, és hogy az adott "
+                     "találati oldalon megjelenik-e AI Overview."),
         "rk_entity": "Entitás", "rk_kwcount": "Kulcsszavak", "rk_aiopct": "AIO jelen",
-        "rk_citedcol": "AIO idézve", "rk_rank": "Rang", "rk_vol": "Keresési vol.",
-        "rk_aio_present": "AIO jelen", "rk_aio_cited": "AIO idézve",
+        "rk_rank": "Rang", "rk_vol": "Keresési vol.", "rk_aio_present": "AIO jelen",
         "rk_you": "(az Ön oldala)", "rk_comp": "versenytárs",
-        "rk_cited_frac": "%d/%d mérve", "rk_cited_na": "nincs mérve",
         "rk_showing": "a(z) %d kulcsszóból a top %d (keresési volumen szerint)",
-        "rk_note_comp": "Versenytársnál az AIO-idézettség nincs mérve (csak organikus rang + AIO-jelenlét).",
         "comp_unavail": "(nem volt elérhető a lekérdezés pillanatában%s)",
         "comp_usable": "%d kiválasztott versenytársból %d használható",
         "brand_unresolved": "(márka feloldatlan)",
@@ -232,16 +228,12 @@ UI = {
         "serp_you": "(your site)", "serp_comp": "(competitor)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Keyword rankings + AI Overview comparison",
-        "rk_intro": ("Homepage organic rank per keyword, and whether that SERP shows an "
-                     "AI Overview. \"AIO cited\" is measured for your own page only "
-                     "(not measured for the others)."),
+        "rk_intro": ("Domain-level organic rank per keyword, and whether that SERP "
+                     "shows an AI Overview."),
         "rk_entity": "Entity", "rk_kwcount": "Keywords", "rk_aiopct": "AIO present",
-        "rk_citedcol": "AIO cited", "rk_rank": "Rank", "rk_vol": "Search vol.",
-        "rk_aio_present": "AIO present", "rk_aio_cited": "AIO cited",
+        "rk_rank": "Rank", "rk_vol": "Search vol.", "rk_aio_present": "AIO present",
         "rk_you": "(your site)", "rk_comp": "competitor",
-        "rk_cited_frac": "%d/%d measured", "rk_cited_na": "not measured",
         "rk_showing": "top %d of %d keywords (by search volume)",
-        "rk_note_comp": "AIO citation is not measured for competitors (organic rank + AIO presence only).",
         "comp_unavail": "(not available at the moment of the query%s)",
         "comp_usable": "%d of %d selected competitors usable",
         "brand_unresolved": "(brand unresolved)",
@@ -814,35 +806,29 @@ def _s2_ranked_keywords(ao, lang):
         return ""
     t = UI[lang]
 
-    # summary row (always visible)
-    head = ("<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>"
-            % (t["rk_entity"], t["rk_kwcount"], t["rk_aiopct"], t["rk_citedcol"]))
+    # summary row (always visible): keyword-count + AIO-present % per entity
+    head = ("<tr><th>%s</th><th>%s</th><th>%s</th></tr>"
+            % (t["rk_entity"], t["rk_kwcount"], t["rk_aiopct"]))
     body = ""
     for e in entities:
         s = e.get("summary") or {}
         label = _esc(e.get("domain") or "")
         if e.get("role") == "target":
             label += " <b class='serpmark'>%s</b>" % t["rk_you"]
-            m = s.get("aio_cited_measured") or 0
-            cited = (t["rk_cited_frac"] % (s.get("aio_cited_yes") or 0, m)
-                     if m else t["rk_cited_na"])
         else:
             label += " <span class='ph'>(%s)</span>" % t["rk_comp"]
-            cited = t["rk_cited_na"]
         pct = s.get("aio_present_pct")
-        body += ("<tr><td>%s</td><td class='num'>%s</td><td class='num'>%s</td>"
-                 "<td class='num'>%s</td></tr>" % (
-                     label, s.get("keyword_count"),
-                     ("%d%%" % pct) if pct is not None else "—", cited))
+        body += ("<tr><td>%s</td><td class='num'>%s</td><td class='num'>%s</td></tr>"
+                 % (label, s.get("keyword_count"),
+                    ("%d%%" % pct) if pct is not None else "—"))
     out = ("<div class='subsec'><span class='n'>%s</span> %s</div>"
            "<p class='muted'>%s</p>"
            "<table>%s%s</table>"
            % (_esc(t["rk_title"]), _chip("mért", lang), _esc(t["rk_intro"]), head, body))
 
-    # per-entity collapsible blocks (default-collapsed)
+    # per-entity collapsible blocks (default-collapsed), labeled by domain
     for e in entities:
         rows = e.get("rows") or []
-        s = e.get("summary") or {}
         is_target = e.get("role") == "target"
         cap = (t["rk_showing"] % (min(_RK_DISPLAY_N, len(rows)), len(rows))
                if len(rows) > _RK_DISPLAY_N else "")
@@ -850,24 +836,16 @@ def _s2_ranked_keywords(ao, lang):
             _esc(e.get("domain") or ""),
             (t["rk_you"] if is_target else "(%s)" % t["rk_comp"]),
             "· %s" % cap if cap else "")
-        rk_cited_h = ("<th>%s</th>" % t["rk_aio_cited"]) if is_target else ""
-        tbl = ("<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th>%s</tr>"
-               % (t["keyword"], t["rk_rank"], t["rk_vol"],
-                  t["rk_aio_present"], rk_cited_h))
+        tbl = ("<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>"
+               % (t["keyword"], t["rk_rank"], t["rk_vol"], t["rk_aio_present"]))
         for r in rows[:_RK_DISPLAY_N]:
             aio_p = "✓" if r.get("aio_present") else "—"
-            cited_td = ""
-            if is_target:
-                c = r.get("aio_cited")
-                cited_td = "<td class='num'>%s</td>" % (
-                    "—" if c is None else ("✓" if c else "✗"))
             tbl += ("<tr><td>%s</td><td class='num'>%s</td><td class='num'>%s</td>"
-                    "<td class='num'>%s</td>%s</tr>" % (
+                    "<td class='num'>%s</td></tr>" % (
                         _esc(r.get("keyword") or ""), _esc(r.get("rank_absolute")),
-                        _esc(r.get("search_volume")), aio_p, cited_td))
-        note = ("<p class='muted'>%s</p>" % _esc(t["rk_note_comp"])) if not is_target else ""
-        out += ("<details><summary>%s</summary><table>%s</table>%s</details>"
-                % (summary_lbl, tbl, note))
+                        _esc(r.get("search_volume")), aio_p))
+        out += ("<details><summary>%s</summary><table>%s</table></details>"
+                % (summary_lbl, tbl))
     return out
 
 
