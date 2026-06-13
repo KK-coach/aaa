@@ -116,7 +116,7 @@ UI = {
         "serp_you": "(az Ön oldala)", "serp_comp": "(versenytárs)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Kulcsszó-rangsor + AI Overview összevetés",
-        "rk_intro": ("Domain-szintű organikus rangsor kulcsszavanként, és hogy az adott "
+        "rk_intro": ("A konkrét oldal organikus rangsora kulcsszavanként, és hogy az adott "
                      "találati oldalon megjelenik-e AI Overview."),
         "rk_entity": "Entitás", "rk_kwcount": "Kulcsszavak", "rk_aiopct": "AIO jelen",
         "rk_rank": "Rang", "rk_vol": "Keresési vol.", "rk_aio_present": "AIO jelen",
@@ -228,8 +228,8 @@ UI = {
         "serp_you": "(your site)", "serp_comp": "(competitor)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Keyword rankings + AI Overview comparison",
-        "rk_intro": ("Domain-level organic rank per keyword, and whether that SERP "
-                     "shows an AI Overview."),
+        "rk_intro": ("This specific page's organic rank per keyword, and whether that "
+                     "SERP shows an AI Overview."),
         "rk_entity": "Entity", "rk_kwcount": "Keywords", "rk_aiopct": "AIO present",
         "rk_rank": "Rank", "rk_vol": "Search vol.", "rk_aio_present": "AIO present",
         "rk_you": "(your site)", "rk_comp": "competitor",
@@ -797,8 +797,8 @@ def _s2_ranked_keywords(ao, lang):
 
     Renders nothing (''), so §2 is byte-identical to today, when
     ao['ranked_keywords_comparison'] is absent or has no entities.
-    Native <details> (no JS — GCS-static-safe), default-collapsed. AIO-cited
-    column appears for the target only; competitors show it as not-measured.
+    Native <details> (no JS — GCS-static-safe), default-collapsed. Each entity
+    is the concrete audited/selected PAGE (host + path), not the whole domain.
     """
     rkc = (ao or {}).get("ranked_keywords_comparison") or {}
     entities = rkc.get("entities") or []
@@ -806,13 +806,18 @@ def _s2_ranked_keywords(ao, lang):
         return ""
     t = UI[lang]
 
+    def _page_label(e):
+        # concrete page: host + path (path omitted when it is just "/")
+        rel = e.get("relative_url") or ""
+        return (e.get("domain") or "") + (rel if rel and rel != "/" else "")
+
     # summary row (always visible): keyword-count + AIO-present % per entity
     head = ("<tr><th>%s</th><th>%s</th><th>%s</th></tr>"
             % (t["rk_entity"], t["rk_kwcount"], t["rk_aiopct"]))
     body = ""
     for e in entities:
         s = e.get("summary") or {}
-        label = _esc(e.get("domain") or "")
+        label = _esc(_page_label(e))
         if e.get("role") == "target":
             label += " <b class='serpmark'>%s</b>" % t["rk_you"]
         else:
@@ -826,14 +831,14 @@ def _s2_ranked_keywords(ao, lang):
            "<table>%s%s</table>"
            % (_esc(t["rk_title"]), _chip("mért", lang), _esc(t["rk_intro"]), head, body))
 
-    # per-entity collapsible blocks (default-collapsed), labeled by domain
+    # per-entity collapsible blocks (default-collapsed), labeled by page (host+path)
     for e in entities:
         rows = e.get("rows") or []
         is_target = e.get("role") == "target"
         cap = (t["rk_showing"] % (min(_RK_DISPLAY_N, len(rows)), len(rows))
                if len(rows) > _RK_DISPLAY_N else "")
         summary_lbl = "%s — %s %s" % (
-            _esc(e.get("domain") or ""),
+            _esc(_page_label(e)),
             (t["rk_you"] if is_target else "(%s)" % t["rk_comp"]),
             "· %s" % cap if cap else "")
         tbl = ("<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>"

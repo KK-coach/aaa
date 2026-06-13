@@ -11,23 +11,24 @@ endpoint carries no citation field, and per Krisztián's S2 decision the
 requirement is AIO-PRESENCE per keyword only, never citation. So there is no
 cited column anywhere.
 
-S2 form decision: WHOLE-DOMAIN (no relative_url filter), ordered by search
-volume desc so the top-100-by-volume are returned. This reliably returns
-deep-page competitors (e.g. tax.thomsonreuters.com) that homepage-only "/"
-would skip.
+Form decision (S2b): CONCRETE-URL — each entity is queried on its OWN audited
+/ selected URL (the exact page), not the whole domain. The call uses the
+domain as `target` plus a relative_url == <path> filter, so we get only the
+keywords that specific page ranks for. Validated to return data for deep
+competitor pages (e.g. tax.thomsonreuters.com/en/tax-accounting/...).
 
 Cost: one ranked_keywords/live call per entity (~$0.013–0.02, scales with
-returned rows, capped at limit=100). 4 entities ≈ $0.08 (~7.9% of mean audit
-cost). Per-entity skip-finding: on genuine call failure/empty -> that entity
-is omitted, cost 0 for that call, the rest continue.
+returned rows, capped at limit=100). 4 entities ≈ $0.065–0.08 (~7–8% of mean
+audit cost). Per-entity skip-finding: on genuine call failure/empty -> that
+entity is omitted, cost 0 for that call, the rest continue.
 """
 
 from __future__ import annotations
 
 import asyncio
 import logging
-import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -57,33 +58,46 @@ def _credentials() -> tuple[str, str]:
     return login, password
 
 
-def _bare_domain(url: str) -> str:
-    """AAA-127 — strip scheme + leading www + any path → bare registrable host
-    for the DataForSEO `target` field. '' if unusable."""
+def _host_path(url: str) -> tuple[str, str]:
+    """AAA-127 — split a URL into (bare host, path). Host: scheme + leading
+    www. stripped (subdomain kept, e.g. tax.thomsonreuters.com). Path: the
+    relative_url for the filter ('/' when none). ('', '') if unusable."""
     if not isinstance(url, str) or not url.strip():
-        return ""
-    h = re.sub(r"^https?://", "", url.strip().lower()).split("/")[0].split("?")[0]
-    return h[4:] if h.startswith("www.") else h
+        return "", ""
+    p = urlparse(url.strip() if "://" in url else "https://" + url.strip())
+    h = (p.netloc or "").lower()
+    h = h[4:] if h.startswith("www.") else h
+    path = p.path or "/"
+    return h, path
 
 
-async def _fetch_one(domain: str) -> tuple[list[dict], float]:
-    """One whole-domain ranked_keywords call for a bare domain, ordered so the
-    top-100-by-volume are returned. Returns (rows, cost). Raises on transport
-    error (caller skip-finds)."""
+def _bare_domain(url: str) -> str:
+    """Bare host (no path) — retained for entity labeling."""
+    return _host_path(url)[0]
+
+
+async def _fetch_one(url: str) -> tuple[list[dict], float]:
+    """One CONCRETE-URL ranked_keywords call: target=host, filtered to the
+    page's own relative_url, ordered so the top-100-by-volume are returned.
+    Returns (rows, cost). Raises on transport error (caller skip-finds)."""
     login, password = _credentials()
     if not login or not password:
         raise RuntimeError("DataForSEO creds missing")
+    host, path = _host_path(url)
+    if not host:
+        raise RuntimeError("unusable url: %r" % url)
 
     body = [{
-        "target": domain,
+        "target": host,
         "location_name": _LOCATION_NAME,
         "language_name": _LANGUAGE_NAME,
         "limit": _LIMIT,
         "load_rank_absolute": True,
-        # S2: WHOLE-DOMAIN (no relative_url filter) so deep-page competitors
-        # return. Order by search volume desc → the limit-100 are the top-100
-        # by volume, which is exactly what the top-N display cap then shows.
+        # S2b: CONCRETE-URL — restrict to the audited/selected page's own path,
+        # ordered by search volume desc so the limit-100 are the top-100 by
+        # volume (matches the top-N display cap).
         "order_by": ["keyword_data.keyword_info.search_volume,desc"],
+        "filters": [["ranked_serp_element.serp_item.relative_url", "=", path]],
     }]
 
     def _call() -> tuple[list[dict], float]:
@@ -160,13 +174,13 @@ async def build_ranked_keywords_comparison(ao: dict) -> dict:
     out_entities = []
     total_cost = 0.0
     for role, url in entities_spec:
-        domain = _bare_domain(url)
-        if not domain:
+        host, path = _host_path(url)
+        if not host:
             continue
         try:
-            items, cost = await _fetch_one(domain)
+            items, cost = await _fetch_one(url)
         except Exception as e:  # noqa: BLE001 — per-entity skip-finding
-            logger.warning("ranked_keywords skip-finding for %s: %s", domain, e)
+            logger.warning("ranked_keywords skip-finding for %s: %s", url, e)
             continue  # omit entity, cost 0
         total_cost += cost
         rows = _rows_from_items(items)
@@ -174,7 +188,8 @@ async def build_ranked_keywords_comparison(ao: dict) -> dict:
             continue  # genuine empty → omit, audit continues
         out_entities.append({
             "role": role,
-            "domain": domain,
+            "domain": host,
+            "relative_url": path,  # S2b: the concrete page queried
             "url": url,
             "rows": rows,
             "summary": summarize_entity(rows),
