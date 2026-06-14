@@ -146,7 +146,7 @@ UI = {
         "ent_diff_title": "Entitás-különbség — a versenytárs említi, te nem",
         "ent_diff_none": "✓ Nincs mért megnevezett-szervezet különbség ezen a canaryn.",
         "rank": "Helyezés a mezőnyben", "client": "Ez az oldal", "total": "Összesen",
-        "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (Lighthouse)",
+        "dim": "Dimenzió", "cwv_field": "Mező (CrUX p75)", "cwv_lab": "Labor (mobil)",
         "t1": "Magas hatás", "t2": "Közepes hatás", "t3": "Finomítás",
         "r7_intro": "Hogyan olvasd: minden tétel egy konkrét, mért hiányhoz kötődik — többségük a bizalom, a tekintély vagy az AI-láthatóság körül van, nem a technikai mechanikáról szól. Az oldalon belüli javítások erősítik a minőség-/bizalom-jeleket, de nem garantálják a SERP-rangsort; az oldalon kívüli tényezők (linkek/domain-tekintély) nem tartoznak ide. Visszafordíthatatlan lépés előtt mentsd a munkád.",
         "rec_gap": "Mért hiány", "rec_src": "Forrás", "rec_improves": "Javítja", "rec_effort": "Ráfordítás", "rec_indic": "indikatív",
@@ -262,7 +262,7 @@ UI = {
         "ent_diff_title": "Entity gap — competitor cites, you don't",
         "ent_diff_none": "✓ No measured named-organization gap on this canary.",
         "rank": "Rank in the field", "client": "This page", "total": "Total",
-        "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (Lighthouse)",
+        "dim": "Dimension", "cwv_field": "Field (CrUX p75)", "cwv_lab": "Lab (mobile)",
         "t1": "High impact", "t2": "Medium impact", "t3": "Refinement",
         "r7_intro": "How to read: each item targets a concrete measured gap — most are about trust, authority, or AI-visibility, not technical mechanics. On-page fixes strengthen quality/trust signals but do not guarantee SERP ranking; off-page factors (backlinks/domain authority) are out of scope. Save your work before any irreversible step.",
         "rec_gap": "Measured gap", "rec_src": "Source", "rec_improves": "Improves", "rec_effort": "Effort", "rec_indic": "indicative",
@@ -954,9 +954,10 @@ def _s3(fb, ao, lang):
             dom = urlparse(url).netloc.replace("www.", "")
             title = c.get("title") or dom
             # AAA-207b — title links to the CONCRETE cited URL (the exact page
-            # the AIO cited), domain shown as a muted hint beside it.
-            rows_aio += '<li><a href="%s">%s</a> <span class="ph">%s</span></li>' % (
-                _esc(url), _esc(title), _esc(dom))
+            # the AIO cited), domain shown as a muted hint beside it. title=
+            # attr surfaces the full URL on hover.
+            rows_aio += '<li><a href="%s" title="%s">%s</a> <span class="ph">%s</span></li>' % (
+                _esc(url), _esc(url), _esc(title), _esc(dom))
         if rows_aio:
             out += '<div class="subsec"><span class="n">%s</span> %s</div><ul>%s</ul>' % (
                 t["aio_cites"], _chip("mért", lang), rows_aio)
@@ -1833,7 +1834,6 @@ def _s8(fb, ao, dec, lang):
     out += "<table><tr><th>%s</th><th>%s</th><th>%s</th></tr>" % (t["fresh_source"], t["fresh_when"], t["fresh_state"])
     out += "".join("<tr><td>%s</td><td class='num'>%s</td><td class='dimsig'>%s</td></tr>" % (a, b or "—", c) for a, b, c in rows)
     out += "</table>"
-    out += '<div class="note">Date-only freshness (AAA-177): no precise time / engine-version.</div>'
     return out
 
 
