@@ -113,6 +113,9 @@ UI = {
         "snapshot": "Pillanatkép az audit napján", "cited": "Idézve", "not_cited": "Nincs idézve",
         "excluded": "Kihagyva", "competitor": "Versenytárs", "competitors_cited": "Idézett versenytársak",
         "aio_none": "Nincs AI Overview erre a kulcsszóra (ellenőrizve)", "aio_none_short": "Nincs AI Overview",
+        "aio_cites": "Az AI Overview által idézett források",
+        "aio_yourpage": "Az Ön oldala:",
+        "aio_deferred": "async AI Overview — a citációk még nem mértek",
         "serp_you": "(az Ön oldala)", "serp_comp": "(versenytárs)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Kulcsszó-rangsor + AI Overview összevetés",
@@ -226,6 +229,9 @@ UI = {
         "snapshot": "Snapshot as of the audit date", "cited": "Cited", "not_cited": "Not cited",
         "excluded": "Excluded", "competitor": "Competitor", "competitors_cited": "Competitors cited",
         "aio_none": "No AI Overview appears for this keyword (checked)", "aio_none_short": "No AI Overview",
+        "aio_cites": "Sources the AI Overview cited",
+        "aio_yourpage": "Your page:",
+        "aio_deferred": "async AI Overview — citations not yet measured",
         "serp_you": "(your site)", "serp_comp": "(competitor)",
         # AAA-206 — ranked-keywords §2 comparison
         "rk_title": "Keyword rankings + AI Overview comparison",
@@ -930,8 +936,36 @@ def _s3(fb, ao, lang):
     out += "<tr><td>Google AI Overview</td><td>%s</td></tr>" % aio_cell
     out += "<tr><td>ChatGPT</td><td>%s</td></tr>" % _cite_cell(av.get("chatgpt_target_cited"))
     out += "</table>"
+    # AAA-207 — structured AIO cited-sources brand+URL list, gated on the
+    # AAA-168 aio_citation_status enum (reads the now-reliable ao.ai_overview).
+    # measured → brand+URL list + "your page cited?" line; deferred → explicit
+    # async marker (never an empty list / fabricated 0); absent → no new block
+    # (the AAA-194 measured-absent status row above already states it; we don't
+    # duplicate). Legacy pre-AAA-168 docs (status None) → skip (additive).
+    aio = ao.get("ai_overview") or {}
+    aio_status = aio.get("aio_citation_status")
+    if aio_status == "measured":
+        from urllib.parse import urlparse
+        rows_aio = ""
+        for c in (aio.get("cited_sources") or []):
+            if not isinstance(c, dict) or not c.get("url"):
+                continue
+            dom = urlparse(c.get("url") or "").netloc.replace("www.", "")
+            title = c.get("title") or dom
+            rows_aio += '<li>%s <span class="ph">%s</span></li>' % (_esc(title), _esc(dom))
+        if rows_aio:
+            out += '<div class="subsec"><span class="n">%s</span> %s</div><ul>%s</ul>' % (
+                t["aio_cites"], _chip("mért", lang), rows_aio)
+        ccited = aio.get("client_cited")
+        if ccited is not None:
+            lbl = t["cited"] if ccited else t["not_cited"]
+            cls = "st-ok" if ccited else "st-bad"
+            out += '<p>%s <span class="st %s">%s</span> %s</p>' % (
+                t["aio_yourpage"], cls, lbl, _chip("mért", lang))
+    elif aio_status == "deferred":
+        out += '<div class="subsec"><span class="n">%s</span> %s</div><p class="ph">%s</p>' % (
+            t["aio_cites"], _chip("becslés", lang), _esc(t["aio_deferred"]))
     # AAA-190 (#6) — ChatGPT citation list (the sources it cited instead).
-    # AIO brand+URL list is DEFERRED to AAA-168 (reliability gated); not rendered.
     cg = av.get("chatgpt_citations")
     if _is_fact(cg) and cg.get("provenance") == "measured" and cg.get("value"):
         from urllib.parse import urlparse
