@@ -122,6 +122,7 @@ UI = {
         "rk_rank": "Rang", "rk_vol": "Keresési vol.", "rk_aio_present": "AIO jelen",
         "rk_you": "(az Ön oldala)", "rk_comp": "versenytárs",
         "rk_showing": "a(z) %d kulcsszóból a top %d (keresési volumen szerint)",
+        "rk_expand_hint": "Click the arrow below to expand each page for per-keyword details.",
         "comp_unavail": "(nem volt elérhető a lekérdezés pillanatában%s)",
         "comp_usable": "%d kiválasztott versenytársból %d használható",
         "brand_unresolved": "(márka feloldatlan)",
@@ -234,6 +235,7 @@ UI = {
         "rk_rank": "Rank", "rk_vol": "Search vol.", "rk_aio_present": "AIO present",
         "rk_you": "(your site)", "rk_comp": "competitor",
         "rk_showing": "top %d of %d keywords (by search volume)",
+        "rk_expand_hint": "Click the arrow below to expand each page for per-keyword details.",
         "comp_unavail": "(not available at the moment of the query%s)",
         "comp_usable": "%d of %d selected competitors usable",
         "brand_unresolved": "(brand unresolved)",
@@ -633,7 +635,11 @@ def _demand_chart(items, primary_kw_text, lang):
     vals = [int(e.get("search_volume") or 0) for e in tr]
     if not vals:
         return ""
-    avg = round(sum(vals) / len(vals))
+    # AAA — use DataForSEO's reported average monthly search volume verbatim
+    # (search_volume_monthly), NOT a recomputed mean of the 12 trend points;
+    # the two differ (Google rounds) and we show the DFS value everywhere.
+    sv = k.get("search_volume_monthly")
+    avg = int(sv) if sv is not None else round(sum(vals) / len(vals))
     maxV = max([avg] + vals) or 1
     BASE, MAXH, VB_W = 165, 120, 760
 
@@ -829,7 +835,9 @@ def _s2_ranked_keywords(ao, lang):
     out = ("<div class='subsec'><span class='n'>%s</span> %s</div>"
            "<p class='muted'>%s</p>"
            "<table>%s%s</table>"
-           % (_esc(t["rk_title"]), _chip("mért", lang), _esc(t["rk_intro"]), head, body))
+           "<p class='small'>%s</p>"
+           % (_esc(t["rk_title"]), _chip("mért", lang), _esc(t["rk_intro"]),
+              head, body, _esc(t["rk_expand_hint"])))
 
     # per-entity collapsible blocks (default-collapsed), labeled by page (host+path)
     for e in entities:
