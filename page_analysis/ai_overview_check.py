@@ -91,6 +91,11 @@ def check_ai_overview(
     body = [{
         "keyword": kw, "language_code": language_code,
         "location_code": location_code, "depth": 10,
+        # AAA-168: recover async AI Overviews. Without this DataForSEO returns
+        # asynchronous_ai_overview=True with empty references; with it, the
+        # server waits for the async AIO and returns markdown + references
+        # (+~3.5s, +~$0.002 on this same call). Probe: 0 → 7 refs recovered.
+        "load_async_ai_overview": True,
     }]
     try:
         import requests
@@ -116,9 +121,15 @@ def check_ai_overview(
     async_any = any(it.get("asynchronous_ai_overview") for it in items)
     present = bool(aio_item) or async_any
 
+    # AAA-168: aio_citation_status is the explicit provenance emitted at
+    # measurement time (never inferred later from a bare client_cited=None):
+    #   absent   — no AIO on this SERP (present=False)
+    #   measured — AIO present AND references obtained (sync or async-recovered)
+    #   deferred — AIO present, but even load_async returned no references
     if not present:
         return {"present": False, "markdown": None, "cited_sources": [],
-                "client_cited": None, "asynchronous": False}, cost
+                "client_cited": None, "asynchronous": False,
+                "aio_citation_status": "absent"}, cost
 
     aio = aio_item or {}
     is_async = bool(aio.get("asynchronous_ai_overview")) or (
@@ -128,18 +139,22 @@ def check_ai_overview(
     cited = [{"title": r.get("title"), "url": r.get("url")}
              for r in refs if r.get("url")]
 
-    # Async fallback: AIO triggered but content/citations not in the live
-    # response (skip-finding; present stays True, no retry).
-    if is_async or not cited:
+    # Gate on REFERENCES-PRESENT, not the asynchronous flag — that flag stays
+    # True even when load_async recovered the refs (the original bug was gating
+    # on it). No refs (rare residual, even after load_async) -> deferred, with
+    # client_cited=None now explicitly explained by the status.
+    if not cited:
         return {"present": True, "markdown": markdown, "cited_sources": [],
                 "client_cited": None, "asynchronous": is_async,
-                "note": "async, citations unavailable"}, cost
+                "note": "async, citations unavailable",
+                "aio_citation_status": "deferred"}, cost
 
     client_cited = None
     if client_url:
         client_cited = any(_domain_match(client_url, c["url"]) for c in cited)
     return {"present": True, "markdown": markdown, "cited_sources": cited,
-            "client_cited": client_cited, "asynchronous": False}, cost
+            "client_cited": client_cited, "asynchronous": is_async,
+            "aio_citation_status": "measured"}, cost
 
 
 async def check_ai_overview_async(
