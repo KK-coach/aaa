@@ -981,7 +981,13 @@ def _s3(fb, ao, lang):
             url = c.get("url") or ""
             dom = urlparse(url).netloc.replace("www.", "")
             title = c.get("title") or dom
-            rows_cg += '<li>%s <span class="ph">%s</span></li>' % (_esc(title), _esc(dom))
+            # AAA-207c — title links to the concrete cited URL with hover-URL
+            # (title=), mirroring the AIO list. Plain text if no URL is present.
+            if url:
+                rows_cg += '<li><a href="%s" title="%s">%s</a> <span class="ph">%s</span></li>' % (
+                    _esc(url), _esc(url), _esc(title), _esc(dom))
+            else:
+                rows_cg += '<li>%s</li>' % _esc(title)
         if rows_cg:
             out += '<div class="subsec"><span class="n">%s</span> %s</div><ul>%s</ul>' % (
                 t["cg_cites"], _chip("mért", lang), rows_cg)
