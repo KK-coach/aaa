@@ -950,9 +950,13 @@ def _s3(fb, ao, lang):
         for c in (aio.get("cited_sources") or []):
             if not isinstance(c, dict) or not c.get("url"):
                 continue
-            dom = urlparse(c.get("url") or "").netloc.replace("www.", "")
+            url = c.get("url") or ""
+            dom = urlparse(url).netloc.replace("www.", "")
             title = c.get("title") or dom
-            rows_aio += '<li>%s <span class="ph">%s</span></li>' % (_esc(title), _esc(dom))
+            # AAA-207b — title links to the CONCRETE cited URL (the exact page
+            # the AIO cited), domain shown as a muted hint beside it.
+            rows_aio += '<li><a href="%s">%s</a> <span class="ph">%s</span></li>' % (
+                _esc(url), _esc(title), _esc(dom))
         if rows_aio:
             out += '<div class="subsec"><span class="n">%s</span> %s</div><ul>%s</ul>' % (
                 t["aio_cites"], _chip("mért", lang), rows_aio)
